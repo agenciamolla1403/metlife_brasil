@@ -7,7 +7,8 @@
     { "source": "/login", "destination": "/login.html" },
     { "source": "/cronograma", "destination": "/cronograma.html" },
     { "source": "/plano-midia", "destination": "/plano-midia.html" },
-    { "source": "/aprovacao", "destination": "/aprovacao.html" }
+    { "source": "/aprovacao", "destination": "/aprovacao.html" },
+    { "source": "/elemidia", "destination": "/elemidia.html" }
   ],
   "headers": [
     {

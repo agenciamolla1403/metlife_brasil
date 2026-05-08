@@ -18,6 +18,8 @@
     '/plano-midia.html': 'plano',
     '/aprovacao': 'aprovacao',
     '/aprovacao.html': 'aprovacao',
+    '/elemidia': 'elemidia',
+    '/elemidia.html': 'elemidia',
   };
 
   function activeRouteFromPath() {
@@ -47,6 +49,7 @@
           <a href="/cronograma" class="${isActive('cronograma')}">Cronograma</a>
           <a href="/plano-midia" class="${isActive('plano')}">Plano de Mídia</a>
           <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
+          <a href="/elemidia" class="${isActive('elemidia')}">Elemidia</a>
         </nav>
         <div class="mlh-actions">
           ${userChip}
