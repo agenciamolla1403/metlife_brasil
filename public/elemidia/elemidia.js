@@ -124,8 +124,8 @@
     document.getElementById('metricasPeriodoContent').innerHTML = `
       <div class="elem-grid-3">
         ${card(m.sao_paulo, 'Total · São Paulo', 'is-feature')}
-        ${card(m.residenciais, 'Edifícios Residenciais', 'is-residencial')}
-        ${card(m.comerciais, 'Edifícios Comerciais', 'is-comercial')}
+        ${m.residenciais ? card(m.residenciais, 'Edifícios Residenciais', 'is-residencial') : ''}
+        ${m.comerciais ? card(m.comerciais, 'Edifícios Comerciais', 'is-comercial') : ''}
       </div>
     `;
   }
