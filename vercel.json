@@ -4,14 +4,22 @@
   "trailingSlash": false,
   "public": true,
   "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
     { "source": "/cronograma", "destination": "/cronograma.html" },
-    { "source": "/plano-midia", "destination": "/plano-midia.html" }
+    { "source": "/plano-midia", "destination": "/plano-midia.html" },
+    { "source": "/aprovacao", "destination": "/aprovacao.html" }
   ],
   "headers": [
     {
       "source": "/(.*)\\.html",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
       ]
     },
     {
