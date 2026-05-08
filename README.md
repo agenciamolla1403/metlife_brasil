@@ -1,6 +1,6 @@
 # MetLife Brasil 2026
 
-Hub de deliverables estratégicos da campanha **MetLife Brasil 2026** — Agência Mollá.
+Hub de deliverables estratégicos da campanha **MetLife Brasil 2026** — Agência Molla.
 
 ## 🚀 Stack
 
@@ -104,4 +104,4 @@ git push origin main
 
 ---
 
-© Agência Mollá × MetLife Brasil — 2026
+© Agência Molla × MetLife Brasil — 2026

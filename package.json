@@ -2,7 +2,7 @@
   "name": "metlife-brasil",
   "version": "0.1.0",
   "private": true,
-  "description": "Hub de deliverables estratégicos MetLife Brasil 2026 — Agência Mollá",
+  "description": "Hub de deliverables estratégicos MetLife Brasil 2026 — Agência Molla",
   "scripts": {
     "dev": "npx serve public -l 3000",
     "start": "npx serve public -l 3000",
@@ -11,6 +11,6 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "Agência Mollá",
+  "author": "Agência Molla",
   "license": "UNLICENSED"
 }

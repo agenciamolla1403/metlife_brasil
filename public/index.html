@@ -35,8 +35,16 @@
 
     .topbar {
       position: absolute;
-      top: 20px; right: 24px;
+      top: 20px; left: 24px; right: 24px;
       z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-brand img {
+      height: 32px;
+      width: auto;
+      display: block;
     }
     .btn-logout {
       background: rgba(255, 255, 255, 0.85);
@@ -194,6 +202,13 @@
       font-size: 13px;
     }
     footer strong { color: var(--navy); }
+    footer .footer-logo {
+      height: 22px;
+      width: auto;
+      display: block;
+      margin: 0 auto 10px;
+      opacity: 0.85;
+    }
 
     @media (max-width: 600px) {
       header { padding: 56px 20px 40px; }
@@ -205,6 +220,9 @@
 </head>
 <body>
   <div class="topbar">
+    <div class="topbar-brand">
+      <img src="/img/logo_metlife.svg" alt="MetLife" />
+    </div>
     <button class="btn-logout" id="btnLogout" type="button">Sair</button>
   </div>
 
@@ -242,7 +260,8 @@
   </main>
 
   <footer>
-    <p><strong>Agência Mollá</strong> × MetLife Brasil — 2026</p>
+    <img src="/img/logo_molla.svg" alt="Molla" class="footer-logo" />
+    <p><strong>Agência Molla</strong> × MetLife Brasil — 2026</p>
   </footer>
 
   <script>

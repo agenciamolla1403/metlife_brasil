@@ -178,10 +178,30 @@
       color: var(--muted);
     }
     footer strong { color: var(--navy); }
+    footer .footer-logo {
+      height: 20px;
+      width: auto;
+      display: block;
+      margin: 0 auto 8px;
+      opacity: 0.85;
+    }
+
+    .brand-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .brand-row .brand-img {
+      height: 38px;
+      width: auto;
+    }
   </style>
 </head>
 <body>
   <main class="card">
+    <div class="brand-row">
+      <img src="/img/logo_metlife.svg" alt="MetLife" class="brand-img" />
+    </div>
     <span class="eyebrow">MetLife Brasil • 2026</span>
     <h1>Acesso <strong>restrito</strong></h1>
     <p class="lede">Digite a senha para acessar o hub de deliverables.</p>
@@ -198,7 +218,8 @@
     </form>
 
     <footer>
-      <p><strong>Agência Mollá</strong> × MetLife Brasil</p>
+      <img src="/img/logo_molla.svg" alt="Molla" class="footer-logo" />
+      <p><strong>Agência Molla</strong> × MetLife Brasil</p>
     </footer>
   </main>
 

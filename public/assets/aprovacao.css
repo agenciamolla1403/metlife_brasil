@@ -384,21 +384,34 @@ main {
 }
 .campaign-card:hover .cta::after { transform: translateX(4px); }
 
-.campaign-card .delete-btn {
+.campaign-card .card-actions {
   position: absolute;
   top: 14px; right: 14px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.campaign-card:hover .card-actions { opacity: 1; }
+.campaign-card .action-btn {
   background: transparent;
   border: 0;
   color: var(--muted);
   cursor: pointer;
-  font-size: 16px;
-  opacity: 0;
-  transition: opacity 200ms ease, color 200ms ease;
-  padding: 4px 6px;
+  font-size: 14px;
+  padding: 4px 7px;
   border-radius: 6px;
+  transition: all 160ms ease;
+  line-height: 1;
 }
-.campaign-card:hover .delete-btn { opacity: 1; }
-.campaign-card .delete-btn:hover {
+.campaign-card .action-btn.edit-btn:hover {
+  color: var(--blue);
+  background: rgba(45, 181, 223, 0.10);
+}
+.campaign-card .action-btn.delete-btn {
+  font-size: 16px;
+}
+.campaign-card .action-btn.delete-btn:hover {
   color: var(--danger);
   background: rgba(229, 72, 77, 0.08);
 }
@@ -781,6 +794,10 @@ main {
   padding: 14px 16px;
   margin-bottom: 16px;
 }
+.copy-block.caption-block {
+  background: rgba(45, 181, 223, 0.08);
+  border-left: 3px solid var(--blue);
+}
 .copy-block .label {
   font-size: 10px;
   font-weight: 800;
@@ -789,12 +806,41 @@ main {
   color: var(--muted);
   margin-bottom: 6px;
 }
+.copy-block.caption-block .label { color: var(--navy); }
 .copy-block p {
   margin: 0;
   font-size: 14px;
   color: var(--navy);
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.piece-side-footer {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn-ghost.btn-ghost-danger {
+  color: var(--danger);
+  border-color: rgba(229, 72, 77, 0.25);
+}
+.btn-ghost.btn-ghost-danger:hover {
+  background: rgba(229, 72, 77, 0.06);
+}
+
+/* ============ LOGOS ============ */
+.brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+.footer-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+  margin: 0 auto 8px;
+  opacity: 0.85;
 }
 
 .action-row {

@@ -21,9 +21,13 @@ create table if not exists public.pieces (
   media_url text not null,
   video_embed_url text,
   copy text not null default '',
+  caption text not null default '',
   status text not null default 'pending' check (status in ('pending','approved','rejected')),
   created_at timestamptz not null default now()
 );
+
+-- Migration retroativa (caso a tabela já exista sem a coluna caption)
+alter table public.pieces add column if not exists caption text not null default '';
 
 create table if not exists public.comments (
   id uuid primary key default gen_random_uuid(),

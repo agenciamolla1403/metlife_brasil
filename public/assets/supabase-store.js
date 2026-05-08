@@ -103,6 +103,21 @@
       return data;
     },
 
+    async updateCampaign(id, fields) {
+      const payload = {};
+      if (fields.name !== undefined) payload.name = fields.name.trim();
+      if (fields.type !== undefined) payload.type = fields.type.trim();
+      const { data, error } = await client
+        .from('campaigns')
+        .update(payload)
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      cache.campaigns = null;
+      return data;
+    },
+
     async deleteCampaign(id) {
       const { error } = await client.from('campaigns').delete().eq('id', id);
       if (error) throw error;
@@ -116,7 +131,7 @@
 
       const { data, error } = await client
         .from('pieces')
-        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, status, created_at')
+        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, status, created_at')
         .eq('campaign_id', campaignId)
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -137,6 +152,7 @@
         media_url: piece.mediaUrl,
         video_embed_url: piece.videoEmbedUrl || null,
         copy: piece.copy || '',
+        caption: piece.caption || '',
         status: 'pending'
       };
       const { data, error } = await client
@@ -149,6 +165,33 @@
       const list = cache.pieces.get(campaignId) || [];
       cache.pieces.set(campaignId, [data, ...list]);
       cache.campaigns = null; // stats da campanha mudaram
+      return data;
+    },
+
+    async updatePiece(campaignId, pieceId, fields) {
+      // Aceita campos: name, copy, caption, mediaType, mediaUrl, videoEmbedUrl
+      const payload = {};
+      if (fields.name !== undefined) payload.name = fields.name;
+      if (fields.copy !== undefined) payload.copy = fields.copy;
+      if (fields.caption !== undefined) payload.caption = fields.caption;
+      if (fields.mediaType !== undefined) payload.media_type = fields.mediaType;
+      if (fields.mediaUrl !== undefined) payload.media_url = fields.mediaUrl;
+      if (fields.videoEmbedUrl !== undefined) payload.video_embed_url = fields.videoEmbedUrl;
+
+      const { data, error } = await client
+        .from('pieces')
+        .update(payload)
+        .eq('id', pieceId)
+        .select()
+        .single();
+      if (error) throw error;
+
+      // Atualiza cache
+      const list = cache.pieces.get(campaignId);
+      if (list) {
+        const idx = list.findIndex(p => p.id === pieceId);
+        if (idx !== -1) list[idx] = data;
+      }
       return data;
     },
 

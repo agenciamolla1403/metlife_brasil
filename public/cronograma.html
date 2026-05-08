@@ -694,12 +694,47 @@
       .ab-grid { grid-template-columns: 1fr; }
       .wave-summary { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* Brand row no topo do hero */
+    .brand-row-top {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 24px;
+    }
+    .brand-logo-top {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+    /* Footer com logo Molla */
+    .brand-footer-row {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer {
+      height: 24px;
+      width: auto;
+      opacity: 0.9;
+    }
+    .brand-footer-text {
+      font-size: 12px;
+      opacity: 0.7;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
   <!-- HERO -->
   <header>
     <div class="hero-inner">
+      <div class="brand-row-top">
+        <img src="/img/logo_metlife.svg" alt="MetLife" class="brand-logo-top" />
+      </div>
       <span class="eyebrow"><span class="dot"></span>Cronograma diarizado · Ativação MetLife 2026</span>
       <h1>Cada dia tem <span>seu papel</span> dentro da campanha.</h1>
       <p class="lead">Mapa diário de ativação dos criativos entre 18/05 e 31/07/2026, com lógica de testes A/B incorporada, separação por onda e por canal e marcos de leitura, escala e encerramento.</p>
@@ -1425,6 +1460,10 @@
   <footer>
     <h2>Cada lote tem hora certa para entrar no ar.</h2>
     <p>Da estreia em 18/05 ao encerramento em 31/07, o cronograma combina ritmo de produção, inteligência de testes A/B e leitura constante de performance.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla × MetLife Brasil — 2026</p>
+    </div>
   </footer>
 </body>
 </html>

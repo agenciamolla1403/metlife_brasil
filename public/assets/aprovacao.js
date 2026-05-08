@@ -286,8 +286,13 @@
       this.el.content.querySelectorAll('.campaign-card').forEach(card => {
         const id = card.dataset.id;
         card.addEventListener('click', (e) => {
-          if (e.target.closest('.delete-btn')) return;
+          if (e.target.closest('.action-btn')) return;
           Router.go(`#/c/${id}`);
+        });
+        const editBtn = card.querySelector('.edit-btn');
+        if (editBtn) editBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          Modals.openCampaign(id);
         });
         const del = card.querySelector('.delete-btn');
         if (del) del.addEventListener('click', async (e) => {
@@ -310,7 +315,10 @@
       const stats = c.stats || { total: 0, approved: 0, rejected: 0, pending: 0 };
       return `
         <article class="campaign-card" data-id="${c.id}">
-          <button class="delete-btn" type="button" title="Excluir campanha" aria-label="Excluir">×</button>
+          <div class="card-actions">
+            <button class="action-btn edit-btn" type="button" title="Editar campanha" aria-label="Editar">✎</button>
+            <button class="action-btn delete-btn" type="button" title="Excluir campanha" aria-label="Excluir">×</button>
+          </div>
           <div class="campaign-card-header">
             <span class="type-tag">${escapeHtml(c.type)}</span>
           </div>
@@ -485,24 +493,33 @@
 
   // ============ MODAIS ============
   const Modals = {
-    openCampaign() {
+    async openCampaign(editId = null) {
+      const isEdit = !!editId;
+      let existing = null;
+      if (isEdit) {
+        try {
+          existing = await Store.getCampaign(editId);
+          if (!existing) { Toast.show('Campanha não encontrada.', 'error'); return; }
+        } catch (err) { safeError(err); return; }
+      }
+
       const datalistId = 'campTypesDl';
       const html = `
         <div class="modal-header">
           <div>
-            <h2>Nova Campanha</h2>
-            <div class="modal-sub">Defina o nome e o tipo da campanha.</div>
+            <h2>${isEdit ? 'Editar Campanha' : 'Nova Campanha'}</h2>
+            <div class="modal-sub">${isEdit ? 'Atualize os dados da campanha.' : 'Defina o nome e o tipo da campanha.'}</div>
           </div>
           <button class="modal-close" type="button" data-close>×</button>
         </div>
         <div class="modal-body">
           <div class="form-group">
             <label>Nome da campanha</label>
-            <input type="text" id="campName" placeholder="Ex: Lançamento Família+ 2026" maxlength="120" autofocus />
+            <input type="text" id="campName" placeholder="Ex: Lançamento Família+ 2026" maxlength="120" autofocus value="${isEdit ? escapeHtml(existing.name) : ''}" />
           </div>
           <div class="form-group">
             <label>Tipo de campanha</label>
-            <input type="text" id="campType" placeholder="Selecione ou digite" list="${datalistId}" maxlength="60" />
+            <input type="text" id="campType" placeholder="Selecione ou digite" list="${datalistId}" maxlength="60" value="${isEdit ? escapeHtml(existing.type) : ''}" />
             <datalist id="${datalistId}">
               ${CAMPAIGN_TYPES.map(t => `<option value="${t}"></option>`).join('')}
             </datalist>
@@ -511,7 +528,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" type="button" data-close>Cancelar</button>
-          <button class="btn-primary" type="button" id="campSave">Criar campanha</button>
+          <button class="btn-primary" type="button" id="campSave">${isEdit ? 'Salvar alterações' : 'Criar campanha'}</button>
         </div>
       `;
       this._open(html, (modal) => {
@@ -521,26 +538,44 @@
           if (!name) { Toast.show('Informe o nome.', 'error'); return; }
           if (!type) { Toast.show('Informe o tipo.', 'error'); return; }
           const btn = modal.querySelector('#campSave');
+          const originalLabel = btn.textContent;
           btn.disabled = true; btn.textContent = 'Salvando...';
           try {
-            const c = await Store.addCampaign(name, type);
-            Toast.show('Campanha criada.', 'success');
-            this._close();
-            Router.go(`#/c/${c.id}`);
+            if (isEdit) {
+              await Store.updateCampaign(editId, { name, type });
+              Toast.show('Campanha atualizada.', 'success');
+              this._close();
+              App.render();
+            } else {
+              const c = await Store.addCampaign(name, type);
+              Toast.show('Campanha criada.', 'success');
+              this._close();
+              Router.go(`#/c/${c.id}`);
+            }
           } catch (err) {
             safeError(err);
-            btn.disabled = false; btn.textContent = 'Criar campanha';
+            btn.disabled = false; btn.textContent = originalLabel;
           }
         });
       });
     },
 
-    openPiece(campaignId) {
+    async openPiece(campaignId, editId = null) {
+      const isEdit = !!editId;
+      let existing = null;
+      if (isEdit) {
+        try {
+          existing = await Store.getPiece(campaignId, editId);
+          if (!existing) { Toast.show('Peça não encontrada.', 'error'); return; }
+        } catch (err) { safeError(err); return; }
+      }
+
+      const curMediaType = isEdit ? existing.media_type : 'image';
       const html = `
         <div class="modal-header">
           <div>
-            <h2>Nova Peça</h2>
-            <div class="modal-sub">Suba a arte ou link de vídeo, com nome e copy.</div>
+            <h2>${isEdit ? 'Editar Peça' : 'Nova Peça'}</h2>
+            <div class="modal-sub">${isEdit ? 'Atualize os dados da peça.' : 'Suba a arte ou link de vídeo, com nome, copy e legenda.'}</div>
           </div>
           <button class="modal-close" type="button" data-close>×</button>
         </div>
@@ -549,50 +584,56 @@
             <label>Tipo de mídia</label>
             <div class="radio-group">
               <div class="radio-pill">
-                <input type="radio" id="mtImage" name="mediaType" value="image" checked />
+                <input type="radio" id="mtImage" name="mediaType" value="image" ${curMediaType === 'image' ? 'checked' : ''} />
                 <label for="mtImage">🖼  Imagem</label>
               </div>
               <div class="radio-pill">
-                <input type="radio" id="mtVideo" name="mediaType" value="video" />
+                <input type="radio" id="mtVideo" name="mediaType" value="video" ${curMediaType === 'video' ? 'checked' : ''} />
                 <label for="mtVideo">🎬  Vídeo</label>
               </div>
             </div>
           </div>
 
-          <div class="form-group" id="grpImage">
-            <label>Arte (imagem)</label>
+          <div class="form-group" id="grpImage" style="${curMediaType === 'image' ? '' : 'display:none;'}">
+            <label>Arte (imagem)${isEdit ? ' — opcional, deixe em branco para manter a atual' : ''}</label>
             <div class="upload-area" id="dropArea">
               <div class="upload-icon">📁</div>
               <p>Clique ou arraste a imagem aqui</p>
               <span class="small">JPG, PNG ou WEBP — comprimida automaticamente</span>
               <input type="file" id="fileInput" accept="image/*" hidden />
             </div>
-            <div class="upload-preview" id="preview">
+            <div class="upload-preview ${isEdit && existing.media_type === 'image' ? 'show' : ''}" id="preview">
               <button type="button" class="remove" id="removePreview">×</button>
-              <img id="previewImg" alt="" />
+              <img id="previewImg" alt="" src="${isEdit && existing.media_type === 'image' ? existing.media_url : ''}" />
             </div>
           </div>
 
-          <div class="form-group" id="grpVideo" style="display:none;">
+          <div class="form-group" id="grpVideo" style="${curMediaType === 'video' ? '' : 'display:none;'}">
             <label>URL do vídeo</label>
-            <input type="url" id="videoUrl" placeholder="YouTube, Vimeo ou link direto (.mp4)" />
+            <input type="url" id="videoUrl" placeholder="YouTube, Vimeo ou link direto (.mp4)" value="${isEdit && existing.media_type === 'video' ? escapeHtml(existing.media_url) : ''}" />
             <div class="hint">YouTube/Vimeo serão embedados; .mp4 abre player nativo.</div>
           </div>
 
           <div class="form-group">
             <label>Nome da peça</label>
-            <input type="text" id="pieceName" placeholder="Ex: Banner Instagram Stories — variante A" maxlength="120" />
+            <input type="text" id="pieceName" placeholder="Ex: Banner Instagram Stories — variante A" maxlength="120" value="${isEdit ? escapeHtml(existing.name) : ''}" />
           </div>
 
           <div class="form-group">
             <label>Copy</label>
-            <textarea id="pieceCopy" placeholder="Cole aqui o texto/copy da peça..." maxlength="3000"></textarea>
-            <div class="hint">Headline, sub, CTA — tudo que acompanha a peça.</div>
+            <textarea id="pieceCopy" placeholder="Cole aqui o texto/copy da peça..." maxlength="3000">${isEdit ? escapeHtml(existing.copy || '') : ''}</textarea>
+            <div class="hint">Headline, sub, CTA — tudo que está dentro da peça.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Legenda</label>
+            <textarea id="pieceCaption" placeholder="Texto que vai acompanhar a publicação (descrição do post, caption do Instagram, etc.)..." maxlength="3000">${isEdit ? escapeHtml(existing.caption || '') : ''}</textarea>
+            <div class="hint">Texto da publicação fora da peça (caption do post).</div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" type="button" data-close>Cancelar</button>
-          <button class="btn-primary" type="button" id="pieceSave">Adicionar peça</button>
+          <button class="btn-primary" type="button" id="pieceSave">${isEdit ? 'Salvar alterações' : 'Adicionar peça'}</button>
         </div>
       `;
       this._open(html, (modal) => {
@@ -602,7 +643,8 @@
         const previewImg = modal.querySelector('#previewImg');
         const grpImage = modal.querySelector('#grpImage');
         const grpVideo = modal.querySelector('#grpVideo');
-        let imageData = null;
+        let imageData = null; // só atribuído se user trocar a imagem
+        let imageRemoved = false; // edit: marcou pra remover
 
         modal.querySelectorAll('input[name="mediaType"]').forEach(r => {
           r.addEventListener('change', () => {
@@ -625,6 +667,7 @@
         });
         modal.querySelector('#removePreview').addEventListener('click', () => {
           imageData = null;
+          imageRemoved = true;
           preview.classList.remove('show');
           fileInput.value = '';
         });
@@ -637,6 +680,7 @@
           try {
             Toast.show('Comprimindo imagem...', 'default');
             imageData = await compressImage(file);
+            imageRemoved = false;
             previewImg.src = imageData;
             preview.classList.add('show');
           } catch (e) {
@@ -648,13 +692,20 @@
           const mediaType = modal.querySelector('input[name="mediaType"]:checked').value;
           const name = modal.querySelector('#pieceName').value.trim();
           const copy = modal.querySelector('#pieceCopy').value.trim();
+          const caption = modal.querySelector('#pieceCaption').value.trim();
           if (!name) { Toast.show('Informe o nome da peça.', 'error'); return; }
 
           let mediaUrl = '';
           let videoEmbedUrl = null;
+
           if (mediaType === 'image') {
-            if (!imageData) { Toast.show('Suba uma imagem.', 'error'); return; }
-            mediaUrl = imageData;
+            if (imageData) {
+              mediaUrl = imageData;
+            } else if (isEdit && existing.media_type === 'image' && !imageRemoved) {
+              mediaUrl = existing.media_url; // mantém a atual
+            } else {
+              Toast.show('Suba uma imagem.', 'error'); return;
+            }
           } else {
             const u = modal.querySelector('#videoUrl').value.trim();
             if (!u) { Toast.show('Informe a URL do vídeo.', 'error'); return; }
@@ -663,15 +714,23 @@
           }
 
           const btn = modal.querySelector('#pieceSave');
+          const originalLabel = btn.textContent;
           btn.disabled = true; btn.textContent = 'Salvando...';
           try {
-            await Store.addPiece(campaignId, { name, mediaType, mediaUrl, videoEmbedUrl, copy });
-            Toast.show('Peça adicionada.', 'success');
+            if (isEdit) {
+              await Store.updatePiece(campaignId, editId, {
+                name, copy, caption, mediaType, mediaUrl, videoEmbedUrl
+              });
+              Toast.show('Peça atualizada.', 'success');
+            } else {
+              await Store.addPiece(campaignId, { name, mediaType, mediaUrl, videoEmbedUrl, copy, caption });
+              Toast.show('Peça adicionada.', 'success');
+            }
             this._close();
             App.renderCampaignView(campaignId);
           } catch (err) {
             safeError(err);
-            btn.disabled = false; btn.textContent = 'Adicionar peça';
+            btn.disabled = false; btn.textContent = originalLabel;
           }
         });
       });
@@ -749,6 +808,12 @@
                   <p>${escapeHtml(pp.copy)}</p>
                 </div>
               ` : ''}
+              ${pp.caption ? `
+                <div class="copy-block caption-block">
+                  <div class="label">Legenda</div>
+                  <p>${escapeHtml(pp.caption)}</p>
+                </div>
+              ` : ''}
 
               <div class="action-row">
                 <button class="btn-approve ${pp.status === 'approved' ? 'active' : ''}" id="btnApprove" type="button">
@@ -781,8 +846,9 @@
                 <button type="submit">Enviar</button>
               </form>
 
-              <div style="margin-top:12px; text-align:right;">
-                <button class="btn-ghost" id="btnDeletePiece" type="button" style="color:var(--danger); border-color:rgba(229,72,77,0.25);">Excluir peça</button>
+              <div class="piece-side-footer">
+                <button class="btn-ghost" id="btnEditPiece" type="button">✎ Editar peça</button>
+                <button class="btn-ghost btn-ghost-danger" id="btnDeletePiece" type="button">Excluir</button>
               </div>
             </div>
           </div>
@@ -842,6 +908,11 @@
           } finally {
             submitBtn.disabled = false;
           }
+        });
+
+        modal.querySelector('#btnEditPiece').addEventListener('click', () => {
+          this._close();
+          Modals.openPiece(campaignId, pieceId);
         });
 
         modal.querySelector('#btnDeletePiece').addEventListener('click', async () => {
