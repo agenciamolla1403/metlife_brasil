@@ -109,6 +109,31 @@ main {
   box-shadow: 0 14px 30px rgba(0, 59, 92, 0.28);
 }
 .elem-btn-primary:active { transform: translateY(0); }
+.elem-btn-primary.is-disabled,
+.elem-btn-primary[disabled] {
+  background: linear-gradient(135deg, #8896A4, #B0BEC9);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: not-allowed;
+  box-shadow: 0 4px 10px rgba(0, 59, 92, 0.10);
+  pointer-events: none;
+  opacity: 0.85;
+}
+.elem-btn-primary.is-disabled:hover,
+.elem-btn-primary[disabled]:hover {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0, 59, 92, 0.10);
+}
+.elem-btn-note {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--elem-muted);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px dashed rgba(0, 59, 92, 0.18);
+}
 .elem-btn-icon {
   font-size: 18px;
   display: inline-block;
@@ -300,6 +325,15 @@ main {
 }
 .elem-metric-card.is-feature .elem-metric-val {
   color: white;
+}
+.elem-metric-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--elem-muted);
+  margin-left: 2px;
+}
+.elem-metric-card.is-feature .elem-metric-sub {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 /* Tabelas */

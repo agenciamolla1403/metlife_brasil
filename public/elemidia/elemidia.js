@@ -114,7 +114,7 @@
           <div class="elem-metric-row"><span class="elem-metric-key">Desconto</span><span class="elem-metric-val">${fmtPct(data.desconto)}</span></div>
           <div class="elem-metric-row"><span class="elem-metric-key">Impactos</span><span class="elem-metric-val">${fmtNum(data.impactos)}</span></div>
           <div class="elem-metric-row"><span class="elem-metric-key">GRP</span><span class="elem-metric-val">${fmtNum(data.grp)}</span></div>
-          <div class="elem-metric-row"><span class="elem-metric-key">Alcance</span><span class="elem-metric-val">${fmtNum(data.alcance)}${data.alcance_pct ? ' <span style="font-size:11px; color:rgba(255,255,255,0.7); font-weight:600;">(' + fmtPct(data.alcance_pct) + ')</span>' : ''}</span></div>
+          <div class="elem-metric-row"><span class="elem-metric-key">Alcance</span><span class="elem-metric-val">${fmtNum(data.alcance)}${data.alcance_pct ? ' <span class="elem-metric-sub">(' + fmtPct(data.alcance_pct) + ')</span>' : ''}</span></div>
           <div class="elem-metric-row"><span class="elem-metric-key">Frequência</span><span class="elem-metric-val">${fmtDecimal(data.frequencia)}</span></div>
           <div class="elem-metric-row"><span class="elem-metric-key">CPP</span><span class="elem-metric-val">${fmtBRL(data.cpp)}</span></div>
           <div class="elem-metric-row"><span class="elem-metric-key">CPM</span><span class="elem-metric-val">${fmtBRL(data.cpm)}</span></div>
