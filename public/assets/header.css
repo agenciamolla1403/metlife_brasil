@@ -12,6 +12,12 @@
   --mlh-green: #50E596;
   --mlh-light: #EEF6F8;
 
+  /* Defensivos contra CSS genérico de outras páginas */
+  display: block;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+
   position: sticky;
   top: 0;
   z-index: 100;
@@ -21,6 +27,7 @@
   border-bottom: 1px solid rgba(0, 59, 92, 0.08);
   font-family: Arial, Helvetica, sans-serif;
 }
+.mlh-header::before, .mlh-header::after { content: none; }
 
 .mlh-inner {
   max-width: 1200px;

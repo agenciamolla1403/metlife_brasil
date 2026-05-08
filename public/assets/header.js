@@ -49,12 +49,16 @@
     // Não duplicar se já existir
     if (document.querySelector('.mlh-header')) return;
 
-    const header = document.createElement('header');
-    header.className = 'mlh-header';
-    header.innerHTML = buildHtml(activeRouteFromPath());
+    // Usamos <div role="banner"> em vez de <header> de propósito:
+    // alguns HTMLs do projeto usam seletor CSS genérico `header { ... }`
+    // que vazaria estilos do hero pro nosso componente.
+    const wrapper = document.createElement('div');
+    wrapper.className = 'mlh-header';
+    wrapper.setAttribute('role', 'banner');
+    wrapper.innerHTML = buildHtml(activeRouteFromPath());
 
     // Insere como primeiro elemento do body
-    document.body.insertBefore(header, document.body.firstChild);
+    document.body.insertBefore(wrapper, document.body.firstChild);
 
     const btn = document.getElementById('mlhLogoutBtn');
     if (btn) {
