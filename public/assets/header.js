@@ -27,6 +27,11 @@
 
   function buildHtml(activeId) {
     const isActive = (id) => id === activeId ? 'active' : '';
+    const isAdmin = !!(window.MetLifeAuth && window.MetLifeAuth.isAdmin && window.MetLifeAuth.isAdmin());
+    const roleChip = isAdmin
+      ? '<span class="mlh-role-chip mlh-role-admin" title="Perfil Molla — administra campanhas e peças">Admin</span>'
+      : '';
+
     return `
       <div class="mlh-inner">
         <a class="mlh-logo" href="/" aria-label="Central do Cliente">
@@ -39,6 +44,7 @@
           <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
         </nav>
         <div class="mlh-actions">
+          ${roleChip}
           <button class="mlh-btn-logout" id="mlhLogoutBtn" type="button">Sair</button>
         </div>
       </div>

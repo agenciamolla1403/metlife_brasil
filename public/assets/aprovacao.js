@@ -253,19 +253,23 @@
               Campanhas <span class="count">${campaigns.length}</span>
             </span>
           </div>
-          <button class="btn-primary" id="btnNewCampaign">
-            <span class="plus">+</span> Nova Campanha
-          </button>
+          ${window.MetLifeAuth.isAdmin() ? `
+            <button class="btn-primary" id="btnNewCampaign">
+              <span class="plus">+</span> Nova Campanha
+            </button>
+          ` : ''}
         </div>
 
         ${campaigns.length === 0 ? `
           <div class="empty-state">
             <div class="icon">📋</div>
             <h3>Nenhuma campanha cadastrada</h3>
-            <p>Crie sua primeira campanha para começar a subir peças para aprovação.</p>
-            <button class="btn-primary" id="btnNewCampaignEmpty">
-              <span class="plus">+</span> Criar primeira campanha
-            </button>
+            <p>${window.MetLifeAuth.isAdmin() ? 'Crie sua primeira campanha para começar a subir peças para aprovação.' : 'Aguardando a Molla cadastrar a primeira campanha.'}</p>
+            ${window.MetLifeAuth.isAdmin() ? `
+              <button class="btn-primary" id="btnNewCampaignEmpty">
+                <span class="plus">+</span> Criar primeira campanha
+              </button>
+            ` : ''}
           </div>
         ` : `
           <div class="cards-grid">
@@ -312,10 +316,12 @@
       const stats = c.stats || { total: 0, approved: 0, rejected: 0, pending: 0 };
       return `
         <article class="campaign-card" data-id="${c.id}">
-          <div class="card-actions">
-            <button class="action-btn edit-btn" type="button" title="Editar campanha" aria-label="Editar">✎</button>
-            <button class="action-btn delete-btn" type="button" title="Excluir campanha" aria-label="Excluir">×</button>
-          </div>
+          ${window.MetLifeAuth.isAdmin() ? `
+            <div class="card-actions">
+              <button class="action-btn edit-btn" type="button" title="Editar campanha" aria-label="Editar">✎</button>
+              <button class="action-btn delete-btn" type="button" title="Excluir campanha" aria-label="Excluir">×</button>
+            </div>
+          ` : ''}
           <div class="campaign-card-header">
             <span class="type-tag">${escapeHtml(c.type)}</span>
           </div>
@@ -423,17 +429,19 @@
             <button class="filter-pill ${filter === 'approved' ? 'active' : ''}" data-filter="approved">Aprovadas <span class="count">${stats.approved}</span></button>
             <button class="filter-pill ${filter === 'rejected' ? 'active' : ''}" data-filter="rejected">Reprovadas <span class="count">${stats.rejected}</span></button>
           </div>
-          <button class="btn-primary" id="btnNewPiece">
-            <span class="plus">+</span> Nova Peça
-          </button>
+          ${window.MetLifeAuth.isAdmin() ? `
+            <button class="btn-primary" id="btnNewPiece">
+              <span class="plus">+</span> Nova Peça
+            </button>
+          ` : ''}
         </div>
 
         ${filtered.length === 0 ? `
           <div class="empty-state">
             <div class="icon">🎨</div>
             <h3>${stats.total === 0 ? 'Nenhuma peça nesta campanha' : 'Nenhuma peça neste filtro'}</h3>
-            <p>${stats.total === 0 ? 'Suba a primeira peça para aprovação.' : 'Tente outro filtro ou adicione uma nova peça.'}</p>
-            ${stats.total === 0 ? `<button class="btn-primary" id="btnNewPieceEmpty"><span class="plus">+</span> Subir primeira peça</button>` : ''}
+            <p>${stats.total === 0 ? (window.MetLifeAuth.isAdmin() ? 'Suba a primeira peça para aprovação.' : 'Aguardando a Molla subir as peças.') : 'Tente outro filtro' + (window.MetLifeAuth.isAdmin() ? ' ou adicione uma nova peça.' : '.')}</p>
+            ${stats.total === 0 && window.MetLifeAuth.isAdmin() ? `<button class="btn-primary" id="btnNewPieceEmpty"><span class="plus">+</span> Subir primeira peça</button>` : ''}
           </div>
         ` : `
           <div class="cards-grid">
@@ -843,10 +851,12 @@
                 <button type="submit">Enviar</button>
               </form>
 
-              <div class="piece-side-footer">
-                <button class="btn-ghost" id="btnEditPiece" type="button">✎ Editar peça</button>
-                <button class="btn-ghost btn-ghost-danger" id="btnDeletePiece" type="button">Excluir</button>
-              </div>
+              ${window.MetLifeAuth.isAdmin() ? `
+                <div class="piece-side-footer">
+                  <button class="btn-ghost" id="btnEditPiece" type="button">✎ Editar peça</button>
+                  <button class="btn-ghost btn-ghost-danger" id="btnDeletePiece" type="button">Excluir</button>
+                </div>
+              ` : ''}
             </div>
           </div>
         `;
@@ -907,12 +917,14 @@
           }
         });
 
-        modal.querySelector('#btnEditPiece').addEventListener('click', () => {
+        const btnEditPiece = modal.querySelector('#btnEditPiece');
+        if (btnEditPiece) btnEditPiece.addEventListener('click', () => {
           this._close();
           Modals.openPiece(campaignId, pieceId);
         });
 
-        modal.querySelector('#btnDeletePiece').addEventListener('click', async () => {
+        const btnDeletePiece = modal.querySelector('#btnDeletePiece');
+        if (btnDeletePiece) btnDeletePiece.addEventListener('click', async () => {
           if (!confirm('Excluir esta peça? Não pode ser desfeito.')) return;
           try {
             await Store.deletePiece(campaignId, pieceId);
