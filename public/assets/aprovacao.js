@@ -818,8 +818,8 @@
             <button class="modal-close" type="button" data-close>×</button>
           </div>
           <div class="piece-detail">
-            <div class="piece-media">${mediaHtml}</div>
-            <div class="piece-side">
+            <div class="piece-left">
+              <div class="piece-media">${mediaHtml}</div>
               ${pp.link_url ? `
                 <a class="piece-link-block" href="${escapeHtml(pp.link_url)}" target="_blank" rel="noopener noreferrer">
                   <span class="piece-link-icon">🔗</span>
@@ -830,6 +830,8 @@
                   <span class="piece-link-arrow">↗</span>
                 </a>
               ` : ''}
+            </div>
+            <div class="piece-side">
               ${pp.copy ? `
                 <div class="copy-block">
                   <div class="label">Copy</div>
