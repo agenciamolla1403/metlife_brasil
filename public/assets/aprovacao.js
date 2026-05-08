@@ -643,6 +643,12 @@
           </div>
         </div>
         <div class="modal-footer">
+          ${isEdit ? `
+            <div class="version-warning">
+              <span class="version-warning-icon">ⓘ</span>
+              <span>Salvar criará a <strong>v${(existing.version || 1) + 1}</strong> e reseta o status para <strong>Pendente</strong>.</span>
+            </div>
+          ` : ''}
           <button class="btn-secondary" type="button" data-close>Cancelar</button>
           <button class="btn-primary" type="button" id="pieceSave">${isEdit ? 'Salvar alterações' : 'Adicionar peça'}</button>
         </div>
@@ -806,7 +812,7 @@
         return `
           <div class="modal-header">
             <div>
-              <h2>${escapeHtml(pp.name)}</h2>
+              <h2>${escapeHtml(pp.name)} <span class="version-tag">v${pp.version || 1}</span></h2>
               <div class="modal-sub">${escapeHtml(campaign.name)} • ${escapeHtml(campaign.type)} • Criada ${relativeTime(pp.created_at)}</div>
             </div>
             <button class="modal-close" type="button" data-close>×</button>
@@ -853,7 +859,7 @@
                     Sem comentários ainda.
                   </div>
                 ` : cms.map(cm => `
-                  <div class="comment ${cm.kind === 'action' ? 'action' : ''} ${cm.kind === 'action-rejected' ? 'action action-rejected' : ''}">
+                  <div class="comment ${cm.kind === 'action' ? 'action' : ''} ${cm.kind === 'action-rejected' ? 'action action-rejected' : ''} ${cm.kind === 'action-update' ? 'action action-update' : ''}">
                     <div class="comment-head">
                       <span class="comment-author">${escapeHtml(cm.author)}</span>
                       <span class="comment-date">${formatDate(cm.created_at)}</span>
@@ -868,10 +874,17 @@
                 <button type="submit">Enviar</button>
               </form>
 
-              ${window.MetLifeAuth.isAdmin() ? `
+              ${(window.MetLifeAuth.isAdmin() || (pp.version || 1) > 1) ? `
                 <div class="piece-side-footer">
-                  <button class="btn-ghost" id="btnEditPiece" type="button">✎ Editar peça</button>
-                  <button class="btn-ghost btn-ghost-danger" id="btnDeletePiece" type="button">Excluir</button>
+                  ${(pp.version || 1) > 1 ? `
+                    <button class="btn-ghost btn-history" id="btnHistory" type="button" title="Ver versões anteriores">
+                      <span class="history-icon">⟳</span> Histórico
+                    </button>
+                  ` : ''}
+                  ${window.MetLifeAuth.isAdmin() ? `
+                    <button class="btn-ghost" id="btnEditPiece" type="button">✎ Editar peça</button>
+                    <button class="btn-ghost btn-ghost-danger" id="btnDeletePiece" type="button">Excluir</button>
+                  ` : ''}
                 </div>
               ` : ''}
             </div>
@@ -940,6 +953,11 @@
           Modals.openPiece(campaignId, pieceId);
         });
 
+        const btnHistory = modal.querySelector('#btnHistory');
+        if (btnHistory) btnHistory.addEventListener('click', () => {
+          Modals.openVersionsHistory(campaignId, pieceId);
+        });
+
         const btnDeletePiece = modal.querySelector('#btnDeletePiece');
         if (btnDeletePiece) btnDeletePiece.addEventListener('click', async () => {
           if (!confirm('Excluir esta peça? Não pode ser desfeito.')) return;
@@ -973,6 +991,104 @@
     _backdrop: null,
     _modal: null,
     _escHandler: null,
+
+    /** Modal: Histórico de versões da peça (read-only). */
+    async openVersionsHistory(campaignId, pieceId) {
+      // Loading inicial
+      this._open(`
+        <div class="modal-header">
+          <div><h2>Histórico de Versões</h2></div>
+          <button class="modal-close" type="button" data-close>×</button>
+        </div>
+        <div class="modal-body">${loadingHtml('Carregando versões...')}</div>
+      `, null, 'modal-lg');
+
+      let current, versions;
+      try {
+        [current, versions] = await Promise.all([
+          Store.getPiece(campaignId, pieceId),
+          Store.loadPieceVersions(pieceId, true)
+        ]);
+      } catch (err) {
+        safeError(err);
+        this._close();
+        return;
+      }
+
+      if (!current) {
+        Toast.show('Peça não encontrada.', 'error');
+        this._close();
+        return;
+      }
+
+      const statusLabel = (s) => ({ pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' }[s] || s);
+
+      const versionCardHtml = (v, isCurrent) => {
+        let mediaThumb = '';
+        if (v.media_type === 'image') {
+          mediaThumb = `<img src="${v.media_url}" alt="${escapeHtml(v.name)}" loading="lazy">`;
+        } else if (v.media_type === 'video') {
+          mediaThumb = `<div class="video-placeholder"><span>▶ Vídeo</span></div>`;
+        }
+        return `
+          <article class="version-card${isCurrent ? ' is-current' : ''}">
+            <div class="version-thumb">${mediaThumb}</div>
+            <div class="version-info">
+              <div class="version-head">
+                <span class="version-tag big">v${v.version}${isCurrent ? ' • atual' : ''}</span>
+                <span class="version-status status-${v.status}">
+                  <span class="dot"></span>${statusLabel(v.status)}
+                </span>
+              </div>
+              <div class="version-meta">
+                ${isCurrent
+                  ? `Criada ${formatDate(v.created_at)}`
+                  : `Snapshot ${formatDate(v.snapshot_at)} ${v.snapshot_by ? '· por <strong>' + escapeHtml(v.snapshot_by) + '</strong>' : ''}`}
+              </div>
+              ${v.copy ? `<div class="version-block"><span class="vlabel">Copy</span><p>${escapeHtml(v.copy)}</p></div>` : ''}
+              ${v.caption ? `<div class="version-block"><span class="vlabel">Legenda</span><p>${escapeHtml(v.caption)}</p></div>` : ''}
+              ${v.link_url ? `<div class="version-block"><span class="vlabel">Link da peça</span><p><a href="${escapeHtml(v.link_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(v.link_url)}</a></p></div>` : ''}
+            </div>
+          </article>
+        `;
+      };
+
+      const allVersions = [
+        // versão atual primeiro (não está em piece_versions)
+        { ...current, snapshot_at: null, snapshot_by: null, _isCurrent: true },
+        ...versions
+      ];
+
+      const inner = `
+        <div class="modal-header">
+          <div>
+            <h2>Histórico — ${escapeHtml(current.name)}</h2>
+            <div class="modal-sub">${allVersions.length} ${allVersions.length === 1 ? 'versão' : 'versões'} no total · versão atual <strong>v${current.version || 1}</strong></div>
+          </div>
+          <button class="modal-close" type="button" data-close>×</button>
+        </div>
+        <div class="modal-body versions-body">
+          ${allVersions.length === 1 ? `
+            <div class="empty-state">
+              <div class="icon">📜</div>
+              <h3>Nenhuma versão anterior</h3>
+              <p>Quando esta peça for editada, as versões anteriores aparecerão aqui.</p>
+            </div>
+          ` : `
+            <div class="versions-list">
+              ${allVersions.map(v => versionCardHtml(v, !!v._isCurrent)).join('')}
+            </div>
+          `}
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" type="button" data-close>Fechar</button>
+        </div>
+      `;
+
+      const m = document.getElementById('appModal');
+      m.innerHTML = inner;
+      m.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => this._close()));
+    },
 
     _open(innerHtml, onReady, sizeClass = '') {
       this._close(true);

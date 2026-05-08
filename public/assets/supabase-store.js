@@ -24,6 +24,7 @@
     campaigns: null,           // array | null
     pieces: new Map(),         // campaignId -> array
     comments: new Map(),       // pieceId -> array
+    versions: new Map(),       // pieceId -> array of older versions (snapshots)
   };
 
   function calcStats(pieces) {
@@ -131,7 +132,7 @@
 
       const { data, error } = await client
         .from('pieces')
-        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, status, created_at')
+        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, version, status, created_at')
         .eq('campaign_id', campaignId)
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -170,8 +171,38 @@
     },
 
     async updatePiece(campaignId, pieceId, fields) {
-      // Aceita campos: name, copy, caption, linkUrl, mediaType, mediaUrl, videoEmbedUrl
-      const payload = {};
+      // 1) Pega estado atual da peça (cache ou banco)
+      let pieces = cache.pieces.get(campaignId);
+      if (!pieces) pieces = await this.loadPieces(campaignId);
+      const current = pieces.find(p => p.id === pieceId);
+      if (!current) throw new Error('Peça não encontrada');
+
+      const author = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? window.MetLifeAuth.getUserName() : '';
+      const currentVersion = current.version || 1;
+
+      // 2) Snapshot da versão atual em piece_versions (ANTES de atualizar)
+      const snapshotPayload = {
+        piece_id: pieceId,
+        version: currentVersion,
+        name: current.name,
+        media_type: current.media_type,
+        media_url: current.media_url,
+        video_embed_url: current.video_embed_url,
+        copy: current.copy || '',
+        caption: current.caption || '',
+        link_url: current.link_url || null,
+        status: current.status,
+        snapshot_by: author || 'Admin'
+      };
+      const { error: eSnap } = await client.from('piece_versions').insert(snapshotPayload);
+      if (eSnap) throw eSnap;
+
+      // 3) Update da peça com novos dados + bump version + reset status pra 'pending'
+      const newVersion = currentVersion + 1;
+      const payload = {
+        version: newVersion,
+        status: 'pending'
+      };
       if (fields.name !== undefined) payload.name = fields.name;
       if (fields.copy !== undefined) payload.copy = fields.copy;
       if (fields.caption !== undefined) payload.caption = fields.caption;
@@ -180,21 +211,51 @@
       if (fields.mediaUrl !== undefined) payload.media_url = fields.mediaUrl;
       if (fields.videoEmbedUrl !== undefined) payload.video_embed_url = fields.videoEmbedUrl;
 
-      const { data, error } = await client
+      const { data, error: eUpd } = await client
         .from('pieces')
         .update(payload)
         .eq('id', pieceId)
         .select()
         .single();
-      if (error) throw error;
+      if (eUpd) throw eUpd;
 
-      // Atualiza cache
+      // 4) Adiciona comment-action de update na timeline
+      const { data: actionComment } = await client
+        .from('comments')
+        .insert({
+          piece_id: pieceId,
+          author: author || 'Admin',
+          text: `Atualizou para v${newVersion}. Status reiniciado para Pendente.`,
+          kind: 'action-update'
+        })
+        .select()
+        .single();
+
+      // 5) Atualiza caches
       const list = cache.pieces.get(campaignId);
       if (list) {
         const idx = list.findIndex(p => p.id === pieceId);
         if (idx !== -1) list[idx] = data;
       }
+      cache.versions.delete(pieceId);  // invalida cache de versões (tem uma nova)
+      const cms = cache.comments.get(pieceId);
+      if (cms && actionComment) cms.push(actionComment);
+
+      cache.campaigns = null;
       return data;
+    },
+
+    /** Carrega o histórico de versões anteriores de uma peça. */
+    async loadPieceVersions(pieceId, force = false) {
+      if (!force && cache.versions.has(pieceId)) return cache.versions.get(pieceId);
+      const { data, error } = await client
+        .from('piece_versions')
+        .select('id, piece_id, version, name, media_type, media_url, video_embed_url, copy, caption, link_url, status, snapshot_at, snapshot_by')
+        .eq('piece_id', pieceId)
+        .order('version', { ascending: false });
+      if (error) throw error;
+      cache.versions.set(pieceId, data || []);
+      return data || [];
     },
 
     async deletePiece(campaignId, pieceId) {
@@ -280,6 +341,7 @@
       cache.campaigns = null;
       cache.pieces.clear();
       cache.comments.clear();
+      cache.versions.clear();
     },
 
     /** Healthcheck — verifica se está conectando. */
