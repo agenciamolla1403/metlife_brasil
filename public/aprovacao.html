@@ -4,23 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aprovação de Peças | MetLife Brasil 2026</title>
-  <meta name="description" content="Submissão, comentários e aprovação de artes e vídeos por campanha — MetLife Brasil 2026." />
+  <meta name="description" content="Adição, comentários e aprovação de artes e vídeos por campanha — MetLife Brasil 2026." />
   <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
   <link rel="stylesheet" href="/assets/aprovacao.css" />
 </head>
 <body>
+  <!-- Header global injetado por header.js -->
 
-  <div class="topbar">
-    <div class="topbar-left">
-      <a class="brand" href="/">
-        <img src="/img/logo_metlife.svg" alt="MetLife" class="brand-logo" />
-      </a>
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
       <span class="crumb" id="crumb"></span>
-    </div>
-    <div class="topbar-right">
-      <span class="user-chip" id="userChip"></span>
-      <button class="btn-ghost" id="btnChangeUser" type="button" title="Trocar identificação">Trocar</button>
-      <button class="btn-ghost" id="btnLogout" type="button">Sair</button>
+      <div class="page-subbar-right">
+        <span class="user-chip" id="userChip"></span>
+        <button class="btn-ghost" id="btnChangeUser" type="button" title="Trocar identificação">Trocar</button>
+      </div>
     </div>
   </div>
 
@@ -38,9 +36,11 @@
 
   <footer class="page-footer">
     <img src="/img/logo_molla.svg" alt="Molla" class="footer-logo" />
-    <p><strong>Agência Molla</strong> × MetLife Brasil — 2026</p>
+    <p><strong>Agência Molla</strong></p>
   </footer>
 
+  <!-- Header global -->
+  <script src="/assets/header.js"></script>
   <!-- Supabase SDK + camada de dados (ordem importa) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/config.js"></script>

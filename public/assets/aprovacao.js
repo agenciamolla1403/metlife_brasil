@@ -191,10 +191,7 @@
 
       Router.onChange(() => this.render());
 
-      // Logout
-      document.getElementById('btnLogout').addEventListener('click', () => {
-        if (confirm('Deseja sair?')) window.MetLifeAuth.logout();
-      });
+      // Trocar identificação (botão local — Sair fica no header global)
       document.getElementById('btnChangeUser').addEventListener('click', () => {
         const n = prompt('Atualizar identificação:', window.MetLifeAuth.getUserName() || '');
         if (n && n.trim()) {

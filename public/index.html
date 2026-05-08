@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MetLife Brasil 2026 | Hub de Deliverables</title>
-  <meta name="description" content="Hub central dos deliverables estratégicos MetLife Brasil 2026 — Cronograma de Ativação, Plano Tático de Mídia e Aprovação de Peças." />
+  <title>Central do Cliente | MetLife Brasil</title>
+  <meta name="description" content="Central do cliente MetLife Brasil — Cronograma de Ativação, Plano Tático de Mídia e Aprovação de Peças." />
   <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
   <style>
     :root {
       --navy: #003B5C;
@@ -33,41 +34,10 @@
       min-height: 100vh;
     }
 
-    .topbar {
-      position: absolute;
-      top: 20px; left: 24px; right: 24px;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .topbar-brand img {
-      height: 32px;
-      width: auto;
-      display: block;
-    }
-    .btn-logout {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0, 59, 92, 0.12);
-      color: var(--navy);
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 200ms ease;
-    }
-    .btn-logout:hover {
-      background: var(--white);
-      box-shadow: var(--shadow);
-    }
-
-    header {
-      min-height: 50vh;
+    .page-hero {
       display: grid;
       place-items: center;
-      padding: 80px 24px 56px;
+      padding: 64px 24px 56px;
       background:
         radial-gradient(circle at 85% 15%, rgba(80,229,150,.32), transparent 38%),
         radial-gradient(circle at 10% 80%, rgba(45,181,223,.22), transparent 42%),
@@ -93,7 +63,7 @@
       margin-bottom: 18px;
     }
     h1 {
-      font-size: clamp(34px, 5vw, 56px);
+      font-size: clamp(34px, 5vw, 52px);
       margin: 0 0 16px;
       line-height: 1.1;
       letter-spacing: -0.5px;
@@ -211,28 +181,22 @@
     }
 
     @media (max-width: 600px) {
-      header { padding: 56px 20px 40px; }
+      .page-hero { padding: 40px 20px 40px; }
       main { margin-top: -24px; padding: 0 16px; }
       .card { padding: 24px; }
-      .topbar { top: 14px; right: 14px; }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-brand">
-      <img src="/img/logo_metlife.svg" alt="MetLife" />
-    </div>
-    <button class="btn-logout" id="btnLogout" type="button">Sair</button>
-  </div>
+  <!-- Header global injetado por header.js -->
 
-  <header>
+  <section class="page-hero">
     <div class="hero">
       <span class="eyebrow">MetLife Brasil • 2026</span>
-      <h1>Hub de <strong>Deliverables</strong> Estratégicos</h1>
-      <p class="lede">Centralização dos materiais de planejamento, ativação e aprovação para a campanha MetLife Brasil 2026. Selecione um documento abaixo para visualizar.</p>
+      <h1>Central do <strong>Cliente</strong></h1>
+      <p class="lede">Centralização dos materiais de planejamento, ativação e aprovação para a campanha MetLife Brasil. Selecione um documento abaixo para visualizar:</p>
     </div>
-  </header>
+  </section>
 
   <main>
     <div class="grid">
@@ -253,7 +217,7 @@
       <a class="card tag-end" href="/aprovacao">
         <span class="tag">Aprovação</span>
         <h2>Aprovação de Peças</h2>
-        <p>Submissão, comentários e aprovação de artes e vídeos por campanha, com mini-dashboard de status.</p>
+        <p>Adição, comentários e aprovação de artes e vídeos por campanha.</p>
         <span class="cta">Abrir aprovações</span>
       </a>
     </div>
@@ -261,13 +225,9 @@
 
   <footer>
     <img src="/img/logo_molla.svg" alt="Molla" class="footer-logo" />
-    <p><strong>Agência Molla</strong> × MetLife Brasil — 2026</p>
+    <p><strong>Agência Molla</strong></p>
   </footer>
 
-  <script>
-    document.getElementById('btnLogout').addEventListener('click', () => {
-      if (confirm('Deseja sair?')) window.MetLifeAuth.logout();
-    });
-  </script>
+  <script src="/assets/header.js"></script>
 </body>
 </html>
