@@ -179,28 +179,16 @@
 
   // ============ APP ============
   const App = {
-    el: { crumb: null, userChip: null, content: null },
+    el: { crumb: null, content: null },
     state: { campaignFilter: 'all' },
 
     async init() {
+      // Garantia defensiva: nome agora vem do login. Se faltar (legacy), pergunta.
       window.MetLifeAuth.ensureUserName();
       this.el.crumb = document.getElementById('crumb');
-      this.el.userChip = document.getElementById('userChip');
       this.el.content = document.getElementById('appContent');
-      this.renderUserChip(window.MetLifeAuth.getUserName());
 
       Router.onChange(() => this.render());
-
-      // Trocar identificação (botão local — Sair fica no header global)
-      document.getElementById('btnChangeUser').addEventListener('click', () => {
-        const n = prompt('Atualizar identificação:', window.MetLifeAuth.getUserName() || '');
-        if (n && n.trim()) {
-          window.MetLifeAuth.setUserName(n);
-          this.renderUserChip(n);
-          this.render();
-          Toast.show('Identificação atualizada.', 'success');
-        }
-      });
 
       // Healthcheck inicial — útil pra avisar se schema não foi aplicado
       try {
@@ -214,14 +202,6 @@
       }
 
       this.render();
-    },
-
-    renderUserChip(name) {
-      if (!this.el.userChip) return;
-      this.el.userChip.innerHTML = `
-        <span class="avatar">${escapeHtml(initials(name))}</span>
-        <span>${escapeHtml(name)}</span>
-      `;
     },
 
     async render() {

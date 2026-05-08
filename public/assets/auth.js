@@ -29,22 +29,29 @@
   const PUBLIC_PAGES = ['/login', '/login.html'];
 
   const Auth = {
-    /** Tenta logar com a senha informada. Retorna true/false. */
-    login(password) {
+    /**
+     * Tenta logar com a senha informada.
+     * @param {string} password
+     * @param {string} [userName] - opcional; se vier, salva como nome do usuário desta sessão
+     * @returns {boolean}
+     */
+    login(password, userName) {
       const role = PASSWORDS[password];
-      if (role) {
-        sessionStorage.setItem(KEY_AUTH, '1');
-        sessionStorage.setItem(KEY_ROLE, role);
-        return true;
+      if (!role) return false;
+      sessionStorage.setItem(KEY_AUTH, '1');
+      sessionStorage.setItem(KEY_ROLE, role);
+      const cleanName = (userName || '').trim();
+      if (cleanName) {
+        sessionStorage.setItem(KEY_USER, cleanName);
       }
-      return false;
+      return true;
     },
 
     /** Logout: limpa tudo e volta para o login. */
     logout() {
       sessionStorage.removeItem(KEY_AUTH);
       sessionStorage.removeItem(KEY_ROLE);
-      // mantemos o nome do user pra próxima vez (UX)
+      sessionStorage.removeItem(KEY_USER);
       window.location.href = '/login';
     },
 
@@ -63,20 +70,28 @@
       return this.getRole() === 'molla';
     },
 
-    /** Nome do usuário atual (perguntado dentro do app). */
+    /**
+     * Nome do usuário atual.
+     * Lê de sessionStorage primeiro; legacy fallback de localStorage
+     * para usuários que tinham nome salvo em versões anteriores.
+     */
     getUserName() {
-      return localStorage.getItem(KEY_USER) || '';
+      const fromSession = sessionStorage.getItem(KEY_USER);
+      if (fromSession) return fromSession;
+      // Legacy: nome salvo em localStorage em versões anteriores
+      const fromLocal = localStorage.getItem(KEY_USER);
+      return fromLocal || '';
     },
 
-    /** Define o nome do usuário. */
+    /** Define o nome do usuário (na sessão). */
     setUserName(name) {
       const clean = (name || '').trim();
-      if (clean) localStorage.setItem(KEY_USER, clean);
+      if (clean) sessionStorage.setItem(KEY_USER, clean);
     },
 
     /**
-     * Garante que existe um nome de usuário, perguntando via prompt
-     * se ainda não houver. Retorna o nome.
+     * Garante que existe um nome de usuário. Defensivo apenas:
+     * normalmente o nome vem do login. Se faltar, pergunta via prompt.
      */
     ensureUserName() {
       let name = this.getUserName();

@@ -102,6 +102,7 @@
     }
 
     form#loginForm { text-align: left; }
+    .field-spacer { height: 16px; }
 
     .input-wrap {
       position: relative;
@@ -208,9 +209,16 @@
     </div>
     <span class="eyebrow">MetLife Brasil • 2026</span>
     <h1>Acesso <strong>restrito</strong></h1>
-    <p class="lede">Digite a senha para acessar.</p>
+    <p class="lede">Identifique-se para acessar a Central.</p>
 
     <form id="loginForm" autocomplete="off">
+      <label for="userName">Seu nome</label>
+      <div class="input-wrap">
+        <input id="userName" type="text" placeholder="Como você quer ser identificado" autocomplete="name" maxlength="60" required />
+      </div>
+
+      <div class="field-spacer"></div>
+
       <label for="password">Senha</label>
       <div class="input-wrap">
         <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
@@ -239,6 +247,7 @@
       }
 
       const form = document.getElementById('loginForm');
+      const inputName = document.getElementById('userName');
       const input = document.getElementById('password');
       const errorBox = document.getElementById('errorBox');
       const submitBtn = document.getElementById('submitBtn');
@@ -251,23 +260,36 @@
         input.focus();
       });
 
+      const showError = (msg) => {
+        errorBox.textContent = msg;
+        errorBox.classList.add('show');
+        setTimeout(() => errorBox.classList.remove('show'), 3000);
+      };
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+        const userName = (inputName.value || '').trim();
         const pwd = input.value;
-        const ok = window.MetLifeAuth.login(pwd);
+
+        if (userName.length < 2) {
+          showError('Informe seu nome (mínimo 2 caracteres).');
+          inputName.focus();
+          return;
+        }
+
+        const ok = window.MetLifeAuth.login(pwd, userName);
         if (ok) {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Entrando...';
           window.location.replace('/');
         } else {
-          errorBox.classList.add('show');
+          showError('Senha incorreta. Tenta de novo.');
           input.value = '';
           input.focus();
-          setTimeout(() => errorBox.classList.remove('show'), 3000);
         }
       });
 
-      input.focus();
+      inputName.focus();
     })();
   </script>
 </body>
