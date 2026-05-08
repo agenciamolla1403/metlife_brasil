@@ -306,7 +306,7 @@
       if (!force && cache.comments.has(pieceId)) return cache.comments.get(pieceId);
       const { data, error } = await client
         .from('comments')
-        .select('id, piece_id, author, text, kind, created_at')
+        .select('id, piece_id, author, text, kind, pin_x, pin_y, pin_version, created_at')
         .eq('piece_id', pieceId)
         .order('created_at', { ascending: true });
       if (error) throw error;
@@ -314,20 +314,62 @@
       return data || [];
     },
 
-    async addComment(pieceId, author, text) {
+    /**
+     * Adiciona comentário, opcionalmente com pin (coordenadas em % e versão).
+     * @param {object} opts - {pinX, pinY, pinVersion} opcionais
+     */
+    async addComment(pieceId, author, text, opts = {}) {
+      const payload = {
+        piece_id: pieceId,
+        author: author || 'Anônimo',
+        text: text.trim(),
+        kind: 'comment'
+      };
+      if (opts.pinX != null && opts.pinY != null) {
+        payload.pin_x = Math.max(0, Math.min(100, Number(opts.pinX)));
+        payload.pin_y = Math.max(0, Math.min(100, Number(opts.pinY)));
+        payload.pin_version = opts.pinVersion || null;
+      }
       const { data, error } = await client
         .from('comments')
-        .insert({
-          piece_id: pieceId,
-          author: author || 'Anônimo',
-          text: text.trim(),
-          kind: 'comment'
-        })
+        .insert(payload)
         .select()
         .single();
       if (error) throw error;
       const list = cache.comments.get(pieceId) || [];
       cache.comments.set(pieceId, [...list, data]);
+      return data;
+    },
+
+    /** Remove um comentário (cliente só pode excluir o próprio, < 5min). */
+    async deleteComment(pieceId, commentId) {
+      const { error } = await client
+        .from('comments')
+        .delete()
+        .eq('id', commentId);
+      if (error) throw error;
+      const list = cache.comments.get(pieceId);
+      if (list) {
+        cache.comments.set(pieceId, list.filter(c => c.id !== commentId));
+      }
+    },
+
+    /** Atualiza apenas as coordenadas do pin (drag & drop). */
+    async updateCommentPin(pieceId, commentId, pinX, pinY) {
+      const x = Math.max(0, Math.min(100, Number(pinX)));
+      const y = Math.max(0, Math.min(100, Number(pinY)));
+      const { data, error } = await client
+        .from('comments')
+        .update({ pin_x: x, pin_y: y })
+        .eq('id', commentId)
+        .select()
+        .single();
+      if (error) throw error;
+      const list = cache.comments.get(pieceId);
+      if (list) {
+        const idx = list.findIndex(c => c.id === commentId);
+        if (idx !== -1) list[idx] = data;
+      }
       return data;
     },
 

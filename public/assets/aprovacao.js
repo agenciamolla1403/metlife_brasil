@@ -478,7 +478,7 @@
         thumb = `<div class="placeholder">Vídeo</div><div class="video-overlay">▶</div>`;
       }
       return `
-        <article class="piece-card" data-id="${p.id}">
+        <article class="piece-card" data-id="${p.id}" data-status="${p.status}">
           <div class="piece-thumb">
             ${thumb}
             <span class="piece-status-badge ${p.status}">
@@ -789,9 +789,59 @@
         const cms = await Store.loadComments(pieceId, true);
         const statusLabel = { pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' }[pp.status];
 
+        // ============ Lógica de pins ============
+        const FIVE_MIN_MS = 5 * 60 * 1000;
+        const currentVersion = pp.version || 1;
+        const currentUser = (window.MetLifeAuth.getUserName() || '').trim();
+        const isClient = !window.MetLifeAuth.isAdmin();
+
+        // Pins visíveis: comments com pin da versão ATUAL (ordenados por criação)
+        const visiblePins = cms
+          .filter(c => c.pin_x != null && c.pin_y != null && c.pin_version === currentVersion)
+          .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        const pinNumberById = new Map(visiblePins.map((c, i) => [c.id, i + 1]));
+
+        const canEditPin = (c) => {
+          if (!isClient) return false;
+          if ((c.author || '').trim() !== currentUser) return false;
+          const ageMs = Date.now() - new Date(c.created_at).getTime();
+          return ageMs < FIVE_MIN_MS;
+        };
+        const canDeleteComment = (c) => {
+          if (c.kind !== 'comment') return false;
+          if (!isClient) return false;
+          if ((c.author || '').trim() !== currentUser) return false;
+          const ageMs = Date.now() - new Date(c.created_at).getTime();
+          return ageMs < FIVE_MIN_MS;
+        };
+
+        const pinsOverlayHtml = visiblePins.map((c, i) => {
+          const editable = canEditPin(c);
+          const tooltip = `${(c.text || '').substring(0, 80)} — ${c.author || ''}`;
+          return `
+            <button type="button" class="pin${editable ? ' pin-editable' : ''}"
+                    data-comment-id="${c.id}"
+                    data-num="${i + 1}"
+                    style="left: ${c.pin_x}%; top: ${c.pin_y}%;"
+                    title="${escapeHtml(tooltip)}">
+              <span class="pin-num">${i + 1}</span>
+            </button>
+          `;
+        }).join('');
+
         let mediaHtml = '';
         if (pp.media_type === 'image') {
-          mediaHtml = `<img src="${pp.media_url}" alt="${escapeHtml(pp.name)}">`;
+          mediaHtml = `
+            <div class="piece-image-wrap" data-pin-mode="off">
+              <img src="${pp.media_url}" alt="${escapeHtml(pp.name)}" class="piece-image">
+              <div class="pin-overlay">${pinsOverlayHtml}</div>
+              <div class="pin-banner">
+                <span class="pin-banner-text">📍 Clique na imagem para marcar o ponto deste comentário</span>
+                <button type="button" class="pin-btn pin-btn-skip">Pular marcação</button>
+                <button type="button" class="pin-btn pin-btn-cancel">Cancelar</button>
+              </div>
+            </div>
+          `;
         } else if (pp.media_type === 'video') {
           if (pp.video_embed_url) {
             mediaHtml = `<iframe src="${pp.video_embed_url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
@@ -817,7 +867,7 @@
             </div>
             <button class="modal-close" type="button" data-close>×</button>
           </div>
-          <div class="piece-detail">
+          <div class="piece-detail" data-status="${pp.status}">
             <div class="piece-left">
               <div class="piece-media">${mediaHtml}</div>
               ${pp.link_url ? `
@@ -860,15 +910,34 @@
                   <div style="font-size:12px; color:var(--muted); text-align:center; padding:14px;">
                     Sem comentários ainda.
                   </div>
-                ` : cms.map(cm => `
-                  <div class="comment ${cm.kind === 'action' ? 'action' : ''} ${cm.kind === 'action-rejected' ? 'action action-rejected' : ''} ${cm.kind === 'action-update' ? 'action action-update' : ''}">
-                    <div class="comment-head">
-                      <span class="comment-author">${escapeHtml(cm.author)}</span>
-                      <span class="comment-date">${formatDate(cm.created_at)}</span>
+                ` : cms.map(cm => {
+                  const hasPin = cm.pin_x != null && cm.pin_y != null;
+                  const pinIsCurrent = hasPin && cm.pin_version === currentVersion;
+                  const pinNumber = pinIsCurrent ? pinNumberById.get(cm.id) : null;
+                  const pinBadge = hasPin
+                    ? (pinIsCurrent
+                        ? `<span class="comment-pin-badge" title="Marcado no ponto ${pinNumber}">📍 ${pinNumber}</span>`
+                        : `<span class="comment-pin-badge old" title="Pin de versão anterior">📍 v${cm.pin_version}</span>`)
+                    : '';
+                  const canDel = canDeleteComment(cm);
+                  const kindClass = cm.kind === 'action' ? 'action'
+                    : cm.kind === 'action-rejected' ? 'action action-rejected'
+                    : cm.kind === 'action-update' ? 'action action-update'
+                    : '';
+                  return `
+                    <div class="comment ${kindClass}"
+                         data-comment-id="${cm.id}"
+                         data-pin-id="${pinIsCurrent ? cm.id : ''}">
+                      <div class="comment-head">
+                        ${pinBadge}
+                        <span class="comment-author">${escapeHtml(cm.author)}</span>
+                        <span class="comment-date">${formatDate(cm.created_at)}</span>
+                        ${canDel ? `<button type="button" class="comment-delete" data-id="${cm.id}" title="Excluir comentário">×</button>` : ''}
+                      </div>
+                      <p class="comment-text">${escapeHtml(cm.text)}</p>
                     </div>
-                    <p class="comment-text">${escapeHtml(cm.text)}</p>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
 
               <form class="comment-form" id="commentForm">
@@ -929,25 +998,179 @@
           }
         });
 
-        modal.querySelector('#commentForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const input = modal.querySelector('#commentInput');
-          const text = input.value.trim();
-          if (!text) return;
-          const submitBtn = modal.querySelector('#commentForm button[type="submit"]');
-          submitBtn.disabled = true;
+        // ============ Lógica de Pin / criação de comentário ============
+        let pinModeText = null;
+
+        const wrapEl = modal.querySelector('.piece-image-wrap');
+        const imgEl = modal.querySelector('.piece-image');
+        const submitBtn = modal.querySelector('#commentForm button[type="submit"]');
+        const inputEl = modal.querySelector('#commentInput');
+
+        const enterPinMode = (text) => {
+          if (!wrapEl) return false;
+          pinModeText = text;
+          wrapEl.dataset.pinMode = 'on';
+          if (submitBtn) submitBtn.disabled = true;
+          return true;
+        };
+        const exitPinMode = () => {
+          if (wrapEl) wrapEl.dataset.pinMode = 'off';
+          pinModeText = null;
+          if (submitBtn) submitBtn.disabled = false;
+        };
+        const savePinAndComment = async (text, x, y) => {
+          if (submitBtn) submitBtn.disabled = true;
           try {
-            await Store.addComment(pieceId, author, text);
-            input.value = '';
+            const opts = (x != null && y != null)
+              ? { pinX: x, pinY: y, pinVersion: pp.version || 1 }
+              : {};
+            await Store.addComment(pieceId, author, text, opts);
+            if (inputEl) inputEl.value = '';
             await rerender();
             const list = document.getElementById('commentsList');
             if (list) list.scrollTop = list.scrollHeight;
           } catch (err) {
             safeError(err);
           } finally {
-            submitBtn.disabled = false;
+            exitPinMode();
+          }
+        };
+
+        modal.querySelector('#commentForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const text = inputEl.value.trim();
+          if (!text) return;
+          // Cliente em peça de imagem: entra em modo de pin
+          if (isClient && pp.media_type === 'image') {
+            enterPinMode(text);
+          } else {
+            await savePinAndComment(text, null, null);
           }
         });
+
+        // Click na imagem em modo de pin → captura coords e salva
+        if (imgEl) {
+          imgEl.addEventListener('click', async (e) => {
+            if (!wrapEl || wrapEl.dataset.pinMode !== 'on') return;
+            const rect = imgEl.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            await savePinAndComment(pinModeText, x, y);
+          });
+        }
+
+        // Botões de "Pular" e "Cancelar" no banner de modo
+        const skipBtn = modal.querySelector('.pin-btn-skip');
+        if (skipBtn) {
+          skipBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            await savePinAndComment(pinModeText, null, null);
+          });
+        }
+        const cancelBtn = modal.querySelector('.pin-btn-cancel');
+        if (cancelBtn) {
+          cancelBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            exitPinMode();
+          });
+        }
+
+        // ESC sai do modo
+        const escHandler = (e) => {
+          if (e.key === 'Escape' && wrapEl && wrapEl.dataset.pinMode === 'on') {
+            exitPinMode();
+          }
+        };
+        document.addEventListener('keydown', escHandler);
+        // Garante remoção quando modal fecha (será limpo no _close)
+        if (this._extraCleanup) this._extraCleanup.push(() => document.removeEventListener('keydown', escHandler));
+
+        // Click no pin → scroll pro comment
+        modal.querySelectorAll('.pin').forEach(pin => {
+          pin.addEventListener('click', (e) => {
+            // Se em modo de criação, ignora
+            if (wrapEl && wrapEl.dataset.pinMode === 'on') return;
+            e.stopPropagation();
+            const id = pin.dataset.commentId;
+            const cm = modal.querySelector(`.comment[data-comment-id="${id}"]`);
+            if (cm) {
+              cm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              cm.classList.add('comment-flash');
+              setTimeout(() => cm.classList.remove('comment-flash'), 1400);
+            }
+          });
+        });
+
+        // Hover comment com pin → destaca pin
+        modal.querySelectorAll('.comment[data-pin-id]').forEach(c => {
+          const id = c.dataset.pinId;
+          if (!id) return;
+          const findPin = () => modal.querySelector(`.pin[data-comment-id="${id}"]`);
+          c.addEventListener('mouseenter', () => { const p = findPin(); if (p) p.classList.add('is-active'); });
+          c.addEventListener('mouseleave', () => { const p = findPin(); if (p) p.classList.remove('is-active'); });
+        });
+
+        // Excluir comment próprio (< 5min)
+        modal.querySelectorAll('.comment-delete').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            if (!confirm('Excluir este comentário?')) return;
+            try {
+              await Store.deleteComment(pieceId, id);
+              Toast.show('Comentário excluído.', 'success');
+              await rerender();
+            } catch (err) {
+              safeError(err);
+            }
+          });
+        });
+
+        // Drag-and-drop pra mover pin (só pins editáveis)
+        let dragging = null;
+        modal.querySelectorAll('.pin.pin-editable').forEach(pin => {
+          pin.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragging = { pin, moved: false };
+            pin.classList.add('is-dragging');
+          });
+        });
+        const onMove = (e) => {
+          if (!dragging || !imgEl) return;
+          dragging.moved = true;
+          const rect = imgEl.getBoundingClientRect();
+          const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+          const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+          dragging.pin.style.left = x + '%';
+          dragging.pin.style.top = y + '%';
+        };
+        const onUp = async (e) => {
+          if (!dragging) return;
+          const wasMoved = dragging.moved;
+          const pin = dragging.pin;
+          pin.classList.remove('is-dragging');
+          const id = pin.dataset.commentId;
+          dragging = null;
+          if (!wasMoved || !imgEl) return;
+          const rect = imgEl.getBoundingClientRect();
+          const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+          const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+          try {
+            await Store.updateCommentPin(pieceId, id, x, y);
+          } catch (err) {
+            safeError(err);
+            await rerender();
+          }
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        if (this._extraCleanup) {
+          this._extraCleanup.push(() => {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+          });
+        }
 
         const btnEditPiece = modal.querySelector('#btnEditPiece');
         if (btnEditPiece) btnEditPiece.addEventListener('click', () => {
@@ -1122,6 +1345,7 @@
 
       this._backdrop = backdrop;
       this._modal = modal;
+      this._extraCleanup = [];
 
       if (onReady) onReady(modal);
     },
@@ -1134,6 +1358,10 @@
         document.removeEventListener('keydown', this._escHandler);
         this._escHandler = null;
       }
+      if (Array.isArray(this._extraCleanup)) {
+        this._extraCleanup.forEach(fn => { try { fn(); } catch(_){} });
+      }
+      this._extraCleanup = [];
       this._backdrop = null;
       this._modal = null;
     }

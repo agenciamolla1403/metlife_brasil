@@ -1266,3 +1266,204 @@ footer.page-footer strong { color: var(--navy); }
     margin: 0 auto;
   }
 }
+
+/* ============ STATUS COLORIDO: borda no card e no modal ============ */
+/* Card da peça (na grade) */
+.piece-card[data-status="approved"] {
+  border: 2px solid rgba(80, 229, 150, 0.55);
+  box-shadow: 0 4px 14px rgba(80, 229, 150, 0.18);
+}
+.piece-card[data-status="rejected"] {
+  border: 2px solid rgba(229, 56, 80, 0.45);
+  box-shadow: 0 4px 14px rgba(229, 56, 80, 0.16);
+}
+
+/* Modal de detalhe da peça */
+.piece-detail[data-status="approved"] {
+  outline: 3px solid rgba(80, 229, 150, 0.50);
+  outline-offset: -3px;
+  border-radius: var(--radius);
+}
+.piece-detail[data-status="rejected"] {
+  outline: 3px solid rgba(229, 56, 80, 0.42);
+  outline-offset: -3px;
+  border-radius: var(--radius);
+}
+
+/* ============ PINS NA IMAGEM ============ */
+.piece-image-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 70vh;
+  line-height: 0;
+  user-select: none;
+}
+.piece-image-wrap .piece-image {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 8px;
+}
+.pin-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+/* Pin numerado fixo na imagem */
+.pin {
+  position: absolute;
+  pointer-events: auto;
+  width: 28px; height: 28px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  border: 2px solid white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.40), 0 0 0 1px rgba(0, 59, 92, 0.18);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  padding: 0;
+}
+.pin:hover {
+  transform: translate(-50%, -50%) scale(1.18);
+  background: var(--navy);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.50);
+}
+.pin.is-active {
+  transform: translate(-50%, -50%) scale(1.30);
+  background: var(--green);
+  color: var(--navy);
+  box-shadow: 0 0 0 4px rgba(80, 229, 150, 0.35), 0 4px 16px rgba(0, 0, 0, 0.50);
+}
+.pin.pin-editable {
+  cursor: grab;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+}
+.pin.pin-editable.is-dragging {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.4);
+  z-index: 10;
+}
+.pin .pin-num {
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Banner de modo: aparece quando data-pin-mode="on" */
+.pin-banner {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--navy);
+  color: white;
+  border-radius: 999px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 5;
+  white-space: nowrap;
+}
+.piece-image-wrap[data-pin-mode="on"] .pin-banner {
+  display: inline-flex;
+  animation: pinBannerIn 220ms ease;
+}
+@keyframes pinBannerIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.pin-banner-text {
+  margin-right: 4px;
+}
+.pin-btn {
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.pin-btn:hover { background: rgba(255, 255, 255, 0.28); }
+.pin-btn-skip { background: var(--blue); }
+.pin-btn-skip:hover { background: var(--blue-soft); }
+
+/* Cursor crosshair na imagem em modo pin */
+.piece-image-wrap[data-pin-mode="on"] .piece-image {
+  cursor: crosshair;
+  filter: brightness(1.05) saturate(0.95);
+}
+.piece-image-wrap[data-pin-mode="on"] .pin {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* ============ BADGE DE PIN NO COMENTÁRIO ============ */
+.comment-pin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--blue);
+  color: white;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.comment-pin-badge.old {
+  background: rgba(0, 59, 92, 0.18);
+  color: var(--navy);
+}
+
+.comment[data-pin-id]:not([data-pin-id=""]) {
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.comment[data-pin-id]:not([data-pin-id=""]):hover {
+  background: rgba(45, 181, 223, 0.06);
+}
+
+/* Flash quando pin é clicado */
+.comment.comment-flash {
+  animation: commentFlash 1400ms ease;
+}
+@keyframes commentFlash {
+  0%, 100% { background: transparent; }
+  20% { background: rgba(45, 181, 223, 0.20); }
+}
+
+/* ============ BOTÃO EXCLUIR COMMENT ============ */
+.comment-delete {
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  transition: background 160ms ease, color 160ms ease;
+}
+.comment-delete:hover {
+  background: rgba(229, 56, 80, 0.10);
+  color: var(--danger);
+}

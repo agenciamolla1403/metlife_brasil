@@ -113,3 +113,10 @@ alter publication supabase_realtime add table public.piece_versions;
 alter table public.comments drop constraint if exists comments_kind_check;
 alter table public.comments add constraint comments_kind_check
   check (kind in ('comment','action','action-rejected','action-update'));
+
+-- ============================================================
+-- S09 — Pins ancorados na imagem (comentários geo-referenciados)
+-- ============================================================
+alter table public.comments add column if not exists pin_x numeric(5,2);
+alter table public.comments add column if not exists pin_y numeric(5,2);
+alter table public.comments add column if not exists pin_version integer;
