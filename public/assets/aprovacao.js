@@ -942,6 +942,9 @@
 
               <form class="comment-form" id="commentForm">
                 <input type="text" id="commentInput" placeholder="Escreva um comentário..." maxlength="500" autocomplete="off" />
+                ${(isClient && pp.media_type === 'image') ? `
+                  <button type="button" id="btnPinComment" class="btn-pin-comment" title="Enviar marcando um ponto na imagem">📍</button>
+                ` : ''}
                 <button type="submit">Enviar</button>
               </form>
 
@@ -1036,17 +1039,28 @@
           }
         };
 
+        // SUBMIT padrão: envia direto sem pin (volta ao comportamento clássico)
         modal.querySelector('#commentForm').addEventListener('submit', async (e) => {
           e.preventDefault();
           const text = inputEl.value.trim();
           if (!text) return;
-          // Cliente em peça de imagem: entra em modo de pin
-          if (isClient && pp.media_type === 'image') {
-            enterPinMode(text);
-          } else {
-            await savePinAndComment(text, null, null);
-          }
+          await savePinAndComment(text, null, null);
         });
+
+        // Botão 📍 (cliente em image): ativa pin mode com texto pré-validado
+        const btnPinComment = modal.querySelector('#btnPinComment');
+        if (btnPinComment) {
+          btnPinComment.addEventListener('click', (e) => {
+            e.preventDefault();
+            const text = inputEl.value.trim();
+            if (!text) {
+              Toast.show('Escreva o comentário primeiro, depois marque o ponto.', 'error');
+              inputEl.focus();
+              return;
+            }
+            enterPinMode(text);
+          });
+        }
 
         // Click na imagem em modo de pin → captura coords e salva
         if (imgEl) {
