@@ -68,6 +68,17 @@
         }
       });
     }
+
+    // Expõe a altura real do header como CSS var global pra elementos
+    // sticky de cada página se ajustarem automaticamente.
+    function updateHeaderHeight() {
+      const h = wrapper.offsetHeight || 60;
+      document.documentElement.style.setProperty('--mlh-header-h', h + 'px');
+    }
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    // Reaplica quando carregam fontes/imagens (logo SVG pode mudar altura)
+    window.addEventListener('load', updateHeaderHeight);
   }
 
   if (document.readyState === 'loading') {

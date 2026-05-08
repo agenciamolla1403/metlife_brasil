@@ -5,6 +5,11 @@
    Prefixo .mlh- (MetLife Header).
    ============================================================ */
 
+/* Fallback caso o JS ainda não tenha medido */
+:root {
+  --mlh-header-h: 60px;
+}
+
 .mlh-header {
   --mlh-navy: #003B5C;
   --mlh-muted: #5B7280;
@@ -52,6 +57,13 @@
 }
 
 .mlh-nav {
+  /* Defensivos contra CSS genérico nav {} de outras páginas */
+  position: static;
+  top: auto;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+
   display: flex;
   gap: 4px;
   flex-wrap: wrap;

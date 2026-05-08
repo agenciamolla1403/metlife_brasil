@@ -236,7 +236,7 @@
       box-shadow: var(--shadow);
       margin-bottom: 0;
       position: sticky;
-      top: 12px;
+      top: calc(var(--mlh-header-h, 60px) + 12px);
       z-index: 5;
     }
     .wave-banner-left {
@@ -697,17 +697,6 @@
       .wave-summary { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Brand row no topo do hero */
-    .brand-row-top {
-      display: flex;
-      justify-content: flex-start;
-      margin-bottom: 24px;
-    }
-    .brand-logo-top {
-      height: 36px;
-      width: auto;
-      display: block;
-    }
     /* Footer com logo Molla */
     .brand-footer-row {
       margin-top: 32px;
@@ -736,9 +725,6 @@
   <!-- HERO -->
   <header>
     <div class="hero-inner">
-      <div class="brand-row-top">
-        <img src="/img/logo_metlife.svg" alt="MetLife" class="brand-logo-top" />
-      </div>
       <span class="eyebrow"><span class="dot"></span>Cronograma diarizado · Ativação MetLife 2026</span>
       <h1>Cada dia tem <span>seu papel</span> dentro da campanha.</h1>
       <p class="lead">Mapa diário de ativação dos criativos entre 18/05 e 31/07/2026, com lógica de testes A/B incorporada, separação por onda e por canal e marcos de leitura, escala e encerramento.</p>
