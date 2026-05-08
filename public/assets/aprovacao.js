@@ -783,9 +783,13 @@
         return;
       }
 
+      // Estado compartilhado entre renderInner e wireUp (escopo de openPieceDetail)
+      let currentPiece = piece;
+
       const renderInner = async () => {
         // refresh do estado da peça (caso aprovação tenha alterado)
         const pp = await Store.getPiece(campaignId, pieceId);
+        currentPiece = pp;  // expõe pra wireUp
         const cms = await Store.loadComments(pieceId, true);
         const statusLabel = { pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' }[pp.status];
 
@@ -1025,7 +1029,7 @@
           if (submitBtn) submitBtn.disabled = true;
           try {
             const opts = (x != null && y != null)
-              ? { pinX: x, pinY: y, pinVersion: pp.version || 1 }
+              ? { pinX: x, pinY: y, pinVersion: (currentPiece && currentPiece.version) || 1 }
               : {};
             await Store.addComment(pieceId, author, text, opts);
             if (inputEl) inputEl.value = '';
