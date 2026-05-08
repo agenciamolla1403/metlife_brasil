@@ -635,6 +635,12 @@
             <textarea id="pieceCaption" placeholder="Texto que vai acompanhar a publicação (descrição do post, caption do Instagram, etc.)..." maxlength="3000">${isEdit ? escapeHtml(existing.caption || '') : ''}</textarea>
             <div class="hint">Texto da publicação fora da peça (caption do post).</div>
           </div>
+
+          <div class="form-group">
+            <label>Link da Peça</label>
+            <input type="url" id="pieceLink" placeholder="https://... (Sharepoint, Drive, etc.)" value="${isEdit ? escapeHtml(existing.link_url || '') : ''}" />
+            <div class="hint">Link pro arquivo original (Sharepoint, Google Drive, Dropbox).</div>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn-secondary" type="button" data-close>Cancelar</button>
@@ -698,6 +704,7 @@
           const name = modal.querySelector('#pieceName').value.trim();
           const copy = modal.querySelector('#pieceCopy').value.trim();
           const caption = modal.querySelector('#pieceCaption').value.trim();
+          const linkUrl = modal.querySelector('#pieceLink').value.trim();
           if (!name) { Toast.show('Informe o nome da peça.', 'error'); return; }
 
           let mediaUrl = '';
@@ -724,11 +731,11 @@
           try {
             if (isEdit) {
               await Store.updatePiece(campaignId, editId, {
-                name, copy, caption, mediaType, mediaUrl, videoEmbedUrl
+                name, copy, caption, linkUrl, mediaType, mediaUrl, videoEmbedUrl
               });
               Toast.show('Peça atualizada.', 'success');
             } else {
-              await Store.addPiece(campaignId, { name, mediaType, mediaUrl, videoEmbedUrl, copy, caption });
+              await Store.addPiece(campaignId, { name, mediaType, mediaUrl, videoEmbedUrl, copy, caption, linkUrl });
               Toast.show('Peça adicionada.', 'success');
             }
             this._close();
@@ -807,6 +814,16 @@
           <div class="piece-detail">
             <div class="piece-media">${mediaHtml}</div>
             <div class="piece-side">
+              ${pp.link_url ? `
+                <a class="piece-link-block" href="${escapeHtml(pp.link_url)}" target="_blank" rel="noopener noreferrer">
+                  <span class="piece-link-icon">🔗</span>
+                  <span class="piece-link-text">
+                    <span class="piece-link-label">Arquivo original</span>
+                    <span class="piece-link-host">${escapeHtml((function(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return 'abrir link'}})(pp.link_url))}</span>
+                  </span>
+                  <span class="piece-link-arrow">↗</span>
+                </a>
+              ` : ''}
               ${pp.copy ? `
                 <div class="copy-block">
                   <div class="label">Copy</div>

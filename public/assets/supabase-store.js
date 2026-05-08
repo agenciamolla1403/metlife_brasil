@@ -131,7 +131,7 @@
 
       const { data, error } = await client
         .from('pieces')
-        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, status, created_at')
+        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, status, created_at')
         .eq('campaign_id', campaignId)
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -153,6 +153,7 @@
         video_embed_url: piece.videoEmbedUrl || null,
         copy: piece.copy || '',
         caption: piece.caption || '',
+        link_url: piece.linkUrl || null,
         status: 'pending'
       };
       const { data, error } = await client
@@ -169,11 +170,12 @@
     },
 
     async updatePiece(campaignId, pieceId, fields) {
-      // Aceita campos: name, copy, caption, mediaType, mediaUrl, videoEmbedUrl
+      // Aceita campos: name, copy, caption, linkUrl, mediaType, mediaUrl, videoEmbedUrl
       const payload = {};
       if (fields.name !== undefined) payload.name = fields.name;
       if (fields.copy !== undefined) payload.copy = fields.copy;
       if (fields.caption !== undefined) payload.caption = fields.caption;
+      if (fields.linkUrl !== undefined) payload.link_url = fields.linkUrl || null;
       if (fields.mediaType !== undefined) payload.media_type = fields.mediaType;
       if (fields.mediaUrl !== undefined) payload.media_url = fields.mediaUrl;
       if (fields.videoEmbedUrl !== undefined) payload.video_embed_url = fields.videoEmbedUrl;
