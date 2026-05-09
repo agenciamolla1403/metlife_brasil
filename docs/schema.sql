@@ -155,3 +155,50 @@ begin
     alter publication supabase_realtime add table public.files;
   end if;
 end $$;
+
+-- ============================================================
+-- S21 — Jornada da Campanha (Cronograma Macro)
+-- Visão temporal de todas as ações: blitz, watch parties, mídia,
+-- eventos, aprovações etc. Editável via UI admin (role 'molla').
+-- ============================================================
+create table if not exists public.events (
+  id uuid primary key default gen_random_uuid(),
+  titulo text not null,
+  categoria text not null check (categoria in ('midia','blitz','watch','evento','aprovacao','campanha','outros')),
+  data_inicio date not null,
+  data_fim date,
+  descricao text not null default '',
+  link_interno text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_events_data on public.events(data_inicio);
+create index if not exists idx_events_categoria on public.events(categoria);
+
+alter table public.events enable row level security;
+
+drop policy if exists "anon all" on public.events;
+create policy "anon all" on public.events
+  for all to anon, authenticated
+  using (true) with check (true);
+
+-- Realtime (idempotente)
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'events'
+  ) then
+    alter publication supabase_realtime add table public.events;
+  end if;
+end $$;
+
+-- SEED opcional (descomenta as linhas abaixo se quiser pré-popular alguns
+-- eventos da campanha pra ver a tela com dados):
+--
+-- insert into public.events (titulo, categoria, data_inicio, descricao, link_interno) values
+--   ('Blitz Brasil x Marrocos', 'blitz', '2026-06-13', 'Blitz na Vila Madalena ou Pinheiros, das 17h até o início do jogo às 19h em Nova Jersey.', '/blitz'),
+--   ('Blitz Brasil x Haiti', 'blitz', '2026-06-19', 'Blitz na Vila Madalena ou Pinheiros, das 19h até o início do jogo às 21h30 em Filadélfia.', '/blitz'),
+--   ('Blitz Escócia x Brasil', 'blitz', '2026-06-24', 'Blitz na Vila Madalena ou Pinheiros, das 17h até o início do jogo às 19h em Miami.', '/blitz'),
+--   ('Watch Party Espaço VIP', 'watch', '2026-07-01', 'Reserva de espaço VIP em bar tradicional de transmissão. Data conforme avanço do Brasil.', '/blitz'),
+--   ('Watch Party Cinema Time!', 'watch', '2026-07-13', 'Watch Party na final da Copa do Mundo, em parceria com rede de cinema.', '/blitz');
