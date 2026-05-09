@@ -1,13 +1,10 @@
 /* ============================================================
    Arquivos & Downloads — Render + filtros + busca + CRUD admin
+   Sempre renderiza UI base (admin bar, filtros, search) mesmo
+   que o Supabase falhe. Erros aparecem na própria página.
    ============================================================ */
 (function () {
   'use strict';
-
-  if (!window.FilesStore) {
-    console.error('[arquivos] FilesStore não carregado.');
-    return;
-  }
 
   // ============ TIPOS ============
   const TIPOS = {
@@ -60,6 +57,7 @@
     arquivos: [],
     loading: true,
     error: null,
+    setupPending: false,  // true quando schema SQL ainda não foi aplicado
   };
 
   // ============ MODAL DE EDIÇÃO ============
@@ -168,12 +166,30 @@
         }
       });
 
-      // Foco no primeiro campo
       setTimeout(() => form.querySelector('input[name="nome"]').focus(), 50);
     },
   };
 
   // ============ RENDER ============
+  function renderAdminBar() {
+    const slot = document.getElementById('aqAdminSlot');
+    if (!slot) return;
+    if (isAdmin()) {
+      slot.innerHTML = `<button type="button" class="aq-btn-primary aq-btn-add" id="aqBtnAdd">+ Adicionar arquivo</button>`;
+      const btn = document.getElementById('aqBtnAdd');
+      if (state.setupPending) {
+        btn.disabled = true;
+        btn.title = 'Aplique o schema SQL no Supabase para liberar';
+        btn.style.opacity = '0.55';
+        btn.style.cursor = 'not-allowed';
+      } else {
+        btn.addEventListener('click', () => Modal.open(null));
+      }
+    } else {
+      slot.innerHTML = '';
+    }
+  }
+
   function renderFiltros() {
     const arr = state.arquivos || [];
     const counts = { todos: arr.length };
@@ -195,8 +211,10 @@
       }),
     ].join('');
 
-    document.getElementById('aqFilters').innerHTML = chips;
-    document.querySelectorAll('#aqFilters .aq-chip').forEach(btn => {
+    const filters = document.getElementById('aqFilters');
+    if (!filters) return;
+    filters.innerHTML = chips;
+    filters.querySelectorAll('.aq-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         state.tipo = btn.dataset.tipo;
         renderFiltros();
@@ -205,24 +223,27 @@
     });
   }
 
-  function renderAdminBar() {
-    const slot = document.getElementById('aqAdminSlot');
-    if (!slot) return;
-    if (isAdmin()) {
-      slot.innerHTML = `<button type="button" class="aq-btn-primary aq-btn-add" id="aqBtnAdd">+ Adicionar arquivo</button>`;
-      document.getElementById('aqBtnAdd').addEventListener('click', () => Modal.open(null));
-    } else {
-      slot.innerHTML = '';
-    }
-  }
-
   function renderLista() {
     const lista = document.getElementById('aqList');
     const count = document.getElementById('aqCount');
+    if (!lista) return;
 
     if (state.loading) {
       lista.innerHTML = `<div class="aq-empty"><strong>Carregando arquivos…</strong>Aguarde um instante.</div>`;
-      count.textContent = '';
+      if (count) count.textContent = '';
+      return;
+    }
+    if (state.setupPending) {
+      lista.innerHTML = `
+        <div class="aq-empty">
+          <strong>Tabela <code style="background:rgba(0,59,92,.06);padding:1px 6px;border-radius:4px;">files</code> ainda não foi criada no Supabase.</strong>
+          Aplique o schema SQL no Supabase Dashboard → SQL Editor antes de usar a seção.
+          <br><br>
+          <button type="button" class="aq-btn-ghost" id="aqRetry">Já apliquei — tentar novamente</button>
+        </div>`;
+      if (count) count.textContent = '';
+      const r = document.getElementById('aqRetry');
+      if (r) r.addEventListener('click', init);
       return;
     }
     if (state.error) {
@@ -233,7 +254,7 @@
           <br><br>
           <button type="button" class="aq-btn-ghost" id="aqRetry">Tentar de novo</button>
         </div>`;
-      count.textContent = '';
+      if (count) count.textContent = '';
       const r = document.getElementById('aqRetry');
       if (r) r.addEventListener('click', reload);
       return;
@@ -249,7 +270,7 @@
       return true;
     });
 
-    count.textContent = `${filtered.length} arquivo${filtered.length === 1 ? '' : 's'}`;
+    if (count) count.textContent = `${filtered.length} arquivo${filtered.length === 1 ? '' : 's'}`;
 
     if (!filtered.length) {
       const totalHas = (state.arquivos || []).length;
@@ -285,7 +306,6 @@
       `;
     }).join('');
 
-    // Wire edit buttons
     if (admin) {
       lista.querySelectorAll('[data-action="edit"]').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -308,30 +328,65 @@
     try {
       state.arquivos = await window.FilesStore.list(true);
       state.loading = false;
+      state.setupPending = false;
     } catch (e) {
       state.loading = false;
-      state.error = e.message || String(e);
+      const msg = e && e.message ? e.message : String(e);
+      // Detecta tabela inexistente -> setup pendente
+      if (/relation .*files.* does not exist/i.test(msg) || /could not find the .*files.*table/i.test(msg)) {
+        state.setupPending = true;
+      } else {
+        state.error = msg;
+      }
     }
     renderFiltros();
+    renderAdminBar();
     renderLista();
   }
 
   // ============ INIT ============
   async function init() {
+    // Sempre renderiza UI essencial primeiro, mesmo se algo der errado depois
+    renderFiltros();
     renderAdminBar();
 
     const search = document.getElementById('aqSearch');
-    search.addEventListener('input', () => {
-      state.busca = search.value;
+    if (search && !search.dataset.wired) {
+      search.dataset.wired = '1';
+      search.addEventListener('input', () => {
+        state.busca = search.value;
+        renderLista();
+      });
+    }
+
+    // Verifica que FilesStore existe (mesmo o stub de erro existe)
+    if (!window.FilesStore) {
+      state.loading = false;
+      state.error = 'O script files-store.js não foi carregado. Verifique o console para detalhes.';
       renderLista();
-    });
+      return;
+    }
+
+    // Detecta caso especial: stub de falha (dependência ausente)
+    if (window.FilesStore._failed) {
+      state.loading = false;
+      state.error = 'Dependência ausente: ' + ((window.FilesStore._missingDeps || []).join(', ') || (window.FilesStore._initError && window.FilesStore._initError.message) || 'desconhecida');
+      renderLista();
+      return;
+    }
 
     // Healthcheck
     try {
       await window.FilesStore.ping();
     } catch (e) {
+      const msg = e && e.message ? e.message : String(e);
       state.loading = false;
-      state.error = 'Tabela `files` não encontrada no Supabase. Aplique o schema SQL primeiro.';
+      if (/relation .*files.* does not exist/i.test(msg) || /could not find the .*files.*table/i.test(msg) || /404/.test(msg)) {
+        state.setupPending = true;
+      } else {
+        state.error = msg;
+      }
+      renderAdminBar();
       renderLista();
       return;
     }
@@ -339,10 +394,13 @@
     await reload();
 
     // Realtime
-    window.FilesStore.subscribe(() => {
-      reload();
-    });
+    if (window.FilesStore.subscribe) {
+      window.FilesStore.subscribe(() => reload());
+    }
   }
+
+  // Expor pra debug
+  window.__arquivosInit = init;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

@@ -1,24 +1,57 @@
 /* ============================================================
    files-store.js — CRUD + cache + realtime para tabela `files`
+   Resiliente: sempre define window.FilesStore (mesmo se faltar
+   dependência) com mensagens de erro claras para o usuário.
    ============================================================ */
 (function () {
   'use strict';
 
-  if (!window.MetLifeConfig || !window.supabase) {
-    console.error('[files-store] config.js ou supabase-js não carregado.');
+  // --- Detecção de dependências faltando ---
+  const missing = [];
+  if (!window.MetLifeConfig)           missing.push('config.js (window.MetLifeConfig)');
+  if (!window.supabase)                missing.push('supabase-js do CDN (window.supabase)');
+  if (window.supabase && !window.supabase.createClient) missing.push('supabase.createClient');
+
+  if (missing.length) {
+    console.error('[files-store] dependências ausentes:', missing.join(', '));
+    // Mesmo assim define um stub pra a UI não quebrar — todos os métodos sinalizam erro claro
+    const errMsg = 'Dependência ausente no carregamento: ' + missing.join(', ');
+    const reject = () => Promise.reject(new Error(errMsg));
+    window.FilesStore = {
+      _failed: true,
+      _missingDeps: missing,
+      list: reject, create: reject, update: reject, delete: reject, ping: reject,
+      subscribe() { return null; },
+      invalidate() {},
+    };
     return;
   }
 
-  const supabase = window.supabase.createClient(
-    window.MetLifeConfig.SUPABASE_URL,
-    window.MetLifeConfig.SUPABASE_ANON_KEY
-  );
+  // --- Inicialização normal ---
+  let supabase;
+  try {
+    supabase = window.supabase.createClient(
+      window.MetLifeConfig.SUPABASE_URL,
+      window.MetLifeConfig.SUPABASE_ANON_KEY
+    );
+  } catch (e) {
+    console.error('[files-store] erro ao criar cliente Supabase:', e);
+    const reject = () => Promise.reject(e);
+    window.FilesStore = {
+      _failed: true,
+      _initError: e,
+      list: reject, create: reject, update: reject, delete: reject, ping: reject,
+      subscribe() { return null; },
+      invalidate() {},
+    };
+    return;
+  }
 
   const cache = { files: null };
   let channel = null;
 
   const FilesStore = {
-    /** Lista todos os arquivos. Cache local (limpa após writes/realtime). */
+    /** Lista todos os arquivos. Cache local. */
     async list(force = false) {
       if (!force && cache.files) return cache.files;
       const { data, error } = await supabase
@@ -50,7 +83,9 @@
     async update(id, fields) {
       const payload = {};
       ['nome', 'tipo', 'descricao', 'url', 'data'].forEach(k => {
-        if (fields[k] !== undefined) payload[k] = (typeof fields[k] === 'string') ? fields[k].trim() : fields[k];
+        if (fields[k] !== undefined) {
+          payload[k] = (typeof fields[k] === 'string') ? fields[k].trim() : fields[k];
+        }
       });
       const { data, error } = await supabase.from('files').update(payload).eq('id', id).select().single();
       if (error) throw error;
@@ -75,21 +110,24 @@
 
     /** Subscribe a changes em tempo real. callback() recebido a cada mudança. */
     subscribe(callback) {
-      if (channel) supabase.removeChannel(channel);
-      channel = supabase
-        .channel('files-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'files' }, () => {
-          cache.files = null;
-          try { callback(); } catch (e) { console.error('[files-store] callback erro:', e); }
-        })
-        .subscribe();
-      return channel;
+      try {
+        if (channel) supabase.removeChannel(channel);
+        channel = supabase
+          .channel('files-changes')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'files' }, () => {
+            cache.files = null;
+            try { callback(); } catch (e) { console.error('[files-store] callback erro:', e); }
+          })
+          .subscribe();
+        return channel;
+      } catch (e) {
+        console.warn('[files-store] subscribe falhou (não-bloqueante):', e);
+        return null;
+      }
     },
 
     /** Limpa cache forçando recarga. */
-    invalidate() {
-      cache.files = null;
-    },
+    invalidate() { cache.files = null; },
   };
 
   window.FilesStore = FilesStore;
