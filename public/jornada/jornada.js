@@ -63,10 +63,12 @@
   // ============ STATE ============
   let state = {
     cat: 'todos',
+    month: 'all',           // 'all' | 'YYYY-MM'
     eventos: [],
     loading: true,
     error: null,
     setupPending: false,
+    didInitialScroll: false,
   };
 
   // ============ MODAL ============
@@ -207,6 +209,68 @@
     }
   }
 
+  function renderMonthFilter() {
+    const sel = document.getElementById('jrMonthFilter');
+    if (!sel) return;
+
+    const arr = state.eventos || [];
+    // Coleta meses únicos com eventos (ordenados)
+    const seen = {};
+    arr.forEach(ev => {
+      const d = parseDate(ev.data_inicio);
+      if (!d) return;
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      if (!seen[key]) seen[key] = { key, year: d.getFullYear(), month: d.getMonth() };
+    });
+    const months = Object.values(seen).sort((a, b) => a.key.localeCompare(b.key));
+
+    const opts = [`<option value="all">Todos os meses</option>`].concat(
+      months.map(m => `<option value="${m.key}" ${state.month === m.key ? 'selected' : ''}>${MESES[m.month]} ${m.year}</option>`)
+    ).join('');
+
+    sel.innerHTML = opts;
+    sel.classList.toggle('has-filter', state.month !== 'all');
+
+    if (!sel.dataset.wired) {
+      sel.dataset.wired = '1';
+      sel.addEventListener('change', () => {
+        state.month = sel.value;
+        sel.classList.toggle('has-filter', state.month !== 'all');
+        renderTimeline();
+      });
+    }
+  }
+
+  /** Encontra o melhor evento pra dar scroll inicial:
+   *  1) se hoje tem evento -> esse
+   *  2) senão, último evento ANTES de hoje
+   *  3) senão (todos futuros), primeiro evento futuro
+   *  Retorna o ID do evento ou null.
+   */
+  function findInitialScrollTarget(eventos) {
+    if (!eventos || !eventos.length) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const sorted = eventos
+      .map(ev => ({ ev, d: parseDate(ev.data_inicio) }))
+      .filter(x => x.d)
+      .sort((a, b) => a.d - b.d);
+
+    if (!sorted.length) return null;
+
+    // Match exato com hoje (range inclui o início)
+    const sameDay = sorted.find(x => x.d.getTime() === today.getTime());
+    if (sameDay) return sameDay.ev.id;
+
+    // Último evento no passado (incluindo hoje? já tratado acima)
+    const past = sorted.filter(x => x.d < today);
+    if (past.length) return past[past.length - 1].ev.id;
+
+    // Primeiro evento futuro
+    return sorted[0].ev.id;
+  }
+
   function renderFiltros() {
     const arr = state.eventos || [];
     const counts = { todos: arr.length };
@@ -277,9 +341,16 @@
       return;
     }
 
-    const filtered = (state.eventos || []).filter(e =>
-      state.cat === 'todos' || e.categoria === state.cat
-    );
+    const filtered = (state.eventos || []).filter(e => {
+      if (state.cat !== 'todos' && e.categoria !== state.cat) return false;
+      if (state.month !== 'all') {
+        const d = parseDate(e.data_inicio);
+        if (!d) return false;
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        if (key !== state.month) return false;
+      }
+      return true;
+    });
 
     if (count) count.textContent = `${filtered.length} evento${filtered.length === 1 ? '' : 's'}`;
 
@@ -298,15 +369,21 @@
     filtered.forEach(ev => {
       const d = parseDate(ev.data_inicio);
       if (!d) return;
-      const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`;
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       if (!groups[key]) groups[key] = { year: d.getFullYear(), month: d.getMonth(), items: [] };
       groups[key].items.push(ev);
     });
 
     const sortedKeys = Object.keys(groups).sort();
     const today = new Date();
-    const currentKey = `${today.getFullYear()}-${String(today.getMonth()).padStart(2, '0')}`;
+    const currentKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
     const admin = isAdmin();
+
+    // Identifica evento alvo do scroll inicial (apenas na primeira renderização)
+    let scrollTargetId = null;
+    if (!state.didInitialScroll && state.month === 'all' && state.cat === 'todos') {
+      scrollTargetId = findInitialScrollTarget(filtered);
+    }
 
     wrap.innerHTML = sortedKeys.map(key => {
       const g = groups[key];
@@ -320,9 +397,10 @@
         const monShort = MESES_CURTO[d.getMonth()];
         const weekday = DIAS_SEMANA[d.getDay()];
         const range = fmtRange(ev.data_inicio, ev.data_fim);
+        const currentClass = ev.id === scrollTargetId ? 'jr-event-current' : '';
 
         return `
-          <article class="jr-event" style="--jr-event-color: ${meta.cor}; --jr-event-bg: ${meta.bg};" data-id="${escapeAttr(ev.id)}">
+          <article class="jr-event ${currentClass}" style="--jr-event-color: ${meta.cor}; --jr-event-bg: ${meta.bg};" data-id="${escapeAttr(ev.id)}">
             <div class="jr-event-date">
               <span class="jr-event-day">${dayNum}</span>
               <span class="jr-event-month-short">${monShort}</span>
@@ -368,6 +446,20 @@
         });
       });
     }
+
+    // Scroll automático até o evento atual (apenas uma vez)
+    if (scrollTargetId) {
+      const targetEl = wrap.querySelector(`.jr-event[data-id="${scrollTargetId}"]`);
+      if (targetEl) {
+        // Aguarda layout estabilizar
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        });
+        state.didInitialScroll = true;
+      }
+    }
   }
 
   // ============ DATA LOAD ============
@@ -389,6 +481,7 @@
       }
     }
     renderFiltros();
+    renderMonthFilter();
     renderAdminBar();
     renderTimeline();
   }
@@ -396,6 +489,7 @@
   // ============ INIT ============
   async function init() {
     renderFiltros();
+    renderMonthFilter();
     renderAdminBar();
 
     if (!window.EventsStore) {
