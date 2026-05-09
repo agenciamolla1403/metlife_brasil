@@ -20,6 +20,8 @@
     '/aprovacao.html': 'aprovacao',
     '/elemidia': 'elemidia',
     '/elemidia.html': 'elemidia',
+    '/blitz': 'blitz',
+    '/blitz.html': 'blitz',
   };
 
   function activeRouteFromPath() {
@@ -46,10 +48,11 @@
         </a>
         <nav class="mlh-nav" aria-label="Navegação principal">
           <a href="/" class="${isActive('home')}">Central</a>
-          <a href="/cronograma" class="${isActive('cronograma')}">Cronograma</a>
-          <a href="/plano-midia" class="${isActive('plano')}">Plano de Mídia</a>
-          <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
+          <a href="/plano-midia" class="${isActive('plano')}">Mídia</a>
+          <a href="/cronograma" class="${isActive('cronograma')}">Cronograma Ads</a>
           <a href="/elemidia" class="${isActive('elemidia')}">Elemidia</a>
+          <a href="/blitz" class="${isActive('blitz')}">Blitz</a>
+          <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
         </nav>
         <div class="mlh-actions">
           ${userChip}

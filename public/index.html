@@ -94,6 +94,13 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 24px;
     }
+    .grid-single {
+      grid-template-columns: 1fr;
+      margin-top: 24px;
+    }
+    .card-wide {
+      max-width: none;
+    }
 
     .card {
       background: var(--white);
@@ -202,13 +209,6 @@
 
   <main>
     <div class="grid">
-      <a class="card" href="/cronograma">
-        <span class="tag">Cronograma</span>
-        <h2>Cronograma Diarizado de Ativação A/B</h2>
-        <p>Visão dia a dia da ativação, com testes A/B, fluxo de criativos e janelas de mídia para cada plataforma.</p>
-        <span class="cta">Abrir cronograma</span>
-      </a>
-
       <a class="card tag-mid" href="/plano-midia">
         <span class="tag">Mídia</span>
         <h2>Plano Tático de Mídia Interativo</h2>
@@ -216,11 +216,11 @@
         <span class="cta">Abrir plano de mídia</span>
       </a>
 
-      <a class="card tag-end" href="/aprovacao">
-        <span class="tag">Aprovação</span>
-        <h2>Aprovação de Peças</h2>
-        <p>Adição, comentários e aprovação de artes e vídeos por campanha.</p>
-        <span class="cta">Abrir aprovações</span>
+      <a class="card" href="/cronograma">
+        <span class="tag">Cronograma</span>
+        <h2>Cronograma Diarizado de Ativação A/B</h2>
+        <p>Visão dia a dia da ativação, com testes A/B, fluxo de criativos e janelas de mídia para cada plataforma.</p>
+        <span class="cta">Abrir cronograma</span>
       </a>
 
       <a class="card tag-elem" href="/elemidia">
@@ -235,6 +235,15 @@
         <h2>É tempo de Copa do Mundo</h2>
         <p>5 dias de blitz nos jogos do Brasil, modalidades de Watch Party e calendário completo da ação.</p>
         <span class="cta">Abrir Blitz &amp; Watch Party</span>
+      </a>
+    </div>
+
+    <div class="grid grid-single">
+      <a class="card tag-end card-wide" href="/aprovacao">
+        <span class="tag">Aprovação</span>
+        <h2>Aprovação de Peças</h2>
+        <p>Adição, comentários e aprovação de artes e vídeos por campanha.</p>
+        <span class="cta">Abrir aprovações</span>
       </a>
     </div>
   </main>
