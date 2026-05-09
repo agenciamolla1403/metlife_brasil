@@ -9,7 +9,7 @@
   // ============ TIPOS ============
   const TIPOS = {
     ppt:      { label: 'Apresentação', plural: 'Apresentações', icon: '📊', cor: 'var(--aq-c-ppt)', bg: 'var(--aq-c-ppt-bg)' },
-    pdf:      { label: 'PDF',          plural: 'PDFs',          icon: '📄', cor: 'var(--aq-c-pdf)', bg: 'var(--aq-c-pdf-bg)' },
+    pdf:      { label: 'Documento',    plural: 'Documentos',    icon: '📄', cor: 'var(--aq-c-pdf)', bg: 'var(--aq-c-pdf-bg)' },
     imagem:   { label: 'Imagem',       plural: 'Imagens',       icon: '🖼️', cor: 'var(--aq-c-img)', bg: 'var(--aq-c-img-bg)' },
     planilha: { label: 'Planilha',     plural: 'Planilhas',     icon: '📈', cor: 'var(--aq-c-xls)', bg: 'var(--aq-c-xls-bg)' },
     kv:       { label: 'Key Visual',   plural: 'Key Visuals',   icon: '🎨', cor: 'var(--aq-c-kv)',  bg: 'var(--aq-c-kv-bg)'  },
