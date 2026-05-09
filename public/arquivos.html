@@ -22,12 +22,13 @@
       </div>
     </section>
 
-    <!-- TOOLBAR (filtros + busca) -->
+    <!-- TOOLBAR (filtros + busca + admin) -->
     <div class="aq-toolbar">
       <div class="aq-toolbar-inner">
         <div class="aq-search-row">
           <input type="text" class="aq-search" id="aqSearch" placeholder="🔍 Buscar arquivo por nome ou descrição..." />
           <span class="aq-count" id="aqCount"></span>
+          <span class="aq-admin-slot" id="aqAdminSlot"></span>
         </div>
         <div class="aq-filters" id="aqFilters" role="tablist"></div>
       </div>
@@ -50,7 +51,10 @@
     </div>
   </footer>
 
-  <script src="/arquivos/arquivos-data.js"></script>
+  <!-- Supabase + store + render -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/config.js"></script>
+  <script src="/assets/files-store.js"></script>
   <script src="/arquivos/arquivos.js"></script>
 </body>
 </html>

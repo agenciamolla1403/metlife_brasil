@@ -120,3 +120,38 @@ alter table public.comments add constraint comments_kind_check
 alter table public.comments add column if not exists pin_x numeric(5,2);
 alter table public.comments add column if not exists pin_y numeric(5,2);
 alter table public.comments add column if not exists pin_version integer;
+
+-- ============================================================
+-- S19 — Arquivos & Downloads (links SharePoint gerenciáveis)
+-- ============================================================
+create table if not exists public.files (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  tipo text not null check (tipo in ('ppt','pdf','imagem','planilha','kv','video')),
+  descricao text not null default '',
+  url text not null,
+  data date,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_files_tipo on public.files(tipo);
+create index if not exists idx_files_data on public.files(data desc);
+create index if not exists idx_files_created_at on public.files(created_at desc);
+
+alter table public.files enable row level security;
+
+drop policy if exists "anon all" on public.files;
+create policy "anon all" on public.files
+  for all to anon, authenticated
+  using (true) with check (true);
+
+-- Realtime (idempotente — não falha se já estiver publicado)
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'files'
+  ) then
+    alter publication supabase_realtime add table public.files;
+  end if;
+end $$;
