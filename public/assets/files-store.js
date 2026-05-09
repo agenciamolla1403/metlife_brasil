@@ -32,7 +32,7 @@
   try {
     supabase = window.supabase.createClient(
       window.MetLifeConfig.SUPABASE_URL,
-      window.MetLifeConfig.SUPABASE_ANON_KEY
+      window.MetLifeConfig.SUPABASE_KEY
     );
   } catch (e) {
     console.error('[files-store] erro ao criar cliente Supabase:', e);
