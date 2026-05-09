@@ -71,7 +71,14 @@
         link_interno: (ev.link_interno || '').trim() || null,
       };
       const { data, error } = await supabase.from('events').insert(payload).select().single();
-      if (error) throw error;
+      if (error) {
+        console.error('[events-store] INSERT falhou:', error, '\n  payload:', payload);
+        // Mensagem amigável pra check constraint violado
+        if (/check constraint|categoria_check/i.test(error.message || '')) {
+          throw new Error(`Categoria "${payload.categoria}" rejeitada pelo banco. O check constraint pode estar desatualizado — rode o bloco S23 do docs/schema.sql no Supabase Dashboard.`);
+        }
+        throw error;
+      }
       cache.events = null;
       return data;
     },
@@ -85,7 +92,13 @@
         }
       });
       const { data, error } = await supabase.from('events').update(payload).eq('id', id).select().single();
-      if (error) throw error;
+      if (error) {
+        console.error('[events-store] UPDATE falhou:', error, '\n  payload:', payload);
+        if (/check constraint|categoria_check/i.test(error.message || '')) {
+          throw new Error(`Categoria "${payload.categoria}" rejeitada pelo banco. O check constraint pode estar desatualizado — rode o bloco S23 do docs/schema.sql no Supabase Dashboard.`);
+        }
+        throw error;
+      }
       cache.events = null;
       return data;
     },

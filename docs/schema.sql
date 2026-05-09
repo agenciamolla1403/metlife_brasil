@@ -228,3 +228,32 @@ where not exists (
   select 1 from public.events e
   where e.titulo = v.titulo and e.data_inicio = v.data_inicio
 );
+
+-- ============================================================
+-- S23 — Fix do check constraint da tabela events
+-- Caso o constraint tenha sido criado errado (com cedilha em
+-- "aprovação" ou outras divergências), este bloco recria com a
+-- lista correta. Idempotente — pode rodar múltiplas vezes.
+-- ============================================================
+do $$
+declare
+  cons_name text;
+begin
+  -- Localiza o nome do constraint atual (pode variar dependendo de quando foi criado)
+  select conname into cons_name
+    from pg_constraint
+   where conrelid = 'public.events'::regclass
+     and contype = 'c'
+     and pg_get_constraintdef(oid) ilike '%categoria%';
+  if cons_name is not null then
+    execute format('alter table public.events drop constraint %I', cons_name);
+  end if;
+  alter table public.events
+    add constraint events_categoria_check
+    check (categoria in ('midia','blitz','watch','evento','aprovacao','campanha','outros'));
+end $$;
+
+-- Diagnóstico (opcional): ver constraint atual
+-- select conname, pg_get_constraintdef(oid)
+--   from pg_constraint
+--  where conrelid = 'public.events'::regclass and contype = 'c';

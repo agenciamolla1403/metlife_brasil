@@ -55,7 +55,8 @@
       el.textContent = msg;
       el.className = 'jr-toast jr-toast-' + kind + ' is-visible';
       clearTimeout(this._t);
-      this._t = setTimeout(() => { el.className = 'jr-toast jr-toast-' + kind; }, 2600);
+      const duration = (kind === 'error') ? 6000 : 2600;
+      this._t = setTimeout(() => { el.className = 'jr-toast jr-toast-' + kind; }, duration);
     }
   };
 
