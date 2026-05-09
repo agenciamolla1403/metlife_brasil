@@ -517,25 +517,6 @@ main {
   color: var(--elem-navy);
 }
 
-/* Footer */
-.elem-footer {
-  padding: 36px 24px;
-  text-align: center;
-  background: white;
-  border-top: 1px solid rgba(0, 59, 92, 0.06);
-}
-.elem-footer-logo {
-  height: 24px;
-  margin-bottom: 8px;
-  opacity: 0.85;
-}
-.elem-footer p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--elem-muted);
-}
-.elem-footer strong { color: var(--elem-navy); }
-
 /* Empty/Loading */
 .elem-empty {
   text-align: center;
