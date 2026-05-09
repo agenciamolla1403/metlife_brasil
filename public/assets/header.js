@@ -22,6 +22,8 @@
     '/elemidia.html': 'elemidia',
     '/blitz': 'blitz',
     '/blitz.html': 'blitz',
+    '/arquivos': 'arquivos',
+    '/arquivos.html': 'arquivos',
   };
 
   function activeRouteFromPath() {
@@ -52,6 +54,7 @@
           <a href="/cronograma" class="${isActive('cronograma')}">Cronograma Ads</a>
           <a href="/elemidia" class="${isActive('elemidia')}">Elemidia</a>
           <a href="/blitz" class="${isActive('blitz')}">Blitz</a>
+          <a href="/arquivos" class="${isActive('arquivos')}">Arquivos</a>
           <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
         </nav>
         <div class="mlh-actions">
