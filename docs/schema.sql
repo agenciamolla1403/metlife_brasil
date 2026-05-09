@@ -202,3 +202,29 @@ end $$;
 --   ('Blitz Escócia x Brasil', 'blitz', '2026-06-24', 'Blitz na Vila Madalena ou Pinheiros, das 17h até o início do jogo às 19h em Miami.', '/blitz'),
 --   ('Watch Party Espaço VIP', 'watch', '2026-07-01', 'Reserva de espaço VIP em bar tradicional de transmissão. Data conforme avanço do Brasil.', '/blitz'),
 --   ('Watch Party Cinema Time!', 'watch', '2026-07-13', 'Watch Party na final da Copa do Mundo, em parceria com rede de cinema.', '/blitz');
+
+-- ============================================================
+-- S22 — Seed da Jornada com ações reais do site
+-- Idempotente: usa WHERE NOT EXISTS por (titulo, data_inicio).
+-- Pode rodar múltiplas vezes sem duplicar.
+-- ============================================================
+insert into public.events (titulo, categoria, data_inicio, data_fim, descricao, link_interno)
+select * from (values
+  ('Proposta Elemidia entregue',                  'campanha',  date '2026-05-08', null,                'Apresentação da proposta de mídia em edifícios para período de 18/05 a 31/05.', '/elemidia'),
+  ('Lançamento — Onda 1 (maio)',                  'campanha',  date '2026-05-18', null,                'Início oficial da campanha. Onda 1 de 14 dias com lançamento dos criativos A/B.', '/cronograma'),
+  ('Elemidia — Mídia em edifícios',               'midia',     date '2026-05-18', date '2026-05-31',   'Inserções em painéis Elemidia em prédios comerciais de São Paulo. Orçamento R$ 90k.', '/elemidia'),
+  ('Marco A/B 1',                                 'midia',     date '2026-05-22', null,                'Primeiro marco de leitura dos lotes A/B da Onda 1.', '/cronograma'),
+  ('Marco A/B 2',                                 'midia',     date '2026-05-26', null,                'Segundo marco de leitura A/B. Análise de VTR, CPM e engajamento.', '/cronograma'),
+  ('Leitura + Escala dos vencedores',             'midia',     date '2026-05-30', null,                'Análise consolidada da Onda 1. Criativos vencedores recebem maior parcela do orçamento e seguem para Onda 2.', '/cronograma'),
+  ('Onda 2 — Intensificação na Copa',             'campanha',  date '2026-06-01', date '2026-06-30',   'Pico de intensidade durante o período da Copa do Mundo. Concentração de mídia + ativações de campo.', '/plano-midia'),
+  ('Blitz Brasil x Marrocos',                     'blitz',     date '2026-06-13', null,                'Blitz na Vila Madalena ou Pinheiros, das 17h até o início do jogo às 19h em Nova Jersey.', '/blitz'),
+  ('Blitz Brasil x Haiti',                        'blitz',     date '2026-06-19', null,                'Blitz na Vila Madalena ou Pinheiros, das 19h até o início do jogo às 21h30 em Filadélfia.', '/blitz'),
+  ('Blitz Escócia x Brasil',                      'blitz',     date '2026-06-24', null,                'Blitz na Vila Madalena ou Pinheiros, das 17h até o início do jogo às 19h em Miami.', '/blitz'),
+  ('Onda 3 — Otimização e consolidação',          'campanha',  date '2026-07-01', date '2026-07-31',   'Última onda da campanha. Foco em otimização e consolidação de aprendizados pós-Copa.', '/plano-midia'),
+  ('Watch Party · Cinema Time!',                  'watch',     date '2026-07-13', null,                'Watch Party na final da Copa do Mundo, em parceria com rede de cinema. MetLife Stadium ambientado.', '/blitz'),
+  ('Encerramento da campanha',                    'campanha',  date '2026-07-31', null,                'Marco de encerramento. Análise final de performance e relatório consolidado.', '/cronograma')
+) as v(titulo, categoria, data_inicio, data_fim, descricao, link_interno)
+where not exists (
+  select 1 from public.events e
+  where e.titulo = v.titulo and e.data_inicio = v.data_inicio
+);

@@ -1,0 +1,41 @@
+/* ============================================================
+   breadcrumb.css — sub-bar com navegação contextual
+   Standalone (sem dependência de CSS variables) pra funcionar
+   em qualquer página do projeto.
+   ============================================================ */
+.page-subbar {
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(0, 59, 92, 0.06);
+}
+.page-subbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 44px;
+}
+.crumb {
+  font-size: 13px;
+  color: #5B7280;
+  flex: 1;
+  min-width: 0;
+}
+.crumb a {
+  color: #003B5C;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 160ms ease;
+}
+.crumb a:hover { color: #2DB5DF; }
+.crumb strong {
+  color: #003B5C;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .page-subbar-inner { padding: 10px 16px; min-height: 40px; }
+  .crumb { font-size: 12px; }
+}

@@ -5,10 +5,16 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
 
 ---
 
-## 🟢 Em andamento / próximas sessões
+## ✅ Concluídos
 
-- **Jornada da Campanha** (cronograma macro) — visão temporal de todas as ações,
-  filtrável por categoria, com CRUD admin via Supabase. **→ S21**
+- **Jornada da Campanha** (S21–S22) — visão temporal de todas as ações,
+  filtrável por categoria, com CRUD admin via Supabase. Seed inicial com 13
+  eventos reais (proposta Elemidia, ondas A/B, blitzes, watch parties,
+  encerramento) aplicado em S22.
+
+## 🟢 Próximas sessões
+
+_Aguardando sua escolha — veja as opções abaixo por prioridade._
 
 ---
 
