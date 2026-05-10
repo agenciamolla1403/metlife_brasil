@@ -159,6 +159,19 @@ main {
   border-radius: 16px;
   padding: 22px 24px;
   margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 1.6fr;
+  gap: 24px;
+  align-items: center;
+}
+.dashboard-left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dashboard-right {
+  min-width: 0;
 }
 .dashboard-title {
   margin: 0 0 4px;
@@ -236,18 +249,29 @@ main {
 .dash-kpi-rejected { --dash-kpi-color: #E5484D; --dash-kpi-bg: rgba(229, 72, 77, 0.12); }
 .dash-kpi-total    { --dash-kpi-color: #003B5C; --dash-kpi-bg: rgba(0, 59, 92, 0.10); }
 
-/* Barra de progresso geral (entre o sub e os KPIs) */
+/* Barra de progresso (na coluna esquerda) */
 .dashboard-progress {
   display: flex;
   height: 10px;
   border-radius: 999px;
   overflow: hidden;
   background: rgba(0, 59, 92, 0.06);
-  margin-bottom: 16px;
 }
 .dashboard-progress .seg-approved { background: #16A34A; }
 .dashboard-progress .seg-rejected { background: #E5484D; }
 .dashboard-progress .seg-pending { background: #F59E0B; }
+
+/* Mobile: empilha colunas e KPIs em 2x2 */
+@media (max-width: 760px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px 18px;
+  }
+  .dashboard-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 .dashboard-empty {
   text-align: center;
