@@ -557,7 +557,7 @@
           </div>
         </div>
 
-        <div class="dashboard">
+        <div class="campaign-dashboard">
           <div class="kpi kpi-total">
             <div class="kpi-label">Peças</div>
             <div class="kpi-value">${stats.total}</div>

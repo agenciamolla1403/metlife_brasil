@@ -337,8 +337,8 @@ main {
 .btn-primary:active { transform: translateY(0); }
 .btn-primary .plus { font-size: 18px; line-height: 1; font-weight: 700; }
 
-/* ----------------------------- DASHBOARD ----------------------------- */
-.dashboard {
+/* ----------------------------- CAMPAIGN DASHBOARD (modal de campanha aberta) ----------------------------- */
+.campaign-dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
