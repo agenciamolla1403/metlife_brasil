@@ -348,48 +348,44 @@
 
       const dashboardHtml = allStats.total > 0 ? `
         <div class="dashboard">
-          <div class="dashboard-left">
-            <h2 class="dashboard-title">📊 Visão geral</h2>
-            <p class="dashboard-sub">${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'} · ${allStats.total} ${allStats.total === 1 ? 'peça' : 'peças'} no total</p>
-            <div class="dashboard-progress" title="${allStats.approved} aprovadas · ${allStats.rejected} reprovadas · ${allStats.pending} pendentes">
-              ${allStats.approved > 0 ? `<div class="seg-approved" style="width:${pct(allStats.approved)}%"></div>` : ''}
-              ${allStats.rejected > 0 ? `<div class="seg-rejected" style="width:${pct(allStats.rejected)}%"></div>` : ''}
-              ${allStats.pending > 0 ? `<div class="seg-pending" style="width:${pct(allStats.pending)}%"></div>` : ''}
-            </div>
+          <h2 class="dashboard-title">📊 Visão geral</h2>
+          <p class="dashboard-sub">${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'} · ${allStats.total} ${allStats.total === 1 ? 'peça' : 'peças'} no total</p>
+          <div class="dashboard-progress" title="${allStats.approved} aprovadas · ${allStats.rejected} reprovadas · ${allStats.pending} pendentes">
+            ${allStats.approved > 0 ? `<div class="seg-approved" style="width:${pct(allStats.approved)}%"></div>` : ''}
+            ${allStats.rejected > 0 ? `<div class="seg-rejected" style="width:${pct(allStats.rejected)}%"></div>` : ''}
+            ${allStats.pending > 0 ? `<div class="seg-pending" style="width:${pct(allStats.pending)}%"></div>` : ''}
           </div>
-          <div class="dashboard-right">
-            <div class="dashboard-kpis">
-              <div class="dash-kpi dash-kpi-pending">
-                <div class="dash-kpi-icon">⏳</div>
-                <div class="dash-kpi-body">
-                  <div class="dash-kpi-value">${allStats.pending}</div>
-                  <div class="dash-kpi-label">Pendentes</div>
-                  <div class="dash-kpi-pct">${pct(allStats.pending)}% do total</div>
-                </div>
+          <div class="dashboard-kpis">
+            <div class="dash-kpi dash-kpi-pending">
+              <div class="dash-kpi-icon">⏳</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.pending}</div>
+                <div class="dash-kpi-label">Pendentes</div>
+                <div class="dash-kpi-pct">${pct(allStats.pending)}% do total</div>
               </div>
-              <div class="dash-kpi dash-kpi-approved">
-                <div class="dash-kpi-icon">✓</div>
-                <div class="dash-kpi-body">
-                  <div class="dash-kpi-value">${allStats.approved}</div>
-                  <div class="dash-kpi-label">Aprovadas</div>
-                  <div class="dash-kpi-pct">${pct(allStats.approved)}% do total</div>
-                </div>
+            </div>
+            <div class="dash-kpi dash-kpi-approved">
+              <div class="dash-kpi-icon">✓</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.approved}</div>
+                <div class="dash-kpi-label">Aprovadas</div>
+                <div class="dash-kpi-pct">${pct(allStats.approved)}% do total</div>
               </div>
-              <div class="dash-kpi dash-kpi-rejected">
-                <div class="dash-kpi-icon">✕</div>
-                <div class="dash-kpi-body">
-                  <div class="dash-kpi-value">${allStats.rejected}</div>
-                  <div class="dash-kpi-label">Reprovadas</div>
-                  <div class="dash-kpi-pct">${pct(allStats.rejected)}% do total</div>
-                </div>
+            </div>
+            <div class="dash-kpi dash-kpi-rejected">
+              <div class="dash-kpi-icon">✕</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.rejected}</div>
+                <div class="dash-kpi-label">Reprovadas</div>
+                <div class="dash-kpi-pct">${pct(allStats.rejected)}% do total</div>
               </div>
-              <div class="dash-kpi dash-kpi-total">
-                <div class="dash-kpi-icon">📦</div>
-                <div class="dash-kpi-body">
-                  <div class="dash-kpi-value">${allStats.total}</div>
-                  <div class="dash-kpi-label">Total de peças</div>
-                  <div class="dash-kpi-pct">em ${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'}</div>
-                </div>
+            </div>
+            <div class="dash-kpi dash-kpi-total">
+              <div class="dash-kpi-icon">📦</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.total}</div>
+                <div class="dash-kpi-label">Total de peças</div>
+                <div class="dash-kpi-pct">em ${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'}</div>
               </div>
             </div>
           </div>

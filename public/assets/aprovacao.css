@@ -159,19 +159,6 @@ main {
   border-radius: 16px;
   padding: 22px 24px;
   margin-bottom: 20px;
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) 1.6fr;
-  gap: 24px;
-  align-items: center;
-}
-.dashboard-left {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.dashboard-right {
-  min-width: 0;
 }
 .dashboard-title {
   margin: 0 0 4px;
@@ -188,9 +175,24 @@ main {
   font-weight: 600;
   letter-spacing: 0.2px;
 }
+
+/* Barra de progresso (entre o sub e os KPIs) */
+.dashboard-progress {
+  display: flex;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0, 59, 92, 0.06);
+  margin-bottom: 16px;
+}
+.dashboard-progress .seg-approved { background: #16A34A; }
+.dashboard-progress .seg-rejected { background: #E5484D; }
+.dashboard-progress .seg-pending { background: #F59E0B; }
+
+/* 4 cards lado a lado, distribuídos uniformemente */
 .dashboard-kpis {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 .dash-kpi {
@@ -204,6 +206,7 @@ main {
   border: 1px solid rgba(0, 59, 92, 0.04);
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 .dash-kpi::before {
   content: "";
@@ -249,27 +252,16 @@ main {
 .dash-kpi-rejected { --dash-kpi-color: #E5484D; --dash-kpi-bg: rgba(229, 72, 77, 0.12); }
 .dash-kpi-total    { --dash-kpi-color: #003B5C; --dash-kpi-bg: rgba(0, 59, 92, 0.10); }
 
-/* Barra de progresso (na coluna esquerda) */
-.dashboard-progress {
-  display: flex;
-  height: 10px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: rgba(0, 59, 92, 0.06);
-}
-.dashboard-progress .seg-approved { background: #16A34A; }
-.dashboard-progress .seg-rejected { background: #E5484D; }
-.dashboard-progress .seg-pending { background: #F59E0B; }
-
-/* Mobile: empilha colunas e KPIs em 2x2 */
-@media (max-width: 760px) {
-  .dashboard {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 18px 18px;
-  }
+/* Tablet: 4 cards forçados em uma linha podem apertar. Vira 2x2. */
+@media (max-width: 880px) {
   .dashboard-kpis {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* Mobile pequeno: 1 coluna */
+@media (max-width: 460px) {
+  .dashboard-kpis {
+    grid-template-columns: 1fr;
   }
 }
 
