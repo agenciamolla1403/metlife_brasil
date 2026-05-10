@@ -112,7 +112,7 @@ alter publication supabase_realtime add table public.piece_versions;
 -- 3) Permitir kind 'action-update' nos comentários
 alter table public.comments drop constraint if exists comments_kind_check;
 alter table public.comments add constraint comments_kind_check
-  check (kind in ('comment','action','action-rejected','action-update'));
+  check (kind in ('comment','action','action-rejected','action-update','action-created'));
 
 -- ============================================================
 -- S09 — Pins ancorados na imagem (comentários geo-referenciados)
