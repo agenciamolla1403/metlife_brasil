@@ -770,6 +770,97 @@ main {
   font-size: 13px;
 }
 
+/* Wrapper do iframe/vídeo */
+.piece-media .video-frame-wrap {
+  width: 100%;
+  display: grid;
+  place-items: stretch;
+}
+.piece-media .video-frame-wrap iframe,
+.piece-media .video-frame-wrap video {
+  width: 100%;
+  height: 50vh;
+  border: 0;
+  border-radius: 8px;
+  background: #000;
+}
+.piece-media .video-frame-placeholder {
+  height: 50vh;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px dashed rgba(255,255,255,0.18);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  color: rgba(255,255,255,0.85);
+  gap: 12px;
+}
+.piece-media .video-sp-icon {
+  font-size: 48px;
+  opacity: 0.9;
+}
+.piece-media .video-sp-notice {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.92);
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 8px;
+  padding: 14px 18px;
+  max-width: 480px;
+  text-align: left;
+}
+.piece-media .video-sp-notice strong { color: #FBC976; }
+.piece-media .video-fallback-link {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
+  padding: 9px 18px;
+  background: rgba(255,255,255,0.10);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.20);
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.piece-media .video-fallback-link:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+.piece-media .video-fallback-link strong { font-weight: 800; }
+.piece-media .video-fallback-link span { opacity: 0.75; }
+
+/* Warn box no modal de criar/editar peça */
+.warn-box {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: rgba(245, 158, 11, 0.10);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--navy);
+}
+.warn-box strong { color: #B45309; }
+.warn-box code {
+  background: rgba(0, 59, 92, 0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.warn-box ul {
+  margin: 6px 0 0;
+  padding-left: 22px;
+}
+.warn-box li { margin: 2px 0; }
+
 .piece-side {
   padding: 24px;
   display: flex;

@@ -135,6 +135,13 @@
     return /\.(mp4|webm|mov|ogg|m4v)(\?|#|$)/i.test(String(url));
   }
 
+  // SharePoint pessoal / OneDrive Business — Microsoft bloqueia embed por design.
+  // URLs tipo "empresa-my.sharepoint.com" não carregam em iframe.
+  function isSharePointPersonal(url) {
+    if (!url) return false;
+    return /-my\.sharepoint\.com/i.test(String(url));
+  }
+
   // ============ TOAST ============
   const Toast = {
     _t: null,
@@ -625,6 +632,18 @@
             <label>URL do vídeo</label>
             <input type="url" id="videoUrl" placeholder="YouTube, Vimeo, SharePoint, Google Drive ou link direto (.mp4)" value="${isEdit && existing.media_type === 'video' ? escapeHtml(existing.media_url) : ''}" />
             <div class="hint">YouTube/Vimeo serão embedados; .mp4 abre player nativo.</div>
+            <div class="warn-box" id="spPersonalWarn" style="display:none;">
+              <strong>⚠️ Atenção: SharePoint pessoal não embeda.</strong>
+              URLs <code>*-my.sharepoint.com</code> (OneDrive Business) são bloqueadas pela Microsoft em iframes — o vídeo vai mostrar "conexão recusada".
+              <br><br>
+              <strong>Recomendações:</strong>
+              <ul>
+                <li>Faça upload em <strong>YouTube</strong> (privado/não listado) ou <strong>Vimeo</strong></li>
+                <li>Ou use <strong>SharePoint corporativo</strong> (sem o <code>-my</code> no domínio)</li>
+                <li>Ou hospede em <strong>Google Drive</strong> e use o link de compartilhamento</li>
+              </ul>
+              Se preferir manter o link assim mesmo, o cliente verá só o botão "Abrir em nova aba".
+            </div>
           </div>
 
           <div class="form-group">
@@ -678,6 +697,19 @@
             grpVideo.style.display = v === 'video' ? '' : 'none';
           });
         });
+
+        // Mostra warning quando admin cola URL SharePoint pessoal
+        const videoUrlInput = modal.querySelector('#videoUrl');
+        const spWarn = modal.querySelector('#spPersonalWarn');
+        const updateSpWarn = () => {
+          if (!videoUrlInput || !spWarn) return;
+          spWarn.style.display = isSharePointPersonal(videoUrlInput.value) ? '' : 'none';
+        };
+        if (videoUrlInput) {
+          videoUrlInput.addEventListener('input', updateSpWarn);
+          videoUrlInput.addEventListener('paste', () => setTimeout(updateSpWarn, 0));
+          updateSpWarn(); // Estado inicial (edição)
+        }
 
         dropArea.addEventListener('click', () => fileInput.click());
         dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag'); });
@@ -860,13 +892,43 @@
           //  2) Se a URL original aparenta ser arquivo de vídeo direto (.mp4 etc) → <video> nativo
           //  3) Caso contrário (link de página que não conhecemos) → iframe com a URL original
           const embedUrl = pp.video_embed_url || (pp.media_url && !isDirectVideoFile(pp.media_url) ? pp.media_url : null);
-          if (embedUrl) {
-            mediaHtml = `<iframe src="${escapeHtml(embedUrl)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>`;
+          const originalUrl = pp.media_url || pp.video_embed_url || '';
+          const isPersonalSP = isSharePointPersonal(originalUrl);
+
+          // Notice específico pra SharePoint pessoal (que NÃO embeda nunca)
+          const personalSPNotice = isPersonalSP ? `
+            <div class="video-sp-notice">
+              <strong>⚠️ SharePoint pessoal não permite embed.</strong>
+              Esse vídeo está hospedado em OneDrive Business, que bloqueia visualização embutida por padrão de segurança da Microsoft.
+              Clique em <strong>"Abrir em nova aba"</strong> abaixo pra ver o vídeo.
+            </div>` : '';
+
+          // Link de fallback (sempre visível abaixo do iframe)
+          const fallbackLink = originalUrl ? `
+            <a class="video-fallback-link" href="${escapeHtml(originalUrl)}" target="_blank" rel="noopener">
+              <span>Vídeo não carregou?</span> <strong>Abrir em nova aba ↗</strong>
+            </a>` : '';
+
+          if (embedUrl && !isPersonalSP) {
+            mediaHtml = `
+              <div class="video-frame-wrap">
+                <iframe src="${escapeHtml(embedUrl)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
+              </div>
+              ${fallbackLink}`;
           } else if (pp.media_url && isDirectVideoFile(pp.media_url)) {
-            mediaHtml = `<video src="${escapeHtml(pp.media_url)}" controls></video>`;
+            mediaHtml = `
+              <video src="${escapeHtml(pp.media_url)}" controls></video>
+              ${fallbackLink}`;
+          } else if (isPersonalSP) {
+            mediaHtml = `
+              <div class="video-frame-wrap video-frame-placeholder">
+                <div class="video-sp-icon">🔒</div>
+                ${personalSPNotice}
+              </div>
+              ${fallbackLink}`;
           } else {
             mediaHtml = `
-              <div style="text-align:center; color:rgba(255,255,255,0.85); padding:24px;">
+              <div class="video-frame-wrap video-frame-placeholder">
                 <div style="font-size:32px; margin-bottom:8px;">🎬</div>
                 <p style="font-size:14px; opacity:0.9;">Vídeo sem URL configurada</p>
               </div>`;
