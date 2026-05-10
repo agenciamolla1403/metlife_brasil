@@ -9,8 +9,17 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
 
 - **Jornada da Campanha** (S21–S22) — visão temporal de todas as ações,
   filtrável por categoria, com CRUD admin via Supabase. Seed inicial com 13
-  eventos reais (proposta Elemidia, ondas A/B, blitzes, watch parties,
-  encerramento) aplicado em S22.
+  eventos reais aplicado em S22.
+- **Vídeo iframe na Aprovação** (S25–S26) — peças com vídeo agora embutem
+  player de YouTube/Vimeo/SharePoint corporativo/Google Drive direto. Fallback
+  gracioso pra SharePoint pessoal (com aviso explicativo).
+- **Dashboard na home da Aprovação** (S27) — visão consolidada de todas as
+  campanhas com KPIs (pendentes/aprovadas/reprovadas/total) + barra de
+  progresso + filtro "Com pendência" pra focar em quem precisa de atenção.
+- **Comparação V1 vs V2 lado a lado** (S27) — modal de Histórico agora tem
+  toggle Lista/Comparar. Modo compare mostra 2 versões lado a lado com
+  destaque visual nas diferenças (campo a campo) + selects pra escolher
+  qualquer combinação.
 
 ## 🟢 Próximas sessões
 
@@ -29,16 +38,12 @@ Disparar e-mail (Resend, Supabase Edge Function) ou Slack quando:
 Destrava o ciclo de aprovação na prática — não fica refém de "o cliente entrou
 no sistema?".
 
-### 2. Dashboard na home da Aprovação
-Cabeçalho consolidado: "X peças pendentes · Y aprovadas · Z reprovadas · W
-comentários sem resposta", com filtro "só mostrar campanhas com pendência".
-
-### 3. Audit log
+### 2. Audit log
 Tabela `events` no Supabase (separada da tabela do roadmap acima) +
 modal "Histórico" na peça mostrando quem fez o quê quando. Hoje só guardamos
 autor de comentário, não eventos como aprovar/reprovar/editar.
 
-### 4. Brand Guide / Briefing
+### 3. Brand Guide / Briefing
 Página `/marca` com logo, paleta, fonts, tom de voz, "do's and don'ts".
 Hoje tudo espalhado em PowerPoint. Plugar no Supabase pra editar via admin.
 
@@ -55,11 +60,7 @@ Hoje tudo espalhado em PowerPoint. Plugar no Supabase pra editar via admin.
 ### 7. Markdown leve nos comentários
 **bold**, _itálico_, link clicável. Hoje é texto puro.
 
-### 8. Comparação V1 vs V2 lado a lado
-Já temos snapshot de versão. Falta um botão "comparar" que renderiza as duas
-peças lado a lado.
-
-### 9. Tags/labels nas peças
+### 8. Tags/labels nas peças
 "TV", "Digital", "OOH", "9:16", "16:9". Permite filtrar dentro de uma campanha.
 
 ---

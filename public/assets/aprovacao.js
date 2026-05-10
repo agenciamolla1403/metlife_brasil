@@ -98,6 +98,73 @@
     });
   }
 
+  function diffVersions(a, b) {
+    return {
+      name: (a.name || '') !== (b.name || ''),
+      copy: (a.copy || '') !== (b.copy || ''),
+      caption: (a.caption || '') !== (b.caption || ''),
+      link_url: (a.link_url || '') !== (b.link_url || ''),
+      media_url: (a.media_url || '') !== (b.media_url || ''),
+      media_type: (a.media_type || '') !== (b.media_type || ''),
+      status: a.status !== b.status,
+    };
+  }
+
+  function compareSideHtml(v, diffs) {
+    const statusLabels = { pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' };
+    let mediaHtml = '';
+    if (v.media_type === 'image' && v.media_url) {
+      mediaHtml = `<img src="${escapeHtml(v.media_url)}" alt="${escapeHtml(v.name)}" loading="lazy">`;
+    } else if (v.media_type === 'video' && v.media_url) {
+      if (typeof isDirectVideoFile === 'function' && isDirectVideoFile(v.media_url)) {
+        mediaHtml = `<video src="${escapeHtml(v.media_url)}" controls></video>`;
+      } else if (v.video_embed_url) {
+        mediaHtml = `<iframe src="${escapeHtml(v.video_embed_url)}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"></iframe>`;
+      } else {
+        mediaHtml = `<div class="placeholder">▶ Vídeo<br><small>${escapeHtml(v.media_url)}</small></div>`;
+      }
+    } else {
+      mediaHtml = `<div class="placeholder">Sem mídia</div>`;
+    }
+
+    const field = (label, value, diffKey) => {
+      const empty = !value;
+      return `
+        <div class="compare-field ${diffs[diffKey] ? 'is-diff' : ''}">
+          <span class="cf-label">${label}</span>
+          <div class="cf-value ${empty ? 'cf-empty' : ''}">${empty ? '— vazio —' : escapeHtml(value)}</div>
+        </div>
+      `;
+    };
+    const fieldLink = (label, value, diffKey) => {
+      const empty = !value;
+      return `
+        <div class="compare-field ${diffs[diffKey] ? 'is-diff' : ''}">
+          <span class="cf-label">${label}</span>
+          <div class="cf-value ${empty ? 'cf-empty' : ''}">${empty ? '— vazio —' : `<a href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(value)}</a>`}</div>
+        </div>
+      `;
+    };
+
+    return `
+      <div class="compare-side">
+        <div class="compare-side-head">
+          <span class="version-tag big">v${v.version}${v._isCurrent ? ' • atual' : ''}</span>
+          <span class="compare-side-status status-${v.status}">
+            <span class="dot"></span>${statusLabels[v.status] || v.status}
+          </span>
+        </div>
+        <div class="compare-side-media">${mediaHtml}</div>
+        <div class="compare-fields">
+          ${field('Nome da peça', v.name, 'name')}
+          ${field('Copy', v.copy, 'copy')}
+          ${field('Legenda', v.caption, 'caption')}
+          ${fieldLink('Link da peça', v.link_url, 'link_url')}
+        </div>
+      </div>
+    `;
+  }
+
   function toEmbedUrl(url) {
     if (!url) return null;
     const u = String(url).trim();
@@ -261,12 +328,84 @@
         return;
       }
 
+      // Agrega stats de TODAS as campanhas
+      const allStats = campaigns.reduce((acc, c) => {
+        const s = c.stats || { total: 0, approved: 0, rejected: 0, pending: 0 };
+        return {
+          total: acc.total + s.total,
+          approved: acc.approved + s.approved,
+          rejected: acc.rejected + s.rejected,
+          pending: acc.pending + s.pending,
+        };
+      }, { total: 0, approved: 0, rejected: 0, pending: 0 });
+
+      const withPending = campaigns.filter(c => (c.stats || {}).pending > 0).length;
+      const pct = (n) => allStats.total > 0 ? Math.round((n / allStats.total) * 100) : 0;
+      const currentFilter = this._homeFilter || 'all';
+      const filteredCampaigns = currentFilter === 'pending'
+        ? campaigns.filter(c => (c.stats || {}).pending > 0)
+        : campaigns;
+
+      const dashboardHtml = allStats.total > 0 ? `
+        <div class="dashboard">
+          <div class="dashboard-head">
+            <h2>📊 Visão geral</h2>
+            <span class="dashboard-sub">${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'} · ${allStats.total} ${allStats.total === 1 ? 'peça' : 'peças'} no total</span>
+          </div>
+          <div class="dashboard-kpis">
+            <div class="dash-kpi dash-kpi-pending">
+              <div class="dash-kpi-icon">⏳</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.pending}</div>
+                <div class="dash-kpi-label">Pendentes</div>
+                <div class="dash-kpi-pct">${pct(allStats.pending)}% do total</div>
+              </div>
+            </div>
+            <div class="dash-kpi dash-kpi-approved">
+              <div class="dash-kpi-icon">✓</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.approved}</div>
+                <div class="dash-kpi-label">Aprovadas</div>
+                <div class="dash-kpi-pct">${pct(allStats.approved)}% do total</div>
+              </div>
+            </div>
+            <div class="dash-kpi dash-kpi-rejected">
+              <div class="dash-kpi-icon">✕</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.rejected}</div>
+                <div class="dash-kpi-label">Reprovadas</div>
+                <div class="dash-kpi-pct">${pct(allStats.rejected)}% do total</div>
+              </div>
+            </div>
+            <div class="dash-kpi dash-kpi-total">
+              <div class="dash-kpi-icon">📦</div>
+              <div class="dash-kpi-body">
+                <div class="dash-kpi-value">${allStats.total}</div>
+                <div class="dash-kpi-label">Total de peças</div>
+                <div class="dash-kpi-pct">em ${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'}</div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-progress" title="${allStats.approved} aprovadas · ${allStats.rejected} reprovadas · ${allStats.pending} pendentes">
+            ${allStats.approved > 0 ? `<div class="seg-approved" style="width:${pct(allStats.approved)}%"></div>` : ''}
+            ${allStats.rejected > 0 ? `<div class="seg-rejected" style="width:${pct(allStats.rejected)}%"></div>` : ''}
+            ${allStats.pending > 0 ? `<div class="seg-pending" style="width:${pct(allStats.pending)}%"></div>` : ''}
+          </div>
+        </div>
+      ` : '';
+
       const html = `
+        ${dashboardHtml}
         <div class="toolbar">
           <div class="toolbar-left">
-            <span class="filter-pill active">
-              Campanhas <span class="count">${campaigns.length}</span>
-            </span>
+            <button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" data-home-filter="all">
+              Todas <span class="count">${campaigns.length}</span>
+            </button>
+            ${withPending > 0 ? `
+              <button class="filter-pill ${currentFilter === 'pending' ? 'active' : ''}" data-home-filter="pending">
+                Com pendência <span class="count">${withPending}</span>
+              </button>
+            ` : ''}
           </div>
           ${window.MetLifeAuth.isAdmin() ? `
             <button class="btn-primary" id="btnNewCampaign">
@@ -286,13 +425,27 @@
               </button>
             ` : ''}
           </div>
+        ` : filteredCampaigns.length === 0 ? `
+          <div class="empty-state">
+            <div class="icon">✨</div>
+            <h3>Nenhuma campanha com pendência</h3>
+            <p>Todas as campanhas estão sem peças aguardando aprovação.</p>
+          </div>
         ` : `
           <div class="cards-grid">
-            ${campaigns.map(c => this.campaignCardHtml(c)).join('')}
+            ${filteredCampaigns.map(c => this.campaignCardHtml(c)).join('')}
           </div>
         `}
       `;
       this.el.content.innerHTML = html;
+
+      // Filtros do toolbar
+      this.el.content.querySelectorAll('[data-home-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this._homeFilter = btn.dataset.homeFilter;
+          this.renderHomeView();
+        });
+      });
 
       const newBtn = document.getElementById('btnNewCampaign');
       const newBtnEmpty = document.getElementById('btnNewCampaignEmpty');
@@ -1374,6 +1527,95 @@
         ...versions
       ];
 
+      // Modo de visualização (Lista ou Comparar)
+      let mode = 'list';
+      // Default: A = mais antiga, B = atual
+      let compareAIdx = allVersions.length - 1;
+      let compareBIdx = 0;
+
+      const renderBody = () => {
+        const m = document.getElementById('appModal');
+        if (!m) return;
+        const body = m.querySelector('.versions-body');
+        if (!body) return;
+
+        // Toggle Lista/Comparar (só faz sentido com 2+ versões)
+        const canCompare = allVersions.length >= 2;
+        const toggleHtml = canCompare ? `
+          <div class="versions-mode-toggle">
+            <button type="button" class="${mode === 'list' ? 'active' : ''}" data-mode="list">📋 Lista</button>
+            <button type="button" class="${mode === 'compare' ? 'active' : ''}" data-mode="compare">⇆ Comparar</button>
+          </div>
+        ` : '';
+
+        if (allVersions.length === 1) {
+          body.innerHTML = `
+            <div class="empty-state">
+              <div class="icon">📜</div>
+              <h3>Nenhuma versão anterior</h3>
+              <p>Quando esta peça for editada, as versões anteriores aparecerão aqui.</p>
+            </div>
+          `;
+          return;
+        }
+
+        if (mode === 'list') {
+          body.innerHTML = `
+            ${toggleHtml}
+            <div class="versions-list">
+              ${allVersions.map(v => versionCardHtml(v, !!v._isCurrent)).join('')}
+            </div>
+          `;
+        } else {
+          // Modo compare
+          const vA = allVersions[compareAIdx];
+          const vB = allVersions[compareBIdx];
+          const diffs = diffVersions(vA, vB);
+          const diffCount = Object.values(diffs).filter(Boolean).length;
+
+          const optionLabel = (v) => `v${v.version}${v._isCurrent ? ' (atual)' : ''}`;
+          const selectOptions = (selected) => allVersions
+            .map((v, i) => `<option value="${i}" ${i === selected ? 'selected' : ''}>${optionLabel(v)}</option>`)
+            .join('');
+
+          body.innerHTML = `
+            ${toggleHtml}
+            <div class="compare-toolbar">
+              <label>Versão A
+                <select id="cmpA">${selectOptions(compareAIdx)}</select>
+              </label>
+              <span class="swap-icon">⇆</span>
+              <label>Versão B
+                <select id="cmpB">${selectOptions(compareBIdx)}</select>
+              </label>
+              <span class="diff-badge ${diffCount === 0 ? 'zero' : ''}">
+                ${diffCount === 0 ? 'Sem diferenças' : `${diffCount} ${diffCount === 1 ? 'diferença' : 'diferenças'}`}
+              </span>
+            </div>
+            <div class="compare-view">
+              ${compareSideHtml(vA, diffs)}
+              ${compareSideHtml(vB, diffs)}
+            </div>
+          `;
+
+          body.querySelector('#cmpA').addEventListener('change', (e) => {
+            compareAIdx = parseInt(e.target.value, 10);
+            renderBody();
+          });
+          body.querySelector('#cmpB').addEventListener('change', (e) => {
+            compareBIdx = parseInt(e.target.value, 10);
+            renderBody();
+          });
+        }
+
+        body.querySelectorAll('[data-mode]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            mode = btn.dataset.mode;
+            renderBody();
+          });
+        });
+      };
+
       const inner = `
         <div class="modal-header">
           <div>
@@ -1382,19 +1624,7 @@
           </div>
           <button class="modal-close" type="button" data-close>×</button>
         </div>
-        <div class="modal-body versions-body">
-          ${allVersions.length === 1 ? `
-            <div class="empty-state">
-              <div class="icon">📜</div>
-              <h3>Nenhuma versão anterior</h3>
-              <p>Quando esta peça for editada, as versões anteriores aparecerão aqui.</p>
-            </div>
-          ` : `
-            <div class="versions-list">
-              ${allVersions.map(v => versionCardHtml(v, !!v._isCurrent)).join('')}
-            </div>
-          `}
-        </div>
+        <div class="modal-body versions-body"></div>
         <div class="modal-footer">
           <button class="btn-secondary" type="button" data-close>Fechar</button>
         </div>
@@ -1403,6 +1633,7 @@
       const m = document.getElementById('appModal');
       m.innerHTML = inner;
       m.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => this._close()));
+      renderBody();
     },
 
     _open(innerHtml, onReady, sizeClass = '') {
