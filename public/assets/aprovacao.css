@@ -1116,6 +1116,29 @@ main {
   background: rgba(229, 72, 77, 0.08);
   border-left-color: var(--danger);
 }
+.comment.action.action-created {
+  background: rgba(45, 181, 223, 0.08);
+  border-left-color: var(--blue);
+}
+.comment-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  background: white;
+  color: var(--navy);
+  border: 1.5px solid currentColor;
+  flex-shrink: 0;
+}
+.comment.action .comment-action-icon { color: var(--green); }
+.comment.action.action-rejected .comment-action-icon { color: var(--danger); }
+.comment.action.action-update .comment-action-icon { color: #F59E0B; }
+.comment.action.action-created .comment-action-icon { color: var(--blue); }
+
 .comment-head {
   display: flex;
   justify-content: space-between;
@@ -1137,6 +1160,46 @@ main {
   color: var(--navy);
   margin: 0;
   word-break: break-word;
+}
+
+/* Formatação inline nos comentários (markdown leve) */
+.comment-text strong {
+  font-weight: 800;
+  color: var(--navy);
+}
+.comment-text em {
+  font-style: italic;
+}
+.comment-text a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-all;
+}
+.comment-text a:hover {
+  color: var(--navy);
+}
+
+/* Hint de markdown abaixo do form */
+.comment-hint {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  align-items: center;
+}
+.comment-hint code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  background: rgba(0, 59, 92, 0.06);
+  color: var(--navy);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
 }
 
 .comment-form {

@@ -163,9 +163,28 @@
         .select()
         .single();
       if (error) throw error;
+
+      // Registra criação na timeline (audit log)
+      const author = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? window.MetLifeAuth.getUserName() : '';
+      const { data: actionComment } = await client
+        .from('comments')
+        .insert({
+          piece_id: data.id,
+          author: author || 'Admin',
+          text: `Criou a peça "${piece.name}".`,
+          kind: 'action-created'
+        })
+        .select()
+        .single();
+
       // Atualiza cache
       const list = cache.pieces.get(campaignId) || [];
       cache.pieces.set(campaignId, [data, ...list]);
+      if (actionComment) {
+        const cms = cache.comments.get(data.id) || [];
+        cms.push(actionComment);
+        cache.comments.set(data.id, cms);
+      }
       cache.campaigns = null; // stats da campanha mudaram
       return data;
     },

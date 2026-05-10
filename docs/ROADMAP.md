@@ -20,6 +20,13 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
   toggle Lista/Comparar. Modo compare mostra 2 versões lado a lado com
   destaque visual nas diferenças (campo a campo) + selects pra escolher
   qualquer combinação.
+- **Audit log na timeline** (S29) — peças agora registram criação, edição
+  (versionamento), aprovação e reprovação como eventos visuais na sidebar
+  de comentários, com ícone específico (＋ / ✎ / ✓ / ✕) e cor por tipo.
+  Histórico completo de "quem fez o quê quando" sem sair da peça.
+- **Markdown leve nos comentários** (S29) — comentários aceitam `**negrito**`,
+  `_itálico_`, `[texto](url)` e autolink de URLs. XSS bloqueado (links
+  `javascript:` ignorados, HTML escapado). Hint visual abaixo do input.
 
 ## 🟢 Próximas sessões
 
@@ -38,12 +45,7 @@ Disparar e-mail (Resend, Supabase Edge Function) ou Slack quando:
 Destrava o ciclo de aprovação na prática — não fica refém de "o cliente entrou
 no sistema?".
 
-### 2. Audit log
-Tabela `events` no Supabase (separada da tabela do roadmap acima) +
-modal "Histórico" na peça mostrando quem fez o quê quando. Hoje só guardamos
-autor de comentário, não eventos como aprovar/reprovar/editar.
-
-### 3. Brand Guide / Briefing
+### 2. Brand Guide / Briefing
 Página `/marca` com logo, paleta, fonts, tom de voz, "do's and don'ts".
 Hoje tudo espalhado em PowerPoint. Plugar no Supabase pra editar via admin.
 
@@ -51,16 +53,13 @@ Hoje tudo espalhado em PowerPoint. Plugar no Supabase pra editar via admin.
 
 ## 🪄 Quick wins (1-2h cada)
 
-### 6. Atalhos de teclado na Aprovação
+### 3. Atalhos de teclado na Aprovação
 - `A` aprova
 - `R` reprova
 - `J/K` navega entre peças
 - `C` foca no campo de comentário
 
-### 7. Markdown leve nos comentários
-**bold**, _itálico_, link clicável. Hoje é texto puro.
-
-### 8. Tags/labels nas peças
+### 4. Tags/labels nas peças
 "TV", "Digital", "OOH", "9:16", "16:9". Permite filtrar dentro de uma campanha.
 
 ---

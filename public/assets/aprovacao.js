@@ -42,6 +42,34 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  // Markdown leve nos comentários:
+  //   **negrito**   _itálico_   [texto](url)   + autolink de URLs soltas
+  // Aplica escapeHtml ANTES, depois substitui os tokens (que sobrevivem ao escape).
+  function renderCommentText(text) {
+    if (text == null) return '';
+    let s = escapeHtml(String(text));
+
+    // [texto](url) — só http/https/mailto pra não permitir javascript:
+    s = s.replace(/\[([^\]\n]+?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
+      (_, label, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`);
+
+    // Autolink — URLs http(s) soltas que NÃO estão dentro de um href (já viraram <a>)
+    // Pra evitar dupla-substituição, marca temporariamente as URLs já dentro de href.
+    s = s.replace(/(href="[^"]+")/g, m => m.replace(/https?:\/\//g, '\u0001\u0001'));
+    s = s.replace(/(^|[^"=>])((?:https?:\/\/)[^\s<]+[^\s<.,;:!?)\]"'])/g,
+      (_, pre, url) => `${pre}<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    s = s.replace(/\u0001\u0001/g, 'https://');
+
+    // **bold** — usa lookahead/behind simples pra não pegar ** em meio a palavras
+    s = s.replace(/\*\*(?=\S)([\s\S]*?\S)\*\*/g, '<strong>$1</strong>');
+
+    // _italic_ — só quando rodeado por boundary (espaço, início, pontuação)
+    s = s.replace(/(^|[\s(\[])_(?=\S)([^_\n]+?\S)_(?=$|[\s)\].,;:!?])/g,
+      '$1<em>$2</em>');
+
+    return s;
+  }
+
   function formatDate(iso) {
     const d = new Date(iso);
     const day = String(d.getDate()).padStart(2, '0');
@@ -1147,21 +1175,32 @@
                         : `<span class="comment-pin-badge old" title="Pin de versão anterior">📍 v${cm.pin_version}</span>`)
                     : '';
                   const canDel = canDeleteComment(cm);
-                  const kindClass = cm.kind === 'action' ? 'action'
+                  const isAction = cm.kind && cm.kind.startsWith('action');
+                  const kindClass = cm.kind === 'action' ? 'action action-approved'
                     : cm.kind === 'action-rejected' ? 'action action-rejected'
                     : cm.kind === 'action-update' ? 'action action-update'
+                    : cm.kind === 'action-created' ? 'action action-created'
                     : '';
+                  // Ícones por tipo de evento (audit log visual)
+                  const actionIcon = cm.kind === 'action' ? '<span class="comment-action-icon" title="Aprovou">✓</span>'
+                    : cm.kind === 'action-rejected' ? '<span class="comment-action-icon" title="Reprovou">✕</span>'
+                    : cm.kind === 'action-update' ? '<span class="comment-action-icon" title="Editou">✎</span>'
+                    : cm.kind === 'action-created' ? '<span class="comment-action-icon" title="Criou">＋</span>'
+                    : '';
+                  // Markdown só em comentários normais; ações têm texto fixo
+                  const textHtml = isAction ? escapeHtml(cm.text) : renderCommentText(cm.text);
                   return `
                     <div class="comment ${kindClass}"
                          data-comment-id="${cm.id}"
                          data-pin-id="${pinIsCurrent ? cm.id : ''}">
                       <div class="comment-head">
+                        ${actionIcon}
                         ${pinBadge}
                         <span class="comment-author">${escapeHtml(cm.author)}</span>
                         <span class="comment-date">${formatDate(cm.created_at)}</span>
                         ${canDel ? `<button type="button" class="comment-delete" data-id="${cm.id}" title="Excluir comentário">×</button>` : ''}
                       </div>
-                      <p class="comment-text">${escapeHtml(cm.text)}</p>
+                      <p class="comment-text">${textHtml}</p>
                     </div>
                   `;
                 }).join('')}
@@ -1174,6 +1213,12 @@
                 ` : ''}
                 <button type="submit">Enviar</button>
               </form>
+              <div class="comment-hint">
+                Formatação:
+                <code>**negrito**</code>
+                <code>_itálico_</code>
+                <code>[link](url)</code>
+              </div>
 
               ${(window.MetLifeAuth.isAdmin() || (pp.version || 1) > 1) ? `
                 <div class="piece-side-footer">
