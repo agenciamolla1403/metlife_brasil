@@ -348,9 +348,12 @@
 
       const dashboardHtml = allStats.total > 0 ? `
         <div class="dashboard">
-          <div class="dashboard-head">
-            <h2>📊 Visão geral</h2>
-            <span class="dashboard-sub">${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'} · ${allStats.total} ${allStats.total === 1 ? 'peça' : 'peças'} no total</span>
+          <h2 class="dashboard-title">📊 Visão geral</h2>
+          <p class="dashboard-sub">${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'} · ${allStats.total} ${allStats.total === 1 ? 'peça' : 'peças'} no total</p>
+          <div class="dashboard-progress" title="${allStats.approved} aprovadas · ${allStats.rejected} reprovadas · ${allStats.pending} pendentes">
+            ${allStats.approved > 0 ? `<div class="seg-approved" style="width:${pct(allStats.approved)}%"></div>` : ''}
+            ${allStats.rejected > 0 ? `<div class="seg-rejected" style="width:${pct(allStats.rejected)}%"></div>` : ''}
+            ${allStats.pending > 0 ? `<div class="seg-pending" style="width:${pct(allStats.pending)}%"></div>` : ''}
           </div>
           <div class="dashboard-kpis">
             <div class="dash-kpi dash-kpi-pending">
@@ -385,11 +388,6 @@
                 <div class="dash-kpi-pct">em ${campaigns.length} ${campaigns.length === 1 ? 'campanha' : 'campanhas'}</div>
               </div>
             </div>
-          </div>
-          <div class="dashboard-progress" title="${allStats.approved} aprovadas · ${allStats.rejected} reprovadas · ${allStats.pending} pendentes">
-            ${allStats.approved > 0 ? `<div class="seg-approved" style="width:${pct(allStats.approved)}%"></div>` : ''}
-            ${allStats.rejected > 0 ? `<div class="seg-rejected" style="width:${pct(allStats.rejected)}%"></div>` : ''}
-            ${allStats.pending > 0 ? `<div class="seg-pending" style="width:${pct(allStats.pending)}%"></div>` : ''}
           </div>
         </div>
       ` : '';
