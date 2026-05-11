@@ -11,7 +11,8 @@
     { "source": "/elemidia", "destination": "/elemidia.html" },
     { "source": "/blitz", "destination": "/blitz.html" },
     { "source": "/arquivos", "destination": "/arquivos.html" },
-    { "source": "/jornada", "destination": "/jornada.html" }
+    { "source": "/jornada", "destination": "/jornada.html" },
+    { "source": "/ajuda", "destination": "/ajuda.html" }
   ],
   "headers": [
     {

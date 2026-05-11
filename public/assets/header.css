@@ -105,6 +105,34 @@
   flex-shrink: 0;
 }
 
+.mlh-btn-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(45, 181, 223, 0.10);
+  color: var(--mlh-blue, #2DB5DF);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 800;
+  border: 1.5px solid transparent;
+  transition: all 180ms ease;
+  font-family: inherit;
+  line-height: 1;
+}
+.mlh-btn-help:hover {
+  background: var(--mlh-blue, #2DB5DF);
+  color: white;
+  transform: scale(1.05);
+}
+.mlh-btn-help.active {
+  background: var(--mlh-blue, #2DB5DF);
+  color: white;
+  box-shadow: 0 2px 8px rgba(45, 181, 223, 0.35);
+}
+
 .mlh-btn-logout {
   background: transparent;
   border: 1px solid rgba(0, 59, 92, 0.16);

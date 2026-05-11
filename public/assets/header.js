@@ -26,6 +26,8 @@
     '/arquivos.html': 'arquivos',
     '/jornada': 'jornada',
     '/jornada.html': 'jornada',
+    '/ajuda': 'ajuda',
+    '/ajuda.html': 'ajuda',
   };
 
   function activeRouteFromPath() {
@@ -62,6 +64,7 @@
         <div class="mlh-actions">
           ${userChip}
           ${roleChip}
+          <a class="mlh-btn-help ${isActive('ajuda')}" href="/ajuda" title="Como usar a plataforma" aria-label="Ajuda">?</a>
           <button class="mlh-btn-logout" id="mlhLogoutBtn" type="button">Sair</button>
         </div>
       </div>
