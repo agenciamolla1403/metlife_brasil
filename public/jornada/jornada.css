@@ -90,6 +90,71 @@ main { min-height: 70vh; }
   margin: 0;
 }
 
+/* Bottom Sheet — groups internos (mês + categoria) */
+.jr-bs-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.jr-bs-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.jr-bs-group-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--jr-muted);
+}
+
+/* Desktop: o que está dentro do .bs-panel.jr-bs-panel volta a se comportar
+   como elementos inline normais (sem stack, sem labels) */
+@media (min-width: 761px) {
+  .jr-bs-panel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* renderiza inline na barra, sem fundo nem sombra */
+  }
+  .jr-bs-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+  }
+  .jr-bs-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .jr-bs-group-label {
+    display: none; /* labels só fazem sentido no sheet mobile */
+  }
+}
+
+/* Mobile: tira sticky da toolbar e empilha melhor */
+@media (max-width: 760px) {
+  .jr-toolbar {
+    position: static;
+    padding: 12px 14px;
+  }
+  .jr-toolbar-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .jr-toolbar-row-spacer { display: none; }
+  .jr-count { width: 100%; padding: 0; }
+
+  /* Chips dentro do sheet ficam todos visíveis, com wrap */
+  .jr-bs-panel .jr-filters {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 /* ============ TOOLBAR ============ */
 .jr-toolbar {
   position: sticky;

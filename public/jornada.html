@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="/assets/header.css" />
   <link rel="stylesheet" href="/assets/breadcrumb.css" />
   <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/bottom-sheet.css" />
   <link rel="stylesheet" href="/jornada/jornada.css" />
   <script src="/assets/auth.js"></script>
   <script src="/assets/header.js"></script>
+  <script src="/assets/bottom-sheet.js"></script>
 </head>
 <body>
   <div class="page-subbar">
@@ -34,10 +36,34 @@
         <div class="jr-toolbar-row">
           <span class="jr-count" id="jrCount"></span>
           <span class="jr-toolbar-row-spacer"></span>
-          <select id="jrMonthFilter" class="jr-month-select" aria-label="Filtrar por mês"></select>
+
+          <!-- Trigger mobile (só visível em <=760px) -->
+          <button class="bs-trigger jr-bs-trigger" type="button" data-bs-open="jrFiltrosSheet" aria-label="Abrir filtros">
+            <span class="bs-trigger-icon">⚙️</span>
+            <span>Filtros</span>
+          </button>
+
+          <!-- Em desktop, este wrapper renderiza inline; em mobile vira bottom sheet -->
+          <div class="bs-panel jr-bs-panel" id="jrFiltrosSheet" aria-hidden="true">
+            <div class="bs-handle"></div>
+            <div class="bs-header">
+              <h3>Filtros</h3>
+              <button class="bs-close" type="button" data-bs-close aria-label="Fechar filtros">×</button>
+            </div>
+            <div class="bs-content jr-bs-content">
+              <div class="jr-bs-group">
+                <label class="jr-bs-group-label">Mês</label>
+                <select id="jrMonthFilter" class="jr-month-select" aria-label="Filtrar por mês"></select>
+              </div>
+              <div class="jr-bs-group">
+                <label class="jr-bs-group-label">Categoria</label>
+                <div class="jr-filters" id="jrFilters" role="tablist"></div>
+              </div>
+            </div>
+          </div>
+
           <span id="jrAdminSlot"></span>
         </div>
-        <div class="jr-filters" id="jrFilters" role="tablist"></div>
       </div>
     </div>
 

@@ -108,6 +108,20 @@ body {
   box-shadow: var(--aj-shadow-sm);
 }
 
+/* Mobile: scroll horizontal limpo */
+@media (max-width: 760px) {
+  .aj-toc {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -16px;
+    padding: 0 16px 4px;
+  }
+  .aj-toc::-webkit-scrollbar { display: none; }
+  .aj-toc a { flex-shrink: 0; }
+}
+
 /* ----------- SECTIONS ----------- */
 .aj-section {
   margin: 80px 0;

@@ -2,7 +2,8 @@
    MetLife Brasil — Header Global (injeção via JS)
    ------------------------------------------------------------
    Detecta a rota atual e marca o link ativo automaticamente.
-   Botão Sair conectado ao MetLifeAuth.logout().
+   Em mobile, transforma a navegação em hamburguer + drawer
+   lateral esquerdo.
    ============================================================ */
 
 (function () {
@@ -30,6 +31,17 @@
     '/ajuda.html': 'ajuda',
   };
 
+  // Definição centralizada dos itens de navegação (reusa entre desktop e drawer)
+  const NAV_ITEMS = [
+    { href: '/jornada',    id: 'jornada',    label: 'Jornada' },
+    { href: '/plano-midia', id: 'plano',      label: 'Mídia' },
+    { href: '/cronograma', id: 'cronograma', label: 'Crono Ads' },
+    { href: '/elemidia',   id: 'elemidia',   label: 'Elemidia' },
+    { href: '/blitz',      id: 'blitz',      label: 'Blitz' },
+    { href: '/arquivos',   id: 'arquivos',   label: 'Arquivos' },
+    { href: '/aprovacao',  id: 'aprovacao',  label: 'Aprovação' },
+  ];
+
   function activeRouteFromPath() {
     const p = window.location.pathname.replace(/\/$/, '') || '/';
     return ROUTE_MAP[p] || 'home';
@@ -47,19 +59,24 @@
       ? '<span class="mlh-role-chip mlh-role-admin" title="Perfil Molla — administra campanhas e peças">Admin</span>'
       : '';
 
+    const navLinks = NAV_ITEMS.map(it =>
+      `<a href="${it.href}" class="${isActive(it.id)}">${it.label}</a>`
+    ).join('\n          ');
+
+    const drawerLinks = NAV_ITEMS.map(it =>
+      `<a href="${it.href}" class="mlh-drawer-link ${isActive(it.id)}">${it.label}</a>`
+    ).join('\n          ');
+
     return `
       <div class="mlh-inner">
+        <button class="mlh-hamburger" id="mlhHamburgerBtn" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
         <a class="mlh-logo" href="/" aria-label="Central do Cliente">
           <img src="/img/logo_metlife.svg" alt="MetLife" />
         </a>
         <nav class="mlh-nav" aria-label="Navegação principal">
-          <a href="/jornada" class="${isActive('jornada')}">Jornada</a>
-          <a href="/plano-midia" class="${isActive('plano')}">Mídia</a>
-          <a href="/cronograma" class="${isActive('cronograma')}">Crono Ads</a>
-          <a href="/elemidia" class="${isActive('elemidia')}">Elemidia</a>
-          <a href="/blitz" class="${isActive('blitz')}">Blitz</a>
-          <a href="/arquivos" class="${isActive('arquivos')}">Arquivos</a>
-          <a href="/aprovacao" class="${isActive('aprovacao')}">Aprovação</a>
+          ${navLinks}
         </nav>
         <div class="mlh-actions">
           ${userChip}
@@ -68,6 +85,33 @@
           <button class="mlh-btn-logout" id="mlhLogoutBtn" type="button">Sair</button>
         </div>
       </div>
+
+      <!-- Drawer lateral (mobile) -->
+      <div class="mlh-drawer-backdrop" id="mlhDrawerBackdrop" aria-hidden="true"></div>
+      <aside class="mlh-drawer" id="mlhDrawer" aria-label="Menu" aria-hidden="true">
+        <header class="mlh-drawer-head">
+          <a class="mlh-drawer-logo" href="/" aria-label="Central do Cliente">
+            <img src="/img/logo_metlife.svg" alt="MetLife" />
+          </a>
+          <button class="mlh-drawer-close" id="mlhDrawerClose" type="button" aria-label="Fechar menu">×</button>
+        </header>
+        ${userName ? `
+          <div class="mlh-drawer-user">
+            <span class="mlh-drawer-user-avatar">${escapeAttr(initials)}</span>
+            <div class="mlh-drawer-user-info">
+              <span class="mlh-drawer-user-name">${escapeAttr(userName)}</span>
+              ${isAdmin ? '<span class="mlh-drawer-user-role">Admin · Molla</span>' : '<span class="mlh-drawer-user-role">MetLife</span>'}
+            </div>
+          </div>
+        ` : ''}
+        <nav class="mlh-drawer-nav" aria-label="Navegação principal mobile">
+          ${drawerLinks}
+          <a href="/ajuda" class="mlh-drawer-link mlh-drawer-link-help ${isActive('ajuda')}"><span class="mlh-drawer-help-icon">?</span> Ajuda</a>
+        </nav>
+        <div class="mlh-drawer-foot">
+          <button class="mlh-drawer-logout" id="mlhDrawerLogoutBtn" type="button">Sair</button>
+        </div>
+      </aside>
     `;
   }
 
@@ -75,39 +119,81 @@
     return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  function openDrawer() {
+    const drawer = document.getElementById('mlhDrawer');
+    const backdrop = document.getElementById('mlhDrawerBackdrop');
+    const hamburger = document.getElementById('mlhHamburgerBtn');
+    if (!drawer) return;
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    if (backdrop) backdrop.classList.add('is-open');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('mlh-drawer-open');
+  }
+
+  function closeDrawer() {
+    const drawer = document.getElementById('mlhDrawer');
+    const backdrop = document.getElementById('mlhDrawerBackdrop');
+    const hamburger = document.getElementById('mlhHamburgerBtn');
+    if (!drawer) return;
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    if (backdrop) backdrop.classList.remove('is-open');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mlh-drawer-open');
+  }
+
+  function handleLogout() {
+    if (confirm('Deseja sair?') && window.MetLifeAuth) {
+      window.MetLifeAuth.logout();
+    }
+  }
+
   function inject() {
-    // Não duplicar se já existir
     if (document.querySelector('.mlh-header')) return;
 
-    // Usamos <div role="banner"> em vez de <header> de propósito:
-    // alguns HTMLs do projeto usam seletor CSS genérico `header { ... }`
-    // que vazaria estilos do hero pro nosso componente.
     const wrapper = document.createElement('div');
     wrapper.className = 'mlh-header';
     wrapper.setAttribute('role', 'banner');
     wrapper.innerHTML = buildHtml(activeRouteFromPath());
 
-    // Insere como primeiro elemento do body
     document.body.insertBefore(wrapper, document.body.firstChild);
 
-    const btn = document.getElementById('mlhLogoutBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        if (confirm('Deseja sair?') && window.MetLifeAuth) {
-          window.MetLifeAuth.logout();
-        }
-      });
+    // Botões de logout (header e drawer)
+    const logoutBtn = document.getElementById('mlhLogoutBtn');
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+    const drawerLogoutBtn = document.getElementById('mlhDrawerLogoutBtn');
+    if (drawerLogoutBtn) drawerLogoutBtn.addEventListener('click', handleLogout);
+
+    // Hamburguer e fechar
+    const hamburger = document.getElementById('mlhHamburgerBtn');
+    const drawerClose = document.getElementById('mlhDrawerClose');
+    const backdrop = document.getElementById('mlhDrawerBackdrop');
+    if (hamburger) hamburger.addEventListener('click', openDrawer);
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    // ESC fecha drawer
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    // Se sair do mobile pra desktop com drawer aberto, fecha automaticamente
+    if (typeof window.matchMedia === 'function') {
+      const mq = window.matchMedia('(min-width: 761px)');
+      const handler = (ev) => { if (ev.matches) closeDrawer(); };
+      if (mq.addEventListener) mq.addEventListener('change', handler);
+      else if (mq.addListener) mq.addListener(handler); // Safari antigo
     }
 
-    // Expõe a altura real do header como CSS var global pra elementos
-    // sticky de cada página se ajustarem automaticamente.
+    // Expõe altura real do header como CSS var (pra elementos sticky)
     function updateHeaderHeight() {
-      const h = wrapper.offsetHeight || 60;
+      const inner = wrapper.querySelector('.mlh-inner');
+      const h = (inner ? inner.offsetHeight : wrapper.offsetHeight) || 60;
       document.documentElement.style.setProperty('--mlh-header-h', h + 'px');
     }
     updateHeaderHeight();
     window.addEventListener('resize', updateHeaderHeight);
-    // Reaplica quando carregam fontes/imagens (logo SVG pode mudar altura)
     window.addEventListener('load', updateHeaderHeight);
   }
 

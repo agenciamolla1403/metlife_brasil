@@ -151,24 +151,229 @@
   border-color: rgba(0, 59, 92, 0.28);
 }
 
+/* ===================================================================
+   HAMBURGUER (visível só em mobile)
+   =================================================================== */
+.mlh-hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-shrink: 0;
+  transition: background 180ms ease;
+}
+.mlh-hamburger:hover { background: rgba(0, 59, 92, 0.06); }
+.mlh-hamburger span {
+  display: block;
+  height: 2.5px;
+  background: var(--mlh-navy);
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+/* ===================================================================
+   DRAWER (esconder por padrão em desktop)
+   =================================================================== */
+.mlh-drawer-backdrop {
+  display: none;
+}
+.mlh-drawer {
+  display: none;
+}
+
+/* ===================================================================
+   MOBILE (até 760px)
+   =================================================================== */
 @media (max-width: 760px) {
   .mlh-inner {
     padding: 10px 14px;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap;
   }
   .mlh-logo img { height: 24px; }
-  .mlh-nav {
-    order: 3;
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
+
+  /* Esconder navegação inline e exibir hamburguer */
+  .mlh-nav { display: none; }
+  .mlh-hamburger { display: flex; }
+
+  /* Esconder elementos auxiliares — eles aparecem no drawer */
+  .mlh-actions .mlh-user-chip,
+  .mlh-actions .mlh-role-chip,
+  .mlh-actions .mlh-btn-help,
+  .mlh-actions .mlh-btn-logout {
+    display: none;
   }
-  .mlh-nav::-webkit-scrollbar { display: none; }
-  .mlh-nav a { padding: 6px 12px; font-size: 12px; }
-  .mlh-btn-logout { padding: 6px 12px; font-size: 11px; }
+
+  /* Backdrop e Drawer (mobile only) */
+  .mlh-drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 59, 92, 0.50);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms ease;
+    z-index: 998;
+  }
+  .mlh-drawer-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mlh-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: min(82vw, 320px);
+    background: white;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 260ms cubic-bezier(0.3, 0, 0.2, 1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
+    overflow-y: auto;
+  }
+  .mlh-drawer.is-open { transform: translateX(0); }
+
+  .mlh-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 59, 92, 0.08);
+    flex-shrink: 0;
+  }
+  .mlh-drawer-logo img { height: 28px; display: block; }
+  .mlh-drawer-close {
+    width: 36px; height: 36px;
+    background: rgba(0, 59, 92, 0.06);
+    border: 0;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--mlh-navy);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: background 180ms ease;
+  }
+  .mlh-drawer-close:hover { background: rgba(0, 59, 92, 0.12); }
+
+  .mlh-drawer-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(45, 181, 223, 0.10), rgba(80, 229, 150, 0.08));
+    border-bottom: 1px solid rgba(0, 59, 92, 0.06);
+  }
+  .mlh-drawer-user-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--mlh-navy);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .mlh-drawer-user-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .mlh-drawer-user-name {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--mlh-navy);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mlh-drawer-user-role {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mlh-blue, #2DB5DF);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .mlh-drawer-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    flex: 1;
+  }
+  .mlh-drawer-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    color: var(--mlh-navy);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    border-left: 3px solid transparent;
+    transition: all 160ms ease;
+  }
+  .mlh-drawer-link:hover {
+    background: rgba(45, 181, 223, 0.08);
+    border-left-color: var(--mlh-blue, #2DB5DF);
+  }
+  .mlh-drawer-link.active {
+    background: rgba(0, 59, 92, 0.06);
+    border-left-color: var(--mlh-navy);
+    color: var(--mlh-navy);
+    font-weight: 800;
+  }
+  .mlh-drawer-link-help {
+    margin-top: 8px;
+    border-top: 1px solid rgba(0, 59, 92, 0.06);
+    padding-top: 18px;
+    gap: 10px;
+  }
+  .mlh-drawer-help-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(45, 181, 223, 0.16);
+    color: var(--mlh-blue, #2DB5DF);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .mlh-drawer-foot {
+    padding: 16px 24px 24px;
+    border-top: 1px solid rgba(0, 59, 92, 0.06);
+    flex-shrink: 0;
+  }
+  .mlh-drawer-logout {
+    width: 100%;
+    padding: 12px;
+    background: rgba(229, 72, 77, 0.08);
+    color: #B91C1C;
+    border: 1.5px solid rgba(229, 72, 77, 0.25);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 180ms ease;
+  }
+  .mlh-drawer-logout:hover {
+    background: rgba(229, 72, 77, 0.15);
+    border-color: rgba(229, 72, 77, 0.40);
+  }
+
+  /* Bloqueia scroll do body quando drawer está aberto */
+  body.mlh-drawer-open {
+    overflow: hidden;
+  }
 }
 
 /* ============ ROLE CHIP ============ */

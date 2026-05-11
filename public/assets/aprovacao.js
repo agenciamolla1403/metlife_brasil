@@ -420,19 +420,39 @@
         </div>
       ` : '';
 
+      const filterPillsHtml = `
+        <button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" data-home-filter="all">
+          Todas <span class="count">${campaigns.length}</span>
+        </button>
+        ${withPending > 0 ? `
+          <button class="filter-pill ${currentFilter === 'pending' ? 'active' : ''}" data-home-filter="pending">
+            Com pendência <span class="count">${withPending}</span>
+          </button>
+        ` : ''}
+      `;
+
       const html = `
         ${dashboardHtml}
         <div class="toolbar">
-          <div class="toolbar-left">
-            <button class="filter-pill ${currentFilter === 'all' ? 'active' : ''}" data-home-filter="all">
-              Todas <span class="count">${campaigns.length}</span>
-            </button>
-            ${withPending > 0 ? `
-              <button class="filter-pill ${currentFilter === 'pending' ? 'active' : ''}" data-home-filter="pending">
-                Com pendência <span class="count">${withPending}</span>
-              </button>
-            ` : ''}
+          <!-- Trigger mobile (só aparece em <=760px) -->
+          <button class="bs-trigger toolbar-bs-trigger" type="button" data-bs-open="aprovacaoFiltrosSheet" aria-label="Abrir filtros">
+            <span class="bs-trigger-icon">⚙️</span>
+            <span>Filtros</span>
+            ${currentFilter !== 'all' ? `<span class="bs-trigger-count">1</span>` : ''}
+          </button>
+
+          <!-- Em desktop: inline; em mobile: bottom sheet -->
+          <div class="bs-panel toolbar-bs-panel" id="aprovacaoFiltrosSheet" aria-hidden="true">
+            <div class="bs-handle"></div>
+            <div class="bs-header">
+              <h3>Filtros</h3>
+              <button class="bs-close" type="button" data-bs-close aria-label="Fechar filtros">×</button>
+            </div>
+            <div class="bs-content toolbar-left">
+              ${filterPillsHtml}
+            </div>
           </div>
+
           ${window.MetLifeAuth.isAdmin() ? `
             <button class="btn-primary" id="btnNewCampaign">
               <span class="plus">+</span> Nova Campanha
@@ -465,9 +485,10 @@
       `;
       this.el.content.innerHTML = html;
 
-      // Filtros do toolbar
+      // Filtros do toolbar — fecha sheet em mobile se estiver aberto
       this.el.content.querySelectorAll('[data-home-filter]').forEach(btn => {
         btn.addEventListener('click', () => {
+          if (window.MetLifeBottomSheet) window.MetLifeBottomSheet.closeAll();
           this._homeFilter = btn.dataset.homeFilter;
           this.renderHomeView();
         });

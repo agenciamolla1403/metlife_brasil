@@ -699,6 +699,15 @@
       .wave-summary { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* Mobile: nada fixo na rolagem — banner da onda rola normalmente
+       junto com o conteúdo pra não roubar espaço da timeline. */
+    @media (max-width: 760px) {
+      .wave-banner {
+        position: static;
+        top: auto;
+      }
+    }
+
     /* Footer com logo Molla */
     .brand-footer-row {
       margin-top: 32px;

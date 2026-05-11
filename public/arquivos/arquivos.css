@@ -106,6 +106,9 @@ main { min-height: 70vh; }
   border-bottom: 1px solid rgba(0, 59, 92, 0.08);
   padding: 14px 20px;
 }
+@media (max-width: 760px) {
+  .aq-toolbar { position: static; padding: 12px 14px; }
+}
 .aq-toolbar-inner {
   max-width: 1200px;
   margin: 0 auto;
