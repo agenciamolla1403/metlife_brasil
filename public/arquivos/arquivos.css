@@ -107,7 +107,16 @@ main { min-height: 70vh; }
   padding: 14px 20px;
 }
 @media (max-width: 760px) {
-  .aq-toolbar { position: static; padding: 12px 14px; }
+  .aq-toolbar {
+    position: static;
+    padding: 12px 14px;
+    /* Remove backdrop-filter em mobile pelo mesmo motivo da Jornada:
+       evita criar stacking context que prende o .bs-panel filho. */
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 0;
+  }
 }
 .aq-toolbar-inner {
   max-width: 1200px;
@@ -151,6 +160,16 @@ main { min-height: 70vh; }
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+/* Desktop: panel do bottom-sheet renderiza inline na toolbar */
+@media (min-width: 761px) {
+  .aq-bs-panel {
+    /* sem fundo, sem sombra — comportamento de div normal */
+  }
+  .aq-bs-panel .bs-content {
+    padding: 0;
+  }
 }
 .aq-chip {
   display: inline-flex;
