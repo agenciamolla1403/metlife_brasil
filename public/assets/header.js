@@ -47,7 +47,7 @@
     return ROUTE_MAP[p] || 'home';
   }
 
-  function buildHtml(activeId) {
+  function buildHeaderHtml(activeId) {
     const isActive = (id) => id === activeId ? 'active' : '';
     const isAdmin = !!(window.MetLifeAuth && window.MetLifeAuth.isAdmin && window.MetLifeAuth.isAdmin());
     const userName = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? (window.MetLifeAuth.getUserName() || '') : '';
@@ -61,10 +61,6 @@
 
     const navLinks = NAV_ITEMS.map(it =>
       `<a href="${it.href}" class="${isActive(it.id)}">${it.label}</a>`
-    ).join('\n          ');
-
-    const drawerLinks = NAV_ITEMS.map(it =>
-      `<a href="${it.href}" class="mlh-drawer-link ${isActive(it.id)}">${it.label}</a>`
     ).join('\n          ');
 
     return `
@@ -85,16 +81,39 @@
           <button class="mlh-btn-logout" id="mlhLogoutBtn" type="button">Sair</button>
         </div>
       </div>
+    `;
+  }
 
-      <!-- Drawer lateral (mobile) -->
+  /**
+   * Drawer é renderizado como SIBLING do .mlh-header (filho direto do body).
+   * Motivo: o .mlh-header usa backdrop-filter, que cria contexto de stacking
+   * em iOS Safari e PRENDE position:fixed filhos dentro dos limites do header
+   * (~60px). Mantendo o drawer fora do header, ele se posiciona corretamente
+   * em relação ao viewport.
+   *
+   * Também usamos <div> com role apropriado em vez de <aside>/<header>/<nav>
+   * pra evitar conflito com seletores CSS genéricos das páginas (`header{}`,
+   * `nav{}` etc).
+   */
+  function buildDrawerHtml(activeId) {
+    const isActive = (id) => id === activeId ? 'active' : '';
+    const isAdmin = !!(window.MetLifeAuth && window.MetLifeAuth.isAdmin && window.MetLifeAuth.isAdmin());
+    const userName = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? (window.MetLifeAuth.getUserName() || '') : '';
+    const initials = userName ? userName.trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase() : '';
+
+    const drawerLinks = NAV_ITEMS.map(it =>
+      `<a href="${it.href}" class="mlh-drawer-link ${isActive(it.id)}">${it.label}</a>`
+    ).join('\n          ');
+
+    return `
       <div class="mlh-drawer-backdrop" id="mlhDrawerBackdrop" aria-hidden="true"></div>
-      <aside class="mlh-drawer" id="mlhDrawer" aria-label="Menu" aria-hidden="true">
-        <header class="mlh-drawer-head">
+      <div class="mlh-drawer" id="mlhDrawer" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+        <div class="mlh-drawer-head">
           <a class="mlh-drawer-logo" href="/" aria-label="Central do Cliente">
             <img src="/img/logo_metlife.svg" alt="MetLife" />
           </a>
           <button class="mlh-drawer-close" id="mlhDrawerClose" type="button" aria-label="Fechar menu">×</button>
-        </header>
+        </div>
         ${userName ? `
           <div class="mlh-drawer-user">
             <span class="mlh-drawer-user-avatar">${escapeAttr(initials)}</span>
@@ -104,14 +123,14 @@
             </div>
           </div>
         ` : ''}
-        <nav class="mlh-drawer-nav" aria-label="Navegação principal mobile">
+        <div class="mlh-drawer-nav" role="navigation" aria-label="Navegação principal mobile">
           ${drawerLinks}
           <a href="/ajuda" class="mlh-drawer-link mlh-drawer-link-help ${isActive('ajuda')}"><span class="mlh-drawer-help-icon">?</span> Ajuda</a>
-        </nav>
+        </div>
         <div class="mlh-drawer-foot">
           <button class="mlh-drawer-logout" id="mlhDrawerLogoutBtn" type="button">Sair</button>
         </div>
-      </aside>
+      </div>
     `;
   }
 
@@ -152,12 +171,24 @@
   function inject() {
     if (document.querySelector('.mlh-header')) return;
 
+    const activeId = activeRouteFromPath();
+
+    // 1) Cria o header (sticky, com backdrop-filter)
     const wrapper = document.createElement('div');
     wrapper.className = 'mlh-header';
     wrapper.setAttribute('role', 'banner');
-    wrapper.innerHTML = buildHtml(activeRouteFromPath());
-
+    wrapper.innerHTML = buildHeaderHtml(activeId);
     document.body.insertBefore(wrapper, document.body.firstChild);
+
+    // 2) Cria o drawer como SIBLING do header (filho direto do body).
+    //    Crucial pra Safari iOS: o backdrop-filter do .mlh-header cria
+    //    contexto de stacking que prende position:fixed filhos dentro
+    //    da altura do header (~60px). Drawer fora do header funciona
+    //    em relação ao viewport como esperado.
+    const drawerWrap = document.createElement('div');
+    drawerWrap.className = 'mlh-drawer-root';
+    drawerWrap.innerHTML = buildDrawerHtml(activeId);
+    document.body.appendChild(drawerWrap);
 
     // Botões de logout (header e drawer)
     const logoutBtn = document.getElementById('mlhLogoutBtn');
