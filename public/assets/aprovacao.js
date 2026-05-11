@@ -345,7 +345,7 @@
 
     // ----- HOME VIEW -----
     async renderHomeView() {
-      this.el.crumb.innerHTML = '<a href="/">Hub</a> &nbsp;/&nbsp; <strong>Aprovação de Peças</strong>';
+      this.el.crumb.innerHTML = '<a href="/">Central do Cliente</a> &nbsp;/&nbsp; <strong>Aprovação de Peças</strong>';
       this.el.content.innerHTML = loadingHtml('Carregando campanhas...');
 
       let campaigns;
@@ -535,7 +535,7 @@
     // ----- CAMPAIGN VIEW -----
     async renderCampaignView(campaignId) {
       this.el.crumb.innerHTML = `
-        <a href="/">Hub</a> &nbsp;/&nbsp;
+        <a href="/">Central do Cliente</a> &nbsp;/&nbsp;
         <a href="#/" id="crumbHome">Aprovação</a> &nbsp;/&nbsp;
         <em>carregando...</em>
       `;
@@ -562,7 +562,7 @@
       }
 
       this.el.crumb.innerHTML = `
-        <a href="/">Hub</a> &nbsp;/&nbsp;
+        <a href="/">Central do Cliente</a> &nbsp;/&nbsp;
         <a href="#/" id="crumbHome">Aprovação</a> &nbsp;/&nbsp;
         <strong>${escapeHtml(campaign.name)}</strong>
       `;
