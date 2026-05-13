@@ -36,11 +36,21 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
   aggregateStatus, loadConceptComments, etc). API antiga 100% compatível:
   `addPiece` sem `conceptId` cria criativo-pai com 1 variação "Única"
   silenciosamente. 30 testes novos.
+- **Criativos + Variações — Fase 2 UI Listagem** (S40) — listagem da
+  campanha passa a mostrar **criativos** (não mais peças soltas). Card
+  com 1 variação "Única" renderiza igual ao antigo, mas ganha botão
+  discreto "+ Variação". Card com 2+ variações vira **concept-card**
+  com galeria horizontal de thumbs, status agregado ("2/5 aprovadas"),
+  botão "+ Variação", mini-btn de editar criativo. Modal **"Novo Criativo"**
+  substitui "+ Nova Peça": campos título + descrição + 1ª variação
+  inline. Modal **"+ Adicionar Variação"** com label sugerido (Opção B/C/D…).
+  Filtros (Todos/Pendentes/Aprovados/Reprovados) agora agregam por
+  criativo. KPIs continuam contando variações (unidade de decisão).
+  43 testes novos.
 
 ## 🟢 Próximas sessões
 
-**Em andamento: Criativos + Variações (S40)** — Fase 1 ✅ feita. Faltam:
-- Fase 2: UI da listagem de criativos na campanha (modal "Novo criativo", card-criativo com thumbs, status agregado)
+**Em andamento: Criativos + Variações (S40)** — Fases 1 ✅ e 2 ✅. Faltam:
 - Fase 3: UI do detalhe (galeria + foco + painel direito + accordion comentário geral, conforme mockup aprovado)
 - Fase 4: Mobile + atalhos teclado (← → A R C) + polish
 

@@ -1281,7 +1281,22 @@ footer.page-footer strong { color: var(--navy); }
   .modal-body { padding: 18px; }
   .modal-footer { padding: 14px 18px 18px; flex-wrap: wrap; }
   .btn-primary { width: 100%; justify-content: center; }
-  .toolbar-left { width: 100%; overflow-x: auto; }
+
+  /* Filtros dentro da campanha (Todas/Pendentes/Aprovadas/Reprovadas):
+     scroll horizontal limpo em mobile. Não afeta o sheet da home
+     (que usa .bs-content e fica fixed em panel). */
+  .toolbar-left:not(.bs-content) {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .toolbar-left:not(.bs-content)::-webkit-scrollbar { display: none; }
+  .toolbar-left:not(.bs-content) .filter-pill { flex-shrink: 0; }
 }
 
 /* ============ PIECE LINK BLOCK ============ */
@@ -1976,4 +1991,264 @@ footer.page-footer strong { color: var(--navy); }
 }
 .btn-pin-comment:active {
   transform: scale(0.96);
+}
+
+/* ============================================================
+   S40 FASE 2 — CARD-CRIATIVO (peça-conceito com galeria de variações)
+   ============================================================ */
+
+/* Card-criativo (criativos com 2+ variações) */
+.concept-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 59, 92, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  grid-column: span 2;
+}
+.concept-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 59, 92, 0.10);
+}
+.concept-card[data-status="approved"] {
+  border-left: 4px solid var(--success);
+}
+.concept-card[data-status="rejected"] {
+  border-left: 4px solid var(--danger);
+}
+.concept-card[data-status="pending"] {
+  border-left: 4px solid var(--warning);
+}
+
+/* Header do card-criativo */
+.cc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cc-title h4 {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  color: var(--navy);
+  font-weight: 700;
+}
+.cc-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.cc-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.cc-agg {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(0, 59, 92, 0.06);
+  color: var(--navy);
+  white-space: nowrap;
+}
+.cc-agg-approved { background: rgba(22, 163, 74, 0.10); color: #128A45; }
+.cc-agg-rejected { background: rgba(220, 38, 38, 0.10); color: #B91C1C; }
+.cc-agg-pending  { background: rgba(245, 158, 11, 0.12); color: #B7791F; }
+.cc-mini-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 59, 92, 0.15);
+  color: var(--navy);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms ease;
+}
+.cc-mini-btn:hover { background: rgba(0, 59, 92, 0.06); }
+
+/* Galeria horizontal scrollável */
+.cc-gallery {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 2px 0 8px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.cc-gallery::-webkit-scrollbar {
+  height: 8px;
+}
+.cc-gallery::-webkit-scrollbar-thumb {
+  background: rgba(0, 59, 92, 0.12);
+  border-radius: 999px;
+}
+
+/* Thumb de variação */
+.cc-thumb {
+  flex: 0 0 auto;
+  width: 132px;
+  background: var(--white);
+  border: 1px solid rgba(0, 59, 92, 0.12);
+  border-radius: 10px;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scroll-snap-align: start;
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  position: relative;
+  text-align: left;
+}
+.cc-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 59, 92, 0.12);
+  border-color: rgba(0, 59, 92, 0.25);
+}
+.cc-thumb img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+.cc-thumb-video {
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(135deg, #003B5C, #0F6E56);
+  color: white;
+  border-radius: 6px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cc-thumb-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 2px;
+}
+.cc-thumb-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.cc-thumb-pending  .cc-thumb-status { background: var(--warning); }
+.cc-thumb-approved .cc-thumb-status { background: var(--success); }
+.cc-thumb-rejected .cc-thumb-status { background: var(--danger); }
+.cc-thumb-approved::before {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  font-size: 12px;
+  color: white;
+  font-weight: 700;
+  z-index: 1;
+  pointer-events: none;
+}
+.cc-thumb-rejected::before {
+  content: '✕';
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  font-size: 11px;
+  color: white;
+  font-weight: 700;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Card "+ Variação" no fim da galeria */
+.cc-add-thumb {
+  flex: 0 0 auto;
+  width: 132px;
+  background: rgba(0, 59, 92, 0.04);
+  border: 2px dashed rgba(0, 59, 92, 0.25);
+  border-radius: 10px;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 150ms ease, border-color 150ms ease;
+  min-height: 118px;
+}
+.cc-add-thumb:hover {
+  background: rgba(0, 59, 92, 0.08);
+  border-color: rgba(0, 59, 92, 0.40);
+}
+.cc-add-plus {
+  font-size: 26px;
+  line-height: 1;
+}
+.cc-add-label {
+  font-size: 12px;
+}
+
+/* Botão pequeno "+ Variação" nos cards de peça única */
+.piece-add-variant {
+  background: transparent;
+  border: 1px solid rgba(0, 59, 92, 0.18);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease;
+  white-space: nowrap;
+}
+.piece-add-variant:hover {
+  background: rgba(0, 59, 92, 0.06);
+}
+
+/* Mobile: concept-card ocupa 1 coluna inteira (era span 2) */
+@media (max-width: 720px) {
+  .concept-card {
+    grid-column: span 1;
+    padding: 14px 14px 12px;
+  }
+  .cc-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .cc-meta {
+    align-self: flex-end;
+  }
+  .cc-thumb,
+  .cc-add-thumb {
+    width: 116px;
+  }
+  .cc-thumb img,
+  .cc-thumb-video {
+    height: 70px;
+  }
 }

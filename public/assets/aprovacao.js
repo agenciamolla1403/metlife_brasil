@@ -565,11 +565,11 @@
 
       this.el.content.innerHTML = loadingHtml('Carregando campanha...');
 
-      let campaign, pieces;
+      let campaign, concepts;
       try {
-        [campaign, pieces] = await Promise.all([
+        [campaign, concepts] = await Promise.all([
           Store.getCampaign(campaignId),
-          Store.loadPieces(campaignId)
+          Store.loadConceptsWithStats(campaignId)
         ]);
       } catch (e) {
         this.el.content.innerHTML = errorHtml(e, () => this.renderCampaignView(campaignId));
@@ -591,24 +591,39 @@
         e.preventDefault(); Router.go('#/');
       });
 
-      const stats = Store.statsFromPieces(pieces);
+      // KPIs e barra de progresso continuam contando VARIAÇÕES (unidade de decisão).
+      const allVariants = concepts.flatMap(c => c.variants);
+      const stats = Store.statsFromPieces(allVariants);
       const pct = (n) => stats.total > 0 ? Math.round((n / stats.total) * 100) : 0;
 
+      // Status agregado por CRIATIVO (pra filtros):
+      // - pending: tem ≥1 variação pendente
+      // - rejected: tem ≥1 reprovada E nenhuma pendente
+      // - approved: TODAS as variações aprovadas
+      function conceptStatus(c) {
+        if (c.stats.total === 0) return 'pending';
+        if (c.stats.pending > 0) return 'pending';
+        if (c.stats.rejected > 0) return 'rejected';
+        return 'approved';
+      }
+      const conceptCounts = { all: concepts.length, pending: 0, approved: 0, rejected: 0 };
+      concepts.forEach(c => conceptCounts[conceptStatus(c)]++);
+
       const filter = this.state.campaignFilter;
-      const filtered = pieces.filter(p => filter === 'all' ? true : p.status === filter);
+      const filteredConcepts = concepts.filter(c => filter === 'all' ? true : conceptStatus(c) === filter);
 
       const html = `
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
           <button class="btn-ghost" id="btnBack">← Voltar</button>
           <div>
             <h2 style="margin:0; font-size:22px; color:var(--navy);">${escapeHtml(campaign.name)}</h2>
-            <span style="font-size:12px; color:var(--muted);">${escapeHtml(campaign.type)}</span>
+            <span style="font-size:12px; color:var(--muted);">${escapeHtml(campaign.type)} · ${concepts.length} criativo${concepts.length === 1 ? '' : 's'}</span>
           </div>
         </div>
 
         <div class="campaign-dashboard">
           <div class="kpi kpi-total">
-            <div class="kpi-label">Peças</div>
+            <div class="kpi-label">Variações</div>
             <div class="kpi-value">${stats.total}</div>
             <div class="kpi-pct">No total</div>
           </div>
@@ -639,38 +654,38 @@
 
         <div class="toolbar">
           <div class="toolbar-left">
-            <button class="filter-pill ${filter === 'all' ? 'active' : ''}" data-filter="all">Todas <span class="count">${stats.total}</span></button>
-            <button class="filter-pill ${filter === 'pending' ? 'active' : ''}" data-filter="pending">Pendentes <span class="count">${stats.pending}</span></button>
-            <button class="filter-pill ${filter === 'approved' ? 'active' : ''}" data-filter="approved">Aprovadas <span class="count">${stats.approved}</span></button>
-            <button class="filter-pill ${filter === 'rejected' ? 'active' : ''}" data-filter="rejected">Reprovadas <span class="count">${stats.rejected}</span></button>
+            <button class="filter-pill ${filter === 'all' ? 'active' : ''}" data-filter="all">Todos <span class="count">${conceptCounts.all}</span></button>
+            <button class="filter-pill ${filter === 'pending' ? 'active' : ''}" data-filter="pending">Pendentes <span class="count">${conceptCounts.pending}</span></button>
+            <button class="filter-pill ${filter === 'approved' ? 'active' : ''}" data-filter="approved">Aprovados <span class="count">${conceptCounts.approved}</span></button>
+            <button class="filter-pill ${filter === 'rejected' ? 'active' : ''}" data-filter="rejected">Reprovados <span class="count">${conceptCounts.rejected}</span></button>
           </div>
           ${window.MetLifeAuth.isAdmin() ? `
-            <button class="btn-primary" id="btnNewPiece">
-              <span class="plus">+</span> Nova Peça
+            <button class="btn-primary" id="btnNewConcept">
+              <span class="plus">+</span> Novo Criativo
             </button>
           ` : ''}
         </div>
 
-        ${filtered.length === 0 ? `
+        ${filteredConcepts.length === 0 ? `
           <div class="empty-state">
             <div class="icon">🎨</div>
-            <h3>${stats.total === 0 ? 'Nenhuma peça nesta campanha' : 'Nenhuma peça neste filtro'}</h3>
-            <p>${stats.total === 0 ? (window.MetLifeAuth.isAdmin() ? 'Suba a primeira peça para aprovação.' : 'Aguardando a Molla subir as peças.') : 'Tente outro filtro' + (window.MetLifeAuth.isAdmin() ? ' ou adicione uma nova peça.' : '.')}</p>
-            ${stats.total === 0 && window.MetLifeAuth.isAdmin() ? `<button class="btn-primary" id="btnNewPieceEmpty"><span class="plus">+</span> Subir primeira peça</button>` : ''}
+            <h3>${concepts.length === 0 ? 'Nenhum criativo nesta campanha' : 'Nenhum criativo neste filtro'}</h3>
+            <p>${concepts.length === 0 ? (window.MetLifeAuth.isAdmin() ? 'Crie o primeiro criativo para aprovação.' : 'Aguardando a Molla criar os criativos.') : 'Tente outro filtro' + (window.MetLifeAuth.isAdmin() ? ' ou crie um novo criativo.' : '.')}</p>
+            ${concepts.length === 0 && window.MetLifeAuth.isAdmin() ? `<button class="btn-primary" id="btnNewConceptEmpty"><span class="plus">+</span> Criar primeiro criativo</button>` : ''}
           </div>
         ` : `
           <div class="cards-grid">
-            ${filtered.map(p => this.pieceCardHtml(p)).join('')}
+            ${filteredConcepts.map(c => this.conceptCardHtml(c)).join('')}
           </div>
         `}
       `;
       this.el.content.innerHTML = html;
 
       document.getElementById('btnBack').addEventListener('click', () => Router.go('#/'));
-      const newBtn = document.getElementById('btnNewPiece');
-      const newBtnEmpty = document.getElementById('btnNewPieceEmpty');
-      if (newBtn) newBtn.addEventListener('click', () => Modals.openPiece(campaignId));
-      if (newBtnEmpty) newBtnEmpty.addEventListener('click', () => Modals.openPiece(campaignId));
+      const newBtn = document.getElementById('btnNewConcept');
+      const newBtnEmpty = document.getElementById('btnNewConceptEmpty');
+      if (newBtn) newBtn.addEventListener('click', () => Modals.openConcept(campaignId));
+      if (newBtnEmpty) newBtnEmpty.addEventListener('click', () => Modals.openConcept(campaignId));
 
       this.el.content.querySelectorAll('.filter-pill').forEach(pill => {
         pill.addEventListener('click', () => {
@@ -679,12 +694,114 @@
         });
       });
 
-      this.el.content.querySelectorAll('.piece-card').forEach(card => {
-        card.addEventListener('click', () => Modals.openPieceDetail(campaignId, card.dataset.id));
+      // Cards-criativo: vários elementos clicáveis dentro
+      this.el.content.querySelectorAll('.concept-card').forEach(card => {
+        const conceptId = card.dataset.conceptId;
+
+        // Clique em variação: abre detalhe da peça
+        card.querySelectorAll('[data-variant-id]').forEach(thumb => {
+          thumb.addEventListener('click', (e) => {
+            e.stopPropagation();
+            Modals.openPieceDetail(campaignId, thumb.dataset.variantId);
+          });
+        });
+
+        // Botão "+ Variação"
+        const addBtn = card.querySelector('[data-action="add-variant"]');
+        if (addBtn) addBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          Modals.openAddVariant(campaignId, conceptId);
+        });
+
+        // Botão "editar criativo" (renomear título + descrição)
+        const editBtn = card.querySelector('[data-action="edit-concept"]');
+        if (editBtn) editBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          Modals.openConcept(campaignId, conceptId);
+        });
+      });
+
+      // Cards de "peça única" continuam clicáveis no card todo (compat)
+      this.el.content.querySelectorAll('.piece-card[data-id]').forEach(card => {
+        // Botão "+ Variação" dentro da card single
+        const addVarBtn = card.querySelector('[data-action="add-variant"]');
+        if (addVarBtn) addVarBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const cId = card.dataset.conceptId;
+          if (cId) Modals.openAddVariant(campaignId, cId);
+        });
+
+        card.addEventListener('click', (e) => {
+          // Ignora cliques em controles internos
+          if (e.target.closest('[data-action]')) return;
+          Modals.openPieceDetail(campaignId, card.dataset.id);
+        });
       });
     },
 
-    pieceCardHtml(p) {
+    /** Renderiza um criativo. Se tem 1 variação "Única", visual = card de peça antigo
+        com 1 botão pequenino "+ Variação" no rodapé. Se 2+, visual novo com galeria. */
+    conceptCardHtml(concept) {
+      const variants = concept.variants || [];
+      const isAdmin = window.MetLifeAuth.isAdmin();
+      const isSingleVariant = variants.length === 1 &&
+        (!variants[0].variant_label || variants[0].variant_label === 'Única');
+
+      if (isSingleVariant) {
+        return this.pieceCardHtml(variants[0], concept.id, isAdmin);
+      }
+
+      // 2+ variações: card-criativo com galeria
+      const statusKey = concept.stats.pending > 0 ? 'pending'
+        : (concept.stats.rejected > 0 ? 'rejected' : 'approved');
+      const aggLabel = concept.stats.total > 0
+        ? `${concept.stats.approved} / ${concept.stats.total} aprovada${concept.stats.total === 1 ? '' : 's'}`
+        : 'Sem variações';
+
+      const thumbHtml = (v) => {
+        let media = '';
+        if (v.media_type === 'image') {
+          media = `<img src="${v.media_url}" alt="${escapeHtml(v.variant_label || v.name || '')}" loading="lazy" />`;
+        } else {
+          media = `<div class="cc-thumb-video">▶</div>`;
+        }
+        const statusClass = v.status || 'pending';
+        return `
+          <button type="button" class="cc-thumb cc-thumb-${statusClass}" data-variant-id="${v.id}"
+                  title="${escapeHtml(v.variant_label || v.name || '')}">
+            ${media}
+            <span class="cc-thumb-status"></span>
+            <span class="cc-thumb-label">${escapeHtml(v.variant_label || 'Sem rótulo')}</span>
+          </button>
+        `;
+      };
+
+      return `
+        <article class="concept-card" data-concept-id="${concept.id}" data-status="${statusKey}">
+          <header class="cc-header">
+            <div class="cc-title">
+              <h4>${escapeHtml(concept.title)}</h4>
+              ${concept.description ? `<p class="cc-desc">${escapeHtml(concept.description)}</p>` : ''}
+            </div>
+            <div class="cc-meta">
+              <span class="cc-agg cc-agg-${statusKey}">${aggLabel}</span>
+              ${isAdmin ? `<button class="cc-mini-btn" type="button" data-action="edit-concept" title="Editar criativo">✎</button>` : ''}
+            </div>
+          </header>
+          <div class="cc-gallery" role="list">
+            ${variants.map(thumbHtml).join('')}
+            ${isAdmin ? `
+              <button class="cc-add-thumb" type="button" data-action="add-variant" title="Adicionar variação">
+                <span class="cc-add-plus">+</span>
+                <span class="cc-add-label">Variação</span>
+              </button>
+            ` : ''}
+          </div>
+        </article>
+      `;
+    },
+
+    pieceCardHtml(p, conceptId, isAdmin) {
       const statusLabel = { pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' }[p.status] || 'Pendente';
       let thumb = '';
       if (p.media_type === 'image') {
@@ -692,8 +809,9 @@
       } else if (p.media_type === 'video') {
         thumb = `<div class="placeholder">Vídeo</div><div class="video-overlay">▶</div>`;
       }
+      const showAddVariant = !!conceptId && !!isAdmin;
       return `
-        <article class="piece-card" data-id="${p.id}" data-status="${p.status}">
+        <article class="piece-card" data-id="${p.id}" data-status="${p.status}"${conceptId ? ` data-concept-id="${conceptId}"` : ''}>
           <div class="piece-thumb">
             ${thumb}
             <span class="piece-status-badge ${p.status}">
@@ -704,6 +822,7 @@
             <h4>${escapeHtml(p.name)}</h4>
             <div class="footer-row">
               <span>${relativeTime(p.created_at)}</span>
+              ${showAddVariant ? `<button type="button" class="piece-add-variant" data-action="add-variant" title="Adicionar variação a este criativo">+ Variação</button>` : ''}
             </div>
           </div>
         </article>
@@ -775,6 +894,409 @@
           } catch (err) {
             safeError(err);
             btn.disabled = false; btn.textContent = originalLabel;
+          }
+        });
+      });
+    },
+
+    /** Cria/edita CRIATIVO (peça-conceito). Na criação, monta título +
+        descrição opcional + 1ª variação no mesmo modal. Na edição, só
+        título e descrição (variações editam pelo modal de peça). */
+    async openConcept(campaignId, editId = null) {
+      const isEdit = !!editId;
+      let existing = null;
+      if (isEdit) {
+        try {
+          existing = await Store.getConcept(editId);
+          if (!existing) { Toast.show('Criativo não encontrado.', 'error'); return; }
+        } catch (err) { safeError(err); return; }
+      }
+
+      // Na edição: form curto (só título + descrição)
+      if (isEdit) {
+        const html = `
+          <div class="modal-header">
+            <div>
+              <h2>Editar Criativo</h2>
+              <div class="modal-sub">Atualize o título e a descrição. Variações são editadas individualmente.</div>
+            </div>
+            <button class="modal-close" type="button" data-close>×</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Título do criativo</label>
+              <input type="text" id="conceptTitle" placeholder="Ex: Banner Site XPTO" maxlength="160" autofocus value="${escapeHtml(existing.title)}" />
+            </div>
+            <div class="form-group">
+              <label>Descrição (opcional)</label>
+              <textarea id="conceptDesc" placeholder="Ex: Hero da home — A/B de cores" maxlength="500">${escapeHtml(existing.description || '')}</textarea>
+              <div class="hint">Aparece como subtítulo do criativo. Útil pra explicar o que diferencia as variações.</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" type="button" data-close>Cancelar</button>
+            <button class="btn-primary" type="button" id="conceptSave">Salvar alterações</button>
+          </div>
+        `;
+        this._open(html, (modal) => {
+          modal.querySelector('#conceptSave').addEventListener('click', async () => {
+            const title = modal.querySelector('#conceptTitle').value.trim();
+            const description = modal.querySelector('#conceptDesc').value.trim();
+            if (!title) { Toast.show('Informe o título.', 'error'); return; }
+            const btn = modal.querySelector('#conceptSave');
+            const orig = btn.textContent;
+            btn.disabled = true; btn.textContent = 'Salvando...';
+            try {
+              await Store.updateConcept(editId, { title, description });
+              Toast.show('Criativo atualizado.', 'success');
+              this._close();
+              App.renderCampaignView(campaignId);
+            } catch (err) {
+              safeError(err);
+              btn.disabled = false; btn.textContent = orig;
+            }
+          });
+        });
+        return;
+      }
+
+      // Criação: criativo + primeira variação no mesmo modal
+      const html = `
+        <div class="modal-header">
+          <div>
+            <h2>Novo Criativo</h2>
+            <div class="modal-sub">Defina o título e suba a 1ª variação. Adicione outras variações depois.</div>
+          </div>
+          <button class="modal-close" type="button" data-close>×</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Título do criativo</label>
+            <input type="text" id="conceptTitle" placeholder="Ex: Banner Site XPTO" maxlength="160" autofocus />
+            <div class="hint">É o nome que aparece no card da campanha.</div>
+          </div>
+          <div class="form-group">
+            <label>Descrição (opcional)</label>
+            <textarea id="conceptDesc" placeholder="Ex: Hero da home — A/B de cores" maxlength="500"></textarea>
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin: 14px 0;">
+          <div style="margin-bottom:10px;"><strong>1ª Variação</strong></div>
+
+          <div class="form-group">
+            <label>Rótulo da variação</label>
+            <input type="text" id="variantLabel" placeholder="Ex: Verde · Vermelha · CTA forte" maxlength="80" value="Única" />
+            <div class="hint">Como você quer chamar essa variação. Se for único, deixa "Única".</div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de mídia</label>
+            <div class="radio-group">
+              <div class="radio-pill">
+                <input type="radio" id="cmtImage" name="cmediaType" value="image" checked />
+                <label for="cmtImage">🖼  Imagem</label>
+              </div>
+              <div class="radio-pill">
+                <input type="radio" id="cmtVideo" name="cmediaType" value="video" />
+                <label for="cmtVideo">🎬  Vídeo</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" id="cgrpImage">
+            <label>Arte (imagem)</label>
+            <div class="upload-area" id="cDropArea">
+              <div class="upload-icon">📁</div>
+              <p>Clique ou arraste a imagem aqui</p>
+              <span class="small">JPG, PNG ou WEBP — comprimida automaticamente</span>
+              <input type="file" id="cFileInput" accept="image/*" hidden />
+            </div>
+            <div class="upload-preview" id="cPreview">
+              <button type="button" class="remove" id="cRemovePreview">×</button>
+              <img id="cPreviewImg" alt="" src="" />
+            </div>
+          </div>
+
+          <div class="form-group" id="cgrpVideo" style="display:none;">
+            <label>URL do vídeo</label>
+            <input type="url" id="cVideoUrl" placeholder="YouTube, Vimeo, SharePoint, Google Drive ou link direto (.mp4)" />
+            <div class="hint">YouTube/Vimeo serão embedados; .mp4 abre player nativo.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Copy (opcional)</label>
+            <textarea id="cPieceCopy" placeholder="Cole aqui o texto/copy da peça..." maxlength="3000"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Legenda (opcional)</label>
+            <textarea id="cPieceCaption" placeholder="Texto que vai acompanhar a publicação (caption do post)..." maxlength="3000"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Link da Peça (opcional)</label>
+            <input type="url" id="cPieceLink" placeholder="https://... (Sharepoint, Drive, etc.)" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" type="button" data-close>Cancelar</button>
+          <button class="btn-primary" type="button" id="conceptSave">Criar criativo</button>
+        </div>
+      `;
+      this._open(html, (modal) => {
+        // Wire-up igual ao openPiece
+        const fileInput = modal.querySelector('#cFileInput');
+        const dropArea = modal.querySelector('#cDropArea');
+        const preview = modal.querySelector('#cPreview');
+        const previewImg = modal.querySelector('#cPreviewImg');
+        const grpImage = modal.querySelector('#cgrpImage');
+        const grpVideo = modal.querySelector('#cgrpVideo');
+        let imageData = null;
+
+        modal.querySelectorAll('input[name="cmediaType"]').forEach(r => {
+          r.addEventListener('change', () => {
+            const v = modal.querySelector('input[name="cmediaType"]:checked').value;
+            grpImage.style.display = v === 'image' ? '' : 'none';
+            grpVideo.style.display = v === 'video' ? '' : 'none';
+          });
+        });
+
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag'); });
+        dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag'));
+        dropArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropArea.classList.remove('drag');
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => {
+          if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+        });
+        modal.querySelector('#cRemovePreview').addEventListener('click', () => {
+          imageData = null;
+          preview.classList.remove('show');
+          fileInput.value = '';
+        });
+
+        async function handleFile(file) {
+          if (!file.type.startsWith('image/')) { Toast.show('Selecione uma imagem.', 'error'); return; }
+          try {
+            Toast.show('Comprimindo imagem...', 'default');
+            imageData = await compressImage(file);
+            previewImg.src = imageData;
+            preview.classList.add('show');
+          } catch (e) {
+            Toast.show('Erro ao processar imagem.', 'error');
+          }
+        }
+
+        modal.querySelector('#conceptSave').addEventListener('click', async () => {
+          const title = modal.querySelector('#conceptTitle').value.trim();
+          const description = modal.querySelector('#conceptDesc').value.trim();
+          const variantLabel = modal.querySelector('#variantLabel').value.trim() || 'Única';
+          const mediaType = modal.querySelector('input[name="cmediaType"]:checked').value;
+          const copy = modal.querySelector('#cPieceCopy').value.trim();
+          const caption = modal.querySelector('#cPieceCaption').value.trim();
+          const linkUrl = modal.querySelector('#cPieceLink').value.trim();
+          if (!title) { Toast.show('Informe o título do criativo.', 'error'); return; }
+
+          let mediaUrl = '';
+          let videoEmbedUrl = null;
+          if (mediaType === 'image') {
+            if (!imageData) { Toast.show('Suba uma imagem.', 'error'); return; }
+            mediaUrl = imageData;
+          } else {
+            const u = modal.querySelector('#cVideoUrl').value.trim();
+            if (!u) { Toast.show('Informe a URL do vídeo.', 'error'); return; }
+            mediaUrl = u;
+            videoEmbedUrl = toEmbedUrl(u);
+          }
+
+          const btn = modal.querySelector('#conceptSave');
+          const orig = btn.textContent;
+          btn.disabled = true; btn.textContent = 'Salvando...';
+          try {
+            const concept = await Store.addConcept(campaignId, { title, description });
+            await Store.addVariant(concept.id, {
+              name: title,                  // Nome da peça-variação default = título do criativo
+              mediaType, mediaUrl, videoEmbedUrl,
+              copy, caption, linkUrl,
+              variantLabel, variantOrder: 0
+            });
+            Toast.show('Criativo criado.', 'success');
+            this._close();
+            App.renderCampaignView(campaignId);
+          } catch (err) {
+            safeError(err);
+            btn.disabled = false; btn.textContent = orig;
+          }
+        });
+      });
+    },
+
+    /** Adiciona uma variação a um criativo existente. */
+    async openAddVariant(campaignId, conceptId) {
+      let concept;
+      try {
+        concept = await Store.getConcept(conceptId);
+        if (!concept) { Toast.show('Criativo não encontrado.', 'error'); return; }
+      } catch (err) { safeError(err); return; }
+
+      // Quantas variações já existem? Pra sugerir rótulo "Opção B"/"C"/etc. e definir variant_order
+      let existingCount = 0;
+      try { existingCount = (await Store.loadVariants(conceptId)).length; } catch (_) {}
+      const suggestedLabel = `Opção ${String.fromCharCode(64 + existingCount + 1)}`; // B, C, D...
+
+      const html = `
+        <div class="modal-header">
+          <div>
+            <h2>Adicionar Variação</h2>
+            <div class="modal-sub">Nova variação em <strong>${escapeHtml(concept.title)}</strong>.</div>
+          </div>
+          <button class="modal-close" type="button" data-close>×</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Rótulo da variação</label>
+            <input type="text" id="vLabel" placeholder="Ex: Vermelha · CTA amarelo" maxlength="80" autofocus value="${escapeHtml(suggestedLabel)}" />
+            <div class="hint">Como o cliente vai diferenciar essa variação das outras.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de mídia</label>
+            <div class="radio-group">
+              <div class="radio-pill">
+                <input type="radio" id="vmtImage" name="vmediaType" value="image" checked />
+                <label for="vmtImage">🖼  Imagem</label>
+              </div>
+              <div class="radio-pill">
+                <input type="radio" id="vmtVideo" name="vmediaType" value="video" />
+                <label for="vmtVideo">🎬  Vídeo</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" id="vgrpImage">
+            <label>Arte (imagem)</label>
+            <div class="upload-area" id="vDropArea">
+              <div class="upload-icon">📁</div>
+              <p>Clique ou arraste a imagem aqui</p>
+              <span class="small">JPG, PNG ou WEBP — comprimida automaticamente</span>
+              <input type="file" id="vFileInput" accept="image/*" hidden />
+            </div>
+            <div class="upload-preview" id="vPreview">
+              <button type="button" class="remove" id="vRemovePreview">×</button>
+              <img id="vPreviewImg" alt="" src="" />
+            </div>
+          </div>
+
+          <div class="form-group" id="vgrpVideo" style="display:none;">
+            <label>URL do vídeo</label>
+            <input type="url" id="vVideoUrl" placeholder="YouTube, Vimeo, SharePoint, Google Drive ou link direto (.mp4)" />
+          </div>
+
+          <div class="form-group">
+            <label>Copy (opcional)</label>
+            <textarea id="vCopy" placeholder="Cole aqui o texto/copy da peça..." maxlength="3000"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Legenda (opcional)</label>
+            <textarea id="vCaption" placeholder="Texto da publicação (caption do post)..." maxlength="3000"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Link da peça (opcional)</label>
+            <input type="url" id="vLink" placeholder="https://... (Sharepoint, Drive, etc.)" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" type="button" data-close>Cancelar</button>
+          <button class="btn-primary" type="button" id="variantSave">Adicionar variação</button>
+        </div>
+      `;
+      this._open(html, (modal) => {
+        const fileInput = modal.querySelector('#vFileInput');
+        const dropArea = modal.querySelector('#vDropArea');
+        const preview = modal.querySelector('#vPreview');
+        const previewImg = modal.querySelector('#vPreviewImg');
+        const grpImage = modal.querySelector('#vgrpImage');
+        const grpVideo = modal.querySelector('#vgrpVideo');
+        let imageData = null;
+
+        modal.querySelectorAll('input[name="vmediaType"]').forEach(r => {
+          r.addEventListener('change', () => {
+            const v = modal.querySelector('input[name="vmediaType"]:checked').value;
+            grpImage.style.display = v === 'image' ? '' : 'none';
+            grpVideo.style.display = v === 'video' ? '' : 'none';
+          });
+        });
+
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag'); });
+        dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag'));
+        dropArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropArea.classList.remove('drag');
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => {
+          if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+        });
+        modal.querySelector('#vRemovePreview').addEventListener('click', () => {
+          imageData = null;
+          preview.classList.remove('show');
+          fileInput.value = '';
+        });
+
+        async function handleFile(file) {
+          if (!file.type.startsWith('image/')) { Toast.show('Selecione uma imagem.', 'error'); return; }
+          try {
+            Toast.show('Comprimindo imagem...', 'default');
+            imageData = await compressImage(file);
+            previewImg.src = imageData;
+            preview.classList.add('show');
+          } catch (e) {
+            Toast.show('Erro ao processar imagem.', 'error');
+          }
+        }
+
+        modal.querySelector('#variantSave').addEventListener('click', async () => {
+          const variantLabel = modal.querySelector('#vLabel').value.trim();
+          const mediaType = modal.querySelector('input[name="vmediaType"]:checked').value;
+          const copy = modal.querySelector('#vCopy').value.trim();
+          const caption = modal.querySelector('#vCaption').value.trim();
+          const linkUrl = modal.querySelector('#vLink').value.trim();
+          if (!variantLabel) { Toast.show('Informe o rótulo da variação.', 'error'); return; }
+
+          let mediaUrl = '';
+          let videoEmbedUrl = null;
+          if (mediaType === 'image') {
+            if (!imageData) { Toast.show('Suba uma imagem.', 'error'); return; }
+            mediaUrl = imageData;
+          } else {
+            const u = modal.querySelector('#vVideoUrl').value.trim();
+            if (!u) { Toast.show('Informe a URL do vídeo.', 'error'); return; }
+            mediaUrl = u;
+            videoEmbedUrl = toEmbedUrl(u);
+          }
+
+          const btn = modal.querySelector('#variantSave');
+          const orig = btn.textContent;
+          btn.disabled = true; btn.textContent = 'Salvando...';
+          try {
+            await Store.addVariant(conceptId, {
+              name: concept.title,
+              mediaType, mediaUrl, videoEmbedUrl,
+              copy, caption, linkUrl,
+              variantLabel, variantOrder: existingCount
+            });
+            Toast.show('Variação adicionada.', 'success');
+            this._close();
+            App.renderCampaignView(campaignId);
+          } catch (err) {
+            safeError(err);
+            btn.disabled = false; btn.textContent = orig;
           }
         });
       });
