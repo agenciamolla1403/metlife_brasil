@@ -27,10 +27,22 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
 - **Markdown leve nos comentários** (S29) — comentários aceitam `**negrito**`,
   `_itálico_`, `[texto](url)` e autolink de URLs. XSS bloqueado (links
   `javascript:` ignorados, HTML escapado). Hint visual abaixo do input.
+- **Criativos + Variações — Fase 1 Backend** (S40) — modelo de dados novo
+  com hierarquia `Criativo → Variações → Versões`. Migration SQL idempotente
+  (`docs/S40_criativos_e_variacoes.sql`), nova tabela `piece_concepts`,
+  pieces com `concept_id` + `variant_label` + `variant_order`, comments
+  aceita `concept_id` (comentário geral do criativo) com constraint XOR.
+  12 métodos novos no Store (loadConcepts, addConcept, addVariant,
+  aggregateStatus, loadConceptComments, etc). API antiga 100% compatível:
+  `addPiece` sem `conceptId` cria criativo-pai com 1 variação "Única"
+  silenciosamente. 30 testes novos.
 
 ## 🟢 Próximas sessões
 
-_Aguardando sua escolha — veja as opções abaixo por prioridade._
+**Em andamento: Criativos + Variações (S40)** — Fase 1 ✅ feita. Faltam:
+- Fase 2: UI da listagem de criativos na campanha (modal "Novo criativo", card-criativo com thumbs, status agregado)
+- Fase 3: UI do detalhe (galeria + foco + painel direito + accordion comentário geral, conforme mockup aprovado)
+- Fase 4: Mobile + atalhos teclado (← → A R C) + polish
 
 ---
 

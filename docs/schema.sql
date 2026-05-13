@@ -257,3 +257,90 @@ end $$;
 -- select conname, pg_get_constraintdef(oid)
 --   from pg_constraint
 --  where conrelid = 'public.events'::regclass and contype = 'c';
+
+-- ============================================================
+-- S40 — Criativos (peça-conceito) + Variações + Comentário Geral
+-- Introduz a hierarquia: Campanha → Criativo → Variação → Versões/Coments.
+-- Migração completa em docs/S40_criativos_e_variacoes.sql
+-- ============================================================
+
+-- Tabela piece_concepts
+create table if not exists public.piece_concepts (
+  id uuid primary key default gen_random_uuid(),
+  campaign_id uuid not null references public.campaigns(id) on delete cascade,
+  title text not null,
+  description text not null default '',
+  position integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists idx_piece_concepts_campaign on public.piece_concepts(campaign_id);
+create index if not exists idx_piece_concepts_position on public.piece_concepts(position);
+create index if not exists idx_piece_concepts_created on public.piece_concepts(created_at desc);
+
+-- Colunas novas em pieces (cada peça é uma variação)
+alter table public.pieces add column if not exists concept_id uuid references public.piece_concepts(id) on delete cascade;
+alter table public.pieces add column if not exists variant_label text;
+alter table public.pieces add column if not exists variant_order integer not null default 0;
+
+-- Backfill defensivo (em novos deploys com pieces pré-existentes)
+do $$
+declare
+  rec record;
+  new_concept_id uuid;
+begin
+  for rec in select id, campaign_id, name, created_at from public.pieces where concept_id is null loop
+    insert into public.piece_concepts (campaign_id, title, created_at, updated_at)
+    values (rec.campaign_id, rec.name, rec.created_at, rec.created_at)
+    returning id into new_concept_id;
+    update public.pieces set concept_id = new_concept_id,
+           variant_label = coalesce(variant_label, 'Única'),
+           variant_order = coalesce(variant_order, 0)
+     where id = rec.id;
+  end loop;
+end $$;
+
+do $$
+begin
+  if not exists (select 1 from public.pieces where concept_id is null) then
+    alter table public.pieces alter column concept_id set not null;
+  end if;
+end $$;
+
+create index if not exists idx_pieces_concept on public.pieces(concept_id);
+
+-- Comments aceita concept_id (comentário geral)
+alter table public.comments add column if not exists concept_id uuid references public.piece_concepts(id) on delete cascade;
+alter table public.comments alter column piece_id drop not null;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint
+     where conname = 'comment_target_xor'
+       and conrelid = 'public.comments'::regclass
+  ) then
+    alter table public.comments
+      add constraint comment_target_xor
+      check ((piece_id is null) <> (concept_id is null));
+  end if;
+end $$;
+
+create index if not exists idx_comments_concept on public.comments(concept_id);
+
+alter table public.piece_concepts enable row level security;
+drop policy if exists "anon all" on public.piece_concepts;
+create policy "anon all" on public.piece_concepts
+  for all to anon, authenticated
+  using (true) with check (true);
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+     where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'piece_concepts'
+  ) then
+    alter publication supabase_realtime add table public.piece_concepts;
+  end if;
+end $$;

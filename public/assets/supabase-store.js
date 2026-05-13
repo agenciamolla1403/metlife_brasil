@@ -22,8 +22,11 @@
   // Cache em memória — invalidado em mutations
   const cache = {
     campaigns: null,           // array | null
-    pieces: new Map(),         // campaignId -> array
-    comments: new Map(),       // pieceId -> array
+    concepts: new Map(),       // campaignId -> array de concepts
+    pieces: new Map(),         // campaignId -> array (todas as variações da campanha)
+    variants: new Map(),       // conceptId -> array (variações de um criativo específico)
+    comments: new Map(),       // pieceId -> array (comentários de variação)
+    conceptComments: new Map(),// conceptId -> array (comentários gerais)
     versions: new Map(),       // pieceId -> array of older versions (snapshots)
   };
 
@@ -132,7 +135,7 @@
 
       const { data, error } = await client
         .from('pieces')
-        .select('id, campaign_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, version, status, created_at')
+        .select('id, campaign_id, concept_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, variant_label, variant_order, version, status, created_at')
         .eq('campaign_id', campaignId)
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -146,8 +149,30 @@
     },
 
     async addPiece(campaignId, piece) {
+      // === FASE 1 (S40): toda peça precisa ter concept_id ===
+      // Se a UI antiga chamar addPiece sem conceptId, criamos um criativo-pai
+      // silenciosamente com 1 variação chamada "Única". Comportamento externo
+      // continua idêntico ao pré-S40 — UI da Fase 2 vai passar o conceptId.
+      let conceptId = piece.conceptId || null;
+      if (!conceptId) {
+        const { data: concept, error: eC } = await client
+          .from('piece_concepts')
+          .insert({
+            campaign_id: campaignId,
+            title: piece.name,
+            description: ''
+          })
+          .select()
+          .single();
+        if (eC) throw eC;
+        conceptId = concept.id;
+        // Invalida cache de concepts da campanha
+        cache.concepts.delete(campaignId);
+      }
+
       const payload = {
         campaign_id: campaignId,
+        concept_id: conceptId,
         name: piece.name,
         media_type: piece.mediaType,
         media_url: piece.mediaUrl,
@@ -155,6 +180,8 @@
         copy: piece.copy || '',
         caption: piece.caption || '',
         link_url: piece.linkUrl || null,
+        variant_label: piece.variantLabel || 'Única',
+        variant_order: piece.variantOrder != null ? piece.variantOrder : 0,
         status: 'pending'
       };
       const { data, error } = await client
@@ -180,6 +207,8 @@
       // Atualiza cache
       const list = cache.pieces.get(campaignId) || [];
       cache.pieces.set(campaignId, [data, ...list]);
+      // Invalida cache de variants do concept (uma nova variação)
+      cache.variants.delete(conceptId);
       if (actionComment) {
         const cms = cache.comments.get(data.id) || [];
         cms.push(actionComment);
@@ -278,11 +307,16 @@
     },
 
     async deletePiece(campaignId, pieceId) {
+      // Captura concept_id antes de deletar pra invalidar cache de variants
+      const list = cache.pieces.get(campaignId);
+      const piece = list && list.find(p => p.id === pieceId);
+      const conceptId = piece && piece.concept_id;
+
       const { error } = await client.from('pieces').delete().eq('id', pieceId);
       if (error) throw error;
-      const list = cache.pieces.get(campaignId);
       if (list) cache.pieces.set(campaignId, list.filter(p => p.id !== pieceId));
       cache.comments.delete(pieceId);
+      if (conceptId) cache.variants.delete(conceptId);
       cache.campaigns = null;
     },
 
@@ -392,6 +426,174 @@
       return data;
     },
 
+    // ============================================================
+    // CONCEPTS (Criativos — peças-conceito) — S40 Fase 1
+    // ============================================================
+    async loadConcepts(campaignId, force = false) {
+      if (!force && cache.concepts.has(campaignId)) return cache.concepts.get(campaignId);
+      const { data, error } = await client
+        .from('piece_concepts')
+        .select('id, campaign_id, title, description, position, created_at, updated_at')
+        .eq('campaign_id', campaignId)
+        .order('position', { ascending: true })
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      cache.concepts.set(campaignId, data || []);
+      return data || [];
+    },
+
+    async getConcept(conceptId) {
+      const { data, error } = await client
+        .from('piece_concepts')
+        .select('id, campaign_id, title, description, position, created_at, updated_at')
+        .eq('id', conceptId)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+
+    async addConcept(campaignId, fields) {
+      const payload = {
+        campaign_id: campaignId,
+        title: (fields.title || '').trim(),
+        description: (fields.description || '').trim(),
+        position: fields.position != null ? fields.position : 0
+      };
+      if (!payload.title) throw new Error('Criativo precisa de título.');
+      const { data, error } = await client
+        .from('piece_concepts')
+        .insert(payload)
+        .select()
+        .single();
+      if (error) throw error;
+      cache.concepts.delete(campaignId);
+      return data;
+    },
+
+    async updateConcept(conceptId, fields) {
+      const payload = { updated_at: new Date().toISOString() };
+      if (fields.title !== undefined) payload.title = fields.title.trim();
+      if (fields.description !== undefined) payload.description = fields.description.trim();
+      if (fields.position !== undefined) payload.position = fields.position;
+      const { data, error } = await client
+        .from('piece_concepts')
+        .update(payload)
+        .eq('id', conceptId)
+        .select()
+        .single();
+      if (error) throw error;
+      // Invalida cache do campaign do concept (não sabemos qual, limpamos tudo)
+      cache.concepts.clear();
+      return data;
+    },
+
+    /** Deleta o criativo. CASCADE remove todas as variações, versões, comments. */
+    async deleteConcept(conceptId) {
+      const { error } = await client.from('piece_concepts').delete().eq('id', conceptId);
+      if (error) throw error;
+      cache.concepts.clear();
+      cache.variants.delete(conceptId);
+      cache.conceptComments.delete(conceptId);
+      cache.pieces.clear();   // pieces da campanha mudaram
+      cache.campaigns = null; // stats mudaram
+    },
+
+    // ============================================================
+    // VARIANTS — pieces filtradas por concept_id
+    // ============================================================
+    async loadVariants(conceptId, force = false) {
+      if (!force && cache.variants.has(conceptId)) return cache.variants.get(conceptId);
+      const { data, error } = await client
+        .from('pieces')
+        .select('id, campaign_id, concept_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, variant_label, variant_order, version, status, created_at')
+        .eq('concept_id', conceptId)
+        .order('variant_order', { ascending: true })
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      cache.variants.set(conceptId, data || []);
+      return data || [];
+    },
+
+    /** Adiciona variação a um criativo existente. Usa addPiece internamente. */
+    async addVariant(conceptId, variant) {
+      // Precisa do campaign_id pra passar pro addPiece
+      const concept = await this.getConcept(conceptId);
+      if (!concept) throw new Error('Criativo não encontrado.');
+      return await this.addPiece(concept.campaign_id, {
+        ...variant,
+        conceptId,
+        variantLabel: variant.variantLabel || variant.name || 'Sem rótulo',
+        variantOrder: variant.variantOrder != null ? variant.variantOrder : 0
+      });
+    },
+
+    /** Retorna {total, approved, rejected, pending} para um criativo. */
+    async aggregateStatus(conceptId) {
+      const variants = await this.loadVariants(conceptId);
+      return calcStats(variants);
+    },
+
+    /** Carrega criativos da campanha JÁ com stats agregados das variações. */
+    async loadConceptsWithStats(campaignId, force = false) {
+      const concepts = await this.loadConcepts(campaignId, force);
+      const pieces = await this.loadPieces(campaignId, force);
+
+      // Agrupa pieces por concept_id
+      const byConcept = {};
+      pieces.forEach(p => {
+        if (!byConcept[p.concept_id]) byConcept[p.concept_id] = [];
+        byConcept[p.concept_id].push(p);
+      });
+
+      return concepts.map(c => ({
+        ...c,
+        variants: byConcept[c.id] || [],
+        stats: calcStats(byConcept[c.id] || [])
+      }));
+    },
+
+    // ============================================================
+    // CONCEPT COMMENTS (comentários gerais do criativo)
+    // ============================================================
+    async loadConceptComments(conceptId, force = false) {
+      if (!force && cache.conceptComments.has(conceptId)) return cache.conceptComments.get(conceptId);
+      const { data, error } = await client
+        .from('comments')
+        .select('id, concept_id, author, text, kind, created_at')
+        .eq('concept_id', conceptId)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      cache.conceptComments.set(conceptId, data || []);
+      return data || [];
+    },
+
+    async addConceptComment(conceptId, author, text) {
+      const payload = {
+        concept_id: conceptId,
+        piece_id: null,
+        author: author || 'Anônimo',
+        text: (text || '').trim(),
+        kind: 'comment'
+      };
+      if (!payload.text) throw new Error('Comentário vazio.');
+      const { data, error } = await client
+        .from('comments')
+        .insert(payload)
+        .select()
+        .single();
+      if (error) throw error;
+      const list = cache.conceptComments.get(conceptId) || [];
+      cache.conceptComments.set(conceptId, [...list, data]);
+      return data;
+    },
+
+    async deleteConceptComment(conceptId, commentId) {
+      const { error } = await client.from('comments').delete().eq('id', commentId);
+      if (error) throw error;
+      const list = cache.conceptComments.get(conceptId);
+      if (list) cache.conceptComments.set(conceptId, list.filter(c => c.id !== commentId));
+    },
+
     // ============ HELPERS ============
     statsFromPieces(pieces) {
       return calcStats(pieces);
@@ -400,8 +602,11 @@
     /** Limpa todos os caches em memória. */
     invalidate() {
       cache.campaigns = null;
+      cache.concepts.clear();
       cache.pieces.clear();
+      cache.variants.clear();
       cache.comments.clear();
+      cache.conceptComments.clear();
       cache.versions.clear();
     },
 
