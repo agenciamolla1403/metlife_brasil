@@ -47,12 +47,23 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
   Filtros (Todos/Pendentes/Aprovados/Reprovados) agora agregam por
   criativo. KPIs continuam contando variações (unidade de decisão).
   43 testes novos.
+- **Criativos + Variações — Fase 3 ConceptView** (S40) — nova tela
+  dedicada ao detalhe do criativo (`#/c/<cid>/k/<kid>/v/<vid>`). Layout
+  com header (breadcrumb + status agregado + ações), **galeria horizontal**
+  de variações com thumb selecionada destacada em azul, **área de foco**
+  com preview + painel direito de aprovação/reprovação e comentários
+  por variação (pins incluídos), navegação ← → (teclado + botões),
+  **accordion "Comentário geral do criativo"** no rodapé usando os
+  métodos `loadConceptComments`/`addConceptComment`. Reusa toda a infra
+  de pins (overlay, drag, edit < 5min), versionamento (botão Histórico)
+  e edição de variação (modal `openPiece` antigo). Click em qualquer
+  thumb da listagem da campanha agora navega pra esta tela.
+  39 testes novos.
 
 ## 🟢 Próximas sessões
 
-**Em andamento: Criativos + Variações (S40)** — Fases 1 ✅ e 2 ✅. Faltam:
-- Fase 3: UI do detalhe (galeria + foco + painel direito + accordion comentário geral, conforme mockup aprovado)
-- Fase 4: Mobile + atalhos teclado (← → A R C) + polish
+**Em andamento: Criativos + Variações (S40)** — Fases 1 ✅, 2 ✅ e 3 ✅. Falta:
+- Fase 4: Mobile polish (galeria com swipe, painel em tabs) + atalhos teclado (A=aprovar, R=reprovar, C=foco no comentário) + transições suaves
 
 ---
 

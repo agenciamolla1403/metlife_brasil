@@ -297,6 +297,11 @@
   const Router = {
     parse() {
       const h = window.location.hash || '#/';
+      // Concept (criativo) — opcionalmente com variação selecionada:
+      //   #/c/<campaignId>/k/<conceptId>
+      //   #/c/<campaignId>/k/<conceptId>/v/<variantId>
+      const mConcept = h.match(/^#\/c\/([\w-]+)\/k\/([\w-]+)(?:\/v\/([\w-]+))?/);
+      if (mConcept) return { view: 'concept', campaignId: mConcept[1], conceptId: mConcept[2], variantId: mConcept[3] || null };
       const m = h.match(/^#\/c\/([\w-]+)/);
       if (m) return { view: 'campaign', campaignId: m[1] };
       return { view: 'home' };
@@ -334,7 +339,9 @@
 
     async render() {
       const route = Router.parse();
-      if (route.view === 'campaign') {
+      if (route.view === 'concept') {
+        await this.renderConceptView(route.campaignId, route.conceptId, route.variantId);
+      } else if (route.view === 'campaign') {
         await this.renderCampaignView(route.campaignId);
       } else {
         await this.renderHomeView();
@@ -696,11 +703,11 @@
       this.el.content.querySelectorAll('.concept-card').forEach(card => {
         const conceptId = card.dataset.conceptId;
 
-        // Clique em variação: abre detalhe da peça
+        // Clique em variação: navega pra concept view com a variação selecionada
         card.querySelectorAll('[data-variant-id]').forEach(thumb => {
           thumb.addEventListener('click', (e) => {
             e.stopPropagation();
-            Modals.openPieceDetail(campaignId, thumb.dataset.variantId);
+            Router.go(`#/c/${campaignId}/k/${conceptId}/v/${thumb.dataset.variantId}`);
           });
         });
 
@@ -825,6 +832,615 @@
           </div>
         </article>
       `;
+    },
+
+    // ============================================================
+    // CONCEPT VIEW (S40 Fase 3) — galeria + foco + comentário geral
+    // ============================================================
+    async renderConceptView(campaignId, conceptId, variantId = null) {
+      this.el.crumb.innerHTML = `<a href="/">Central do Cliente</a> &nbsp;/&nbsp; <a href="#/" id="crumbHome">Aprovação</a> &nbsp;/&nbsp; <em>carregando...</em>`;
+      this.el.content.innerHTML = loadingHtml('Carregando criativo...');
+
+      let campaign, concept, variants, generalComments;
+      try {
+        [campaign, concept, variants, generalComments] = await Promise.all([
+          Store.getCampaign(campaignId),
+          Store.getConcept(conceptId),
+          Store.loadVariants(conceptId, true),
+          Store.loadConceptComments(conceptId, true),
+        ]);
+      } catch (err) {
+        this.el.content.innerHTML = errorHtml(err, () => this.renderConceptView(campaignId, conceptId, variantId));
+        return;
+      }
+      if (!campaign) { Toast.show('Campanha não encontrada.', 'error'); Router.go('#/'); return; }
+      if (!concept)  { Toast.show('Criativo não encontrado.', 'error'); Router.go(`#/c/${campaignId}`); return; }
+      if (!variants || variants.length === 0) {
+        // Criativo sem variações: deixa o admin adicionar a primeira
+        this.el.content.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🎨</div>
+            <h3>Criativo sem variações ainda</h3>
+            <p>Adicione a primeira variação pra começar a coletar aprovações.</p>
+            ${window.MetLifeAuth.isAdmin() ? `<button class="btn-primary" id="btnAddFirstVar"><span class="plus">+</span> Adicionar variação</button>` : ''}
+            <div style="margin-top:14px;"><button class="btn-ghost" id="btnBackCampaign">← Voltar pra campanha</button></div>
+          </div>
+        `;
+        const b1 = document.getElementById('btnAddFirstVar');
+        if (b1) b1.addEventListener('click', () => Modals.openAddVariant(campaignId, conceptId));
+        document.getElementById('btnBackCampaign').addEventListener('click', () => Router.go(`#/c/${campaignId}`));
+        return;
+      }
+
+      // Resolve variação selecionada (ou primeira)
+      let selected = variants.find(v => v.id === variantId) || variants[0];
+      if (!variantId || !variants.find(v => v.id === variantId)) {
+        // Normaliza URL pra incluir a variantId (sem provocar reload — replace)
+        const newHash = `#/c/${campaignId}/k/${conceptId}/v/${selected.id}`;
+        if (window.location.hash !== newHash) {
+          history.replaceState(null, '', newHash);
+        }
+      }
+
+      // Stats agregadas
+      const stats = Store.statsFromPieces(variants);
+      const aggKey = stats.pending > 0 ? 'pending' : (stats.rejected > 0 ? 'rejected' : 'approved');
+      const aggLabel = `${stats.approved} / ${stats.total} aprovada${stats.total === 1 ? '' : 's'}`;
+
+      this.el.crumb.innerHTML = `
+        <a href="/">Central do Cliente</a> &nbsp;/&nbsp;
+        <a href="#/" id="crumbHome">Aprovação</a> &nbsp;/&nbsp;
+        <a href="#/c/${campaignId}" id="crumbCamp">${escapeHtml(campaign.name)}</a> &nbsp;/&nbsp;
+        <strong>${escapeHtml(concept.title)}</strong>
+      `;
+      document.getElementById('crumbHome').addEventListener('click', (e) => { e.preventDefault(); Router.go('#/'); });
+      document.getElementById('crumbCamp').addEventListener('click', (e) => { e.preventDefault(); Router.go(`#/c/${campaignId}`); });
+
+      const isAdmin = window.MetLifeAuth.isAdmin();
+      const isClient = !isAdmin;
+
+      // Galeria de thumbnails (todas as variações)
+      const galleryHtml = variants.map((v) => {
+        const isSel = v.id === selected.id;
+        let media = '';
+        if (v.media_type === 'image') {
+          media = `<img src="${v.media_url}" alt="${escapeHtml(v.variant_label || v.name || '')}" loading="lazy" />`;
+        } else {
+          media = `<div class="cv-thumb-video">▶</div>`;
+        }
+        const statusClass = v.status || 'pending';
+        return `
+          <button type="button"
+                  class="cv-thumb cv-thumb-${statusClass} ${isSel ? 'is-selected' : ''}"
+                  data-variant-id="${v.id}"
+                  title="${escapeHtml(v.variant_label || v.name || '')}">
+            ${media}
+            <span class="cv-thumb-status"></span>
+            <span class="cv-thumb-label">${escapeHtml(v.variant_label || 'Sem rótulo')}</span>
+          </button>
+        `;
+      }).join('');
+
+      // ============ FOCO: preview da variação selecionada ============
+      const pp = selected;
+      const currentVersion = pp.version || 1;
+
+      // Carrega comments da variação selecionada
+      let cms = [];
+      try { cms = await Store.loadComments(pp.id, true); } catch (_) {}
+
+      const FIVE_MIN_MS = 5 * 60 * 1000;
+      const currentUser = (window.MetLifeAuth.getUserName() || '').trim();
+      const canDeleteComment = (c) => {
+        if (c.kind !== 'comment') return false;
+        if (!isClient) return false;
+        if ((c.author || '').trim() !== currentUser) return false;
+        return (Date.now() - new Date(c.created_at).getTime()) < FIVE_MIN_MS;
+      };
+      const canEditPin = (c) => {
+        if (!isClient) return false;
+        if ((c.author || '').trim() !== currentUser) return false;
+        return (Date.now() - new Date(c.created_at).getTime()) < FIVE_MIN_MS;
+      };
+
+      // Pins da versão atual
+      const visiblePins = cms
+        .filter(c => c.pin_x != null && c.pin_y != null && c.pin_version === currentVersion)
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      const pinNumberById = new Map(visiblePins.map((c, i) => [c.id, i + 1]));
+
+      const pinsOverlayHtml = visiblePins.map((c, i) => {
+        const editable = canEditPin(c);
+        const tooltip = `${(c.text || '').substring(0, 80)} — ${c.author || ''}`;
+        return `
+          <button type="button" class="pin${editable ? ' pin-editable' : ''}"
+                  data-comment-id="${c.id}" data-num="${i + 1}"
+                  style="left: ${c.pin_x}%; top: ${c.pin_y}%;"
+                  title="${escapeHtml(tooltip)}">
+            <span class="pin-num">${i + 1}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Media (imagem com pins ou vídeo)
+      let mediaHtml = '';
+      if (pp.media_type === 'image') {
+        mediaHtml = `
+          <div class="piece-image-wrap" data-pin-mode="off">
+            <img src="${pp.media_url}" alt="${escapeHtml(pp.name)}" class="piece-image">
+            <div class="pin-overlay">${pinsOverlayHtml}</div>
+            <div class="pin-banner">
+              <span class="pin-banner-text">📍 Clique na imagem para marcar o ponto deste comentário</span>
+              <button type="button" class="pin-btn pin-btn-skip">Pular marcação</button>
+              <button type="button" class="pin-btn pin-btn-cancel">Cancelar</button>
+            </div>
+          </div>
+        `;
+      } else if (pp.media_type === 'video') {
+        const embedUrl = pp.video_embed_url || (pp.media_url && !isDirectVideoFile(pp.media_url) ? pp.media_url : null);
+        const originalUrl = pp.media_url || pp.video_embed_url || '';
+        const isPersonalSP = isSharePointPersonal(originalUrl);
+        const fallbackLink = originalUrl ? `
+          <a class="video-fallback-link" href="${escapeHtml(originalUrl)}" target="_blank" rel="noopener">
+            <span>Vídeo não carregou?</span> <strong>Abrir em nova aba ↗</strong>
+          </a>` : '';
+        if (embedUrl && !isPersonalSP) {
+          mediaHtml = `
+            <div class="video-frame-wrap">
+              <iframe src="${escapeHtml(embedUrl)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
+            </div>${fallbackLink}`;
+        } else if (pp.media_url && isDirectVideoFile(pp.media_url)) {
+          mediaHtml = `<video src="${escapeHtml(pp.media_url)}" controls></video>${fallbackLink}`;
+        } else if (isPersonalSP) {
+          mediaHtml = `
+            <div class="video-frame-wrap video-frame-placeholder">
+              <div class="video-sp-icon">🔒</div>
+              <div class="video-sp-notice">
+                <strong>⚠️ SharePoint pessoal não permite embed.</strong>
+                Clique em <strong>"Abrir em nova aba"</strong> abaixo.
+              </div>
+            </div>${fallbackLink}`;
+        } else {
+          mediaHtml = `<div class="video-frame-wrap video-frame-placeholder"><div style="font-size:32px;">🎬</div><p>Vídeo sem URL</p></div>`;
+        }
+      }
+
+      const variantStatusLabel = { pending: 'Pendente', approved: 'Aprovada', rejected: 'Reprovada' }[pp.status] || 'Pendente';
+
+      // ============ HTML completo ============
+      const html = `
+        <div class="cv-toolbar">
+          <button class="btn-ghost" id="cvBack">← Voltar</button>
+          <div class="cv-title-block">
+            <h2>${escapeHtml(concept.title)}</h2>
+            ${concept.description ? `<p class="cv-desc">${escapeHtml(concept.description)}</p>` : ''}
+          </div>
+          <div class="cv-actions">
+            <span class="cc-agg cc-agg-${aggKey}">${aggLabel}</span>
+            ${isAdmin ? `
+              <button class="btn-ghost cc-mini-btn" id="cvEditConcept" title="Editar criativo">✎</button>
+              <button class="btn-primary" id="cvAddVariant"><span class="plus">+</span> Nova variação</button>
+            ` : ''}
+          </div>
+        </div>
+
+        <div class="cv-gallery-wrap">
+          <div class="cv-gallery" role="list">
+            ${galleryHtml}
+          </div>
+        </div>
+
+        <div class="cv-focus" data-status="${pp.status}">
+          <div class="cv-focus-head">
+            <div>
+              <h3>${escapeHtml(pp.variant_label || 'Variação')}
+                <span class="version-tag">v${currentVersion}</span>
+              </h3>
+              <span class="cv-status-tag cv-status-${pp.status}">${variantStatusLabel}</span>
+            </div>
+            <div class="cv-nav">
+              <button class="btn-ghost cv-nav-btn" id="cvPrev" title="Variação anterior (←)" ${variants.indexOf(selected) === 0 ? 'disabled' : ''}>←</button>
+              <button class="btn-ghost cv-nav-btn" id="cvNext" title="Próxima variação (→)" ${variants.indexOf(selected) === variants.length - 1 ? 'disabled' : ''}>→</button>
+            </div>
+          </div>
+
+          <div class="piece-detail" data-status="${pp.status}">
+            <div class="piece-left">
+              <div class="piece-media">${mediaHtml}</div>
+              ${pp.link_url ? `
+                <a class="piece-link-block" href="${escapeHtml(pp.link_url)}" target="_blank" rel="noopener noreferrer">
+                  <span class="piece-link-icon">🔗</span>
+                  <span class="piece-link-text">
+                    <span class="piece-link-label">Arquivo original</span>
+                    <span class="piece-link-host">${escapeHtml((function(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return 'abrir link'}})(pp.link_url))}</span>
+                  </span>
+                  <span class="piece-link-arrow">↗</span>
+                </a>
+              ` : ''}
+            </div>
+            <div class="piece-side">
+              ${pp.copy ? `<div class="copy-block"><div class="label">Copy</div><p>${escapeHtml(pp.copy)}</p></div>` : ''}
+              ${pp.caption ? `<div class="copy-block caption-block"><div class="label">Legenda</div><p>${escapeHtml(pp.caption)}</p></div>` : ''}
+
+              <div class="action-row">
+                <button class="btn-approve ${pp.status === 'approved' ? 'active' : ''}" id="cvBtnApprove" type="button">
+                  ✓ ${pp.status === 'approved' ? 'Aprovada' : 'Aprovar'}
+                </button>
+                <button class="btn-reject ${pp.status === 'rejected' ? 'active' : ''}" id="cvBtnReject" type="button">
+                  ✗ ${pp.status === 'rejected' ? 'Reprovada' : 'Reprovar'}
+                </button>
+              </div>
+
+              <div class="section-title">Histórico (${cms.length})</div>
+              <div class="comments-list" id="cvCommentsList">
+                ${cms.length === 0 ? `<div style="font-size:12px; color:var(--muted); text-align:center; padding:14px;">Sem comentários ainda.</div>` : cms.map(cm => {
+                  const hasPin = cm.pin_x != null && cm.pin_y != null;
+                  const pinIsCurrent = hasPin && cm.pin_version === currentVersion;
+                  const pinNumber = pinIsCurrent ? pinNumberById.get(cm.id) : null;
+                  const pinBadge = hasPin
+                    ? (pinIsCurrent
+                        ? `<span class="comment-pin-badge" title="Marcado no ponto ${pinNumber}">📍 ${pinNumber}</span>`
+                        : `<span class="comment-pin-badge old" title="Pin de versão anterior">📍 v${cm.pin_version}</span>`)
+                    : '';
+                  const canDel = canDeleteComment(cm);
+                  const isAction = cm.kind && cm.kind.startsWith('action');
+                  const kindClass = cm.kind === 'action' ? 'action action-approved'
+                    : cm.kind === 'action-rejected' ? 'action action-rejected'
+                    : cm.kind === 'action-update' ? 'action action-update'
+                    : cm.kind === 'action-created' ? 'action action-created'
+                    : '';
+                  const actionTitle = cm.kind === 'action' ? 'Aprovou'
+                    : cm.kind === 'action-rejected' ? 'Reprovou'
+                    : cm.kind === 'action-update' ? 'Editou'
+                    : cm.kind === 'action-created' ? 'Criou'
+                    : 'Comentou';
+                  const avatarIcon = `<span class="comment-action-icon" title="${escapeHtml(cm.author)} — ${actionTitle}">${escapeHtml(initials(cm.author))}</span>`;
+                  const textHtml = isAction ? escapeHtml(cm.text) : renderCommentText(cm.text);
+                  return `
+                    <div class="comment ${kindClass}" data-comment-id="${cm.id}" data-pin-id="${pinIsCurrent ? cm.id : ''}">
+                      <div class="comment-head">
+                        ${avatarIcon}
+                        ${pinBadge}
+                        <span class="comment-author">${escapeHtml(cm.author)}</span>
+                        <span class="comment-date">${formatDate(cm.created_at)}</span>
+                        ${canDel ? `<button type="button" class="comment-delete" data-id="${cm.id}" title="Excluir comentário">×</button>` : ''}
+                      </div>
+                      <p class="comment-text">${textHtml}</p>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <form class="comment-form" id="cvCommentForm">
+                <input type="text" id="cvCommentInput" placeholder="Comentar nessa variação..." maxlength="500" autocomplete="off" />
+                ${(isClient && pp.media_type === 'image') ? `<button type="button" id="cvBtnPinComment" class="btn-pin-comment" title="Enviar marcando um ponto na imagem">📍</button>` : ''}
+                <button type="submit">Enviar</button>
+              </form>
+              <div class="comment-hint">
+                Formatação: <code>**negrito**</code> <code>_itálico_</code> <code>[link](url)</code>
+              </div>
+
+              ${(isAdmin || currentVersion > 1) ? `
+                <div class="piece-side-footer">
+                  ${currentVersion > 1 ? `<button class="btn-ghost btn-history" id="cvBtnHistory" type="button"><span class="history-icon">⟳</span> Histórico</button>` : ''}
+                  ${isAdmin ? `
+                    <button class="btn-ghost" id="cvBtnEditVariant" type="button">✎ Editar variação</button>
+                    <button class="btn-ghost btn-ghost-danger" id="cvBtnDeleteVariant" type="button">Excluir</button>
+                  ` : ''}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+
+        <details class="cv-general" ${generalComments.length > 0 ? 'open' : ''}>
+          <summary>
+            <span class="cv-general-icon">💬</span>
+            <span class="cv-general-label">Comentário geral do criativo</span>
+            <span class="cv-general-count">${generalComments.length}</span>
+            <span class="cv-general-caret">▾</span>
+          </summary>
+          <div class="cv-general-body">
+            <div class="cv-general-help">Use esse espaço pra discutir o criativo como um todo (estratégia, briefing, direção). Comentários específicos de uma variação ficam no painel acima.</div>
+            <div class="cv-general-list" id="cvGeneralList">
+              ${generalComments.length === 0 ? `<div style="font-size:12px; color:var(--muted); text-align:center; padding:14px;">Sem comentários gerais ainda.</div>` : generalComments.map(cm => {
+                const canDel = (cm.kind === 'comment') && isClient && ((cm.author || '').trim() === currentUser) && (Date.now() - new Date(cm.created_at).getTime() < FIVE_MIN_MS);
+                return `
+                  <div class="comment" data-general-comment-id="${cm.id}">
+                    <div class="comment-head">
+                      <span class="comment-action-icon" title="${escapeHtml(cm.author)} — Comentou">${escapeHtml(initials(cm.author))}</span>
+                      <span class="comment-author">${escapeHtml(cm.author)}</span>
+                      <span class="comment-date">${formatDate(cm.created_at)}</span>
+                      ${canDel ? `<button type="button" class="comment-delete cv-general-delete" data-id="${cm.id}" title="Excluir">×</button>` : ''}
+                    </div>
+                    <p class="comment-text">${renderCommentText(cm.text)}</p>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            <form class="comment-form" id="cvGeneralForm">
+              <input type="text" id="cvGeneralInput" placeholder="Comentar no criativo (não na variação)..." maxlength="500" autocomplete="off" />
+              <button type="submit">Enviar</button>
+            </form>
+          </div>
+        </details>
+      `;
+
+      this.el.content.innerHTML = html;
+      this._wireConceptView(campaignId, concept, variants, selected, cms);
+    },
+
+    _wireConceptView(campaignId, concept, variants, selected, cms) {
+      const isAdmin = window.MetLifeAuth.isAdmin();
+      const isClient = !isAdmin;
+      const author = window.MetLifeAuth.getUserName() || 'Anônimo';
+      const ppId = selected.id;
+      const conceptId = concept.id;
+      const currentVersion = selected.version || 1;
+      const root = this.el.content;
+
+      // ----- Voltar / breadcrumb -----
+      document.getElementById('cvBack').addEventListener('click', () => Router.go(`#/c/${campaignId}`));
+
+      // ----- Galeria: click muda variação selecionada -----
+      root.querySelectorAll('.cv-thumb[data-variant-id]').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          const vid = thumb.dataset.variantId;
+          if (vid && vid !== ppId) Router.go(`#/c/${campaignId}/k/${conceptId}/v/${vid}`);
+        });
+      });
+
+      // ----- Nav ← → -----
+      const idx = variants.indexOf(selected);
+      const goPrev = () => {
+        if (idx <= 0) return;
+        Router.go(`#/c/${campaignId}/k/${conceptId}/v/${variants[idx - 1].id}`);
+      };
+      const goNext = () => {
+        if (idx >= variants.length - 1) return;
+        Router.go(`#/c/${campaignId}/k/${conceptId}/v/${variants[idx + 1].id}`);
+      };
+      const prevBtn = document.getElementById('cvPrev');
+      const nextBtn = document.getElementById('cvNext');
+      if (prevBtn) prevBtn.addEventListener('click', goPrev);
+      if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+      // Atalhos teclado ← → (ignora se cursor está num input/textarea)
+      const keyHandler = (e) => {
+        const active = document.activeElement;
+        const inField = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+        if (inField) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+      };
+      document.addEventListener('keydown', keyHandler);
+      // Limpa o handler ao sair da view (ao próximo render)
+      if (!this._cleanups) this._cleanups = [];
+      this._cleanups.forEach(fn => { try { fn(); } catch (_) {} });
+      this._cleanups = [() => document.removeEventListener('keydown', keyHandler)];
+
+      // ----- Editar criativo / nova variação -----
+      const editConceptBtn = document.getElementById('cvEditConcept');
+      if (editConceptBtn) editConceptBtn.addEventListener('click', () => Modals.openConcept(campaignId, conceptId));
+      const addVarBtn = document.getElementById('cvAddVariant');
+      if (addVarBtn) addVarBtn.addEventListener('click', () => Modals.openAddVariant(campaignId, conceptId));
+
+      // ----- Aprovar/Reprovar variação -----
+      const btnApprove = document.getElementById('cvBtnApprove');
+      const btnReject  = document.getElementById('cvBtnReject');
+      btnApprove.addEventListener('click', async () => {
+        if (selected.status === 'approved') { Toast.show('Já está aprovada.'); return; }
+        btnApprove.disabled = true; btnReject.disabled = true;
+        try {
+          await Store.updatePieceStatus(campaignId, ppId, 'approved', author);
+          Toast.show('Variação aprovada.', 'success');
+          App.renderConceptView(campaignId, conceptId, ppId);
+        } catch (err) { safeError(err); btnApprove.disabled = false; btnReject.disabled = false; }
+      });
+      btnReject.addEventListener('click', async () => {
+        if (selected.status === 'rejected') { Toast.show('Já está reprovada.'); return; }
+        btnApprove.disabled = true; btnReject.disabled = true;
+        try {
+          await Store.updatePieceStatus(campaignId, ppId, 'rejected', author);
+          Toast.show('Variação reprovada.', 'success');
+          App.renderConceptView(campaignId, conceptId, ppId);
+        } catch (err) { safeError(err); btnApprove.disabled = false; btnReject.disabled = false; }
+      });
+
+      // ----- Pins + comentário da variação -----
+      let pinModeText = null;
+      const wrapEl = root.querySelector('.piece-image-wrap');
+      const imgEl = root.querySelector('.piece-image');
+      const submitBtn = root.querySelector('#cvCommentForm button[type="submit"]');
+      const inputEl = root.querySelector('#cvCommentInput');
+
+      const enterPinMode = (text) => {
+        if (!wrapEl) return false;
+        pinModeText = text;
+        wrapEl.dataset.pinMode = 'on';
+        if (submitBtn) submitBtn.disabled = true;
+        return true;
+      };
+      const exitPinMode = () => {
+        if (wrapEl) wrapEl.dataset.pinMode = 'off';
+        pinModeText = null;
+        if (submitBtn) submitBtn.disabled = false;
+      };
+      const savePinAndComment = async (text, x, y) => {
+        if (submitBtn) submitBtn.disabled = true;
+        try {
+          const opts = (x != null && y != null) ? { pinX: x, pinY: y, pinVersion: currentVersion } : {};
+          await Store.addComment(ppId, author, text, opts);
+          if (inputEl) inputEl.value = '';
+          App.renderConceptView(campaignId, conceptId, ppId);
+        } catch (err) { safeError(err); }
+        finally { exitPinMode(); }
+      };
+
+      const form = document.getElementById('cvCommentForm');
+      if (form) form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = inputEl.value.trim();
+        if (!text) return;
+        await savePinAndComment(text, null, null);
+      });
+
+      const btnPinComment = document.getElementById('cvBtnPinComment');
+      if (btnPinComment) {
+        btnPinComment.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = inputEl.value.trim();
+          if (!text) { Toast.show('Escreva o comentário primeiro, depois marque o ponto.', 'error'); inputEl.focus(); return; }
+          enterPinMode(text);
+        });
+      }
+
+      if (imgEl) {
+        imgEl.addEventListener('click', async (e) => {
+          if (!wrapEl || wrapEl.dataset.pinMode !== 'on') return;
+          const rect = imgEl.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          await savePinAndComment(pinModeText, x, y);
+        });
+      }
+      const skipBtn = root.querySelector('.pin-btn-skip');
+      if (skipBtn) skipBtn.addEventListener('click', async (e) => { e.stopPropagation(); await savePinAndComment(pinModeText, null, null); });
+      const cancelBtn = root.querySelector('.pin-btn-cancel');
+      if (cancelBtn) cancelBtn.addEventListener('click', (e) => { e.stopPropagation(); exitPinMode(); });
+
+      const escHandler = (e) => {
+        if (e.key === 'Escape' && wrapEl && wrapEl.dataset.pinMode === 'on') exitPinMode();
+      };
+      document.addEventListener('keydown', escHandler);
+      this._cleanups.push(() => document.removeEventListener('keydown', escHandler));
+
+      // Click no pin → scroll pro comment
+      root.querySelectorAll('.pin').forEach(pin => {
+        pin.addEventListener('click', (e) => {
+          if (wrapEl && wrapEl.dataset.pinMode === 'on') return;
+          e.stopPropagation();
+          const id = pin.dataset.commentId;
+          const cm = root.querySelector(`.comment[data-comment-id="${id}"]`);
+          if (cm) {
+            cm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            cm.classList.add('comment-flash');
+            setTimeout(() => cm.classList.remove('comment-flash'), 1400);
+          }
+        });
+      });
+
+      // Hover comment com pin → destaca pin
+      root.querySelectorAll('.comment[data-pin-id]').forEach(c => {
+        const id = c.dataset.pinId;
+        if (!id) return;
+        const findPin = () => root.querySelector(`.pin[data-comment-id="${id}"]`);
+        c.addEventListener('mouseenter', () => { const p = findPin(); if (p) p.classList.add('is-active'); });
+        c.addEventListener('mouseleave', () => { const p = findPin(); if (p) p.classList.remove('is-active'); });
+      });
+
+      // Excluir comment próprio
+      root.querySelectorAll('.comments-list .comment-delete').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          if (!confirm('Excluir este comentário?')) return;
+          try { await Store.deleteComment(ppId, id); Toast.show('Comentário excluído.', 'success'); App.renderConceptView(campaignId, conceptId, ppId); }
+          catch (err) { safeError(err); }
+        });
+      });
+
+      // ----- Drag-and-drop de pin (admin não tem, só client) -----
+      let dragging = null;
+      root.querySelectorAll('.pin.pin-editable').forEach(pin => {
+        pin.addEventListener('mousedown', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          dragging = { pin, moved: false };
+          pin.classList.add('is-dragging');
+        });
+      });
+      const onMove = (e) => {
+        if (!dragging || !imgEl) return;
+        dragging.moved = true;
+        const rect = imgEl.getBoundingClientRect();
+        const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+        const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+        dragging.pin.style.left = x + '%';
+        dragging.pin.style.top = y + '%';
+      };
+      const onUp = async (e) => {
+        if (!dragging) return;
+        const wasMoved = dragging.moved;
+        const pin = dragging.pin;
+        pin.classList.remove('is-dragging');
+        const id = pin.dataset.commentId;
+        dragging = null;
+        if (!wasMoved || !imgEl) return;
+        const rect = imgEl.getBoundingClientRect();
+        const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+        const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+        try { await Store.updateCommentPin(ppId, id, x, y); }
+        catch (err) { safeError(err); App.renderConceptView(campaignId, conceptId, ppId); }
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      this._cleanups.push(() => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      });
+
+      // ----- Editar variação / Histórico / Excluir -----
+      const editBtn = document.getElementById('cvBtnEditVariant');
+      if (editBtn) editBtn.addEventListener('click', () => Modals.openPiece(campaignId, ppId));
+      const historyBtn = document.getElementById('cvBtnHistory');
+      if (historyBtn) historyBtn.addEventListener('click', () => Modals.openVersionsHistory(campaignId, ppId));
+      const delBtn = document.getElementById('cvBtnDeleteVariant');
+      if (delBtn) delBtn.addEventListener('click', async () => {
+        const lastVariation = variants.length === 1;
+        const msg = lastVariation
+          ? 'Excluir essa variação? Como é a última, o criativo também ficará sem variações.'
+          : 'Excluir essa variação? Não pode ser desfeito.';
+        if (!confirm(msg)) return;
+        try {
+          await Store.deletePiece(campaignId, ppId);
+          Toast.show('Variação excluída.', 'success');
+          if (variants.length > 1) {
+            // navega pra próxima variação remanescente
+            const nextV = variants[idx + 1] || variants[idx - 1];
+            Router.go(`#/c/${campaignId}/k/${conceptId}/v/${nextV.id}`);
+          } else {
+            Router.go(`#/c/${campaignId}`);
+          }
+        } catch (err) { safeError(err); }
+      });
+
+      // ----- Comentário geral do criativo (accordion) -----
+      const generalForm = document.getElementById('cvGeneralForm');
+      if (generalForm) generalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('cvGeneralInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const submit = generalForm.querySelector('button[type="submit"]');
+        submit.disabled = true;
+        try {
+          await Store.addConceptComment(conceptId, author, text);
+          input.value = '';
+          App.renderConceptView(campaignId, conceptId, ppId);
+        } catch (err) { safeError(err); submit.disabled = false; }
+      });
+      root.querySelectorAll('.cv-general-delete').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          if (!confirm('Excluir esse comentário?')) return;
+          try {
+            await Store.deleteConceptComment(conceptId, id);
+            Toast.show('Comentário excluído.', 'success');
+            App.renderConceptView(campaignId, conceptId, ppId);
+          } catch (err) { safeError(err); }
+        });
+      });
     }
   };
 
