@@ -1124,15 +1124,17 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   background: white;
   color: var(--navy);
   border: 1.5px solid currentColor;
   flex-shrink: 0;
+  text-transform: uppercase;
+  line-height: 1;
 }
 .comment.action .comment-action-icon { color: var(--green); }
 .comment.action.action-rejected .comment-action-icon { color: var(--danger); }
@@ -1141,8 +1143,7 @@ main {
 
 .comment-head {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   margin-bottom: 4px;
   gap: 8px;
 }
@@ -1155,6 +1156,7 @@ main {
   font-size: 10px;
   color: var(--muted);
   white-space: nowrap;
+  margin-left: auto;
 }
 .comment-text {
   color: var(--navy);

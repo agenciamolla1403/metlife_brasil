@@ -91,9 +91,7 @@
 
   function initials(name) {
     if (!name) return '?';
-    const parts = name.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.trim()[0].toUpperCase();
   }
 
   function compressImage(file) {
@@ -1724,12 +1722,13 @@
                     : cm.kind === 'action-update' ? 'action action-update'
                     : cm.kind === 'action-created' ? 'action action-created'
                     : '';
-                  // Ícones por tipo de evento (audit log visual)
-                  const actionIcon = cm.kind === 'action' ? '<span class="comment-action-icon" title="Aprovou">✓</span>'
-                    : cm.kind === 'action-rejected' ? '<span class="comment-action-icon" title="Reprovou">✕</span>'
-                    : cm.kind === 'action-update' ? '<span class="comment-action-icon" title="Editou">✎</span>'
-                    : cm.kind === 'action-created' ? '<span class="comment-action-icon" title="Criou">＋</span>'
-                    : '';
+                  // Avatar com a inicial do autor (semântica da ação fica na cor/tooltip).
+                  const actionTitle = cm.kind === 'action' ? 'Aprovou'
+                    : cm.kind === 'action-rejected' ? 'Reprovou'
+                    : cm.kind === 'action-update' ? 'Editou'
+                    : cm.kind === 'action-created' ? 'Criou'
+                    : 'Comentou';
+                  const avatarIcon = `<span class="comment-action-icon" title="${escapeHtml(cm.author)} — ${actionTitle}">${escapeHtml(initials(cm.author))}</span>`;
                   // Markdown só em comentários normais; ações têm texto fixo
                   const textHtml = isAction ? escapeHtml(cm.text) : renderCommentText(cm.text);
                   return `
@@ -1737,7 +1736,7 @@
                          data-comment-id="${cm.id}"
                          data-pin-id="${pinIsCurrent ? cm.id : ''}">
                       <div class="comment-head">
-                        ${actionIcon}
+                        ${avatarIcon}
                         ${pinBadge}
                         <span class="comment-author">${escapeHtml(cm.author)}</span>
                         <span class="comment-date">${formatDate(cm.created_at)}</span>
