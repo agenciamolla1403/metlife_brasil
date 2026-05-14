@@ -217,6 +217,7 @@
     }
     .channel-leg.meta { background: var(--meta); color: white; }
     .channel-leg.yt { background: var(--yt); color: white; }
+    .channel-leg.li { background: #0A66C2; color: white; }
 
     /* === TIMELINE VERTICAL DIÁRIA === */
     .timeline-section {
@@ -569,6 +570,7 @@
     }
     .day-channel.meta { background: var(--meta); color: white; }
     .day-channel.yt { background: var(--yt); color: white; }
+    .day-channel.li { background: #0A66C2; color: white; }
     .day-objective {
       font-size: 10px;
       color: var(--muted);
@@ -699,34 +701,9 @@
       .wave-summary { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Mobile: nada fixo na rolagem — banner da onda rola normalmente
-       junto com o conteúdo pra não roubar espaço da timeline. */
+    /* Mobile: sticky desligado pra evitar bug de stack-context iOS Safari */
     @media (max-width: 760px) {
-      .wave-banner {
-        position: static;
-        top: auto;
-      }
-    }
-
-    /* Footer com logo Molla */
-    .brand-footer-row {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.16);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .brand-logo-footer {
-      height: 24px;
-      width: auto;
-      opacity: 0.9;
-    }
-    .brand-footer-text {
-      font-size: 12px;
-      opacity: 0.7;
-      margin: 0;
+      .wave-banner { position: static; }
     }
   </style>
 </head>
@@ -736,7 +713,6 @@
       <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <strong>Crono Ads</strong></span>
     </div>
   </div>
-  <!-- Header global injetado por header.js -->
 
   <!-- HERO -->
   <header>
@@ -759,12 +735,12 @@
           <span>Lotes A/B</span>
         </div>
         <div class="stat">
-          <strong>24+</strong>
+          <strong>36</strong>
           <span>Criativos</span>
         </div>
         <div class="stat">
-          <strong>R$ 300K</strong>
-          <span>Investimento Bruto</span>
+          <strong>R$ 340K</strong>
+          <span>Investimento bruto</span>
         </div>
       </div>
     </div>
@@ -798,7 +774,12 @@
           <span style="font-size:11px; color: var(--muted); font-weight:800; text-transform: uppercase; letter-spacing: .5px;">Canais:</span>
           <span class="channel-leg meta">Meta Ads</span>
           <span class="channel-leg yt">YouTube Ads</span>
-          <span style="font-size: 11px; color: var(--muted); margin-left: 12px;">Distribuição planejada: 70% Meta · 30% YouTube</span>
+          <span class="channel-leg li">LinkedIn Ads</span>
+          <span style="font-size: 11px; color: var(--muted); margin-left: 12px;">Distribuição planejada: 59% Meta · 23% YouTube · 18% LinkedIn</span>
+        </div>
+        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(0,59,92,.12);">
+          <h4 style="font-size: 13px; margin: 0 0 8px; color: var(--navy); text-transform: uppercase; letter-spacing: .5px;">Regra de veiculação</h4>
+          <p style="font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5;">Cada criativo respeita o período mínimo de <strong>10 dias no ar</strong>. Exceção: peças contextuais (resultado de jogos da Copa, momentos comemorativos pré-aprovados), que rodam em janelas mais curtas e são acionadas em modelo D+1.</p>
         </div>
       </div>
     </div>
@@ -808,20 +789,20 @@
   <section class="timeline-section" style="padding-top: 20px;">
     <div class="container">
 
-      <!-- ============ ONDA 1 - MAIO ============ -->
+      <!-- ============ ONDA 1 - LANÇAMENTO ============ -->
       <div class="wave-block wave-1">
         <div class="wave-banner">
           <div class="wave-banner-left">
             <span class="wave-tag">Onda 1 · Lançamento</span>
-            <div class="wave-month">MAIO</div>
-            <div class="wave-period">18 a 31 de maio · 14 dias</div>
+            <div class="wave-month">ONDA 1</div>
+            <div class="wave-period">18/05 a 14/06 · 28 dias</div>
           </div>
           <div class="wave-banner-right">
-            <div class="banner-stat"><strong>9</strong><span>Criativos</span></div>
+            <div class="banner-stat"><strong>13</strong><span>Criativos</span></div>
             <div class="banner-stat"><strong>3 lotes A/B</strong><span>Testes previstos</span></div>
-            <div class="banner-stat"><strong>R$ 90K</strong><span>Investimento</span></div>
-            <div class="banner-stat"><strong>~3,0M</strong><span>Impressões</span></div>
-            <div class="banner-stat"><strong>Awareness</strong><span>+ Vídeo Views</span></div>
+            <div class="banner-stat"><strong>R$ 102K</strong><span>Investimento bruto</span></div>
+            <div class="banner-stat"><strong>~3,2M</strong><span>Impressões</span></div>
+            <div class="banner-stat"><strong>Awareness</strong><span>+ Vídeo Views + Lead Gen</span></div>
           </div>
         </div>
 
@@ -840,18 +821,21 @@
                 <span class="action-tag tag-launch">🚀 Lançamento oficial</span>
                 <span class="action-tag tag-monitor">Estreia da campanha</span>
               </div>
-              <h3 class="day-title">Manifesto entra no ar + 1ª peça estática</h3>
-              <p class="day-desc">Vídeo manifesto principal e peça de conceito vão ao ar simultaneamente em Meta e YouTube. Sem teste A/B inicial — o objetivo é fixar a narrativa.</p>
+              <h3 class="day-title">Manifesto + 1ª peça estática + LinkedIn institucional + Lead Gen Corretores</h3>
+              <p class="day-desc">Vídeo manifesto principal e peça de conceito vão ao ar em Meta e YouTube. Simultaneamente, LinkedIn ativa a campanha institucional (vídeo) e a Lead Gen Corretores (formulário com LP dedicada). Sem teste A/B inicial — o objetivo é fixar a narrativa nos 3 canais.</p>
               <div class="pieces-row">
                 <span class="piece-chip video">Vídeo Manifesto · 30–45s</span>
                 <span class="piece-chip static">Estático Conceito · feed</span>
+                <span class="piece-chip video" style="background:#0A66C2;">LinkedIn · Vídeo Institucional</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Lead Gen Form</span>
               </div>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
                   <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
-                <span class="day-objective">Awareness</span>
+                <span class="day-objective">Awareness + Lead Gen B2B</span>
               </div>
             </div>
           </div>
@@ -928,7 +912,34 @@
             </div>
           </div>
 
-          <!-- 30/05 - LEITURA + ESCALA -->
+          <!-- 28/05 - REFORÇO LINKEDIN -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">28 mai</div>
+              <div class="day-name">Quinta-feira</div>
+              <span class="week-label">Sem 2</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-test">Reforço LinkedIn · Estáticos B2B</span>
+              </div>
+              <h3 class="day-title">2 estáticos LinkedIn entram em complemento ao vídeo institucional</h3>
+              <p class="day-desc">Após 10 dias do vídeo institucional rodando, entram 2 estáticos B2B com variações de copy para reforço de mensagem em decisores e perfil corporativo. Veiculação mínima: 10 dias.</p>
+              <div class="pieces-row">
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Institucional A</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Lead Gen reforço</span>
+              </div>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Brand Awareness + Lead Gen</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 30/05 - LEITURA INTERMEDIÁRIA -->
           <div class="day-row">
             <div class="day-date">
               <div class="num">30 mai</div>
@@ -938,16 +949,69 @@
             <div class="day-marker"><div class="marker-circle escala"></div></div>
             <div class="day-content">
               <div class="day-action">
-                <span class="action-tag tag-scale">↑ Leitura + escala</span>
+                <span class="action-tag tag-scale">↑ Leitura intermediária</span>
               </div>
-              <h3 class="day-title">Vencedores escalam para junho</h3>
-              <p class="day-desc">Análise de VTR, CPM e engajamento dos lotes 1 e 2. Os criativos vencedores recebem maior parcela do orçamento e seguem para a Onda 2.</p>
+              <h3 class="day-title">Análise dos lotes A/B 1 e 2</h3>
+              <p class="day-desc">Análise de VTR, CPM e engajamento dos lotes 1 e 2 em Meta e YouTube. Vencedores recebem reforço de verba e seguem rodando até o fim da onda. Em paralelo, leitura da performance LinkedIn (CPL leads, CTR).</p>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
                   <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
                 <span class="day-objective">Otimização criativa</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 05/06 - LOTE LINKEDIN 2 -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">05 jun</div>
+              <div class="day-name">Sexta-feira</div>
+              <span class="week-label">Sem 3</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-test">Lote LinkedIn · Variação Lead Gen</span>
+              </div>
+              <h3 class="day-title">Nova variação de Lead Gen Form para corretores</h3>
+              <p class="day-desc">Após 18 dias do primeiro Lead Gen Form no ar, entra variação com nova abordagem de copy e oferta (mensagem foco em apoio comercial vs. mensagem foco em autoridade). Janela de leitura: 10 dias.</p>
+              <div class="pieces-row">
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Lead Gen Form V2</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Corretores</span>
+              </div>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Lead Gen B2B</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14/06 - FIM DA ONDA 1 -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">14 jun</div>
+              <div class="day-name">Domingo</div>
+              <span class="week-label">Sem 4</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle escala"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-scale">↑ Encerramento Onda 1</span>
+              </div>
+              <h3 class="day-title">Consolidação da Onda 1 e transição para intensificação</h3>
+              <p class="day-desc">Fechamento dos 28 dias da Onda 1. Avaliação consolidada de performance Meta, YouTube e LinkedIn. Vencedores se tornam base do reforço da Onda 2.</p>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel meta">Meta Ads</span>
+                  <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Otimização + Transição</span>
               </div>
             </div>
           </div>
@@ -955,46 +1019,47 @@
         </div>
 
         <div class="wave-summary">
-          <div class="ws-item"><strong>5 vídeos + 4 estáticos</strong><span>Inventário ativo</span></div>
-          <div class="ws-item"><strong>3 marcos A/B</strong><span>18/05 · 22/05 · 26/05</span></div>
-          <div class="ws-item"><strong>Meta + YouTube</strong><span>Canais ativos</span></div>
-          <div class="ws-item"><strong>R$ 90.000</strong><span>Investimento da onda</span></div>
+          <div class="ws-item"><strong>13 criativos ativos</strong><span>9 Meta/YT + 4 LinkedIn</span></div>
+          <div class="ws-item"><strong>3 lotes A/B + 2 LI</strong><span>22/05 · 26/05 · 05/06</span></div>
+          <div class="ws-item"><strong>Meta + YT + LinkedIn</strong><span>Canais ativos</span></div>
+          <div class="ws-item"><strong>R$ 102.000</strong><span>Investimento bruto da onda</span></div>
         </div>
       </div>
 
-      <!-- ============ ONDA 2 - JUNHO ============ -->
+      <!-- ============ ONDA 2 - INTENSIFICAÇÃO ============ -->
       <div class="wave-block wave-2">
         <div class="wave-banner">
           <div class="wave-banner-left">
             <span class="wave-tag">Onda 2 · Intensificação</span>
-            <div class="wave-month">JUNHO</div>
-            <div class="wave-period">01 a 30 de junho · 30 dias</div>
+            <div class="wave-month">ONDA 2</div>
+            <div class="wave-period">15/06 a 12/07 · 28 dias</div>
           </div>
           <div class="wave-banner-right">
-            <div class="banner-stat"><strong>9</strong><span>Criativos</span></div>
+            <div class="banner-stat"><strong>14</strong><span>Criativos</span></div>
             <div class="banner-stat"><strong>4 lotes A/B</strong><span>Testes previstos</span></div>
-            <div class="banner-stat"><strong>R$ 120K</strong><span>Investimento</span></div>
-            <div class="banner-stat"><strong>~4,0M</strong><span>Impressões</span></div>
-            <div class="banner-stat"><strong>Engajamento</strong><span>+ Tráfego</span></div>
+            <div class="banner-stat"><strong>R$ 136K</strong><span>Investimento bruto</span></div>
+            <div class="banner-stat"><strong>~4,3M</strong><span>Impressões</span></div>
+            <div class="banner-stat"><strong>Engajamento</strong><span>+ Tráfego + Eng B2B</span></div>
           </div>
         </div>
 
         <div class="timeline-rail">
 
-          <!-- 02/06 -->
+          <!-- 15/06 - INÍCIO ONDA 2 -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">02 jun</div>
-              <div class="day-name">Terça-feira</div>
+              <div class="num">15 jun</div>
+              <div class="day-name">Segunda-feira</div>
               <span class="week-label">Sem 1</span>
             </div>
-            <div class="day-marker"><div class="marker-circle"></div></div>
-            <div class="day-content">
+            <div class="day-marker"><div class="marker-circle milestone">⚡</div></div>
+            <div class="day-content highlight">
               <div class="day-action">
                 <span class="action-tag tag-test">Lote A/B 3 · Cortes curtos</span>
+                <span class="action-tag tag-monitor">Início da intensificação</span>
               </div>
-              <h3 class="day-title">2 vídeos curtos + 2 estáticos novos</h3>
-              <p class="day-desc">Estreia das versões curtas (6–10s) ideais para Reels e Stories. Variações de copy testadas em paralelo. Leitura: 5 dias.</p>
+              <h3 class="day-title">2 vídeos curtos + 2 estáticos novos · estreia da Onda 2</h3>
+              <p class="day-desc">Estreia das versões curtas (6–10s) ideais para Reels e Stories. Variações de copy testadas em paralelo. Veiculação mínima por peça: 10 dias.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1017,11 +1082,39 @@
             </div>
           </div>
 
-          <!-- 09/06 -->
+          <!-- 18/06 - LINKEDIN ENGAJAMENTO B2B -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">09 jun</div>
-              <div class="day-name">Terça-feira</div>
+              <div class="num">18 jun</div>
+              <div class="day-name">Quinta-feira</div>
+              <span class="week-label">Sem 1</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-test">Estreia LinkedIn Engajamento B2B</span>
+              </div>
+              <h3 class="day-title">Document Ad + 2 estáticos · campanha de engajamento institucional</h3>
+              <p class="day-desc">Entrada da 3ª campanha LinkedIn (Engajamento B2B). Document Ad com conteúdo sobre proteção, bem-estar corporativo e MetLife Foundation. Captura público qualificado para retargeting da Onda 3. Veiculação mínima: 10 dias por peça.</p>
+              <div class="pieces-row">
+                <span class="piece-chip video" style="background:#0A66C2;">LinkedIn · Document Ad institucional</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Engajamento A</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Engajamento B</span>
+              </div>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Engagement B2B</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 22/06 - LOTE A/B 4 -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">22 jun</div>
+              <div class="day-name">Segunda-feira</div>
               <span class="week-label">Sem 2</span>
             </div>
             <div class="day-marker"><div class="marker-circle"></div></div>
@@ -1029,8 +1122,8 @@
               <div class="day-action">
                 <span class="action-tag tag-test">Lote A/B 4 · Carrosséis</span>
               </div>
-              <h3 class="day-title">Carrossel + estático para engajamento</h3>
-              <p class="day-desc">Entrada dos formatos de engajamento. Carrossel testa narrativa por personas vs. narrativa por momentos de vida.</p>
+              <h3 class="day-title">Carrossel + estático para engajamento Meta</h3>
+              <p class="day-desc">Entrada dos formatos de engajamento no Meta. Carrossel testa narrativa por personas vs. narrativa por momentos de vida. Veiculação mínima por peça: 10 dias.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1055,11 +1148,11 @@
             </div>
           </div>
 
-          <!-- 16/06 -->
+          <!-- 28/06 - LEITURA INTERMEDIÁRIA + PICO -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">16 jun</div>
-              <div class="day-name">Terça-feira</div>
+              <div class="num">28 jun</div>
+              <div class="day-name">Domingo</div>
               <span class="week-label">Sem 3</span>
             </div>
             <div class="day-marker"><div class="marker-circle escala"></div></div>
@@ -1069,23 +1162,24 @@
                 <span class="action-tag tag-monitor">Pico da campanha</span>
               </div>
               <h3 class="day-title">Escala dos vencedores + reforço de frequência</h3>
-              <p class="day-desc">Meio do mês marca o pico de exposição. Os criativos com melhor desempenho dos lotes 3 e 4 recebem reforço de verba para maximizar frequência.</p>
+              <p class="day-desc">Meio da Onda 2 marca o pico de exposição. Os criativos com melhor desempenho dos lotes 3 e 4 recebem reforço de verba para maximizar frequência. Em paralelo, leitura de performance LinkedIn (engajamento e leads).</p>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
                   <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
                 <span class="day-objective">Frequência + Engajamento</span>
               </div>
             </div>
           </div>
 
-          <!-- 23/06 -->
+          <!-- 02/07 - LOTE A/B 5 -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">23 jun</div>
-              <div class="day-name">Terça-feira</div>
-              <span class="week-label">Sem 4</span>
+              <div class="num">02 jul</div>
+              <div class="day-name">Quinta-feira</div>
+              <span class="week-label">Sem 3</span>
             </div>
             <div class="day-marker"><div class="marker-circle"></div></div>
             <div class="day-content">
@@ -1093,7 +1187,7 @@
                 <span class="action-tag tag-test">Lote A/B 5 · Tráfego</span>
               </div>
               <h3 class="day-title">Estáticos com CTA leve · primeiras conversões</h3>
-              <p class="day-desc">Início da camada de tráfego. Variações testam CTAs distintos para mensurar interesse antes da Onda 3. Leitura: 5 dias.</p>
+              <p class="day-desc">Início da camada de tráfego no Meta. Variações testam CTAs distintos para mensurar interesse antes da Onda 3. Veiculação mínima por peça: 10 dias.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1115,24 +1209,52 @@
             </div>
           </div>
 
-          <!-- 30/06 -->
+          <!-- 05/07 - REFORÇO LINKEDIN INSTITUCIONAL -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">30 jun</div>
-              <div class="day-name">Terça-feira</div>
-              <span class="week-label">Sem 5</span>
+              <div class="num">05 jul</div>
+              <div class="day-name">Domingo</div>
+              <span class="week-label">Sem 4</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-test">Lote LinkedIn · 2º vídeo institucional</span>
+              </div>
+              <h3 class="day-title">Variação de vídeo institucional + estático Lead Gen V3</h3>
+              <p class="day-desc">Após 48 dias do vídeo institucional original, entra variação com novo ângulo (foco em legado e propósito). Em paralelo, terceira variação de Lead Gen para corretores. Veiculação mínima: 10 dias por peça.</p>
+              <div class="pieces-row">
+                <span class="piece-chip video" style="background:#0A66C2;">LinkedIn · Vídeo Institucional V2</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Lead Gen V3</span>
+              </div>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Brand Awareness + Lead Gen</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12/07 - FIM ONDA 2 -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">12 jul</div>
+              <div class="day-name">Domingo</div>
+              <span class="week-label">Sem 4</span>
             </div>
             <div class="day-marker"><div class="marker-circle escala"></div></div>
             <div class="day-content">
               <div class="day-action">
-                <span class="action-tag tag-scale">↑ Leitura + escala</span>
+                <span class="action-tag tag-scale">↑ Leitura + transição</span>
               </div>
-              <h3 class="day-title">Consolidação dos aprendizados de junho</h3>
-              <p class="day-desc">Avaliação completa da Onda 2. Vencedores dos 4 lotes A/B se tornam base do reaproveitamento da Onda 3.</p>
+              <h3 class="day-title">Consolidação dos aprendizados da Onda 2</h3>
+              <p class="day-desc">Avaliação completa da Onda 2 nos 3 canais. Vencedores dos 4 lotes A/B Meta/YT e das campanhas LinkedIn se tornam base do reaproveitamento da Onda 3.</p>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
                   <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
                 <span class="day-objective">Otimização criativa</span>
               </div>
@@ -1142,46 +1264,47 @@
         </div>
 
         <div class="wave-summary">
-          <div class="ws-item"><strong>4 vídeos + 5 estáticos</strong><span>Inventário ativo</span></div>
-          <div class="ws-item"><strong>4 marcos A/B</strong><span>02 · 09 · 16 · 23/06</span></div>
-          <div class="ws-item"><strong>Meta + YouTube</strong><span>Canais ativos</span></div>
-          <div class="ws-item"><strong>R$ 120.000</strong><span>Investimento da onda</span></div>
+          <div class="ws-item"><strong>14 criativos ativos</strong><span>9 Meta/YT + 5 LinkedIn</span></div>
+          <div class="ws-item"><strong>4 lotes A/B + 2 LI</strong><span>15/06 · 18/06 · 22/06 · 02/07 · 05/07</span></div>
+          <div class="ws-item"><strong>Meta + YT + LinkedIn</strong><span>Canais ativos</span></div>
+          <div class="ws-item"><strong>R$ 136.000</strong><span>Investimento bruto da onda</span></div>
         </div>
       </div>
 
-      <!-- ============ ONDA 3 - JULHO ============ -->
+      <!-- ============ ONDA 3 - OTIMIZAÇÃO ============ -->
       <div class="wave-block wave-3">
         <div class="wave-banner">
           <div class="wave-banner-left">
             <span class="wave-tag">Onda 3 · Otimização</span>
-            <div class="wave-month">JULHO</div>
-            <div class="wave-period">01 a 31 de julho · 31 dias</div>
+            <div class="wave-month">ONDA 3</div>
+            <div class="wave-period">13/07 a 31/07 · 19 dias</div>
           </div>
           <div class="wave-banner-right">
-            <div class="banner-stat"><strong>6+</strong><span>Novos criativos</span></div>
+            <div class="banner-stat"><strong>9+</strong><span>Novos criativos</span></div>
             <div class="banner-stat"><strong>3 lotes A/B</strong><span>Testes previstos</span></div>
-            <div class="banner-stat"><strong>R$ 90K</strong><span>Investimento</span></div>
-            <div class="banner-stat"><strong>~3,0M</strong><span>Impressões</span></div>
-            <div class="banner-stat"><strong>Tráfego</strong><span>+ Conversão leve</span></div>
+            <div class="banner-stat"><strong>R$ 102K</strong><span>Investimento bruto</span></div>
+            <div class="banner-stat"><strong>~3,2M</strong><span>Impressões</span></div>
+            <div class="banner-stat"><strong>Tráfego</strong><span>+ Conversão + Retargeting B2B</span></div>
           </div>
         </div>
 
         <div class="timeline-rail">
 
-          <!-- 02/07 -->
+          <!-- 13/07 - INÍCIO ONDA 3 -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">02 jul</div>
-              <div class="day-name">Quinta-feira</div>
+              <div class="num">13 jul</div>
+              <div class="day-name">Segunda-feira</div>
               <span class="week-label">Sem 1</span>
             </div>
-            <div class="day-marker"><div class="marker-circle"></div></div>
-            <div class="day-content">
+            <div class="day-marker"><div class="marker-circle milestone">🎯</div></div>
+            <div class="day-content highlight">
               <div class="day-action">
                 <span class="action-tag tag-test">Lote A/B 6 · Retargeting</span>
+                <span class="action-tag tag-monitor">Início da otimização</span>
               </div>
-              <h3 class="day-title">2 vídeos + 2 estáticos · públicos quentes</h3>
-              <p class="day-desc">Início do retargeting. As peças impactam quem viu vídeos ou interagiu nas Ondas 1 e 2. Reforço de confiança e proteção.</p>
+              <h3 class="day-title">2 vídeos + 2 estáticos · públicos quentes Meta</h3>
+              <p class="day-desc">Início do retargeting Meta. As peças impactam quem viu vídeos ou interagiu nas Ondas 1 e 2. Reforço de confiança e proteção. Veiculação mínima: 10 dias por peça.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1203,11 +1326,39 @@
             </div>
           </div>
 
-          <!-- 10/07 -->
+          <!-- 15/07 - RETARGETING LINKEDIN -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">10 jul</div>
-              <div class="day-name">Sexta-feira</div>
+              <div class="num">15 jul</div>
+              <div class="day-name">Quarta-feira</div>
+              <span class="week-label">Sem 1</span>
+            </div>
+            <div class="day-marker"><div class="marker-circle"></div></div>
+            <div class="day-content">
+              <div class="day-action">
+                <span class="action-tag tag-test">Retargeting LinkedIn · Leads frios</span>
+              </div>
+              <h3 class="day-title">3 estáticos LinkedIn para reimpactar leads não convertidos</h3>
+              <p class="day-desc">Retargeting B2B: peças impactam quem se engajou com Document Ad, viu vídeo institucional ou abriu Lead Gen sem completar. Mensagem de reforço de confiança e proteção. Veiculação mínima: 10 dias por peça.</p>
+              <div class="pieces-row">
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Retargeting Lead Gen V4</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Reforço B2B</span>
+                <span class="piece-chip static" style="background:#0A66C2;">LinkedIn · Estático Cierre Institucional</span>
+              </div>
+              <div class="day-footer">
+                <div class="day-channels">
+                  <span class="day-channel li">LinkedIn</span>
+                </div>
+                <span class="day-objective">Retargeting B2B + Lead Gen</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 20/07 - LOTE A/B 7 -->
+          <div class="day-row">
+            <div class="day-date">
+              <div class="num">20 jul</div>
+              <div class="day-name">Segunda-feira</div>
               <span class="week-label">Sem 2</span>
             </div>
             <div class="day-marker"><div class="marker-circle"></div></div>
@@ -1216,7 +1367,7 @@
                 <span class="action-tag tag-test">Lote A/B 7 · CTA leve</span>
               </div>
               <h3 class="day-title">2 estáticos com chamada para ação</h3>
-              <p class="day-desc">Variação de CTA mais direta. Teste mensura intenção real após dois meses de exposição à marca. Leitura: 5 dias.</p>
+              <p class="day-desc">Variação de CTA mais direta no Meta. Teste mensura intenção real após dois meses de exposição à marca. Veiculação mínima: 10 dias por peça.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1238,10 +1389,10 @@
             </div>
           </div>
 
-          <!-- 18/07 -->
+          <!-- 25/07 - LOTE A/B 8 -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">18 jul</div>
+              <div class="num">25 jul</div>
               <div class="day-name">Sábado</div>
               <span class="week-label">Sem 3</span>
             </div>
@@ -1251,7 +1402,7 @@
                 <span class="action-tag tag-test">Lote A/B 8 · Conversão leve</span>
               </div>
               <h3 class="day-title">Reaproveitamento dos vencedores + 2 estáticos novos</h3>
-              <p class="day-desc">Os melhores criativos da campanha são reativados em conjunto com peças finais de conversão. Leitura: 5 dias.</p>
+              <p class="day-desc">Os melhores criativos da campanha são reativados em conjunto com peças finais de conversão. Janela mais curta justificada pelo fechamento — peças contextuais e CTAs específicos.</p>
               <div class="ab-grid">
                 <div class="ab-card var-a">
                   <span class="ab-letter">A</span>
@@ -1273,11 +1424,11 @@
             </div>
           </div>
 
-          <!-- 25/07 -->
+          <!-- 29/07 - ÚLTIMA ESCALA -->
           <div class="day-row">
             <div class="day-date">
-              <div class="num">25 jul</div>
-              <div class="day-name">Sábado</div>
+              <div class="num">29 jul</div>
+              <div class="day-name">Quarta-feira</div>
               <span class="week-label">Sem 4</span>
             </div>
             <div class="day-marker"><div class="marker-circle escala"></div></div>
@@ -1285,11 +1436,13 @@
               <div class="day-action">
                 <span class="action-tag tag-scale">↑ Última escala</span>
               </div>
-              <h3 class="day-title">Recorte final dos top performers</h3>
-              <p class="day-desc">Últimos 6 dias da campanha rodam apenas com os criativos vencedores acumulados ao longo das 3 ondas. Foco em frequência e fechamento de jornada.</p>
+              <h3 class="day-title">Recorte final dos top performers nos 3 canais</h3>
+              <p class="day-desc">Últimos 3 dias da campanha rodam apenas com os criativos vencedores acumulados em Meta, YouTube e LinkedIn. Foco em frequência e fechamento de jornada.</p>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
+                  <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
                 <span class="day-objective">Frequência + Conversão</span>
               </div>
@@ -1301,19 +1454,20 @@
             <div class="day-date">
               <div class="num">31 jul</div>
               <div class="day-name">Sexta-feira</div>
-              <span class="week-label">Sem 5</span>
+              <span class="week-label">Sem 4</span>
             </div>
             <div class="day-marker"><div class="marker-circle encerra"></div></div>
             <div class="day-content highlight-end">
               <div class="day-action">
                 <span class="action-tag tag-end">■ Encerramento da campanha</span>
               </div>
-              <h3 class="day-title">Pausa final + leitura consolidada</h3>
-              <p class="day-desc">Encerramento oficial da veiculação. Início da apuração final de Brand Lift, alcance, frequência e leads institucionais para reporte executivo.</p>
+              <h3 class="day-title">Pausa final + leitura consolidada dos 75 dias</h3>
+              <p class="day-desc">Encerramento oficial da veiculação nos 3 canais. Início da apuração final de Brand Lift, alcance, frequência, leads institucionais Meta e leads B2B LinkedIn para reporte executivo.</p>
               <div class="day-footer">
                 <div class="day-channels">
                   <span class="day-channel meta">Meta Ads</span>
                   <span class="day-channel yt">YouTube</span>
+                  <span class="day-channel li">LinkedIn</span>
                 </div>
                 <span class="day-objective">Mensuração final</span>
               </div>
@@ -1323,10 +1477,10 @@
         </div>
 
         <div class="wave-summary">
-          <div class="ws-item"><strong>2 vídeos + 4 estáticos</strong><span>Novos · + reaproveitamento</span></div>
-          <div class="ws-item"><strong>3 marcos A/B</strong><span>02 · 10 · 18/07</span></div>
-          <div class="ws-item"><strong>Meta Ads</strong><span>Canal principal</span></div>
-          <div class="ws-item"><strong>R$ 90.000</strong><span>Investimento da onda</span></div>
+          <div class="ws-item"><strong>9 criativos novos + reuso</strong><span>6 Meta/YT + 3 LinkedIn</span></div>
+          <div class="ws-item"><strong>3 lotes + 1 retargeting LI</strong><span>13 · 15 · 20 · 25/07</span></div>
+          <div class="ws-item"><strong>Meta + YT + LinkedIn</strong><span>Canais ativos</span></div>
+          <div class="ws-item"><strong>R$ 102.000</strong><span>Investimento bruto da onda</span></div>
         </div>
       </div>
 
@@ -1346,11 +1500,11 @@
           <thead>
             <tr>
               <th>Onda</th>
-              <th>Lote</th>
+              <th>Lote / Marco</th>
               <th>Data</th>
-              <th>Variação A</th>
-              <th>Variação B</th>
-              <th>Janela</th>
+              <th>Variação A / Peça principal</th>
+              <th>Variação B / Peça complementar</th>
+              <th>Janela mínima</th>
               <th>Canais</th>
               <th>Objetivo</th>
             </tr>
@@ -1360,105 +1514,155 @@
               <td><span class="mini-pill pill-blue">O1</span></td>
               <td>Estreia</td>
               <td>18/05</td>
-              <td colspan="2" style="text-align:center; font-style:italic; color: var(--muted);">Manifesto + estático conceito (sem A/B)</td>
-              <td>4 dias</td>
-              <td>Meta · YT</td>
-              <td>Awareness</td>
+              <td colspan="2" style="text-align:center; font-style:italic; color: var(--muted);">Manifesto + estático conceito + Vídeo Institucional LI + Lead Gen LI (sem A/B)</td>
+              <td>10 dias</td>
+              <td>Meta · YT · LI</td>
+              <td>Awareness + Lead Gen B2B</td>
             </tr>
             <tr>
               <td><span class="mini-pill pill-blue">O1</span></td>
-              <td>Lote 1</td>
+              <td>Lote 1 · A/B</td>
               <td>22/05</td>
               <td>Corte Família + Slogan</td>
               <td>Corte Cuidado + Awareness</td>
-              <td>5 dias</td>
+              <td>10 dias</td>
               <td>Meta · YT</td>
               <td>Vídeo Views</td>
             </tr>
             <tr>
               <td><span class="mini-pill pill-blue">O1</span></td>
-              <td>Lote 2</td>
+              <td>Lote 2 · A/B</td>
               <td>26/05</td>
               <td>Tom Celebrativo + Stories</td>
               <td>Tom Institucional + Feed</td>
-              <td>4 dias</td>
+              <td>10 dias</td>
               <td>Meta · YT</td>
               <td>Vídeo Views</td>
             </tr>
-            <tr>
-              <td><span class="mini-pill pill-green">O2</span></td>
-              <td>Lote 3</td>
-              <td>02/06</td>
-              <td>Curto 6s · Hook direto</td>
-              <td>Curto 10s · Hook narrativo</td>
-              <td>5 dias</td>
-              <td>Meta · YT</td>
-              <td>Awareness</td>
+            <tr style="background: rgba(10,102,194,.05);">
+              <td><span class="mini-pill pill-blue">O1</span></td>
+              <td><strong>LinkedIn 1</strong></td>
+              <td>28/05</td>
+              <td>Estático Institucional A</td>
+              <td>Estático Lead Gen reforço</td>
+              <td>10 dias</td>
+              <td>LinkedIn</td>
+              <td>Brand Aw. + Lead Gen</td>
+            </tr>
+            <tr style="background: rgba(10,102,194,.05);">
+              <td><span class="mini-pill pill-blue">O1</span></td>
+              <td><strong>LinkedIn 2</strong></td>
+              <td>05/06</td>
+              <td>Lead Gen Form V2 · copy apoio</td>
+              <td>Estático Corretores · copy autoridade</td>
+              <td>10 dias</td>
+              <td>LinkedIn</td>
+              <td>Lead Gen B2B</td>
             </tr>
             <tr>
               <td><span class="mini-pill pill-green">O2</span></td>
-              <td>Lote 4</td>
-              <td>09/06</td>
+              <td>Lote 3 · A/B</td>
+              <td>15/06</td>
+              <td>Curto 6s · Hook direto</td>
+              <td>Curto 10s · Hook narrativo</td>
+              <td>10 dias</td>
+              <td>Meta · YT</td>
+              <td>Awareness</td>
+            </tr>
+            <tr style="background: rgba(10,102,194,.05);">
+              <td><span class="mini-pill pill-green">O2</span></td>
+              <td><strong>LinkedIn 3</strong></td>
+              <td>18/06</td>
+              <td>Document Ad institucional</td>
+              <td>2 estáticos Engajamento B2B</td>
+              <td>10 dias</td>
+              <td>LinkedIn</td>
+              <td>Engagement B2B</td>
+            </tr>
+            <tr>
+              <td><span class="mini-pill pill-green">O2</span></td>
+              <td>Lote 4 · A/B</td>
+              <td>22/06</td>
               <td>Carrossel · Personas</td>
               <td>Carrossel · Momentos</td>
-              <td>5 dias</td>
+              <td>10 dias</td>
               <td>Meta</td>
               <td>Engajamento</td>
             </tr>
             <tr>
               <td><span class="mini-pill pill-green">O2</span></td>
-              <td>Lote 5</td>
-              <td>23/06</td>
+              <td>Lote 5 · A/B</td>
+              <td>02/07</td>
               <td>CTA "Conheça"</td>
               <td>CTA "Saiba mais"</td>
-              <td>5 dias</td>
+              <td>10 dias</td>
               <td>Meta</td>
               <td>Tráfego</td>
             </tr>
+            <tr style="background: rgba(10,102,194,.05);">
+              <td><span class="mini-pill pill-green">O2</span></td>
+              <td><strong>LinkedIn 4</strong></td>
+              <td>05/07</td>
+              <td>Vídeo Institucional V2 · legado</td>
+              <td>Lead Gen V3 · variação copy</td>
+              <td>10 dias</td>
+              <td>LinkedIn</td>
+              <td>Brand Aw. + Lead Gen</td>
+            </tr>
             <tr>
               <td><span class="mini-pill pill-navy">O3</span></td>
-              <td>Lote 6</td>
-              <td>02/07</td>
+              <td>Lote 6 · A/B</td>
+              <td>13/07</td>
               <td>Vídeo · Confiança</td>
               <td>Vídeo · Proteção</td>
-              <td>5 dias</td>
+              <td>10 dias</td>
               <td>Meta</td>
               <td>Remarketing</td>
             </tr>
+            <tr style="background: rgba(10,102,194,.05);">
+              <td><span class="mini-pill pill-navy">O3</span></td>
+              <td><strong>LinkedIn 5</strong></td>
+              <td>15/07</td>
+              <td>3 estáticos Retargeting B2B</td>
+              <td>Lead Gen V4 · leads frios</td>
+              <td>10 dias</td>
+              <td>LinkedIn</td>
+              <td>Retargeting B2B</td>
+            </tr>
             <tr>
               <td><span class="mini-pill pill-navy">O3</span></td>
-              <td>Lote 7</td>
-              <td>10/07</td>
+              <td>Lote 7 · A/B</td>
+              <td>20/07</td>
               <td>CTA "Fale com a MetLife"</td>
               <td>CTA "Conheça soluções"</td>
-              <td>5 dias</td>
+              <td>10 dias</td>
               <td>Meta</td>
               <td>Tráfego</td>
             </tr>
             <tr>
               <td><span class="mini-pill pill-navy">O3</span></td>
-              <td>Lote 8</td>
-              <td>18/07</td>
+              <td>Lote 8 · A/B</td>
+              <td>25/07</td>
               <td>Conversão · Lead form</td>
               <td>Conversão · Site</td>
-              <td>5 dias</td>
+              <td>6 dias (peças contextuais)</td>
               <td>Meta</td>
               <td>Conversão leve</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td>9 marcos</td>
+              <td>14 marcos</td>
               <td>75 dias</td>
-              <td colspan="2">8 lotes A/B + 1 estreia</td>
-              <td>~5 dias/lote</td>
-              <td>Meta · YT</td>
-              <td>Aw · Eng · Conv</td>
+              <td colspan="2">8 lotes A/B Meta/YT + 5 lotes LinkedIn + 1 estreia</td>
+              <td>10 dias mínimo</td>
+              <td>Meta · YT · LI</td>
+              <td>Aw · Eng · Conv · B2B</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="note">As datas dos lotes A/B podem ser ajustadas conforme aprovação criativa, performance dos primeiros dias e disponibilidade de inventário. A janela de leitura mínima de 4 dias é mantida em todos os lotes para garantir significância estatística do aprendizado.</p>
+      <p class="note">As datas dos lotes A/B podem ser ajustadas conforme aprovação criativa, performance dos primeiros dias e disponibilidade de inventário. A regra de <strong>veiculação mínima de 10 dias por criativo</strong> é mantida em todos os lotes para garantir significância estatística do aprendizado e otimização justa entre variações. Exceção: peças contextuais (cenários Brasil Campeão/Eliminado, momentos comemorativos pré-aprovados) podem rodar em janelas mais curtas, em modelo D+1.</p>
     </div>
   </section>
 
