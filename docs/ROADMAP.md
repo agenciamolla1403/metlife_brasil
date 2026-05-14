@@ -59,11 +59,22 @@ sugerida (não por ordem de execução). Atualizar conforme decidir cada sessão
   e edição de variação (modal `openPiece` antigo). Click em qualquer
   thumb da listagem da campanha agora navega pra esta tela.
   39 testes novos.
+- **Criativos + Variações — Fase 4 Polish** (S40 — completa!) —
+  atalhos teclado completos no ConceptView: **A** aprova, **R** reprova,
+  **C** foca no campo de comentário (sai do estado atual e digita), além
+  do ← → da Fase 3. Atalhos ignorados quando cursor está em input
+  (exceto C, que move foco PRA input). Hint visual com `<kbd>` no
+  cv-focus-head (só desktop). **Tabs mobile** no painel direito:
+  Aprovação | Comentários alterna conteúdo em telas ≤ 720px; desktop
+  mostra ambos lado a lado. **Transições suaves** (220ms fade-in do
+  foco, pop discreto da thumb selecionada) respeitando
+  `prefers-reduced-motion`. Acessibilidade: `aria-selected` nos tabs.
+  37 testes novos. **S40 fechado**: 4 fases, 149 testes novos,
+  zero regressão nos 318 testes pré-S40.
 
 ## 🟢 Próximas sessões
 
-**Em andamento: Criativos + Variações (S40)** — Fases 1 ✅, 2 ✅ e 3 ✅. Falta:
-- Fase 4: Mobile polish (galeria com swipe, painel em tabs) + atalhos teclado (A=aprovar, R=reprovar, C=foco no comentário) + transições suaves
+_S40 fechado! Próxima escolha aberta — opções organizadas abaixo por prioridade._
 
 ---
 

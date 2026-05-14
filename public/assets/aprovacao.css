@@ -2528,3 +2528,122 @@ footer.page-footer strong { color: var(--navy); }
     padding: 0 14px 14px 14px;
   }
 }
+
+/* ============================================================
+   S40 FASE 4 — Polish: atalhos teclado, tabs mobile, transições
+   ============================================================ */
+
+/* Hint dos atalhos (só desktop, escondido em mobile) */
+.cv-focus-head-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cv-hints {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  user-select: none;
+}
+.cv-hints kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--light);
+  border: 1px solid rgba(0,59,92,0.18);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  box-shadow: 0 1px 0 rgba(0,59,92,0.12);
+}
+.cv-hint-sep {
+  color: rgba(0,59,92,0.25);
+  margin: 0 2px;
+}
+
+/* Tabs do painel (só aparecem em mobile) */
+.cv-tabs {
+  display: none; /* desktop: escondidas, ambos os tab-content ficam visíveis */
+  gap: 2px;
+  background: rgba(0,59,92,0.05);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 14px;
+}
+.cv-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+  font-family: inherit;
+}
+.cv-tab:hover {
+  color: var(--navy);
+}
+.cv-tab.is-active {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: 0 1px 3px rgba(0,59,92,0.08);
+}
+
+/* Desktop: limpa o hidden dos tab-contents pra mostrar ambos */
+@media (min-width: 721px) {
+  .cv-tab-content[hidden] {
+    display: block !important;
+  }
+}
+
+/* Mobile: mostra tabs, esconde hint dos atalhos */
+@media (max-width: 720px) {
+  .cv-hints {
+    display: none;
+  }
+  .cv-tabs {
+    display: flex;
+  }
+  /* Tabs precisam funcionar — hidden faz seu papel naturalmente */
+  .cv-focus-head-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* Transição suave ao trocar variação */
+@keyframes cv-focus-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cv-focus {
+  animation: cv-focus-fade-in 220ms ease-out;
+}
+@keyframes cv-thumb-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+.cv-thumb.is-selected {
+  animation: cv-thumb-pop 240ms ease-out;
+}
+
+/* Reduce-motion: respeita preferência do sistema */
+@media (prefers-reduced-motion: reduce) {
+  .cv-focus,
+  .cv-thumb.is-selected {
+    animation: none;
+  }
+}

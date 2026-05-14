@@ -1038,9 +1038,20 @@
               </h3>
               <span class="cv-status-tag cv-status-${pp.status}">${variantStatusLabel}</span>
             </div>
-            <div class="cv-nav">
-              <button class="btn-ghost cv-nav-btn" id="cvPrev" title="Variação anterior (←)" ${variants.indexOf(selected) === 0 ? 'disabled' : ''}>←</button>
-              <button class="btn-ghost cv-nav-btn" id="cvNext" title="Próxima variação (→)" ${variants.indexOf(selected) === variants.length - 1 ? 'disabled' : ''}>→</button>
+            <div class="cv-focus-head-right">
+              <div class="cv-hints" aria-hidden="true">
+                <kbd>←</kbd><kbd>→</kbd> navegar
+                <span class="cv-hint-sep">·</span>
+                <kbd>A</kbd> aprovar
+                <span class="cv-hint-sep">·</span>
+                <kbd>R</kbd> reprovar
+                <span class="cv-hint-sep">·</span>
+                <kbd>C</kbd> comentar
+              </div>
+              <div class="cv-nav">
+                <button class="btn-ghost cv-nav-btn" id="cvPrev" title="Variação anterior (←)" ${variants.indexOf(selected) === 0 ? 'disabled' : ''}>←</button>
+                <button class="btn-ghost cv-nav-btn" id="cvNext" title="Próxima variação (→)" ${variants.indexOf(selected) === variants.length - 1 ? 'disabled' : ''}>→</button>
+              </div>
             </div>
           </div>
 
@@ -1059,76 +1070,85 @@
               ` : ''}
             </div>
             <div class="piece-side">
-              ${pp.copy ? `<div class="copy-block"><div class="label">Copy</div><p>${escapeHtml(pp.copy)}</p></div>` : ''}
-              ${pp.caption ? `<div class="copy-block caption-block"><div class="label">Legenda</div><p>${escapeHtml(pp.caption)}</p></div>` : ''}
-
-              <div class="action-row">
-                <button class="btn-approve ${pp.status === 'approved' ? 'active' : ''}" id="cvBtnApprove" type="button">
-                  ✓ ${pp.status === 'approved' ? 'Aprovada' : 'Aprovar'}
-                </button>
-                <button class="btn-reject ${pp.status === 'rejected' ? 'active' : ''}" id="cvBtnReject" type="button">
-                  ✗ ${pp.status === 'rejected' ? 'Reprovada' : 'Reprovar'}
-                </button>
+              <div class="cv-tabs" role="tablist" aria-label="Painel da variação">
+                <button type="button" class="cv-tab is-active" data-cv-tab="actions" role="tab" aria-selected="true">Aprovação</button>
+                <button type="button" class="cv-tab" data-cv-tab="comments" role="tab" aria-selected="false">Comentários · ${cms.length}</button>
               </div>
 
-              <div class="section-title">Histórico (${cms.length})</div>
-              <div class="comments-list" id="cvCommentsList">
-                ${cms.length === 0 ? `<div style="font-size:12px; color:var(--muted); text-align:center; padding:14px;">Sem comentários ainda.</div>` : cms.map(cm => {
-                  const hasPin = cm.pin_x != null && cm.pin_y != null;
-                  const pinIsCurrent = hasPin && cm.pin_version === currentVersion;
-                  const pinNumber = pinIsCurrent ? pinNumberById.get(cm.id) : null;
-                  const pinBadge = hasPin
-                    ? (pinIsCurrent
-                        ? `<span class="comment-pin-badge" title="Marcado no ponto ${pinNumber}">📍 ${pinNumber}</span>`
-                        : `<span class="comment-pin-badge old" title="Pin de versão anterior">📍 v${cm.pin_version}</span>`)
-                    : '';
-                  const canDel = canDeleteComment(cm);
-                  const isAction = cm.kind && cm.kind.startsWith('action');
-                  const kindClass = cm.kind === 'action' ? 'action action-approved'
-                    : cm.kind === 'action-rejected' ? 'action action-rejected'
-                    : cm.kind === 'action-update' ? 'action action-update'
-                    : cm.kind === 'action-created' ? 'action action-created'
-                    : '';
-                  const actionTitle = cm.kind === 'action' ? 'Aprovou'
-                    : cm.kind === 'action-rejected' ? 'Reprovou'
-                    : cm.kind === 'action-update' ? 'Editou'
-                    : cm.kind === 'action-created' ? 'Criou'
-                    : 'Comentou';
-                  const avatarIcon = `<span class="comment-action-icon" title="${escapeHtml(cm.author)} — ${actionTitle}">${escapeHtml(initials(cm.author))}</span>`;
-                  const textHtml = isAction ? escapeHtml(cm.text) : renderCommentText(cm.text);
-                  return `
-                    <div class="comment ${kindClass}" data-comment-id="${cm.id}" data-pin-id="${pinIsCurrent ? cm.id : ''}">
-                      <div class="comment-head">
-                        ${avatarIcon}
-                        ${pinBadge}
-                        <span class="comment-author">${escapeHtml(cm.author)}</span>
-                        <span class="comment-date">${formatDate(cm.created_at)}</span>
-                        ${canDel ? `<button type="button" class="comment-delete" data-id="${cm.id}" title="Excluir comentário">×</button>` : ''}
-                      </div>
-                      <p class="comment-text">${textHtml}</p>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
+              <div class="cv-tab-content" data-cv-tab-content="actions">
+                ${pp.copy ? `<div class="copy-block"><div class="label">Copy</div><p>${escapeHtml(pp.copy)}</p></div>` : ''}
+                ${pp.caption ? `<div class="copy-block caption-block"><div class="label">Legenda</div><p>${escapeHtml(pp.caption)}</p></div>` : ''}
 
-              <form class="comment-form" id="cvCommentForm">
-                <input type="text" id="cvCommentInput" placeholder="Comentar nessa variação..." maxlength="500" autocomplete="off" />
-                ${(isClient && pp.media_type === 'image') ? `<button type="button" id="cvBtnPinComment" class="btn-pin-comment" title="Enviar marcando um ponto na imagem">📍</button>` : ''}
-                <button type="submit">Enviar</button>
-              </form>
-              <div class="comment-hint">
-                Formatação: <code>**negrito**</code> <code>_itálico_</code> <code>[link](url)</code>
-              </div>
-
-              ${(isAdmin || currentVersion > 1) ? `
-                <div class="piece-side-footer">
-                  ${currentVersion > 1 ? `<button class="btn-ghost btn-history" id="cvBtnHistory" type="button"><span class="history-icon">⟳</span> Histórico</button>` : ''}
-                  ${isAdmin ? `
-                    <button class="btn-ghost" id="cvBtnEditVariant" type="button">✎ Editar variação</button>
-                    <button class="btn-ghost btn-ghost-danger" id="cvBtnDeleteVariant" type="button">Excluir</button>
-                  ` : ''}
+                <div class="action-row">
+                  <button class="btn-approve ${pp.status === 'approved' ? 'active' : ''}" id="cvBtnApprove" type="button">
+                    ✓ ${pp.status === 'approved' ? 'Aprovada' : 'Aprovar'}
+                  </button>
+                  <button class="btn-reject ${pp.status === 'rejected' ? 'active' : ''}" id="cvBtnReject" type="button">
+                    ✗ ${pp.status === 'rejected' ? 'Reprovada' : 'Reprovar'}
+                  </button>
                 </div>
-              ` : ''}
+
+                ${(isAdmin || currentVersion > 1) ? `
+                  <div class="piece-side-footer">
+                    ${currentVersion > 1 ? `<button class="btn-ghost btn-history" id="cvBtnHistory" type="button"><span class="history-icon">⟳</span> Histórico</button>` : ''}
+                    ${isAdmin ? `
+                      <button class="btn-ghost" id="cvBtnEditVariant" type="button">✎ Editar variação</button>
+                      <button class="btn-ghost btn-ghost-danger" id="cvBtnDeleteVariant" type="button">Excluir</button>
+                    ` : ''}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="cv-tab-content" data-cv-tab-content="comments" hidden>
+                <div class="section-title">Histórico (${cms.length})</div>
+                <div class="comments-list" id="cvCommentsList">
+                  ${cms.length === 0 ? `<div style="font-size:12px; color:var(--muted); text-align:center; padding:14px;">Sem comentários ainda.</div>` : cms.map(cm => {
+                    const hasPin = cm.pin_x != null && cm.pin_y != null;
+                    const pinIsCurrent = hasPin && cm.pin_version === currentVersion;
+                    const pinNumber = pinIsCurrent ? pinNumberById.get(cm.id) : null;
+                    const pinBadge = hasPin
+                      ? (pinIsCurrent
+                          ? `<span class="comment-pin-badge" title="Marcado no ponto ${pinNumber}">📍 ${pinNumber}</span>`
+                          : `<span class="comment-pin-badge old" title="Pin de versão anterior">📍 v${cm.pin_version}</span>`)
+                      : '';
+                    const canDel = canDeleteComment(cm);
+                    const isAction = cm.kind && cm.kind.startsWith('action');
+                    const kindClass = cm.kind === 'action' ? 'action action-approved'
+                      : cm.kind === 'action-rejected' ? 'action action-rejected'
+                      : cm.kind === 'action-update' ? 'action action-update'
+                      : cm.kind === 'action-created' ? 'action action-created'
+                      : '';
+                    const actionTitle = cm.kind === 'action' ? 'Aprovou'
+                      : cm.kind === 'action-rejected' ? 'Reprovou'
+                      : cm.kind === 'action-update' ? 'Editou'
+                      : cm.kind === 'action-created' ? 'Criou'
+                      : 'Comentou';
+                    const avatarIcon = `<span class="comment-action-icon" title="${escapeHtml(cm.author)} — ${actionTitle}">${escapeHtml(initials(cm.author))}</span>`;
+                    const textHtml = isAction ? escapeHtml(cm.text) : renderCommentText(cm.text);
+                    return `
+                      <div class="comment ${kindClass}" data-comment-id="${cm.id}" data-pin-id="${pinIsCurrent ? cm.id : ''}">
+                        <div class="comment-head">
+                          ${avatarIcon}
+                          ${pinBadge}
+                          <span class="comment-author">${escapeHtml(cm.author)}</span>
+                          <span class="comment-date">${formatDate(cm.created_at)}</span>
+                          ${canDel ? `<button type="button" class="comment-delete" data-id="${cm.id}" title="Excluir comentário">×</button>` : ''}
+                        </div>
+                        <p class="comment-text">${textHtml}</p>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+
+                <form class="comment-form" id="cvCommentForm">
+                  <input type="text" id="cvCommentInput" placeholder="Comentar nessa variação..." maxlength="500" autocomplete="off" />
+                  ${(isClient && pp.media_type === 'image') ? `<button type="button" id="cvBtnPinComment" class="btn-pin-comment" title="Enviar marcando um ponto na imagem">📍</button>` : ''}
+                  <button type="submit">Enviar</button>
+                </form>
+                <div class="comment-hint">
+                  Formatação: <code>**negrito**</code> <code>_itálico_</code> <code>[link](url)</code>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1182,6 +1202,27 @@
       // ----- Voltar / breadcrumb -----
       document.getElementById('cvBack').addEventListener('click', () => Router.go(`#/c/${campaignId}`));
 
+      // ----- Tabs mobile (Aprovação | Comentários) -----
+      const tabs = root.querySelectorAll('.cv-tab');
+      const tabContents = root.querySelectorAll('.cv-tab-content');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.cvTab;
+          tabs.forEach(t => {
+            const isActive = t.dataset.cvTab === target;
+            t.classList.toggle('is-active', isActive);
+            t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+          tabContents.forEach(c => {
+            const matches = c.dataset.cvTabContent === target;
+            // Em desktop, ambos sempre visíveis (CSS @media decide).
+            // Em mobile, esconde via hidden attribute. CSS limpa em desktop com !important.
+            if (matches) c.removeAttribute('hidden');
+            else c.setAttribute('hidden', '');
+          });
+        });
+      });
+
       // ----- Galeria: click muda variação selecionada -----
       root.querySelectorAll('.cv-thumb[data-variant-id]').forEach(thumb => {
         thumb.addEventListener('click', () => {
@@ -1205,13 +1246,35 @@
       if (prevBtn) prevBtn.addEventListener('click', goPrev);
       if (nextBtn) nextBtn.addEventListener('click', goNext);
 
-      // Atalhos teclado ← → (ignora se cursor está num input/textarea)
+      // Atalhos teclado: ← → navega; A aprova; R reprova; C foca no comentário
+      // Ignora atalhos se cursor está num input/textarea (exceto Esc/setas que já têm tratamento)
       const keyHandler = (e) => {
         const active = document.activeElement;
         const inField = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+        // C funciona fora de inputs (move foco PRA input)
+        if ((e.key === 'c' || e.key === 'C') && !inField) {
+          e.preventDefault();
+          const inp = document.getElementById('cvCommentInput');
+          if (inp) { inp.focus(); inp.select && inp.select(); }
+          return;
+        }
         if (inField) return;
-        if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); goPrev(); }
         else if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+        else if (e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          if (selected.status !== 'approved') {
+            const b = document.getElementById('cvBtnApprove');
+            if (b && !b.disabled) b.click();
+          }
+        }
+        else if (e.key === 'r' || e.key === 'R') {
+          e.preventDefault();
+          if (selected.status !== 'rejected') {
+            const b = document.getElementById('cvBtnReject');
+            if (b && !b.disabled) b.click();
+          }
+        }
       };
       document.addEventListener('keydown', keyHandler);
       // Limpa o handler ao sair da view (ao próximo render)
