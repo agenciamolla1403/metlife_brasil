@@ -28,6 +28,7 @@
     comments: new Map(),       // pieceId -> array (comentários de variação)
     conceptComments: new Map(),// conceptId -> array (comentários gerais)
     versions: new Map(),       // pieceId -> array of older versions (snapshots)
+    approvedPieces: null,      // array | null — galeria de aprovadas (S45)
   };
 
   function calcStats(pieces) {
@@ -351,6 +352,7 @@
       if (cms) cms.push(actionComment);
 
       cache.campaigns = null; // stats mudaram
+      cache.approvedPieces = null; // lista de aprovadas pode ter mudado
       return actionComment;
     },
 
@@ -617,6 +619,84 @@
         .select('id', { count: 'exact', head: true });
       if (error) throw error;
       return true;
+    },
+
+    // ============ APPROVED PIECES (S45) ============
+    /**
+     * Retorna TODAS as pieces com status='approved' de TODAS as campanhas,
+     * enriquecidas com:
+     *   - campaign_name (vem de campaigns)
+     *   - concept_title (vem de piece_concepts)
+     *   - approved_at (vem do ÚLTIMO comment kind='action' da peça)
+     * Ordenado pela data de aprovação (mais recentes primeiro).
+     */
+    async loadApprovedPieces(force = false) {
+      if (!force && cache.approvedPieces) return cache.approvedPieces;
+
+      // 4 queries em paralelo
+      const [
+        { data: pieces,    error: e1 },
+        { data: campaigns, error: e2 },
+        { data: concepts,  error: e3 },
+        { data: actions,   error: e4 }
+      ] = await Promise.all([
+        client.from('pieces')
+          .select('id, campaign_id, concept_id, name, media_type, media_url, video_embed_url, copy, caption, link_url, variant_label, variant_order, version, status, created_at')
+          .eq('status', 'approved')
+          .order('created_at', { ascending: false }),
+        client.from('campaigns').select('id, name'),
+        client.from('piece_concepts').select('id, title, description'),
+        client.from('comments')
+          .select('piece_id, created_at, author')
+          .eq('kind', 'action')
+          .order('created_at', { ascending: false })
+      ]);
+
+      if (e1) throw e1;
+      if (e2) throw e2;
+      if (e3) throw e3;
+      if (e4) throw e4;
+
+      // Indexar pra lookups O(1)
+      const campMap = {};
+      (campaigns || []).forEach(c => { campMap[c.id] = c; });
+      const conceptMap = {};
+      (concepts || []).forEach(k => { conceptMap[k.id] = k; });
+
+      // Última action por piece_id = primeira que aparece (já ordenado desc)
+      const lastActionByPiece = {};
+      (actions || []).forEach(a => {
+        if (!lastActionByPiece[a.piece_id]) lastActionByPiece[a.piece_id] = a;
+      });
+
+      const enriched = (pieces || []).map(p => {
+        const camp = campMap[p.campaign_id] || { name: '—' };
+        const concept = conceptMap[p.concept_id] || { title: p.name || '—', description: '' };
+        const action = lastActionByPiece[p.id] || null;
+        return {
+          ...p,
+          campaign_name: camp.name,
+          concept_title: concept.title,
+          concept_description: concept.description,
+          approved_at: action ? action.created_at : p.created_at,
+          approved_by: action ? action.author : null
+        };
+      });
+
+      // Reordenar pelo approved_at (desc) — mais recentes primeiro
+      enriched.sort((a, b) => {
+        const da = new Date(a.approved_at).getTime();
+        const db = new Date(b.approved_at).getTime();
+        return db - da;
+      });
+
+      cache.approvedPieces = enriched;
+      return enriched;
+    },
+
+    /** Invalidar cache de aprovadas (chamado quando alguma peça muda de status) */
+    invalidateApprovedPieces() {
+      cache.approvedPieces = null;
     }
   };
 

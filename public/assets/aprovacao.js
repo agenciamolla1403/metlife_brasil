@@ -297,6 +297,8 @@
   const Router = {
     parse() {
       const h = window.location.hash || '#/';
+      // Galeria de peças aprovadas (S45)
+      if (h.startsWith('#/aprovadas')) return { view: 'approved' };
       // Concept (criativo) — opcionalmente com variação selecionada:
       //   #/c/<campaignId>/k/<conceptId>
       //   #/c/<campaignId>/k/<conceptId>/v/<variantId>
@@ -313,7 +315,10 @@
   // ============ APP ============
   const App = {
     el: { crumb: null, content: null },
-    state: { campaignFilter: 'all' },
+    state: {
+      campaignFilter: 'all',
+      approved: { campaignFilter: 'all', query: '' } // S45: filtros da galeria de aprovadas
+    },
 
     async init() {
       // Garantia defensiva: nome agora vem do login. Se faltar (legacy), pergunta.
@@ -343,6 +348,8 @@
         await this.renderConceptView(route.campaignId, route.conceptId, route.variantId);
       } else if (route.view === 'campaign') {
         await this.renderCampaignView(route.campaignId);
+      } else if (route.view === 'approved') {
+        await this.renderApprovedView();
       } else {
         await this.renderHomeView();
       }
@@ -422,6 +429,16 @@
               </div>
             </div>
           </div>
+          ${allStats.approved > 0 ? `
+            <a class="dashboard-approved-cta" href="#/aprovadas" data-nav-approved>
+              <span class="dac-icon">✨</span>
+              <span class="dac-body">
+                <span class="dac-title">Galeria de peças aprovadas</span>
+                <span class="dac-sub">Veja as ${allStats.approved} ${allStats.approved === 1 ? 'peça aprovada' : 'peças aprovadas'} em um só lugar — imagem, copy, legenda e link de destino</span>
+              </span>
+              <span class="dac-arrow">→</span>
+            </a>
+          ` : ''}
         </div>
       ` : '';
 
@@ -828,6 +845,237 @@
             <div class="footer-row">
               <span>${relativeTime(p.created_at)}</span>
               ${showAddVariant ? `<button type="button" class="piece-add-variant" data-action="add-variant" title="Adicionar variação a este criativo">+ Variação</button>` : ''}
+            </div>
+          </div>
+        </article>
+      `;
+    },
+
+    // ============================================================
+    // APPROVED VIEW (S45) — galeria de peças aprovadas
+    // ============================================================
+    async renderApprovedView() {
+      this.el.crumb.innerHTML = `<a href="/">Central do Cliente</a> &nbsp;/&nbsp; <a href="#/" id="crumbHome">Aprovação</a> &nbsp;/&nbsp; <strong>Galeria de aprovadas</strong>`;
+      this.el.content.innerHTML = loadingHtml('Carregando peças aprovadas...');
+
+      let pieces;
+      try {
+        pieces = await Store.loadApprovedPieces();
+      } catch (err) {
+        this.el.content.innerHTML = errorHtml(err, () => this.renderApprovedView());
+        return;
+      }
+
+      // Empty state geral
+      if (!pieces || pieces.length === 0) {
+        this.el.content.innerHTML = `
+          <div class="approved-view">
+            <div class="approved-empty">
+              <div class="approved-empty-icon">✨</div>
+              <h2>Ainda não tem peças aprovadas</h2>
+              <p>Assim que uma peça for aprovada nas campanhas, ela aparece aqui automaticamente.</p>
+              <a class="btn-primary" href="#/">← Voltar para Aprovação</a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Lista de campanhas únicas pros chips
+      const campaignsMap = {};
+      pieces.forEach(p => {
+        if (!campaignsMap[p.campaign_id]) {
+          campaignsMap[p.campaign_id] = { id: p.campaign_id, name: p.campaign_name, count: 0 };
+        }
+        campaignsMap[p.campaign_id].count++;
+      });
+      const campaignsList = Object.values(campaignsMap).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+
+      const { campaignFilter, query } = this.state.approved;
+      const queryLower = (query || '').trim().toLowerCase();
+
+      // Aplica filtros
+      const filtered = pieces.filter(p => {
+        if (campaignFilter !== 'all' && p.campaign_id !== campaignFilter) return false;
+        if (queryLower) {
+          const hay = `${p.concept_title || ''} ${p.name || ''} ${p.copy || ''} ${p.caption || ''}`.toLowerCase();
+          if (!hay.includes(queryLower)) return false;
+        }
+        return true;
+      });
+
+      // Chips de campanha (Todas + uma por campanha)
+      const chipsHtml = `
+        <button class="approved-chip ${campaignFilter === 'all' ? 'active' : ''}" data-approved-filter="all">
+          Todas <span class="count">${pieces.length}</span>
+        </button>
+        ${campaignsList.map(c => `
+          <button class="approved-chip ${campaignFilter === c.id ? 'active' : ''}" data-approved-filter="${escapeHtml(c.id)}">
+            ${escapeHtml(c.name)} <span class="count">${c.count}</span>
+          </button>
+        `).join('')}
+      `;
+
+      // Empty state de filtro
+      const cardsHtml = filtered.length === 0 ? `
+        <div class="approved-empty approved-empty-filter">
+          <div class="approved-empty-icon">🔍</div>
+          <p><strong>Nenhuma peça encontrada</strong> com os filtros atuais.</p>
+          <button class="btn-link" id="approvedClearFilters">Limpar filtros</button>
+        </div>
+      ` : filtered.map(p => this.renderApprovedCard(p)).join('');
+
+      this.el.content.innerHTML = `
+        <div class="approved-view">
+          <header class="approved-header">
+            <div class="approved-header-left">
+              <h2 class="approved-title">✨ Galeria de peças aprovadas</h2>
+              <p class="approved-sub">${pieces.length} ${pieces.length === 1 ? 'peça aprovada' : 'peças aprovadas'} no total · mostrando ${filtered.length}</p>
+            </div>
+            <a class="btn-link approved-back" href="#/">← Voltar para Aprovação</a>
+          </header>
+
+          <div class="approved-toolbar">
+            <div class="approved-chips" role="tablist" aria-label="Filtrar por campanha">
+              ${chipsHtml}
+            </div>
+            <div class="approved-search">
+              <input
+                type="search"
+                id="approvedQuery"
+                class="approved-search-input"
+                placeholder="🔍 Buscar por título, copy ou legenda…"
+                value="${escapeHtml(query || '')}"
+                aria-label="Buscar peças aprovadas"
+              />
+            </div>
+          </div>
+
+          <div class="approved-grid">
+            ${cardsHtml}
+          </div>
+        </div>
+      `;
+
+      // Wire chips
+      this.el.content.querySelectorAll('[data-approved-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.state.approved.campaignFilter = btn.getAttribute('data-approved-filter');
+          this.renderApprovedView();
+        });
+      });
+
+      // Wire busca (debounced)
+      const queryInput = this.el.content.querySelector('#approvedQuery');
+      if (queryInput) {
+        let tid = null;
+        queryInput.addEventListener('input', () => {
+          clearTimeout(tid);
+          tid = setTimeout(() => {
+            this.state.approved.query = queryInput.value;
+            this.renderApprovedView();
+            // Refocar e mover cursor pro fim
+            const newInput = this.el.content.querySelector('#approvedQuery');
+            if (newInput) {
+              newInput.focus();
+              const len = newInput.value.length;
+              newInput.setSelectionRange(len, len);
+            }
+          }, 280);
+        });
+      }
+
+      // Wire "limpar filtros"
+      const clearBtn = this.el.content.querySelector('#approvedClearFilters');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          this.state.approved = { campaignFilter: 'all', query: '' };
+          this.renderApprovedView();
+        });
+      }
+    },
+
+    /** HTML de um card de peça aprovada (expandido). */
+    renderApprovedCard(p) {
+      // Mídia (reusa lógica do compareSideHtml)
+      let mediaHtml = '';
+      if (p.media_type === 'image' && p.media_url) {
+        mediaHtml = `<img src="${escapeHtml(p.media_url)}" alt="${escapeHtml(p.name || '')}" loading="lazy">`;
+      } else if (p.media_type === 'video' && p.media_url) {
+        if (typeof isDirectVideoFile === 'function' && isDirectVideoFile(p.media_url)) {
+          mediaHtml = `<video src="${escapeHtml(p.media_url)}" controls preload="metadata"></video>`;
+        } else if (p.video_embed_url) {
+          mediaHtml = `<iframe src="${escapeHtml(p.video_embed_url)}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" loading="lazy"></iframe>`;
+        } else {
+          mediaHtml = `<div class="approved-media-placeholder">▶ Vídeo</div>`;
+        }
+      } else {
+        mediaHtml = `<div class="approved-media-placeholder">Sem mídia</div>`;
+      }
+
+      // Data formatada (DD/MM/AAAA · HH:MM)
+      let dateLabel = '';
+      if (p.approved_at) {
+        try {
+          const d = new Date(p.approved_at);
+          const dd = String(d.getDate()).padStart(2, '0');
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const yyyy = d.getFullYear();
+          const hh = String(d.getHours()).padStart(2, '0');
+          const mi = String(d.getMinutes()).padStart(2, '0');
+          dateLabel = `${dd}/${mm}/${yyyy} · ${hh}h${mi}`;
+        } catch (_) { /* noop */ }
+      }
+
+      const variantBadge = p.variant_label && p.variant_label !== 'Única'
+        ? `<span class="approved-variant-badge">Variação ${escapeHtml(p.variant_label)}</span>`
+        : (p.variant_label === 'Única' ? `<span class="approved-variant-badge approved-variant-single">Versão única</span>` : '');
+
+      const linkHtml = p.link_url ? `
+        <div class="approved-field">
+          <span class="approved-field-label">🔗 Link de destino</span>
+          <a class="approved-field-link" href="${escapeHtml(p.link_url)}" target="_blank" rel="noopener">
+            ${escapeHtml(p.link_url)} <span class="approved-field-link-icon">↗</span>
+          </a>
+        </div>
+      ` : '';
+
+      const conceptViewUrl = `#/c/${encodeURIComponent(p.campaign_id)}/k/${encodeURIComponent(p.concept_id)}/v/${encodeURIComponent(p.id)}`;
+
+      return `
+        <article class="approved-card" data-piece-id="${escapeHtml(p.id)}">
+          <div class="approved-card-media">
+            ${mediaHtml}
+            <span class="approved-card-badge">✓ Aprovada</span>
+          </div>
+
+          <div class="approved-card-body">
+            <div class="approved-card-meta">
+              <span class="approved-card-campaign">${escapeHtml(p.campaign_name)}</span>
+              ${variantBadge}
+            </div>
+
+            <h3 class="approved-card-title">${escapeHtml(p.concept_title || p.name || 'Sem título')}</h3>
+
+            ${p.copy ? `
+              <div class="approved-field">
+                <span class="approved-field-label">💬 Copy</span>
+                <p class="approved-field-text">${escapeHtml(p.copy)}</p>
+              </div>
+            ` : ''}
+
+            ${p.caption ? `
+              <div class="approved-field">
+                <span class="approved-field-label">🏷️ Legenda</span>
+                <p class="approved-field-text approved-field-caption">${escapeHtml(p.caption)}</p>
+              </div>
+            ` : ''}
+
+            ${linkHtml}
+
+            <div class="approved-card-footer">
+              ${dateLabel ? `<span class="approved-card-date" title="Data de aprovação">📅 ${escapeHtml(dateLabel)}${p.approved_by ? ` · ${escapeHtml(p.approved_by)}` : ''}</span>` : ''}
+              <a class="approved-card-view" href="${conceptViewUrl}">Ver na campanha →</a>
             </div>
           </div>
         </article>
