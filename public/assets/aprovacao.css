@@ -1773,12 +1773,24 @@ footer.page-footer strong { color: var(--navy); }
 /* ============ STATUS COLORIDO: borda no card e no modal ============ */
 /* Card da peça (na grade) */
 .piece-card[data-status="approved"] {
+  background: rgba(80, 229, 150, 0.10);
   border: 2px solid rgba(80, 229, 150, 0.55);
   box-shadow: 0 4px 14px rgba(80, 229, 150, 0.18);
 }
+.piece-card[data-status="approved"]:hover {
+  background: rgba(80, 229, 150, 0.16);
+  border-color: rgba(80, 229, 150, 0.75);
+  box-shadow: 0 6px 18px rgba(80, 229, 150, 0.26);
+}
 .piece-card[data-status="rejected"] {
+  background: rgba(229, 56, 80, 0.08);
   border: 2px solid rgba(229, 56, 80, 0.45);
   box-shadow: 0 4px 14px rgba(229, 56, 80, 0.16);
+}
+.piece-card[data-status="rejected"]:hover {
+  background: rgba(229, 56, 80, 0.14);
+  border-color: rgba(229, 56, 80, 0.65);
+  box-shadow: 0 6px 18px rgba(229, 56, 80, 0.22);
 }
 
 /* Modal de detalhe da peça */
@@ -2159,6 +2171,39 @@ footer.page-footer strong { color: var(--navy); }
 .cc-thumb-pending  .cc-thumb-status { background: var(--warning); }
 .cc-thumb-approved .cc-thumb-status { background: var(--success); }
 .cc-thumb-rejected .cc-thumb-status { background: var(--danger); }
+
+/* Card APROVADO fica VERDE (S46) — fundo + borda destacada */
+.cc-thumb-approved {
+  background: rgba(80, 229, 150, 0.14);
+  border-color: rgba(80, 229, 150, 0.55);
+  box-shadow: 0 2px 8px rgba(80, 229, 150, 0.18);
+}
+.cc-thumb-approved:hover {
+  background: rgba(80, 229, 150, 0.22);
+  border-color: rgba(80, 229, 150, 0.75);
+  box-shadow: 0 6px 16px rgba(80, 229, 150, 0.28);
+}
+.cc-thumb-approved .cc-thumb-label {
+  color: #06823F;
+  font-weight: 700;
+}
+
+/* Card REPROVADO fica VERMELHO (simétrico pra coerência visual) */
+.cc-thumb-rejected {
+  background: rgba(229, 56, 80, 0.10);
+  border-color: rgba(229, 56, 80, 0.45);
+  box-shadow: 0 2px 8px rgba(229, 56, 80, 0.14);
+}
+.cc-thumb-rejected:hover {
+  background: rgba(229, 56, 80, 0.16);
+  border-color: rgba(229, 56, 80, 0.65);
+  box-shadow: 0 6px 16px rgba(229, 56, 80, 0.22);
+}
+.cc-thumb-rejected .cc-thumb-label {
+  color: #B91C1C;
+  font-weight: 700;
+}
+
 .cc-thumb-approved::before {
   content: '✓';
   position: absolute;
