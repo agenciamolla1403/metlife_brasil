@@ -2168,10 +2168,19 @@ footer.page-footer strong { color: var(--navy); }
   border-radius: 50%;
   border: 2px solid var(--white);
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  line-height: 1;
+  font-size: 11px;
 }
 .cc-thumb-pending  .cc-thumb-status { background: var(--warning); }
 .cc-thumb-approved .cc-thumb-status { background: var(--success); }
 .cc-thumb-rejected .cc-thumb-status { background: var(--danger); }
+.cc-thumb-approved .cc-thumb-status::before { content: '✓'; }
+.cc-thumb-rejected .cc-thumb-status::before { content: '✕'; }
 
 /* Card APROVADO fica VERDE (S46) — fundo + borda destacada */
 .cc-thumb-approved {
@@ -2203,29 +2212,6 @@ footer.page-footer strong { color: var(--navy); }
 .cc-thumb-rejected .cc-thumb-label {
   color: #B91C1C;
   font-weight: 700;
-}
-
-.cc-thumb-approved::before {
-  content: '✓';
-  position: absolute;
-  top: 8px;
-  right: 9px;
-  font-size: 12px;
-  color: white;
-  font-weight: 700;
-  z-index: 1;
-  pointer-events: none;
-}
-.cc-thumb-rejected::before {
-  content: '✕';
-  position: absolute;
-  top: 8px;
-  right: 9px;
-  font-size: 11px;
-  color: white;
-  font-weight: 700;
-  z-index: 1;
-  pointer-events: none;
 }
 
 /* Card "+ Variação" no fim da galeria */
@@ -2415,18 +2401,19 @@ footer.page-footer strong { color: var(--navy); }
   border-radius: 50%;
   border: 2px solid var(--white);
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  line-height: 1;
+  font-size: 10px;
 }
 .cv-thumb-pending  .cv-thumb-status { background: var(--warning); }
 .cv-thumb-approved .cv-thumb-status { background: var(--success); }
 .cv-thumb-rejected .cv-thumb-status { background: var(--danger); }
-.cv-thumb-approved::before {
-  content: '✓'; position: absolute; top: 8px; right: 8px;
-  font-size: 11px; color: white; font-weight: 700; z-index: 1; pointer-events: none;
-}
-.cv-thumb-rejected::before {
-  content: '✕'; position: absolute; top: 7px; right: 8px;
-  font-size: 10px; color: white; font-weight: 700; z-index: 1; pointer-events: none;
-}
+.cv-thumb-approved .cv-thumb-status::before { content: '✓'; }
+.cv-thumb-rejected .cv-thumb-status::before { content: '✕'; }
 
 /* Foco */
 .cv-focus {
