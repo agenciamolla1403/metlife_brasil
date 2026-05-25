@@ -330,6 +330,58 @@
       margin: 0;
     }
 
+    /* RESIDUAL · documentário único em 3 atos */
+    .residual-doc {
+      text-align: left;
+      padding: 40px 36px;
+      border-left: 4px solid var(--blue);
+    }
+    .residual-doc .residual-icon { font-size: 44px; margin-bottom: 8px; }
+    .residual-doc h3 { font-size: 26px; margin: 8px 0 14px; }
+    .residual-doc > p {
+      font-size: 15.5px;
+      color: var(--navy);
+      max-width: 820px;
+    }
+    .residual-doc > p strong { color: var(--blue); }
+    .doc-acts {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0, 59, 92, 0.08);
+    }
+    .doc-act {
+      padding: 16px 0;
+    }
+    .doc-act-num {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(45, 181, 223, 0.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .doc-act strong {
+      display: block;
+      font-size: 16px;
+      color: var(--navy);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .doc-act p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
     /* BENEFITS STRIP */
     .benefits-strip {
       margin-top: 28px;
@@ -686,6 +738,42 @@
       .parlor-gallery { column-count: 2; }
     }
 
+    /* DESTAQUES EXCLUSIVOS DO PARLOR (Drink MetLife + Menu Especial) */
+    .parlor-highlights {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .parlor-highlight-card {
+      background: white;
+      padding: 28px 26px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 59, 92, 0.06);
+      border-left: 4px solid var(--blue);
+      position: relative;
+    }
+    .parlor-highlight-card.drink { border-left-color: var(--blue); }
+    .parlor-highlight-card.menu  { border-left-color: var(--teal); }
+    .highlight-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .parlor-highlight-card h3 {
+      font-size: 22px;
+      margin: 10px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: -0.2px;
+    }
+    .parlor-highlight-card p {
+      font-size: 14.5px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+
     /* LOCAL CARD com imagem (The Parlor) — imagem menor pra não dar destaque demais */
     .local-with-img {
       display: grid;
@@ -716,7 +804,9 @@
       .invest-grid,
       .benefits-grid,
       .intro-with-img,
-      .local-with-img {
+      .local-with-img,
+      .parlor-highlights,
+      .doc-acts {
         grid-template-columns: 1fr;
       }
       .intro-with-img.reverse > :first-child { order: 1; }
@@ -945,18 +1035,28 @@
       <div class="section-intro" style="margin-top: 64px;">
         <span class="eyebrow">Jogue Seu Futuro · Residual</span>
         <h2>O que fica depois do evento.</h2>
-        <p>Pra reforço de marca e da ação social do Global Citizen, queremos produzir dois conteúdos audiovisuais.</p>
+        <p>Pra reforço de marca e da ação social do Global Citizen, vamos produzir um documentário único que conecta os dois momentos da ativação em uma só narrativa.</p>
       </div>
-      <div class="cards-2">
-        <div class="residual-card">
-          <div class="residual-icon">🎬</div>
-          <h3>Vídeo curto</h3>
-          <p>Personalização das chuteiras em estúdio.</p>
-        </div>
-        <div class="residual-card">
-          <div class="residual-icon">🎥</div>
-          <h3>Documentário</h3>
-          <p>Curto documentário sobre a ativação, trazendo os artistas selecionados, suas obras e a comunidade.</p>
+      <div class="residual-card residual-doc">
+        <div class="residual-icon">🎥</div>
+        <h3>Documentário · Jogue Seu Futuro</h3>
+        <p>Um único filme que começa na <strong>personalização das chuteiras em estúdio</strong> e se desdobra na <strong>ativação no dia do evento</strong> — capturando os artistas, a comunidade, o campeonato de embaixadinhas e a entrega das chuteiras exclusivas.</p>
+        <div class="doc-acts">
+          <div class="doc-act">
+            <span class="doc-act-num">Ato 1</span>
+            <strong>Estúdio</strong>
+            <p>Bastidores da criação das chuteiras pelos artistas convidados.</p>
+          </div>
+          <div class="doc-act">
+            <span class="doc-act-num">Ato 2</span>
+            <strong>Comunidade</strong>
+            <p>A quadra revitalizada e os moradores que vivem ali.</p>
+          </div>
+          <div class="doc-act">
+            <span class="doc-act-num">Ato 3</span>
+            <strong>Ação</strong>
+            <p>O evento, o campeonato e a entrega das chuteiras.</p>
+          </div>
         </div>
       </div>
 
@@ -1049,6 +1149,27 @@
         <img class="gallery-item" src="/img/theparlor3.jpeg" alt="The Parlor — ambiente 2" loading="lazy" />
         <img class="gallery-item" src="/img/theparlor4.jpeg" alt="The Parlor — ambiente 3" loading="lazy" />
         <img class="gallery-item" src="/img/theparlor5.jpeg" alt="The Parlor — ambiente 4" loading="lazy" />
+      </div>
+
+      <!-- DESTAQUES EXCLUSIVOS DA AÇÃO NO PARLOR -->
+      <div class="section-intro" style="margin-top: 56px;">
+        <span class="eyebrow blue-eyebrow">Assinatura exclusiva</span>
+        <h2 style="font-size: 26px;">O que o Parlor cria pra MetLife.</h2>
+        <p>Dois elementos personalizados serão desenvolvidos pelo bar especialmente pra ação — exclusividade que vira memória.</p>
+      </div>
+      <div class="parlor-highlights">
+        <div class="parlor-highlight-card drink">
+          <div class="highlight-icon">🍸</div>
+          <span class="pill blue">Drink autoral</span>
+          <h3>Drink MetLife</h3>
+          <p>Criação assinada pelo The Parlor especialmente pra ativação. Um drink autoral que carrega o nome da marca e fica disponível durante toda a janela do evento — pronto pra render conteúdo nas redes.</p>
+        </div>
+        <div class="parlor-highlight-card menu">
+          <div class="highlight-icon">🍽️</div>
+          <span class="pill blue">Curadoria gastronômica</span>
+          <h3>Menu Especial</h3>
+          <p>Uma seleção gastronômica desenhada pra ativação — petiscos e pratos pensados pra acompanhar a transmissão dos jogos e criar momentos memoráveis pros convidados.</p>
+        </div>
       </div>
 
       <!-- AÇÃO -->
