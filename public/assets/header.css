@@ -461,199 +461,195 @@
 }
 
 /* ============================================================
-   S47 · DROPDOWNS desktop + ACCORDIONS drawer
+   S47 · NAVEGAÇÃO HIERÁRQUICA
+   Dropdowns no desktop + Accordion no drawer mobile
    ============================================================ */
 
-/* Container do dropdown desktop (substitui <a> simples na nav) */
-.mlh-dropdown {
+/* DESKTOP — dropdown */
+.mlh-nav-group {
   position: relative;
   display: inline-flex;
-  align-items: center;
 }
-
-.mlh-dropdown-trigger {
+.mlh-nav-trigger {
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 12px;
-  background: transparent;
-  border: 0;
-  color: var(--mlh-navy);
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 999px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background .15s ease;
 }
-.mlh-dropdown-trigger:hover {
-  background: rgba(0, 59, 92, 0.06);
-}
-.mlh-dropdown-trigger.active {
-  background: var(--mlh-navy);
-  color: white;
-}
-.mlh-dropdown-trigger:focus-visible {
-  outline: 2px solid var(--mlh-blue);
-  outline-offset: 2px;
-}
-.mlh-caret {
-  font-size: 10px;
+.mlh-nav-caret {
+  font-size: 9px;
   opacity: 0.7;
-  transition: transform .2s ease;
+  transition: transform 180ms ease;
+  margin-left: 2px;
 }
-.mlh-dropdown:hover .mlh-caret,
-.mlh-dropdown.is-open .mlh-caret {
+.mlh-nav-group.is-open .mlh-nav-caret {
   transform: rotate(180deg);
 }
 
-/* Panel do dropdown */
-.mlh-dropdown-panel {
+/* Dropdown panel */
+.mlh-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%) translateY(-4px);
-  min-width: 240px;
-  background: white;
+  min-width: 180px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 59, 92, 0.10);
   border-radius: 14px;
-  box-shadow: 0 12px 32px rgba(0, 59, 92, 0.18);
-  border: 1px solid rgba(0, 59, 92, 0.08);
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  box-shadow: 0 12px 32px rgba(0, 59, 92, 0.14);
+  padding: 6px;
+  z-index: 100;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transition: opacity .18s ease, transform .18s ease, visibility .18s;
-  z-index: 100;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
 }
-/* Triângulo apontando pro trigger */
-.mlh-dropdown-panel::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 12px;
-  height: 12px;
-  background: white;
-  border-left: 1px solid rgba(0, 59, 92, 0.08);
-  border-top: 1px solid rgba(0, 59, 92, 0.08);
-}
-.mlh-dropdown:hover .mlh-dropdown-panel,
-.mlh-dropdown.is-open .mlh-dropdown-panel {
+.mlh-nav-group.is-open .mlh-dropdown {
   opacity: 1;
+  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+}
+
+/* Bridge invisível pra hover não fechar quando user passa do trigger pro panel */
+.mlh-nav-group::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 6px;
 }
 
 .mlh-dropdown-item {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 10px 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 14px;
   border-radius: 10px;
-  color: var(--mlh-navy);
   text-decoration: none;
-  transition: background .12s ease;
+  color: var(--mlh-navy);
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 140ms ease, color 140ms ease;
 }
 .mlh-dropdown-item:hover {
   background: rgba(45, 181, 223, 0.10);
+  color: var(--mlh-navy);
 }
 .mlh-dropdown-item.active {
-  background: var(--mlh-navy);
-  color: white;
+  background: rgba(0, 59, 92, 0.92);
+  color: #fff;
 }
-.mlh-dropdown-item.active .mlh-dropdown-hint {
-  color: rgba(255, 255, 255, 0.7);
-}
-.mlh-dropdown-label {
-  font-size: 14px;
-  font-weight: 700;
-}
-.mlh-dropdown-hint {
-  font-size: 12px;
-  color: var(--mlh-muted, #5B7280);
+.mlh-dropdown-item.is-disabled {
+  color: rgba(0, 59, 92, 0.4);
+  cursor: not-allowed;
+  pointer-events: none;
   font-weight: 500;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .mlh-dropdown-panel,
-  .mlh-caret { transition: none; }
-}
-
-/* Drawer mobile: accordions pros grupos */
-.mlh-drawer-group {
-  display: flex;
-  flex-direction: column;
-}
-.mlh-drawer-group-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 13px 16px;
-  background: transparent;
-  border: 0;
-  color: var(--mlh-navy);
-  font-family: inherit;
-  font-size: 16px;
+.mlh-dropdown-badge {
+  font-size: 10px;
   font-weight: 700;
-  border-radius: 12px;
-  cursor: pointer;
-  text-align: left;
-  transition: background .15s ease;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(245, 165, 36, 0.18);
+  color: #B26B05;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
-.mlh-drawer-group-trigger:hover {
-  background: rgba(0, 59, 92, 0.04);
-}
-.mlh-drawer-group-trigger.active {
-  background: rgba(45, 181, 223, 0.10);
-}
-.mlh-drawer-caret {
-  font-size: 12px;
-  opacity: 0.65;
-  transition: transform .25s ease;
-}
-.mlh-drawer-group.is-open .mlh-drawer-caret {
-  transform: rotate(180deg);
-}
-.mlh-drawer-sub {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .28s ease;
-  padding-left: 12px;
-  display: flex;
-  flex-direction: column;
-}
-.mlh-drawer-group.is-open .mlh-drawer-sub {
-  max-height: 400px;
-  padding-bottom: 4px;
-}
-.mlh-drawer-sublink {
-  display: block;
-  padding: 11px 14px 11px 18px;
-  color: var(--mlh-navy);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 10px;
-  border-left: 2px solid rgba(0, 59, 92, 0.10);
-  margin-left: 2px;
-}
-.mlh-drawer-sublink:hover {
-  background: rgba(45, 181, 223, 0.08);
-}
-.mlh-drawer-sublink.active {
+
+/* Quando o trigger está ativo (filho está na página atual) */
+.mlh-nav-trigger.active {
   background: var(--mlh-navy);
-  color: white;
-  border-left-color: var(--mlh-green);
+  color: #fff;
+}
+.mlh-nav-trigger.active:hover {
+  background: var(--mlh-navy);
+  color: #fff;
+}
+
+/* MOBILE — accordion no drawer */
+@media (max-width: 760px) {
+  .mlh-dropdown { display: none; } /* desktop só */
+
+  .mlh-drawer-group {
+    margin-bottom: 4px;
+  }
+  .mlh-drawer-trigger {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mlh-drawer-caret {
+    font-size: 11px;
+    opacity: 0.6;
+    transition: transform 220ms ease;
+  }
+  .mlh-drawer-group.is-expanded .mlh-drawer-caret {
+    transform: rotate(180deg);
+  }
+  .mlh-drawer-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 260ms ease;
+    padding-left: 14px;
+    border-left: 2px solid rgba(0, 59, 92, 0.10);
+    margin-left: 18px;
+  }
+  .mlh-drawer-group.is-expanded .mlh-drawer-submenu {
+    max-height: 600px; /* enough pra qualquer submenu real */
+  }
+  .mlh-drawer-sublink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--mlh-navy);
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 4px;
+    transition: background 140ms ease;
+  }
+  .mlh-drawer-sublink:hover { background: rgba(0, 59, 92, 0.04); }
+  .mlh-drawer-sublink.active {
+    background: var(--mlh-navy);
+    color: #fff;
+  }
+  .mlh-drawer-sublink.is-disabled {
+    color: rgba(0, 59, 92, 0.4);
+    cursor: not-allowed;
+    pointer-events: none;
+    font-weight: 500;
+  }
+  .mlh-drawer-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(245, 165, 36, 0.18);
+    color: #B26B05;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mlh-drawer-sub,
-  .mlh-drawer-caret { transition: none; }
+  .mlh-nav-caret,
+  .mlh-dropdown,
+  .mlh-drawer-caret,
+  .mlh-drawer-submenu {
+    transition: none;
+  }
 }

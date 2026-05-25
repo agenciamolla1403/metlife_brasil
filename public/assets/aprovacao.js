@@ -1,5 +1,5 @@
 /* ============================================================
-   MetLife Brasil — Aprovação de Peças (SPA)
+   MetLife Brasil — Aprovação (SPA)
    ------------------------------------------------------------
    Persistência: Supabase (via window.MetLifeStore)
    Toda a camada de UI é async; loading states em cada operação.
@@ -357,7 +357,7 @@
 
     // ----- HOME VIEW -----
     async renderHomeView() {
-      this.el.crumb.innerHTML = '<a href="/">Central do Cliente</a> &nbsp;/&nbsp; <strong>Aprovação de Peças</strong>';
+      this.el.crumb.innerHTML = '<a href="/">Central do Cliente</a> &nbsp;/&nbsp; <strong>Aprovação</strong>';
       this.el.content.innerHTML = loadingHtml('Carregando campanhas...');
 
       let campaigns;

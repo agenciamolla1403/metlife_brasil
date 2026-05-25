@@ -32,7 +32,7 @@
       color: var(--text);
       line-height: 1.45;
     }
-    header.page-hero {
+    header {
       display: grid;
       place-items: center;
       padding: 80px 24px;
@@ -60,24 +60,29 @@
       font-size: 14px;
     }
     .eyebrow .dot {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 8px; height: 8px;
+      border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 0 4px rgba(80,229,150,.25);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); }
     }
     h1 {
-      font-size: clamp(38px, 6vw, 64px);
-      line-height: .98;
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
       margin: 0 0 22px;
       letter-spacing: -1.5px;
     }
     h1 .accent { color: var(--blue); }
     h2 {
-      font-size: clamp(28px, 3.5vw, 42px);
-      line-height: 1;
-      margin: 0 0 18px;
-      letter-spacing: -1px;
+      font-size: clamp(26px, 3.6vw, 40px);
+      line-height: 1.05;
+      margin: 0 0 16px;
+      letter-spacing: -0.8px;
     }
-    h3 { margin: 0 0 10px; font-size: 22px; }
+    h3 { margin: 0 0 10px; font-size: 20px; }
     h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; opacity: .85; }
     p { margin: 0 0 14px; }
     .lead {
@@ -104,107 +109,56 @@
       border-radius: 18px;
       padding: 18px;
     }
-    .metric.accent {
-      background: rgba(80,229,150,.22);
-      border-color: rgba(80,229,150,.4);
-    }
-    .metric.green strong { color: var(--green); }
     .metric strong {
       display: block;
-      font-size: 32px;
+      font-size: 30px;
       line-height: 1;
       margin-bottom: 6px;
     }
-
-    /* Seletor de semanas (sticky) */
-    .weeks-bar {
+    nav {
       position: sticky;
       top: var(--mlh-header-h, 60px);
       z-index: 20;
       background: rgba(238,246,248,.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0,59,92,.08);
-      padding: 14px 24px;
-    }
-    .weeks-inner {
-      max-width: 1180px;
-      margin: 0 auto;
+      padding: 12px 20px;
       display: flex;
-      gap: 8px;
+      gap: 10px;
+      overflow-x: auto;
+      justify-content: center;
       flex-wrap: wrap;
-      align-items: center;
     }
-    .weeks-label {
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      color: var(--muted);
-      margin-right: 6px;
-    }
-    .week-chip {
-      display: inline-flex;
-      flex-direction: column;
-      gap: 1px;
-      padding: 8px 14px;
-      border-radius: 12px;
-      background: white;
-      border: 1px solid rgba(0,59,92,.10);
+    nav a {
       color: var(--navy);
+      text-decoration: none;
       font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 13px;
-      text-align: left;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-    }
-    .week-chip:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,59,92,.10);
-    }
-    .week-chip.active {
-      background: var(--navy);
-      color: white;
-      border-color: var(--navy);
-      box-shadow: 0 4px 14px rgba(0,59,92,.22);
-    }
-    .week-chip.future {
-      cursor: not-allowed;
-      opacity: .55;
-      background: rgba(0,59,92,.04);
-    }
-    .week-chip-period {
-      font-size: 10px;
-      font-weight: 600;
-      opacity: .75;
-    }
-    .week-chip-future-tag {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-      color: var(--blue);
+      padding: 10px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
     }
     @media (max-width: 760px) {
-      .weeks-bar {
+      nav {
         position: static;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
         overflow-x: auto;
+        overflow-y: hidden;
         padding: 12px 16px;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
       }
-      .weeks-inner { flex-wrap: nowrap; }
-      .week-chip { flex-shrink: 0; }
+      nav::-webkit-scrollbar { display: none; }
+      nav a { flex-shrink: 0; }
     }
-
-    /* Seções gerais (reusa do plano-midia) */
     section { padding: 80px 24px; }
-    section.dark { background: var(--navy); color: white; }
-    section.dark h2 { color: white; }
-    section.dark .eyebrow { background: rgba(80,229,150,.20); color: var(--green); }
-    section.dark .lead { color: rgba(255,255,255,.78); }
+    section.alt { background: rgba(45,181,223,.04); }
     .container { max-width: 1180px; margin: 0 auto; }
     .section-intro { max-width: 820px; margin-bottom: 34px; }
 
-    /* Cards layout */
+    /* CARDS GENÉRICOS (mesmo padrão do plano-midia) */
     .cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -226,675 +180,755 @@
     .card.blue { background: var(--blue); color: white; }
     .card.green { background: var(--green); color: var(--navy); }
     .card.teal { background: var(--teal); color: var(--navy); }
-    .card.highlight {
-      background: linear-gradient(135deg, rgba(80,229,150,.16), rgba(45,181,223,.10));
-      border: 2px solid rgba(80,229,150,.55);
-    }
     .pill {
       display: inline-block;
-      padding: 6px 11px;
+      padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(0,59,92,.10);
-      color: var(--navy);
-      font-size: 12px;
+      background: rgba(255,255,255,.18);
+      font-size: 13px;
       font-weight: 700;
       margin-bottom: 14px;
     }
-    .pill-warning {
-      background: rgba(245,165,36,.18);
-      color: #B0700E;
-    }
+    .white-pill { background: rgba(0,59,92,.08); color: var(--navy); }
+    ul { padding-left: 18px; margin: 14px 0 0; }
+    li { margin: 7px 0; }
 
-    .big-num {
-      font-size: 54px;
-      line-height: 1;
-      font-weight: 900;
-      margin-bottom: 10px;
-      letter-spacing: -1px;
-      color: var(--blue);
-    }
-    .card.highlight .big-num { color: var(--navy); }
-
-    /* Disclaimer box */
-    .disclaimer {
+    /* DISCLAIMER (estilo Rafael adaptado pra plataforma) */
+    .disclaimer-card {
       display: flex;
-      gap: 16px;
-      padding: 22px;
-      background: rgba(245,165,36,.08);
+      gap: 18px;
+      align-items: flex-start;
+      background: white;
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
       border-left: 4px solid var(--warning);
-      border-radius: 12px;
-      margin-bottom: 20px;
     }
     .disclaimer-icon {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--warning); color: white;
-      display: grid; place-items: center;
-      font-weight: 900; font-size: 18px;
       flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--warning);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 22px;
     }
-    .disclaimer-content { font-size: 15px; line-height: 1.55; }
 
-    /* Campaign banner */
+    /* INSIGHTS GRID — 6 leituras do especialista */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .insight-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      display: flex;
+      flex-direction: column;
+    }
+    .insight-card.highlight {
+      background: linear-gradient(135deg, var(--navy) 0%, #002B45 100%);
+      color: white;
+      border: 1px solid rgba(80,229,150,.32);
+    }
+    .insight-card.highlight h3 { color: white; }
+    .insight-card.highlight .insight-num { color: var(--green); }
+    .insight-tag {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .3px;
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-tag {
+      background: rgba(80,229,150,.18);
+      color: var(--green);
+    }
+    .insight-num {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--blue);
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    .insight-card h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .insight-card p {
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .insight-card.highlight p { color: rgba(255,255,255,.86); }
+
+    /* CAMPAIGN BLOCKS */
     .campaign-banner {
       display: flex;
-      align-items: center;
       gap: 16px;
-      padding: 22px 26px;
+      align-items: center;
+      padding: 22px 28px;
       border-radius: var(--radius);
-      margin-bottom: 22px;
+      margin-bottom: 24px;
+      background: white;
       box-shadow: var(--shadow);
+      border-left: 6px solid var(--blue);
     }
-    .campaign-banner.eng {
-      background: linear-gradient(135deg, rgba(80,229,150,.18), rgba(39,199,189,.08));
-    }
-    .campaign-banner.trf {
-      background: linear-gradient(135deg, rgba(45,181,223,.18), rgba(80,229,150,.08));
-    }
+    .campaign-banner.trf { border-left-color: var(--teal); }
     .campaign-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      background: var(--navy); color: white;
-      display: grid; place-items: center;
-      font-weight: 900; font-size: 22px;
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: var(--blue);
+      color: white;
+      font-weight: 900;
+      font-size: 28px;
+      display: grid;
+      place-items: center;
       flex-shrink: 0;
     }
-    .campaign-banner h3 {
-      margin: 0 0 2px;
-      font-size: 20px;
-    }
+    .campaign-banner.trf .campaign-icon { background: var(--teal); }
+    .campaign-banner h2 { font-size: 24px; margin-bottom: 2px; }
     .campaign-meta {
       font-size: 12px;
       color: var(--muted);
-      font-family: 'Courier New', monospace;
+      font-weight: 600;
     }
+    .campaign-spacer { flex: 1; }
     .campaign-stamp {
-      margin-left: auto;
       font-size: 12px;
-      padding: 6px 12px;
-      background: rgba(0,59,92,.08);
-      border-radius: 999px;
-      font-weight: 700;
-      color: var(--navy);
+      color: var(--muted);
+      font-weight: 600;
+      text-align: right;
+      flex-shrink: 0;
     }
 
-    /* Métricas pequenas (KPI grid das campanhas) */
-    .kpi-grid {
+    /* MÉTRICAS COMPARADAS (real vs meta) */
+    .metric-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
     }
-    .kpi-card {
+    .metric-tile {
       background: white;
-      border-radius: 14px;
-      padding: 14px 16px;
-      box-shadow: 0 4px 12px rgba(0,59,92,.06);
-      border: 1px solid rgba(0,59,92,.06);
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.08);
+      border-left: 4px solid rgba(0,59,92,.18);
     }
-    .kpi-name {
+    .metric-tile.up    { border-left-color: var(--green); }
+    .metric-tile.down  { border-left-color: var(--warning); }
+    .metric-tile.neutral { border-left-color: rgba(0,59,92,.18); }
+    .metric-tile-label {
       font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: .4px;
+      letter-spacing: .5px;
       color: var(--muted);
-      font-weight: 700;
       margin-bottom: 6px;
     }
-    .kpi-value {
-      font-size: 22px;
+    .metric-tile-value {
+      font-size: 26px;
       font-weight: 900;
+      line-height: 1;
       color: var(--navy);
-      line-height: 1.1;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      letter-spacing: -.5px;
     }
-    .kpi-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .metric-tile-meta {
       font-size: 11px;
-      font-weight: 700;
+      color: var(--muted);
+      font-weight: 600;
     }
-    .kpi-badge {
-      padding: 2px 8px;
+    .metric-tile-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 9px;
       border-radius: 999px;
       font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .3px;
     }
-    .kpi-badge.up   { background: rgba(80,229,150,.20); color: #06823F; }
-    .kpi-badge.down { background: rgba(229,72,77,.18);  color: #B91C1C; }
-    .kpi-badge.neutral { background: rgba(0,59,92,.08); color: var(--muted); }
-    .kpi-target {
-      font-size: 10px;
-      color: var(--muted);
+    .metric-tile.up .metric-tile-badge {
+      background: rgba(80,229,150,.18);
+      color: #036937;
+    }
+    .metric-tile.down .metric-tile-badge {
+      background: rgba(245,165,36,.18);
+      color: #864B05;
     }
 
-    /* Tabela diária */
+    /* TABELAS DIÁRIAS */
     .table-wrap {
       overflow-x: auto;
       background: white;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 720px;
+      margin-top: 22px;
     }
     .table-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 22px 0;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(0,59,92,.08);
     }
     .table-header h3 { margin: 0; font-size: 16px; }
     .table-header span { font-size: 12px; color: var(--muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
     th, td {
-      padding: 12px 14px;
+      padding: 12px 18px;
       text-align: right;
       border-bottom: 1px solid rgba(0,59,92,.06);
       font-size: 13px;
     }
-    th:first-child, td:first-child { text-align: left; }
+    th:first-child, td:first-child { text-align: left; font-weight: 700; }
     th {
-      background: rgba(0,59,92,.04);
+      background: rgba(238,246,248,.7);
       color: var(--navy);
       font-weight: 800;
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: .3px;
     }
-    tr:last-child td {
-      border-bottom: none;
+    tbody tr:last-child {
+      background: rgba(0,59,92,.04);
       font-weight: 800;
-      background: rgba(0,59,92,.03);
     }
+    .insight-strip {
+      margin-top: 22px;
+      padding: 18px 24px;
+      background: rgba(80,229,150,.10);
+      border-left: 4px solid var(--green);
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--navy);
+    }
+    .insight-strip strong { color: var(--navy); }
 
-    /* Cards de recomendação */
+    /* RECOMENDAÇÕES */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
     .rec-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 26px 26px 26px 76px;
+      box-shadow: var(--shadow);
       position: relative;
-      padding-top: 38px;
+      border: 1px solid rgba(0,59,92,.06);
     }
     .rec-num {
       position: absolute;
-      top: 18px; right: 18px;
-      width: 32px; height: 32px;
-      border-radius: 10px;
+      left: 22px; top: 22px;
+      width: 40px; height: 40px;
+      border-radius: 50%;
       background: var(--green);
       color: var(--navy);
-      display: grid; place-items: center;
+      display: grid;
+      place-items: center;
       font-weight: 900;
-      font-size: 14px;
+      font-size: 18px;
     }
+    .rec-card h3 { font-size: 17px; margin-bottom: 8px; }
+    .rec-card p { font-size: 14px; line-height: 1.55; margin: 0; color: var(--muted); }
 
-    /* Empty state pra semanas futuras */
-    .future-empty {
-      background: white;
-      border-radius: var(--radius);
-      padding: 80px 24px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-    .future-empty-icon { font-size: 56px; margin-bottom: 16px; }
-    .future-empty h2 { font-size: 26px; margin-bottom: 12px; }
-    .future-empty p { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 18px; }
-
-    /* Loading */
-    .loading {
-      text-align: center;
-      padding: 60px 24px;
+    .note {
+      font-size: 13px;
       color: var(--muted);
+      margin-top: 18px;
     }
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+    }
+    .footer-meta {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .brand-footer-row {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
 
     @media (max-width: 920px) {
-      .hero { grid-template-columns: 1fr; gap: 28px; }
-      .cards { grid-template-columns: 1fr; }
-      .cards-2 { grid-template-columns: 1fr; }
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero, .cards, .cards-2, .rec-grid, .insights-grid { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: 1fr; }
       .campaign-banner { flex-wrap: wrap; }
-      .campaign-stamp { margin-left: 0; width: 100%; text-align: center; margin-top: 6px; }
-    }
-    @media (max-width: 520px) {
-      .kpi-grid { grid-template-columns: 1fr; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .week-chip { transition: none; }
+      .campaign-stamp { text-align: left; }
     }
   </style>
 </head>
 <body>
   <div class="page-subbar">
     <div class="page-subbar-inner">
-      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; Mídia &nbsp;/&nbsp; <strong>Performance</strong></span>
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <strong>Performance</strong></span>
     </div>
   </div>
 
-  <!-- HERO (dinâmico) -->
-  <header class="page-hero" id="perfHero">
+  <!-- HERO -->
+  <header>
     <div class="hero">
       <div>
-        <span class="eyebrow"><span class="dot"></span> Carregando…</span>
-        <h1>Performance da campanha</h1>
-        <p class="lead">Aguardando dados do report mais recente.</p>
+        <span class="eyebrow"><span class="dot"></span> Report de performance · 18/05 a 23/05/2026</span>
+        <h1>Meta Ads em <span class="accent">fase de aprendizado</span>, com sinais consistentes de eficiência.</h1>
+        <p class="lead">Visão consolidada das campanhas de <strong>Engajamento</strong> e <strong>Tráfego</strong> rodando no Meta. Período de 6 dias, com dados realizados, metas proporcionais ao plano de 75 dias e leitura do especialista.</p>
       </div>
       <div class="hero-card">
-        <h3>Resumo</h3>
-        <p>Carregando…</p>
+        <h3>Recorte deste report</h3>
+        <p>Primeiros 6 dias da operação. Algoritmo do Meta ainda em fase de aprendizado — os próximos reports trarão leitura mais estável.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>6 dias</strong><span>período</span></div>
+          <div class="metric"><strong>R$ 8,3K</strong><span>realizado</span></div>
+          <div class="metric"><strong>1,06M</strong><span>alcance</span></div>
+          <div class="metric"><strong>1,33M</strong><span>impressões</span></div>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- BARRA DE SEMANAS (sticky) -->
-  <div class="weeks-bar" id="weeksBar">
-    <div class="weeks-inner">
-      <span class="weeks-label">📊 Semanas</span>
-      <span class="loading" style="padding: 0;">carregando…</span>
-    </div>
-  </div>
+  <nav>
+    <a href="#contexto">Como ler esse report</a>
+    <a href="#leituras">Os 6 dias em 5 leituras</a>
+    <a href="#campanhas">Engajamento e Tráfego no detalhe</a>
+    <a href="#proximos-passos">Pra onde vamos agora</a>
+  </nav>
 
-  <!-- CONTEÚDO DINÂMICO -->
-  <div id="perfContent">
-    <div class="loading">Carregando report…</div>
-  </div>
+  <!-- SEÇÃO 1 · COMO LER ESSE REPORT -->
+  <section id="contexto">
+    <div class="container">
+      <div class="section-intro">
+        <span class="eyebrow white-pill">Contexto</span>
+        <h2>6 dias é um recorte inicial — a leitura completa virá com o tempo.</h2>
+      </div>
+
+      <div class="disclaimer-card">
+        <div class="disclaimer-icon">!</div>
+        <div>
+          <p style="margin-bottom: 10px;"><strong>Janela de aprendizado das plataformas.</strong> O Meta Ads opera com algoritmo de otimização que normalmente leva entre 7 e 14 dias para estabilizar entrega, audiência e custo.</p>
+          <p style="margin: 0;">Este report cobre os <strong>primeiros 6 dias</strong> da operação (18/05 a 23/05), com criativos passando por aprovação e algoritmo ainda em curva. As tendências mostradas aqui são <strong>indicadores iniciais positivos</strong>, mas não representam ainda a média estável da campanha. CPM, frequência e custos podem se ajustar nas próximas semanas conforme a audiência satura e novos criativos entram no rodízio.</p>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top: 22px;">As <strong>metas comparativas</strong> apresentadas neste report foram calculadas a partir do plano de mídia total (75 dias, 18/05 a 31/07), com orçamento de <strong>R$ 340 mil</strong> distribuído em 59% Meta Ads, 23% YouTube e 18% LinkedIn. Para as campanhas de Engajamento e Tráfego no Meta, considerou-se <strong>R$ 100,3 mil cada</strong> (50/50 do total Meta), com metas diárias proporcionais aplicadas aos 6 dias deste recorte.</p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2 · OS 6 DIAS EM 5 LEITURAS -->
+  <section id="leituras" class="alt">
+    <div class="container">
+      <div class="section-intro">
+        <span class="eyebrow white-pill">Leitura do especialista</span>
+        <h2>Os primeiros 6 dias em 5 leituras.</h2>
+        <p class="lead">O conjunto de dados mostra uma operação saudável, com sinais consistentes de eficiência criativa e calibragem precisa de audiência. Abaixo, os pontos que merecem atenção.</p>
+      </div>
+
+      <div class="insights-grid">
+        <div class="insight-card highlight">
+          <span class="insight-tag">#1 · Destaque</span>
+          <div class="insight-num">−74%</div>
+          <h3>CPM 74% mais barato que o benchmark — eficiência excepcional.</h3>
+          <p>Combinando as duas campanhas, o CPM médio realizado foi de <strong>R$ 6,28</strong> contra um benchmark planejado de R$ 28. <strong>Em métricas de custo, ficar abaixo da meta é sempre positivo</strong>: significa que estamos comprando mídia mais barata que o esperado. Na prática, cada real investido entregou cerca de 4 vezes mais impressões que o previsto.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#2 · Eficiência</span>
+          <div class="insight-num">+205%</div>
+          <h3>Entregamos mais com menos: 56% do orçamento previsto, 233% das impressões.</h3>
+          <p>Considerando a meta proporcional pra 6 dias (R$ 16,05 mil), o investimento realizado de R$ 8,34 mil ficou abaixo do planejado, mas o volume entregue foi muito superior. O ritmo flat de investimento previsto no plano não captura, intencionalmente, o efeito da fase inicial. <strong>Sobra orçamento pra escalar quando os melhores criativos forem identificados.</strong></p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#3 · Segmentação</span>
+          <div class="insight-num">2,0%</div>
+          <h3>CTR acima do benchmark nas duas campanhas.</h3>
+          <p>Engajamento ficou em 1,79% (meta 0,80%) e Tráfego em 2,01% (meta 1,50%). Quando CTR sobe junto com o volume, é sinal forte de <strong>fit entre criativo, mensagem e audiência</strong>. Não é variação de leilão: é segmentação certa encontrando criativo relevante. O território "Patrocinadora Oficial do Cuidado" está ressoando com o público-alvo.</p>
+        </div>
+
+        <div class="insight-card highlight">
+          <span class="insight-tag">#4 · Insight crítico</span>
+          <div class="insight-num">54K</div>
+          <h3>A campanha de Tráfego está performando como Engajamento.</h3>
+          <p>A campanha de TRF gerou <strong>54.568 engajamentos</strong> nestes 6 dias — mais que os 36.220 da própria campanha de ENG. <strong>Significa que o conceito da marca tem força emocional mesmo em peças com CTA de clique.</strong> Vale considerar replicar elementos desse criativo de Tráfego nas peças de Engajamento.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#5 · Volume</span>
+          <div class="insight-num">2,3×</div>
+          <h3>Tráfego entregando mais que o dobro do alcance de Engajamento.</h3>
+          <p>Mesmo com orçamento equivalente, a campanha de Tráfego acumulou <strong>736 mil de alcance</strong> contra 325 mil de Engajamento. O CPM mais baixo de TRF (R$ 4,44 vs R$ 9,71) explica a diferença — e ambos estão muito abaixo do benchmark de R$ 28. Campanhas otimizadas pra cliques tendem a competir por inventários mais baratos.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#6 · Aprendizado</span>
+          <div class="insight-num">D+6</div>
+          <h3>Estamos no início da curva — os melhores aprendizados vêm a seguir.</h3>
+          <p>O Meta Ads tipicamente leva entre 7 e 14 dias pra estabilizar a entrega de cada criativo. Os dados destes 6 dias são <strong>indicadores iniciais consistentes</strong>, mas ainda não representam a média final. O próximo report (D+7) trará leitura mais estável e permitirá decisões de escala com mais segurança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3 · ENGAJAMENTO E TRÁFEGO NO DETALHE -->
+  <section id="campanhas">
+    <div class="container">
+      <div class="section-intro">
+        <span class="eyebrow white-pill">Campanhas no detalhe</span>
+        <h2>Engajamento e Tráfego dia a dia.</h2>
+        <p class="lead">Métricas consolidadas vs meta proporcional pros 6 dias + desempenho diário detalhado. <strong>Verde</strong> indica resultado positivo: volume acima da meta OU custo abaixo dela.</p>
+      </div>
+
+      <!-- ENG -->
+      <div class="campaign-banner">
+        <div class="campaign-icon">E</div>
+        <div>
+          <h2 style="font-size: 22px; margin: 0;">Campanha de Engajamento</h2>
+          <div class="campaign-meta">M_META_POC_ENG_ST_IG · Meta Ads · 18/05 a 23/05</div>
+        </div>
+        <div class="campaign-spacer"></div>
+        <div class="campaign-stamp">R$ 100,3K alocados / 75 dias</div>
+      </div>
+
+      <div class="metric-row" id="grid-eng"></div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Desempenho diário — Engajamento</h3>
+          <span>6 linhas + total</span>
+        </div>
+        <table id="tabela-eng">
+          <thead>
+            <tr>
+              <th>Dia</th>
+              <th>Alcance</th>
+              <th>Impressões</th>
+              <th>CPM</th>
+              <th>Cliques</th>
+              <th>CTR</th>
+              <th>Visitas perfil</th>
+              <th>Engajamento</th>
+              <th>Investido</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="insight-strip">
+        <strong>Leitura rápida:</strong> entrega ainda na fase inicial — dia 23/05 saltou pra 117K de alcance, sinal de que o algoritmo encontrou audiência. CTR médio de 1,79% (mais que o dobro da meta 0,80%) confirma fit do criativo. Único alerta: visitas ao perfil estão acima da meta, então o link nos posts está convertendo bem.
+      </div>
+
+      <!-- TRF -->
+      <div class="campaign-banner trf" style="margin-top: 56px;">
+        <div class="campaign-icon">T</div>
+        <div>
+          <h2 style="font-size: 22px; margin: 0;">Campanha de Tráfego</h2>
+          <div class="campaign-meta">M_META_POC_TRF_ST_LP · Meta Ads · 18/05 a 23/05</div>
+        </div>
+        <div class="campaign-spacer"></div>
+        <div class="campaign-stamp">R$ 100,3K alocados / 75 dias</div>
+      </div>
+
+      <div class="metric-row" id="grid-trf"></div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Desempenho diário — Tráfego</h3>
+          <span>6 linhas + total</span>
+        </div>
+        <table id="tabela-trf">
+          <thead>
+            <tr>
+              <th>Dia</th>
+              <th>Alcance</th>
+              <th>Impressões</th>
+              <th>CPM</th>
+              <th>Cliques</th>
+              <th>CTR</th>
+              <th>Engajamento</th>
+              <th>Investido</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="insight-strip">
+        <strong>Leitura rápida:</strong> volume explosivo desde o dia 19/05 — picos de 215K de alcance/dia. CPM em R$ 4,44 (84% abaixo do benchmark) explica o salto. Engajamento de 54K mostra que peças com CTA de clique também estão gerando interação orgânica — comportamento de dupla entrega.
+      </div>
+
+      <!-- COMPARATIVO -->
+      <div class="section-intro" style="margin-top: 56px;">
+        <h2 style="font-size: 26px;">Quem entrega o quê: ENG × TRF lado a lado</h2>
+        <p>Volume vs eficiência. Cada campanha tem seu papel — uma alcança mais, outra engaja mais.</p>
+      </div>
+
+      <div class="cards-2">
+        <div class="card blue">
+          <span class="pill">Engajamento · ENG</span>
+          <h3 style="color: white;">Mais profundidade</h3>
+          <ul style="color: rgba(255,255,255,.94);">
+            <li><strong>325K</strong> alcance acumulado</li>
+            <li><strong>R$ 9,71</strong> CPM (vs R$ 28 benchmark)</li>
+            <li><strong>36K</strong> interações</li>
+            <li><strong>5.077</strong> visitas ao perfil</li>
+            <li>CTR <strong>1,79%</strong> · meta 0,80%</li>
+          </ul>
+        </div>
+        <div class="card teal">
+          <span class="pill white-pill">Tráfego · TRF</span>
+          <h3>Mais escala</h3>
+          <ul>
+            <li><strong>736K</strong> alcance acumulado (<strong>2,3×</strong> ENG)</li>
+            <li><strong>R$ 4,44</strong> CPM (vs R$ 28 benchmark)</li>
+            <li><strong>54K</strong> interações (sem ser foco da campanha)</li>
+            <li><strong>17.594</strong> cliques no link</li>
+            <li>CTR <strong>2,01%</strong> · meta 1,50%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4 · PRA ONDE VAMOS AGORA -->
+  <section id="proximos-passos" class="alt">
+    <div class="container">
+      <div class="section-intro">
+        <span class="eyebrow white-pill">Próximos 14 dias</span>
+        <h2>Pra onde vamos a partir daqui.</h2>
+        <p class="lead">Com base na leitura dos 6 primeiros dias, esses são os movimentos que maximizam aprendizado e eficiência da operação.</p>
+      </div>
+
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-num">1</div>
+          <h3>Manter e escalar os criativos top de Tráfego</h3>
+          <p>O criativo de TRF está fazendo trabalho dobrado: gera cliques acima da meta e engajamento muito acima da meta. Aumentar verba nesses ativos específicos e testar replicar elementos deles nos criativos de ENG.</p>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-num">2</div>
+          <h3>Acompanhar curva de frequência</h3>
+          <p>Se o CPM começar a subir consistentemente, é sinal de saturação da audiência — hora de rodar criativos novos pra refrescar a entrega. Hoje a tendência ainda está estável e baixa, mas precisa ser monitorada semanalmente.</p>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-num">3</div>
+          <h3>Realocar verba não consumida</h3>
+          <p>Gastamos R$ 8,34 mil dos R$ 16,05 mil planejados pro período. Essa folga pode ser usada pra escalar os criativos vencedores assim que a fase de aprendizado terminar (entre o 7º e 14º dia da campanha).</p>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-num">4</div>
+          <h3>Aproveitar a janela de CPM baixo</h3>
+          <p>O leilão atual está favorável às nossas campanhas. Enquanto essa janela durar, vale acumular alcance acima da meta sem custo adicional. Ao fim da Onda 1 (14/06), revisamos a entrega e ajustamos a estratégia pra Onda 2.</p>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-num">5</div>
+          <h3>Próximo report: D+7 com leitura estável</h3>
+          <p>O próximo report cobrirá o período até 30/05, momento em que a maior parte dos criativos terá saído da fase de aprendizado. Vai trazer indicadores mais estáveis de CPM, frequência e custos unitários.</p>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-num">6</div>
+          <h3>Validar transposição de elementos criativos</h3>
+          <p>Identificar o que faz o criativo de Tráfego performar tão bem em engajamento (gancho, copy, CTA, formato) e replicar esses elementos nas peças de Engajamento, mantendo coerência com o conceito "Patrocinadora Oficial do Cuidado".</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer class="site-footer">
-    <h2>Cada semana traz uma nova leitura.</h2>
-    <p>Reports semanais consolidados do time de Mídia & Performance — preparados pro time da MetLife acompanhar a campanha em tempo real.</p>
+    <h2>Volume com eficiência. Sinais consistentes. Caminho aberto pra escalar.</h2>
+    <p>Este é o primeiro recorte de uma operação de 75 dias. Os dados orientam ajustes táticos e mantêm a operação alinhada aos objetivos de marca da MetLife pra Copa de 2026.</p>
+    <div class="footer-meta">
+      Report gerado em 24/05/2026 · Período coberto: 18/05 a 23/05/2026 · Fonte: Meta Ads · Confidential — Internal use only
+    </div>
     <div class="brand-footer-row">
       <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
-      <p class="brand-footer-text">Agência Molla</p>
+      <p class="brand-footer-text">Agência Molla · Rafael Moraes (time de Mídia & Performance)</p>
     </div>
   </footer>
 
   <script src="/assets/header.js"></script>
+
   <script>
     // ============================================================
-    // /performance — galeria de reports semanais (S47)
+    // DADOS REAIS (do report do Rafael · 18/05 a 23/05)
     // ============================================================
-    (function () {
-      'use strict';
+    const dadosEng = [
+      {dia: "18/05", alcance: 14,     impressoes: 22,     cpm: 24.55, cliques: 2,    ctr: 9.09, visitas_perfil: 4,    engajamento: 6,     gasto: 0.54},
+      {dia: "19/05", alcance: 28318,  impressoes: 37565,  cpm: 10.99, cliques: 567,  ctr: 1.51, visitas_perfil: 313,  engajamento: 3573,  gasto: 412.80},
+      {dia: "20/05", alcance: 54838,  impressoes: 88383,  cpm: 9.19,  cliques: 1164, ctr: 1.32, visitas_perfil: 638,  engajamento: 6093,  gasto: 811.87},
+      {dia: "21/05", alcance: 50343,  impressoes: 79991,  cpm: 9.33,  cliques: 1090, ctr: 1.36, visitas_perfil: 613,  engajamento: 5292,  gasto: 746.31},
+      {dia: "22/05", alcance: 74550,  impressoes: 90567,  cpm: 8.84,  cliques: 1984, ctr: 2.19, visitas_perfil: 1193, engajamento: 4901,  gasto: 800.58},
+      {dia: "23/05", alcance: 117418, impressoes: 162624, cpm: 10.37, cliques: 3425, ctr: 2.11, visitas_perfil: 2316, engajamento: 16355, gasto: 1687.11}
+    ];
 
-      const fmtNum = n => Math.round(n).toLocaleString('pt-BR');
-      const fmtMoney = n => 'R$ ' + (n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const fmtPct = n => (n || 0).toFixed(2).replace('.', ',') + '%';
-      const escapeHtml = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const dadosTrf = [
+      {dia: "18/05", alcance: 3,      impressoes: 3,      cpm: 0,    cliques: 0,    ctr: 0,    engajamento: 0,     gasto: 0},
+      {dia: "19/05", alcance: 82940,  impressoes: 91418,  cpm: 3.89, cliques: 1499, ctr: 1.64, engajamento: 4653,  gasto: 355.48},
+      {dia: "20/05", alcance: 154898, impressoes: 187253, cpm: 4.22, cliques: 3163, ctr: 1.69, engajamento: 12723, gasto: 790.36},
+      {dia: "21/05", alcance: 175201, impressoes: 202061, cpm: 4.36, cliques: 3742, ctr: 1.85, engajamento: 13236, gasto: 881.37},
+      {dia: "22/05", alcance: 215389, impressoes: 250055, cpm: 4.39, cliques: 4823, ctr: 1.93, engajamento: 11101, gasto: 1097.28},
+      {dia: "23/05", alcance: 107783, impressoes: 143890, cpm: 5.25, cliques: 4367, ctr: 3.03, engajamento: 12855, gasto: 755.03}
+    ];
 
-      const state = {
-        manifesto: null,
-        ativo: null,        // id da semana ativa
-        dados: {}           // cache de week-N.json por id
+    const metaEng = { alcance: 95524, impressoes: 286571, cpm: 28, cliques: 2293, ctr: 0.80, visitas_perfil: 917, engajamento: 9280, gasto: 8024 };
+    const metaTrf = { alcance: 95524, impressoes: 286571, cpm: 28, cliques: 4299, ctr: 1.50, engajamento: 2320, gasto: 8024 };
+
+    const fmtNum = n => Math.round(n).toLocaleString('pt-BR');
+    const fmtMoney = n => 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const fmtPct = n => n.toFixed(2).replace('.', ',') + '%';
+    const fmtCPM = n => 'R$ ' + n.toFixed(2).replace('.', ',');
+
+    function sumColumn(arr, col) {
+      return arr.reduce((acc, row) => acc + (row[col] || 0), 0);
+    }
+    function calcRealized(arr) {
+      const impressoes = sumColumn(arr, 'impressoes');
+      const cliques = sumColumn(arr, 'cliques');
+      const gasto = sumColumn(arr, 'gasto');
+      return {
+        alcance: sumColumn(arr, 'alcance'),
+        impressoes: impressoes,
+        cpm: impressoes > 0 ? (gasto / impressoes * 1000) : 0,
+        cliques: cliques,
+        ctr: impressoes > 0 ? (cliques / impressoes * 100) : 0,
+        visitas_perfil: sumColumn(arr, 'visitas_perfil'),
+        engajamento: sumColumn(arr, 'engajamento'),
+        gasto: gasto
       };
+    }
+    function badge(real, meta, isCost) {
+      if (meta == null) return 'neutral';
+      const ratio = real / meta;
+      if (isCost) return ratio <= 1.05 ? 'up' : 'down';
+      return ratio >= 0.95 ? 'up' : 'down';
+    }
+    function pctDelta(real, meta, isCost) {
+      if (meta == null || meta === 0) return '';
+      const delta = ((real - meta) / meta) * 100;
+      const sign = delta >= 0 ? '+' : '';
+      const efeito = isCost
+        ? (delta <= 0 ? 'mais barato' : 'mais caro')
+        : (delta >= 0 ? 'acima da meta' : 'abaixo da meta');
+      return sign + delta.toFixed(0) + '% ' + efeito;
+    }
 
-      // Soma de uma coluna do array de dias
-      function sumColumn(arr, col) {
-        return arr.reduce((acc, row) => acc + (row[col] || 0), 0);
+    function renderTile(label, value, meta, formatter, isCost) {
+      const b = badge(value, meta, isCost);
+      const metaLabel = meta == null ? '—' : (formatter === fmtPct ? fmtPct(meta) : (formatter === fmtMoney || formatter === fmtCPM ? formatter(meta) : fmtNum(meta)));
+      const deltaLabel = pctDelta(value, meta, isCost);
+      return `
+        <div class="metric-tile ${b}">
+          <div class="metric-tile-label">${label}</div>
+          <div class="metric-tile-value">${formatter(value)}</div>
+          <div class="metric-tile-meta">Meta: ${metaLabel}</div>
+          ${deltaLabel ? `<span class="metric-tile-badge">${deltaLabel}</span>` : ''}
+        </div>
+      `;
+    }
+
+    function renderCampaignGrid(elId, real, meta, includeVisitas) {
+      const tiles = [
+        renderTile('Alcance',     real.alcance,     meta.alcance,     fmtNum,   false),
+        renderTile('Impressões',  real.impressoes,  meta.impressoes,  fmtNum,   false),
+        renderTile('CPM',         real.cpm,         meta.cpm,         fmtCPM,   true),
+        renderTile('Cliques',     real.cliques,     meta.cliques,     fmtNum,   false),
+        renderTile('CTR',         real.ctr,         meta.ctr,         fmtPct,   false),
+      ];
+      if (includeVisitas) {
+        tiles.push(renderTile('Visitas perfil', real.visitas_perfil, meta.visitas_perfil, fmtNum, false));
       }
+      tiles.push(renderTile('Engajamento', real.engajamento, meta.engajamento, fmtNum, false));
+      tiles.push(renderTile('Investido', real.gasto, meta.gasto, fmtMoney, true));
+      document.getElementById(elId).innerHTML = tiles.join('');
+    }
 
-      // Métricas realizadas (totais agregados)
-      function calcRealized(arr) {
-        const impressoes = sumColumn(arr, 'impressoes');
-        const cliques = sumColumn(arr, 'cliques');
-        const gasto = sumColumn(arr, 'gasto');
-        return {
-          alcance: sumColumn(arr, 'alcance'),
-          impressoes,
-          cpm: impressoes > 0 ? (gasto / impressoes * 1000) : 0,
-          cliques,
-          ctr: impressoes > 0 ? (cliques / impressoes * 100) : 0,
-          visitas_perfil: sumColumn(arr, 'visitas_perfil'),
-          engajamento: sumColumn(arr, 'engajamento'),
-          seguidores: sumColumn(arr, 'seguidores'),
-          gasto
-        };
-      }
+    function renderTable(tableId, data, includeVisitas) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      if (!tbody) return;
+      const rows = data.map(d => {
+        const cells = [
+          `<td>${d.dia}</td>`,
+          `<td>${fmtNum(d.alcance)}</td>`,
+          `<td>${fmtNum(d.impressoes)}</td>`,
+          `<td>${d.cpm > 0 ? fmtCPM(d.cpm) : '—'}</td>`,
+          `<td>${fmtNum(d.cliques)}</td>`,
+          `<td>${d.ctr > 0 ? fmtPct(d.ctr) : '—'}</td>`,
+        ];
+        if (includeVisitas) cells.push(`<td>${fmtNum(d.visitas_perfil)}</td>`);
+        cells.push(`<td>${fmtNum(d.engajamento)}</td>`);
+        cells.push(`<td>${fmtMoney(d.gasto)}</td>`);
+        return `<tr>${cells.join('')}</tr>`;
+      });
+      // Linha total
+      const total = calcRealized(data);
+      const totalCells = [
+        `<td>Total</td>`,
+        `<td>${fmtNum(total.alcance)}</td>`,
+        `<td>${fmtNum(total.impressoes)}</td>`,
+        `<td>${fmtCPM(total.cpm)}</td>`,
+        `<td>${fmtNum(total.cliques)}</td>`,
+        `<td>${fmtPct(total.ctr)}</td>`,
+      ];
+      if (includeVisitas) totalCells.push(`<td>${fmtNum(total.visitas_perfil)}</td>`);
+      totalCells.push(`<td>${fmtNum(total.engajamento)}</td>`);
+      totalCells.push(`<td>${fmtMoney(total.gasto)}</td>`);
+      rows.push(`<tr>${totalCells.join('')}</tr>`);
+      tbody.innerHTML = rows.join('');
+    }
 
-      // Badge up/down/neutral conforme realizado vs meta
-      function getBadge(realizado, meta, isCost) {
-        if (meta === null || meta === undefined) return { cls: 'neutral', txt: 'sem meta' };
-        const ratio = realizado / meta;
-        if (isCost) {
-          if (ratio <= 1.0)  return { cls: 'up',   txt: 'abaixo da meta · bom' };
-          return { cls: 'down', txt: 'acima da meta · atenção' };
-        }
-        if (ratio >= 0.95) return { cls: 'up',   txt: 'acima ou no alvo · bom' };
-        return { cls: 'down', txt: 'abaixo · em curva' };
-      }
-
-      // Fetch helpers (com cache local em sessionStorage pra evitar refetch em troca de aba)
-      async function fetchJson(url) {
-        const cacheKey = 'perf:' + url;
-        try {
-          const cached = sessionStorage.getItem(cacheKey);
-          if (cached) return JSON.parse(cached);
-        } catch (_) {}
-        const res = await fetch(url, { cache: 'no-cache' });
-        if (!res.ok) throw new Error('HTTP ' + res.status + ' em ' + url);
-        const data = await res.json();
-        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
-        return data;
-      }
-
-      // ============================================================
-      // RENDER
-      // ============================================================
-
-      function renderHero(report) {
-        const el = document.getElementById('perfHero');
-        const stats = (report.hero.stats || []).map(s => `
-          <div class="metric${s.accent ? ' accent' : ''}${s.green ? ' green' : ''}">
-            <strong>${escapeHtml(s.valor)}</strong>
-            <span>${escapeHtml(s.label)}</span>
-          </div>
-        `).join('');
-        el.innerHTML = `
-          <div class="hero">
-            <div>
-              <span class="eyebrow"><span class="dot"></span> Report de performance · ${escapeHtml(report.periodo)}</span>
-              <h1>${escapeHtml(report.hero.titulo_principal)} <span class="accent">${escapeHtml(report.hero.subtitulo)}</span>.</h1>
-              <p class="lead">${escapeHtml(report.hero.lead)}</p>
-            </div>
-            <div class="hero-card">
-              <h3>Resumo da ${escapeHtml(report.label.toLowerCase())}</h3>
-              <p>Campanha digital cobrindo o período de <strong>${escapeHtml(report.periodo_completo)}</strong>. Veja abaixo as leituras do especialista, a performance de cada campanha e o que vamos fazer a partir daqui.</p>
-              <div class="metric-grid">${stats}</div>
-            </div>
-          </div>
-        `;
-      }
-
-      function renderWeeksBar() {
-        const bar = document.getElementById('weeksBar');
-        const m = state.manifesto;
-        const semanas = (m.semanas || []).map(w => `
-          <button class="week-chip ${w.id === state.ativo ? 'active' : ''}" data-week="${escapeHtml(w.id)}">
-            <span>${escapeHtml(w.label)}</span>
-            <span class="week-chip-period">${escapeHtml(w.periodo)}</span>
-          </button>
-        `).join('');
-        const futuras = (m.futuras || []).map(f => `
-          <span class="week-chip future" title="Ainda não disponível">
-            <span>${escapeHtml(f.label)}</span>
-            <span class="week-chip-period">${escapeHtml(f.periodo)}</span>
-            <span class="week-chip-future-tag">em ${escapeHtml(f.data_estimada)}</span>
-          </span>
-        `).join('');
-        bar.innerHTML = `
-          <div class="weeks-inner">
-            <span class="weeks-label">📊 Semanas</span>
-            ${semanas}
-            ${futuras}
-          </div>
-        `;
-        bar.querySelectorAll('.week-chip[data-week]').forEach(btn => {
-          btn.addEventListener('click', () => switchWeek(btn.getAttribute('data-week')));
-        });
-      }
-
-      function renderContent(report) {
-        const r = report;
-        // Realizados agregados pra cada campanha
-        const realEng = calcRealized(r.campanhas.engajamento.dados_diarios);
-        const realTrf = calcRealized(r.campanhas.trafego.dados_diarios);
-
-        // ----- Seção 1: Como a gente está lendo -----
-        const ctxSection = `
-          <section id="contexto">
-            <div class="container">
-              <div class="section-intro">
-                <span class="eyebrow">Como a gente está lendo isso</span>
-                <h2>${escapeHtml(report.dias_cobertos)} dias é um recorte inicial — a leitura completa vem com o tempo.</h2>
-              </div>
-              <div class="disclaimer">
-                <div class="disclaimer-icon">!</div>
-                <div class="disclaimer-content">${escapeHtml(r.contexto.alerta)}</div>
-              </div>
-              <p style="font-size: 15px; color: var(--muted); max-width: 920px;">${escapeHtml(r.contexto.base_metas)}</p>
-            </div>
-          </section>
-        `;
-
-        // ----- Seção 2: O resumo que importa -----
-        const leituras = r.leituras.map(l => `
-          <div class="card ${l.destaque ? 'highlight' : ''}">
-            <span class="pill">${escapeHtml(l.tag)}</span>
-            <div class="big-num">${escapeHtml(l.numero)}</div>
-            <h3>${escapeHtml(l.titulo)}</h3>
-            <p style="font-size: 14px; color: var(--muted); margin-top: 8px;">${escapeHtml(l.texto)}</p>
-          </div>
-        `).join('');
-        const resumoSection = `
-          <section id="resumo">
-            <div class="container">
-              <div class="section-intro">
-                <span class="eyebrow">O resumo que importa</span>
-                <h2>${r.leituras.length} leituras sobre os primeiros ${escapeHtml(report.dias_cobertos)} dias.</h2>
-                <p class="lead">Os pontos que a liderança da MetLife precisa saber sobre como a campanha está performando.</p>
-              </div>
-              <div class="cards">${leituras}</div>
-            </div>
-          </section>
-        `;
-
-        // ----- Seção 3: Como cada campanha tá indo -----
-        const kpiCard = (name, value, target, isCost) => {
-          const badge = getBadge(value, target, isCost);
-          let valueDisplay;
-          if (name === 'CPM') valueDisplay = fmtMoney(value);
-          else if (name === 'CTR') valueDisplay = fmtPct(value);
-          else if (name === 'Investido') valueDisplay = fmtMoney(value);
-          else valueDisplay = fmtNum(value);
-          let targetDisplay;
-          if (target === null || target === undefined) targetDisplay = 'sem meta';
-          else if (name === 'CPM') targetDisplay = 'meta ' + fmtMoney(target);
-          else if (name === 'CTR') targetDisplay = 'meta ' + fmtPct(target);
-          else if (name === 'Investido') targetDisplay = 'meta ' + fmtMoney(target);
-          else targetDisplay = 'meta ' + fmtNum(target);
-          return `
-            <div class="kpi-card">
-              <div class="kpi-name">${escapeHtml(name)}</div>
-              <div class="kpi-value">${valueDisplay}</div>
-              <div class="kpi-meta">
-                <span class="kpi-badge ${badge.cls}">${badge.cls === 'up' ? '↑' : badge.cls === 'down' ? '↓' : '•'}</span>
-                <span class="kpi-target">${targetDisplay}</span>
-              </div>
-            </div>
-          `;
-        };
-
-        const renderCampaignKpis = (real, meta) => `
-          ${kpiCard('Alcance', real.alcance, meta.alcance, false)}
-          ${kpiCard('Impressões', real.impressoes, meta.impressoes, false)}
-          ${kpiCard('CPM', real.cpm, meta.cpm, true)}
-          ${kpiCard('CTR', real.ctr, meta.ctr, false)}
-          ${kpiCard('Cliques', real.cliques, meta.cliques, false)}
-          ${kpiCard('Engajamento', real.engajamento, meta.engajamento, false)}
-          ${kpiCard('Visitas perfil', real.visitas_perfil, meta.visitas_perfil, false)}
-          ${kpiCard('Investido', real.gasto, meta.gasto, true)}
-        `;
-
-        const renderDailyTable = (titulo, diasArr) => {
-          const total = calcRealized(diasArr);
-          const rows = diasArr.map(d => `
-            <tr>
-              <td>${escapeHtml(d.dia)}</td>
-              <td>${fmtNum(d.alcance)}</td>
-              <td>${fmtNum(d.impressoes)}</td>
-              <td>${fmtMoney(d.cpm)}</td>
-              <td>${fmtNum(d.cliques)}</td>
-              <td>${fmtNum(d.engajamento)}</td>
-              <td>${fmtMoney(d.gasto)}</td>
-            </tr>
-          `).join('');
-          return `
-            <div class="table-wrap">
-              <div class="table-header">
-                <h3>Dia a dia · ${escapeHtml(titulo)}</h3>
-                <span>${diasArr.length} dias + total</span>
-              </div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Dia</th>
-                    <th>Alcance</th>
-                    <th>Impressões</th>
-                    <th>CPM</th>
-                    <th>Cliques</th>
-                    <th>Engajamento</th>
-                    <th>Investido</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rows}
-                  <tr>
-                    <td>Total</td>
-                    <td>${fmtNum(total.alcance)}</td>
-                    <td>${fmtNum(total.impressoes)}</td>
-                    <td>${fmtMoney(total.cpm)}</td>
-                    <td>${fmtNum(total.cliques)}</td>
-                    <td>${fmtNum(total.engajamento)}</td>
-                    <td>${fmtMoney(total.gasto)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          `;
-        };
-
-        const campSection = `
-          <section id="campanhas" style="background: white;">
-            <div class="container">
-              <div class="section-intro">
-                <span class="eyebrow">Como cada campanha tá indo</span>
-                <h2>Engajamento e Tráfego, lado a lado.</h2>
-                <p class="lead">Para cada campanha, mostramos os KPIs do período frente à meta proporcional e o desempenho dia a dia. <strong>Verde</strong> indica que estamos no caminho (acima da meta em volume, abaixo em custo). <strong>Vermelho</strong> indica atenção.</p>
-              </div>
-
-              <div class="campaign-banner eng">
-                <div class="campaign-icon">E</div>
-                <div>
-                  <h3>${escapeHtml(r.campanhas.engajamento.nome)}</h3>
-                  <div class="campaign-meta">${escapeHtml(r.campanhas.engajamento.codigo)} · ${escapeHtml(r.campanhas.engajamento.canal)} · ${escapeHtml(r.campanhas.engajamento.periodo)}</div>
-                </div>
-                <div class="campaign-stamp">${escapeHtml(r.campanhas.engajamento.orcamento_total)}</div>
-              </div>
-              <div class="kpi-grid">${renderCampaignKpis(realEng, r.campanhas.engajamento.metas)}</div>
-              ${renderDailyTable(r.campanhas.engajamento.nome, r.campanhas.engajamento.dados_diarios)}
-
-              <div style="height: 40px;"></div>
-
-              <div class="campaign-banner trf">
-                <div class="campaign-icon" style="background: var(--blue);">T</div>
-                <div>
-                  <h3>${escapeHtml(r.campanhas.trafego.nome)}</h3>
-                  <div class="campaign-meta">${escapeHtml(r.campanhas.trafego.codigo)} · ${escapeHtml(r.campanhas.trafego.canal)} · ${escapeHtml(r.campanhas.trafego.periodo)}</div>
-                </div>
-                <div class="campaign-stamp">${escapeHtml(r.campanhas.trafego.orcamento_total)}</div>
-              </div>
-              <div class="kpi-grid">${renderCampaignKpis(realTrf, r.campanhas.trafego.metas)}</div>
-              ${renderDailyTable(r.campanhas.trafego.nome, r.campanhas.trafego.dados_diarios)}
-            </div>
-          </section>
-        `;
-
-        // ----- Seção 4: O que fazer agora -----
-        const recs = r.recomendacoes.map((rec, i) => `
-          <div class="card rec-card">
-            <div class="rec-num">${i + 1}</div>
-            <h3>${escapeHtml(rec.titulo)}</h3>
-            <p style="font-size: 14px; color: var(--muted); margin-top: 8px;">${escapeHtml(rec.texto)}</p>
-          </div>
-        `).join('');
-        const recSection = `
-          <section id="proximos">
-            <div class="container">
-              <div class="section-intro">
-                <span class="eyebrow">O que fazer agora</span>
-                <h2>${r.recomendacoes.length} movimentos pros próximos 14 dias.</h2>
-                <p class="lead">Com base na leitura desses ${escapeHtml(report.dias_cobertos)} primeiros dias, esses são os ajustes pra maximizar o aprendizado e a eficiência da operação.</p>
-              </div>
-              <div class="cards">${recs}</div>
-            </div>
-          </section>
-        `;
-
-        // ----- Fechamento dark -----
-        const fechamentoSection = `
-          <section class="dark" id="fechamento">
-            <div class="container">
-              <div class="section-intro">
-                <span class="eyebrow">Fechamento da semana</span>
-                <h2 style="max-width: 820px;">${escapeHtml(r.fechamento.titulo)}</h2>
-                <p class="lead">${escapeHtml(r.fechamento.subtitulo)}</p>
-              </div>
-            </div>
-          </section>
-        `;
-
-        document.getElementById('perfContent').innerHTML =
-          ctxSection + resumoSection + campSection + recSection + fechamentoSection;
-      }
-
-      // ============================================================
-      // SWITCH WEEK
-      // ============================================================
-      async function switchWeek(weekId) {
-        const semana = (state.manifesto.semanas || []).find(w => w.id === weekId);
-        if (!semana) return;
-        state.ativo = weekId;
-        renderWeeksBar();
-
-        if (!state.dados[weekId]) {
-          document.getElementById('perfContent').innerHTML = '<div class="loading">Carregando dados…</div>';
-          try {
-            state.dados[weekId] = await fetchJson(semana.arquivo);
-          } catch (err) {
-            document.getElementById('perfContent').innerHTML = `<div class="loading">Erro carregando: ${escapeHtml(err.message)}</div>`;
-            return;
-          }
-        }
-        const report = state.dados[weekId];
-        renderHero(report);
-        renderContent(report);
-        // Scroll suave pro topo da seção de contexto se já tiver rolado
-        if (window.scrollY > 200) {
-          document.getElementById('contexto').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-
-      // ============================================================
-      // BOOTSTRAP
-      // ============================================================
-      async function init() {
-        try {
-          state.manifesto = await fetchJson('/performance/manifesto.json');
-        } catch (err) {
-          document.getElementById('perfContent').innerHTML = `<div class="loading">Erro carregando manifesto: ${escapeHtml(err.message)}</div>`;
-          return;
-        }
-        // Última semana publicada vira ativa
-        const semanas = state.manifesto.semanas || [];
-        if (semanas.length === 0) {
-          document.getElementById('weeksBar').innerHTML = '<div class="weeks-inner"><span class="weeks-label">📊 Semanas</span><span style="color: var(--muted);">nenhum report publicado ainda.</span></div>';
-          document.getElementById('perfContent').innerHTML = `
-            <div class="container" style="padding: 60px 24px;">
-              <div class="future-empty">
-                <div class="future-empty-icon">📅</div>
-                <h2>Aguardando o primeiro report</h2>
-                <p>O time de Mídia & Performance ainda não publicou nenhum report. Assim que o primeiro chegar, ele aparece aqui automaticamente.</p>
-              </div>
-            </div>
-          `;
-          return;
-        }
-        // Semana mais recente (maior `ordem`)
-        const ultima = semanas.slice().sort((a, b) => b.ordem - a.ordem)[0];
-        await switchWeek(ultima.id);
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
-    })();
+    document.addEventListener('DOMContentLoaded', () => {
+      const realEng = calcRealized(dadosEng);
+      const realTrf = calcRealized(dadosTrf);
+      renderCampaignGrid('grid-eng', realEng, metaEng, true);
+      renderCampaignGrid('grid-trf', realTrf, metaTrf, false);
+      renderTable('tabela-eng', dadosEng, true);
+      renderTable('tabela-trf', dadosTrf, false);
+    });
   </script>
 </body>
 </html>

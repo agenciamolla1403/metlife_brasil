@@ -1,109 +1,121 @@
 /* ============================================================
    MetLife Brasil — Header Global (injeção via JS)
    ------------------------------------------------------------
-   Detecta a rota atual e marca o link/grupo ativo automaticamente.
+   Detecta a rota atual e marca o link ativo automaticamente.
    Em mobile, transforma a navegação em hamburguer + drawer
-   lateral esquerdo com accordions pros grupos.
+   lateral esquerdo.
 
-   S47 — Reestruturação em 5 itens (com 2 dropdowns):
-     • Jornada (top-level)
-     • Mídia ▾ (Plano · Crono Ads · Performance · Elemidia)
-     • Operação ▾ (Blitz · Muito Além do Jogo)
-     • Aprovação (top-level)
-     • Arquivos (top-level)
+   Suporta navegação hierárquica:
+     • Itens 'link' apontam direto pra uma rota
+     • Itens 'group' têm children e abrem como dropdown (desktop)
+       ou accordion colapsado (mobile drawer)
+     • Itens 'disabled' têm badge "Em breve" e não clicam
    ============================================================ */
 
 (function () {
   'use strict';
 
-  // Mapa de rotas → identificador de link ativo (usado pra marcar
-  // tanto o grupo dropdown quanto o item filho dentro dele)
-  const ROUTE_MAP = {
-    '/': 'home',
-    '/index.html': 'home',
-    '/cronograma': 'cronograma',
-    '/cronograma.html': 'cronograma',
-    '/plano-midia': 'plano',
-    '/plano-midia.html': 'plano',
-    '/performance': 'performance',
-    '/performance.html': 'performance',
-    '/aprovacao': 'aprovacao',
-    '/aprovacao.html': 'aprovacao',
-    '/elemidia': 'elemidia',
-    '/elemidia.html': 'elemidia',
-    '/blitz': 'blitz',
-    '/blitz.html': 'blitz',
-    '/muito-alem-do-jogo': 'muito-alem',
-    '/muito-alem-do-jogo.html': 'muito-alem',
-    '/arquivos': 'arquivos',
-    '/arquivos.html': 'arquivos',
-    '/jornada': 'jornada',
-    '/jornada.html': 'jornada',
-    '/ajuda': 'ajuda',
-    '/ajuda.html': 'ajuda',
-  };
-
-  // Definição centralizada dos itens de navegação.
-  // Itens com children renderizam como dropdown (desktop) / accordion (mobile).
+  // ============================================================
+  // ESTRUTURA HIERÁRQUICA DOS ITENS DE NAVEGAÇÃO
+  // ============================================================
+  //   type: 'link'   → vai pra href direto
+  //   type: 'group'  → dropdown desktop / accordion mobile
+  //                    com children: [{ href, id, label, disabled?, badge? }]
   const NAV_ITEMS = [
     {
-      id: 'jornada',
+      type: 'link',
       href: '/jornada',
+      id: 'jornada',
       label: 'Jornada'
     },
     {
-      id: 'group-midia',
+      type: 'group',
+      id: 'midia',
       label: 'Mídia',
       children: [
-        { id: 'plano',       href: '/plano-midia', label: 'Plano',       hint: 'Estratégia e proposta' },
-        { id: 'cronograma',  href: '/cronograma',  label: 'Crono Ads',   hint: 'Dia a dia da campanha' },
-        { id: 'performance', href: '/performance', label: 'Performance', hint: 'Resultados semana a semana' },
-        { id: 'elemidia',    href: '/elemidia',    label: 'Elemidia',    hint: 'Mídia em prédios' },
+        { href: '/plano-midia', id: 'plano',       label: 'Plano' },
+        { href: '/cronograma',  id: 'cronograma',  label: 'Crono Ads' },
+        { href: '/performance', id: 'performance', label: 'Performance' },
+        { href: '/elemidia',    id: 'elemidia',    label: 'Elemidia' }
       ]
     },
     {
-      id: 'group-operacao',
+      type: 'group',
+      id: 'operacao',
       label: 'Operação',
       children: [
-        { id: 'blitz',       href: '/blitz',                 label: 'Blitz',                hint: 'Ativações em jogos da Copa' },
-        { id: 'muito-alem',  href: '/muito-alem-do-jogo',    label: 'Muito Além do Jogo',   hint: 'Programa institucional' },
+        { href: '/blitz', id: 'blitz', label: 'Blitz' },
+        { href: '/muito-alem-do-jogo', id: 'mad', label: 'Muito Além do Jogo', disabled: true, badge: 'Em breve' }
       ]
     },
     {
-      id: 'aprovacao',
+      type: 'link',
       href: '/aprovacao',
+      id: 'aprovacao',
       label: 'Aprovação'
     },
     {
-      id: 'arquivos',
+      type: 'link',
       href: '/arquivos',
+      id: 'arquivos',
       label: 'Arquivos'
-    },
+    }
   ];
 
+  // ============================================================
+  // ROUTE → ACTIVE ID MAP (derivado automaticamente do NAV_ITEMS)
+  // ============================================================
+  function buildRouteMap() {
+    const map = {
+      '/': 'home',
+      '/index.html': 'home',
+      '/ajuda': 'ajuda',
+      '/ajuda.html': 'ajuda'
+    };
+    NAV_ITEMS.forEach(item => {
+      if (item.type === 'link') {
+        map[item.href] = item.id;
+        map[item.href + '.html'] = item.id;
+      } else if (item.type === 'group' && Array.isArray(item.children)) {
+        item.children.forEach(child => {
+          if (child.disabled) return;
+          map[child.href] = child.id;
+          map[child.href + '.html'] = child.id;
+        });
+      }
+    });
+    return map;
+  }
+  const ROUTE_MAP = buildRouteMap();
+
+  // ============================================================
+  // ACTIVE-STATE HELPERS
+  // ============================================================
   function activeRouteFromPath() {
     const p = window.location.pathname.replace(/\/$/, '') || '/';
     return ROUTE_MAP[p] || 'home';
   }
 
-  /**
-   * Retorna o id do grupo dropdown ativo (se algum filho casar com a rota atual),
-   * ou null se a rota corresponde a um item top-level (sem dropdown).
-   */
-  function activeGroupId(activeId) {
-    for (const it of NAV_ITEMS) {
-      if (it.children) {
-        for (const child of it.children) {
-          if (child.id === activeId) return it.id;
-        }
-      }
+  // Dado o id ativo (filho), retorna o id do grupo pai se houver — ou null
+  function findParentGroupId(activeId) {
+    for (const item of NAV_ITEMS) {
+      if (item.type !== 'group') continue;
+      if (!Array.isArray(item.children)) continue;
+      if (item.children.some(c => c.id === activeId)) return item.id;
     }
     return null;
   }
 
+  function escapeAttr(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ============================================================
+  // HEADER DESKTOP (com dropdowns)
+  // ============================================================
   function buildHeaderHtml(activeId) {
+    const activeParentId = findParentGroupId(activeId);
     const isActive = (id) => id === activeId ? 'active' : '';
-    const activeGroup = activeGroupId(activeId);
     const isAdmin = !!(window.MetLifeAuth && window.MetLifeAuth.isAdmin && window.MetLifeAuth.isAdmin());
     const userName = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? (window.MetLifeAuth.getUserName() || '') : '';
     const initials = userName ? userName.trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase() : '';
@@ -114,30 +126,36 @@
       ? '<span class="mlh-role-chip mlh-role-admin" title="Perfil Molla — administra campanhas e peças">Admin</span>'
       : '';
 
-    const navLinks = NAV_ITEMS.map((it) => {
-      if (it.children) {
-        const isGroupActive = activeGroup === it.id;
-        const childLinks = it.children.map(c => `
-          <a href="${c.href}" class="mlh-dropdown-item ${isActive(c.id)}" data-nav-id="${c.id}">
-            <span class="mlh-dropdown-label">${c.label}</span>
-            ${c.hint ? `<span class="mlh-dropdown-hint">${c.hint}</span>` : ''}
-          </a>
-        `).join('');
+    const navItemsHtml = NAV_ITEMS.map(item => {
+      if (item.type === 'link') {
+        return `<a href="${escapeAttr(item.href)}" class="mlh-nav-link ${isActive(item.id)}" data-nav-id="${escapeAttr(item.id)}">${escapeAttr(item.label)}</a>`;
+      }
+      if (item.type === 'group') {
+        const parentActive = activeParentId === item.id ? 'active' : '';
+        const childrenHtml = (item.children || []).map(child => {
+          if (child.disabled) {
+            const badge = child.badge ? `<span class="mlh-dropdown-badge">${escapeAttr(child.badge)}</span>` : '';
+            return `<span class="mlh-dropdown-item is-disabled" aria-disabled="true" title="Em breve">${escapeAttr(child.label)}${badge}</span>`;
+          }
+          return `<a href="${escapeAttr(child.href)}" class="mlh-dropdown-item ${isActive(child.id)}" data-nav-id="${escapeAttr(child.id)}">${escapeAttr(child.label)}</a>`;
+        }).join('');
         return `
-          <div class="mlh-dropdown" data-group-id="${it.id}">
+          <div class="mlh-nav-group" data-group-id="${escapeAttr(item.id)}">
             <button type="button"
-                    class="mlh-dropdown-trigger ${isGroupActive ? 'active' : ''}"
+                    class="mlh-nav-link mlh-nav-trigger ${parentActive}"
                     aria-haspopup="true"
                     aria-expanded="false"
-                    data-group-id="${it.id}">
-              ${it.label}<span class="mlh-caret" aria-hidden="true">▾</span>
+                    data-group-id="${escapeAttr(item.id)}">
+              ${escapeAttr(item.label)}
+              <span class="mlh-nav-caret" aria-hidden="true">▾</span>
             </button>
-            <div class="mlh-dropdown-panel" role="menu" aria-label="${it.label}">
-              ${childLinks}
+            <div class="mlh-dropdown" role="menu" aria-label="${escapeAttr(item.label)}">
+              ${childrenHtml}
             </div>
-          </div>`;
+          </div>
+        `;
       }
-      return `<a href="${it.href}" class="${isActive(it.id)}" data-nav-id="${it.id}">${it.label}</a>`;
+      return '';
     }).join('\n          ');
 
     return `
@@ -149,7 +167,7 @@
           <img src="/img/logo_metlife.svg" alt="MetLife" />
         </a>
         <nav class="mlh-nav" aria-label="Navegação principal">
-          ${navLinks}
+          ${navItemsHtml}
         </nav>
         <div class="mlh-actions">
           ${userChip}
@@ -161,44 +179,53 @@
     `;
   }
 
-  /**
-   * Drawer é renderizado como SIBLING do .mlh-header (filho direto do body).
-   * Motivo: o .mlh-header usa backdrop-filter, que cria contexto de stacking
-   * em iOS Safari e PRENDE position:fixed filhos dentro dos limites do header
-   * (~60px). Mantendo o drawer fora do header, ele se posiciona corretamente
-   * em relação ao viewport.
-   */
+  // ============================================================
+  // DRAWER MOBILE (com accordion colapsado)
+  //
+  // Drawer é renderizado como SIBLING do .mlh-header (filho direto do body).
+  // Motivo: o .mlh-header usa backdrop-filter, que cria contexto de stacking
+  // em iOS Safari e PRENDE position:fixed filhos dentro dos limites do header
+  // (~60px). Mantendo o drawer fora do header, ele se posiciona corretamente
+  // em relação ao viewport.
+  // ============================================================
   function buildDrawerHtml(activeId) {
+    const activeParentId = findParentGroupId(activeId);
     const isActive = (id) => id === activeId ? 'active' : '';
-    const activeGroup = activeGroupId(activeId);
     const isAdmin = !!(window.MetLifeAuth && window.MetLifeAuth.isAdmin && window.MetLifeAuth.isAdmin());
     const userName = (window.MetLifeAuth && window.MetLifeAuth.getUserName) ? (window.MetLifeAuth.getUserName() || '') : '';
     const initials = userName ? userName.trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase() : '';
 
-    const drawerLinks = NAV_ITEMS.map((it) => {
-      if (it.children) {
-        const isGroupActive = activeGroup === it.id;
-        // Accordion: abre por padrão se um filho está ativo
-        const expanded = isGroupActive ? 'true' : 'false';
-        const openClass = isGroupActive ? 'is-open' : '';
-        const childLinks = it.children.map(c => `
-          <a href="${c.href}" class="mlh-drawer-sublink ${isActive(c.id)}" data-nav-id="${c.id}">${c.label}</a>
-        `).join('');
+    const drawerItems = NAV_ITEMS.map(item => {
+      if (item.type === 'link') {
+        return `<a href="${escapeAttr(item.href)}" class="mlh-drawer-link ${isActive(item.id)}" data-nav-id="${escapeAttr(item.id)}">${escapeAttr(item.label)}</a>`;
+      }
+      if (item.type === 'group') {
+        const parentActive = activeParentId === item.id ? 'active' : '';
+        // Accordion expande automaticamente apenas se um filho está ativo
+        const isExpanded = activeParentId === item.id;
+        const childrenHtml = (item.children || []).map(child => {
+          if (child.disabled) {
+            const badge = child.badge ? `<span class="mlh-drawer-badge">${escapeAttr(child.badge)}</span>` : '';
+            return `<span class="mlh-drawer-sublink is-disabled" aria-disabled="true">${escapeAttr(child.label)}${badge}</span>`;
+          }
+          return `<a href="${escapeAttr(child.href)}" class="mlh-drawer-sublink ${isActive(child.id)}" data-nav-id="${escapeAttr(child.id)}">${escapeAttr(child.label)}</a>`;
+        }).join('');
         return `
-          <div class="mlh-drawer-group ${openClass}" data-group-id="${it.id}">
+          <div class="mlh-drawer-group ${isExpanded ? 'is-expanded' : ''}" data-group-id="${escapeAttr(item.id)}">
             <button type="button"
-                    class="mlh-drawer-group-trigger ${isGroupActive ? 'active' : ''}"
-                    aria-expanded="${expanded}"
-                    data-group-id="${it.id}">
-              <span>${it.label}</span>
+                    class="mlh-drawer-link mlh-drawer-trigger ${parentActive}"
+                    aria-expanded="${isExpanded ? 'true' : 'false'}"
+                    data-group-id="${escapeAttr(item.id)}">
+              <span>${escapeAttr(item.label)}</span>
               <span class="mlh-drawer-caret" aria-hidden="true">▾</span>
             </button>
-            <div class="mlh-drawer-sub" role="group" aria-label="${it.label}">
-              ${childLinks}
+            <div class="mlh-drawer-submenu">
+              ${childrenHtml}
             </div>
-          </div>`;
+          </div>
+        `;
       }
-      return `<a href="${it.href}" class="mlh-drawer-link ${isActive(it.id)}" data-nav-id="${it.id}">${it.label}</a>`;
+      return '';
     }).join('\n          ');
 
     return `
@@ -220,7 +247,7 @@
           </div>
         ` : ''}
         <div class="mlh-drawer-nav" role="navigation" aria-label="Navegação principal mobile">
-          ${drawerLinks}
+          ${drawerItems}
           <a href="/ajuda" class="mlh-drawer-link mlh-drawer-link-help ${isActive('ajuda')}"><span class="mlh-drawer-help-icon">?</span> Ajuda</a>
         </div>
         <div class="mlh-drawer-foot">
@@ -230,10 +257,93 @@
     `;
   }
 
-  function escapeAttr(str) {
-    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  // ============================================================
+  // DROPDOWN BEHAVIOR (desktop)
+  // ============================================================
+  function wireDropdowns(headerEl) {
+    const groups = headerEl.querySelectorAll('.mlh-nav-group');
+    groups.forEach(group => {
+      const trigger = group.querySelector('.mlh-nav-trigger');
+      if (!trigger) return;
+
+      const close = () => {
+        group.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+      const open = () => {
+        // Fecha outros dropdowns antes
+        groups.forEach(g => {
+          if (g !== group) {
+            g.classList.remove('is-open');
+            const t = g.querySelector('.mlh-nav-trigger');
+            if (t) t.setAttribute('aria-expanded', 'false');
+          }
+        });
+        group.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      };
+      const toggle = () => {
+        if (group.classList.contains('is-open')) close();
+        else open();
+      };
+
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggle();
+      });
+
+      // Hover abre (desktop) — fechar via outside click ou Esc
+      group.addEventListener('mouseenter', () => {
+        if (window.matchMedia && window.matchMedia('(min-width: 761px)').matches) open();
+      });
+      group.addEventListener('mouseleave', () => {
+        if (window.matchMedia && window.matchMedia('(min-width: 761px)').matches) close();
+      });
+    });
+
+    // Clique fora fecha todos
+    document.addEventListener('click', (e) => {
+      groups.forEach(group => {
+        if (!group.contains(e.target)) {
+          group.classList.remove('is-open');
+          const t = group.querySelector('.mlh-nav-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Esc fecha todos
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        groups.forEach(group => {
+          group.classList.remove('is-open');
+          const t = group.querySelector('.mlh-nav-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
   }
 
+  // ============================================================
+  // ACCORDION BEHAVIOR (mobile drawer)
+  // ============================================================
+  function wireDrawerAccordion(drawerRoot) {
+    const groups = drawerRoot.querySelectorAll('.mlh-drawer-group');
+    groups.forEach(group => {
+      const trigger = group.querySelector('.mlh-drawer-trigger');
+      if (!trigger) return;
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const expanded = group.classList.toggle('is-expanded');
+        trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      });
+    });
+  }
+
+  // ============================================================
+  // DRAWER OPEN/CLOSE
+  // ============================================================
   function openDrawer() {
     const drawer = document.getElementById('mlhDrawer');
     const backdrop = document.getElementById('mlhDrawerBackdrop');
@@ -264,79 +374,9 @@
     }
   }
 
-  /**
-   * Wiring dos dropdowns desktop:
-   *   - Hover/focus abre, mouseleave fecha
-   *   - Click no trigger faz toggle (útil pra teclado / tap em tablet)
-   *   - ESC fecha o aberto
-   *   - Click fora fecha
-   */
-  function wireDesktopDropdowns(headerEl) {
-    const triggers = headerEl.querySelectorAll('.mlh-dropdown-trigger');
-    const closeAll = () => {
-      headerEl.querySelectorAll('.mlh-dropdown.is-open').forEach(d => {
-        d.classList.remove('is-open');
-        const t = d.querySelector('.mlh-dropdown-trigger');
-        if (t) t.setAttribute('aria-expanded', 'false');
-      });
-    };
-
-    triggers.forEach(trigger => {
-      const dropdown = trigger.closest('.mlh-dropdown');
-      if (!dropdown) return;
-
-      // Hover (desktop): abre/fecha automaticamente via :hover no CSS.
-      // Aqui só garantimos foco/teclado/click.
-      trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isOpen = dropdown.classList.contains('is-open');
-        closeAll();
-        if (!isOpen) {
-          dropdown.classList.add('is-open');
-          trigger.setAttribute('aria-expanded', 'true');
-        }
-      });
-
-      // Mouseleave fecha o dropdown (delay leve pra dar tempo de mover pro panel)
-      let leaveTid = null;
-      dropdown.addEventListener('mouseleave', () => {
-        clearTimeout(leaveTid);
-        leaveTid = setTimeout(() => {
-          dropdown.classList.remove('is-open');
-          trigger.setAttribute('aria-expanded', 'false');
-        }, 180);
-      });
-      dropdown.addEventListener('mouseenter', () => clearTimeout(leaveTid));
-    });
-
-    // ESC fecha qualquer dropdown
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeAll();
-    });
-
-    // Click fora fecha
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.mlh-dropdown')) closeAll();
-    });
-  }
-
-  /**
-   * Wiring dos accordions do drawer mobile:
-   *   - Click no trigger expande/colapsa
-   *   - Estado aria-expanded é mantido em sincronia
-   */
-  function wireDrawerAccordions(drawerWrap) {
-    const triggers = drawerWrap.querySelectorAll('.mlh-drawer-group-trigger');
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        const group = trigger.closest('.mlh-drawer-group');
-        if (!group) return;
-        const isOpen = group.classList.toggle('is-open');
-        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-    });
-  }
-
+  // ============================================================
+  // INJECT
+  // ============================================================
   function inject() {
     if (document.querySelector('.mlh-header')) return;
 
@@ -349,7 +389,8 @@
     wrapper.innerHTML = buildHeaderHtml(activeId);
     document.body.insertBefore(wrapper, document.body.firstChild);
 
-    // 2) Cria o drawer como SIBLING do header (filho direto do body).
+    // 2) Cria o drawer como SIBLING do header.
+    //    Crucial pra Safari iOS — ver comentário acima.
     const drawerWrap = document.createElement('div');
     drawerWrap.className = 'mlh-drawer-root';
     drawerWrap.innerHTML = buildDrawerHtml(activeId);
@@ -379,12 +420,12 @@
       const mq = window.matchMedia('(min-width: 761px)');
       const handler = (ev) => { if (ev.matches) closeDrawer(); };
       if (mq.addEventListener) mq.addEventListener('change', handler);
-      else if (mq.addListener) mq.addListener(handler);
+      else if (mq.addListener) mq.addListener(handler); // Safari antigo
     }
 
-    // Wire dropdowns desktop + accordions drawer
-    wireDesktopDropdowns(wrapper);
-    wireDrawerAccordions(drawerWrap);
+    // Liga comportamentos de dropdown (desktop) e accordion (mobile)
+    wireDropdowns(wrapper);
+    wireDrawerAccordion(drawerWrap);
 
     // Expõe altura real do header como CSS var (pra elementos sticky)
     function updateHeaderHeight() {

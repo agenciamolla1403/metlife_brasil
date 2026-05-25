@@ -39,3 +39,6 @@
   .page-subbar-inner { padding: 10px 16px; min-height: 40px; }
   .crumb { font-size: 12px; }
 }
+
+/* S47 - grupo intermediário no breadcrumb hierárquico (não clicável) */
+.crumb-group { color: rgba(0, 59, 92, 0.55); font-weight: 600; }
