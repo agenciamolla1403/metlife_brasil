@@ -617,6 +617,11 @@
 
   .mlh-drawer-group {
     margin-bottom: 4px;
+    border-radius: 12px;
+    transition: background 200ms ease;
+  }
+  .mlh-drawer-group.is-expanded {
+    background: rgba(0, 59, 92, 0.04);
   }
   .mlh-drawer-trigger {
     width: 100%;
@@ -628,24 +633,32 @@
     align-items: center;
     justify-content: space-between;
   }
+  /* Quando o grupo tem um filho ativo (estou em /plano-midia → trigger Mídia.active) */
+  .mlh-drawer-trigger.active {
+    color: var(--mlh-navy);
+  }
   .mlh-drawer-caret {
     font-size: 11px;
     opacity: 0.6;
-    transition: transform 220ms ease;
+    color: currentColor;
+    transition: transform 220ms ease, opacity 180ms ease;
   }
+  .mlh-drawer-group.is-expanded .mlh-drawer-trigger,
+  .mlh-drawer-group.is-expanded .mlh-drawer-caret { opacity: 1; }
   .mlh-drawer-group.is-expanded .mlh-drawer-caret {
     transform: rotate(180deg);
+    opacity: 1;
   }
   .mlh-drawer-submenu {
     max-height: 0;
     overflow: hidden;
     transition: max-height 260ms ease;
     padding-left: 14px;
-    border-left: 2px solid rgba(0, 59, 92, 0.10);
+    border-left: 2px solid rgba(80, 229, 150, 0.45);
     margin-left: 18px;
   }
   .mlh-drawer-group.is-expanded .mlh-drawer-submenu {
-    max-height: 600px; /* enough pra qualquer submenu real */
+    max-height: 600px;
   }
   .mlh-drawer-sublink {
     display: flex;
@@ -659,28 +672,36 @@
     font-weight: 600;
     font-size: 14px;
     margin-top: 4px;
-    transition: background 140ms ease;
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
   }
-  .mlh-drawer-sublink:hover { background: rgba(0, 59, 92, 0.04); }
+  .mlh-drawer-sublink:hover {
+    background: rgba(80, 229, 150, 0.14);
+    transform: translateX(2px);
+  }
   .mlh-drawer-sublink.active {
-    background: var(--mlh-navy);
-    color: #fff;
+    background: linear-gradient(135deg, #50E596 0%, #27C7BD 100%);
+    color: var(--mlh-navy);
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(80, 229, 150, 0.30);
   }
   .mlh-drawer-sublink.is-disabled {
-    color: rgba(0, 59, 92, 0.4);
+    color: rgba(0, 59, 92, 0.42);
     cursor: not-allowed;
     pointer-events: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-style: italic;
   }
   .mlh-drawer-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
     border-radius: 999px;
     background: rgba(245, 165, 36, 0.18);
-    color: #B26B05;
+    color: #8A4F03;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 

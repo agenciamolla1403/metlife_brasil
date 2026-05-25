@@ -148,10 +148,16 @@ img { max-width: 100%; display: block; }
   padding: 12px 20px;
   display: flex;
   gap: 8px;
+  /* S48: scroll lateral consistente — nunca quebra linha */
+  flex-wrap: nowrap;
   overflow-x: auto;
-  justify-content: center;
-  flex-wrap: wrap;
+  overflow-y: hidden;
+  justify-content: flex-start;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.bz-anchor-nav::-webkit-scrollbar { display: none; }
 .bz-anchor-nav a {
   color: var(--bz-navy);
   text-decoration: none;
@@ -163,11 +169,13 @@ img { max-width: 100%; display: block; }
   background: white;
   border: 1px solid rgba(0, 59, 92, 0.08);
   transition: all 180ms ease;
+  flex-shrink: 0;
 }
 .bz-anchor-nav a:hover {
   background: var(--bz-blue-soft);
   border-color: var(--bz-blue);
   color: var(--bz-navy);
+  transform: translateY(-1px);
 }
 
 /* ============ SEÇÕES BASE ============ */

@@ -151,10 +151,16 @@ main {
   padding: 12px 20px;
   display: flex;
   gap: 8px;
+  /* S48: scroll lateral consistente — nunca quebra linha */
+  flex-wrap: nowrap;
   overflow-x: auto;
-  justify-content: center;
-  flex-wrap: wrap;
+  overflow-y: hidden;
+  justify-content: flex-start;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.elem-anchor-nav::-webkit-scrollbar { display: none; }
 .elem-anchor-nav a {
   color: var(--elem-navy);
   text-decoration: none;
@@ -166,11 +172,13 @@ main {
   background: white;
   border: 1px solid rgba(0, 59, 92, 0.08);
   transition: all 180ms ease;
+  flex-shrink: 0;
 }
 .elem-anchor-nav a:hover {
   background: var(--elem-blue-soft);
   border-color: var(--elem-blue);
   color: var(--elem-navy);
+  transform: translateY(-1px);
 }
 
 /* Mobile: scroll horizontal em linha única + sem sticky */

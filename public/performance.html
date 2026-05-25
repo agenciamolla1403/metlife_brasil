@@ -116,42 +116,8 @@
       margin-bottom: 6px;
     }
     nav {
-      position: sticky;
-      top: var(--mlh-header-h, 60px);
-      z-index: 20;
-      background: rgba(238,246,248,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,59,92,.08);
-      padding: 12px 20px;
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-weight: 700;
-      padding: 10px 14px;
-      border-radius: 999px;
-      white-space: nowrap;
-      background: white;
-      border: 1px solid rgba(0,59,92,.08);
-    }
-    @media (max-width: 760px) {
-      nav {
-        position: static;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding: 12px 16px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      nav::-webkit-scrollbar { display: none; }
-      nav a { flex-shrink: 0; }
+      /* substituído pela classe global .anchor-nav (breadcrumb.css)
+         que padroniza scroll lateral + hover azul + sticky */
     }
     section { padding: 80px 24px; }
     section.alt { background: rgba(45,181,223,.04); }
@@ -527,7 +493,7 @@
     </div>
   </header>
 
-  <nav>
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
     <a href="#contexto">Como ler esse report</a>
     <a href="#leituras">Os 6 dias em 5 leituras</a>
     <a href="#campanhas">Engajamento e Tráfego no detalhe</a>

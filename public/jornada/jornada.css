@@ -140,27 +140,30 @@ main { min-height: 70vh; }
   .jr-toolbar {
     position: static;
     padding: 12px 14px;
-    /* Remove backdrop-filter em mobile: já que o toolbar não é mais
-       sticky, não tem o que blurar — e mais importante, backdrop-filter
-       cria stacking context que prende position:fixed filhos (o .bs-panel)
-       dentro dos limites do toolbar em iOS Safari. */
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-bottom: 0;
   }
-  .jr-toolbar-row {
+  .jr-search-row {
     flex-wrap: wrap;
     gap: 10px;
   }
   .jr-toolbar-row-spacer { display: none; }
   .jr-count { width: 100%; padding: 0; }
 
-  /* Chips dentro do sheet ficam todos visíveis, com wrap */
-  .jr-bs-panel .jr-filters {
-    flex-wrap: wrap;
-    gap: 8px;
+  /* Mobile: chips em scroll lateral pra não quebrar feio */
+  .jr-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -14px;
+    padding: 0 14px 4px;
   }
+  .jr-filters::-webkit-scrollbar { display: none; }
+  .jr-chip { flex-shrink: 0; }
 }
 
 /* ============ TOOLBAR ============ */
@@ -181,7 +184,8 @@ main { min-height: 70vh; }
   flex-direction: column;
   gap: 12px;
 }
-.jr-toolbar-row {
+/* Linha 1 da toolbar — padrão arquivos.html (Select + count + admin) */
+.jr-search-row {
   display: flex;
   gap: 12px;
   align-items: center;
