@@ -45,7 +45,7 @@
       label: 'Operação',
       children: [
         { href: '/blitz', id: 'blitz', label: 'Blitz' },
-        { href: '/muito-alem-do-jogo', id: 'mad', label: 'Muito Além do Jogo', disabled: true, badge: 'Em breve' }
+        { href: '/muito-alem-do-jogo', id: 'mad', label: 'Muito Além do Jogo' }
       ]
     },
     {
