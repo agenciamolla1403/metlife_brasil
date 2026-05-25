@@ -18,7 +18,7 @@ MetLife Global Station).
 - **Site em produção:** https://metlife-brasil.vercel.app
 - **GitHub:** https://github.com/agenciamolla1403/metlife_brasil
 - **Stack:** Vercel (hosting estático) + GitHub (CI deploy) + Supabase (Postgres + Realtime)
-- **Auth:** simples via senha — `metlife2026` (role cliente) · `molla2026` (role admin)
+- **Auth:** simples via senha — `metlife2026` (role cliente) · `molla@2026@` (role admin)
 - **Project ref Supabase:** `nasgvdqvrpeftqibmgfk`
 
 ---
@@ -388,7 +388,7 @@ Listados em ordem de prioridade discutida (não fechada):
 ## 🔐 Senhas
 
 - **Cliente** (`metlife`): `metlife2026`
-- **Admin** (`molla`): `molla2026`
+- **Admin** (`molla`): `molla@2026@`
 
 ---
 

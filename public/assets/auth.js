@@ -8,7 +8,7 @@
 
    2 perfis com 2 senhas:
    - 'metlife2026' → role 'metlife' (apenas comenta e aprova)
-   - 'molla2026'   → role 'molla'   (administração: criar/editar/excluir)
+   - 'molla@2026@'   → role 'molla'   (administração: criar/editar/excluir)
 
    Persistência (S55):
    - Usa localStorage → sessão persiste entre abas/janelas e até
@@ -23,7 +23,7 @@
   // 🔑 Senhas → roles. Edite aqui se precisar trocar.
   const PASSWORDS = {
     'metlife2026': 'metlife',
-    'molla2026': 'molla'
+    'molla@2026@': 'molla'
   };
 
   // Chaves do storage

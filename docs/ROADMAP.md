@@ -111,7 +111,7 @@ Hoje tudo espalhado em PowerPoint. Plugar no Supabase pra editar via admin.
 ## 🏗️ Estruturais (médio prazo)
 
 ### 10. Login real (Supabase Auth)
-Hoje 2 senhas compartilhadas (`metlife2026`, `molla2026`). Quando alguém sai,
+Hoje 2 senhas compartilhadas (`metlife2026`, `molla@2026@`). Quando alguém sai,
 todo mundo precisa trocar. Migrar pra Supabase Auth (e-mail + magic link).
 Ganhos: audit log automático, perfis por pessoa, controle granular de
 permissões.
