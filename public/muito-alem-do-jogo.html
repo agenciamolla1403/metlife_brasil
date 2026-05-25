@@ -660,20 +660,48 @@
       background: rgba(0, 59, 92, 0.06);
     }
 
-    /* LOCAL CARD com imagem (The Parlor) */
+    /* GALERIA THE PARLOR · masonry CSS column-based (imagens 100% sem corte) */
+    .parlor-gallery {
+      margin-top: 28px;
+      column-count: 3;
+      column-gap: 14px;
+    }
+    .parlor-gallery .gallery-item {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 0 14px;
+      border-radius: 16px;
+      box-shadow: 0 10px 24px rgba(0, 59, 92, 0.12);
+      break-inside: avoid;
+      background: rgba(0, 59, 92, 0.06);
+    }
+    .parlor-gallery .gallery-video {
+      background: #000;
+    }
+    @media (max-width: 760px) {
+      .parlor-gallery { column-count: 1; }
+    }
+    @media (min-width: 761px) and (max-width: 1000px) {
+      .parlor-gallery { column-count: 2; }
+    }
+
+    /* LOCAL CARD com imagem (The Parlor) — imagem menor pra não dar destaque demais */
     .local-with-img {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 32px;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 24px;
       align-items: center;
     }
     .local-with-img .local-content > h2 { margin-top: 12px; }
     .local-img {
       width: 100%;
+      max-width: 340px;
       height: auto;
       display: block;
-      border-radius: 20px;
-      box-shadow: 0 14px 32px rgba(0, 59, 92, 0.16);
+      justify-self: end;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 59, 92, 0.14);
       background: rgba(0, 59, 92, 0.06);
     }
 
@@ -1004,6 +1032,23 @@
           </p>
         </div>
         <img class="local-img" src="/img/theparlor.jpg" alt="The Parlor — bar em Pinheiros, São Paulo" loading="lazy" />
+      </div>
+
+      <!-- GALERIA THE PARLOR -->
+      <div class="section-intro" style="margin-top: 48px;">
+        <span class="eyebrow blue-eyebrow">Galeria</span>
+        <h2 style="font-size: 22px;">Como é o ambiente.</h2>
+        <p>Mais fotos e um tour rápido pelo espaço.</p>
+      </div>
+      <div class="parlor-gallery">
+        <video class="gallery-item gallery-video" autoplay muted loop playsinline preload="metadata" aria-label="Tour pelo The Parlor">
+          <source src="/img/theparlor.mp4" type="video/mp4" />
+          Seu navegador não suporta o vídeo do The Parlor.
+        </video>
+        <img class="gallery-item" src="/img/theparlor2.jpeg" alt="The Parlor — ambiente 1" loading="lazy" />
+        <img class="gallery-item" src="/img/theparlor3.jpeg" alt="The Parlor — ambiente 2" loading="lazy" />
+        <img class="gallery-item" src="/img/theparlor4.jpeg" alt="The Parlor — ambiente 3" loading="lazy" />
+        <img class="gallery-item" src="/img/theparlor5.jpeg" alt="The Parlor — ambiente 4" loading="lazy" />
       </div>
 
       <!-- AÇÃO -->
