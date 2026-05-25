@@ -583,20 +583,38 @@
       line-height: 1.6;
     }
 
-    /* FOOTER */
-    .site-footer {
+    /* FOOTER · padrão grande (igual elemidia, performance) */
+    footer.site-footer {
+      padding: 56px 24px;
       background: var(--navy);
       color: white;
-      padding: 28px 24px;
       text-align: center;
     }
-    .site-footer p { margin: 0; font-size: 13px; opacity: 0.92; }
-    .brand-footer-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px; margin-top: 10px;
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      letter-spacing: -0.2px;
     }
-    .brand-logo-footer { height: 22px; opacity: 0.9; }
-    .brand-footer-text { font-size: 11px; opacity: 0.7; margin: 0; }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
 
     /* HERO TAGLINE (subtítulo do h1) */
     .hero-tagline {
@@ -1100,7 +1118,8 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <p style="margin: 0;">MetLife Brasil 2026 · Hub interno Molla</p>
+    <h2>Do gesto local ao impacto global.</h2>
+    <p>Seu Jogo Muda o Mundo conecta o Pinta tu Cancha, o Footwork for Futures e a MetLife Global Station numa única jornada — esporte, arte, comunidade e marca, com legado que dura além da Copa de 2026.</p>
     <div class="brand-footer-row">
       <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
       <p class="brand-footer-text">Agência Molla</p>
