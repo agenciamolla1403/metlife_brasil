@@ -65,6 +65,15 @@ section[id] {
 /* ----------------------------------------------------------------
    .anchor-nav · navegação interna padrão (todas as páginas)
    Inspirado no padrão do elemidia/blitz que ficou bom.
+
+   ESTRUTURA (S49): outer ocupa 100vw com background blur sticky,
+   inner respeita o grid 1180px da plataforma (igual hero/cards).
+
+   <nav class="anchor-nav">
+     <div class="anchor-nav-inner">
+       <a href="#...">...</a>
+     </div>
+   </nav>
    ---------------------------------------------------------------- */
 .anchor-nav {
   position: sticky;
@@ -74,27 +83,25 @@ section[id] {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 59, 92, 0.08);
-  padding: 12px 20px;
+  /* SEM padding/flex/overflow aqui — fica tudo no inner pra respeitar grid */
+}
+
+.anchor-nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 24px;
   display: flex;
   gap: 8px;
+  align-items: center;
   /* Scroll lateral SEMPRE (Du escolheu opção A: nowrap consistente) */
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  justify-content: flex-start;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;            /* Firefox */
-  -ms-overflow-style: none;         /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.anchor-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari/Webkit */
-
-/* Container interno opcional pra centralizar quando cabe todo na tela */
-.anchor-nav-inner {
-  display: flex;
-  gap: 8px;
-  margin: 0 auto;
-  align-items: center;
-}
+.anchor-nav-inner::-webkit-scrollbar { display: none; }
 
 .anchor-nav a,
 .anchor-nav .anchor-nav-link {
@@ -134,10 +141,11 @@ section[id] {
 @media (max-width: 760px) {
   .anchor-nav {
     position: static;
-    padding: 12px 16px;
     border-bottom: 0;
   }
-  .anchor-nav-inner { margin: 0; }
+  .anchor-nav-inner {
+    padding: 12px 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
