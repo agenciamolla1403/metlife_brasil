@@ -1,8 +1,8 @@
 # MetLife Brasil 2026 — MASTER do Projeto
 
-> Snapshot completo do estado do projeto após o fechamento do **S51 — Anchor "Comparativo diarizado"**.
+> Snapshot completo do estado do projeto após o fechamento do **S56 — Card "Muito Além do Jogo" atualizado na home**.
 >
-> Última atualização: **25/05/2026** · Sessões cobertas: **S29 a S51**
+> Última atualização: **25/05/2026** · Sessões cobertas: **S29 a S56**
 
 ---
 
@@ -11,7 +11,9 @@
 Hub interno da Molla para gestão da conta MetLife Brasil 2026 (Copa do Mundo).
 Centraliza cronograma macro, planos de mídia, blitz/watch parties, arquivos,
 jornada da campanha, aprovação de criativos, proposta de mídia em prédios
-(Elemidia) e o **report semanal de performance** da campanha rodando.
+(Elemidia), o **report semanal de performance** da campanha rodando, e o
+**programa de marca "Muito Além do Jogo"** (Seu Jogo Muda o Mundo +
+MetLife Global Station).
 
 - **Site em produção:** https://metlife-brasil.vercel.app
 - **GitHub:** https://github.com/agenciamolla1403/metlife_brasil
@@ -26,18 +28,18 @@ jornada da campanha, aprovação de criativos, proposta de mídia em prédios
 ```
 metlife_brasil/
 ├── public/
-│   ├── index.html                    — Hub "Central do Cliente"
-│   ├── login.html
-│   ├── cronograma.html               — Crono Ads (75 dias diarizados)
-│   ├── plano-midia.html              — Plano de mídia v3 (15 seções)
-│   ├── performance.html              — Report semanal Rafael + 4 gráficos Chart.js
-│   ├── aprovacao.html                — SPA hash-routed (Aprovação de Criativos)
-│   ├── blitz.html                    — Blitz & Watch Parties
-│   ├── arquivos.html
-│   ├── jornada.html                  — Jornada macro da campanha
-│   ├── elemidia.html                 — Proposta Eletromidia (22 prédios)
-│   ├── muito-alem-do-jogo.html       — stub "Em construção"
-│   ├── ajuda.html                    — Guia visual passo-a-passo
+│   ├── index.html                    — Hub "Central do Cliente" (288 linhas)
+│   ├── login.html                    (296 linhas)
+│   ├── cronograma.html               — Crono Ads (1681 linhas, 75 dias diarizados)
+│   ├── plano-midia.html              — Plano de mídia v3 (1473 linhas, 15 seções)
+│   ├── performance.html              — Report semanal + 4 Chart.js (1185 linhas)
+│   ├── muito-alem-do-jogo.html       — Seu Jogo Muda o Mundo (1176 linhas)
+│   ├── aprovacao.html                — SPA hash-routed shell (53 linhas)
+│   ├── blitz.html                    — Blitz & Watch Parties (287 linhas)
+│   ├── arquivos.html                 (66 linhas)
+│   ├── jornada.html                  — Jornada macro (67 linhas)
+│   ├── elemidia.html                 — Proposta Eletromidia (114 linhas)
+│   ├── ajuda.html                    — Guia visual
 │   ├── elemidia/
 │   │   ├── elemidia.css
 │   │   ├── elemidia.js
@@ -48,19 +50,28 @@ metlife_brasil/
 │   ├── arquivos/{arquivos.css, arquivos.js, arquivos-data.js}
 │   ├── ajuda/{ajuda.css}
 │   ├── prints/                       — assets das peças
-│   ├── img/                          — logos (metlife.svg, molla.svg)
+│   ├── img/
+│   │   ├── logo_metlife.svg
+│   │   ├── logo_molla.svg
+│   │   ├── bar.jpg                   — Global Station (S53)
+│   │   ├── chuteira.jpg              — Mecânica do evento (S53)
+│   │   ├── kv.jpg                    — Key visual da campanha (S53)
+│   │   ├── social.png                — Plano de comunicação (S53)
+│   │   ├── theparlor.jpg             — Card Local (S53/S54)
+│   │   ├── theparlor.mp4             — Galeria Parlor (S54)
+│   │   └── theparlor2-5.jpeg         — Galeria Parlor (S54)
 │   └── assets/
-│       ├── auth.js                   — login/role/user persistido
+│       ├── auth.js                   — login persistente (171 linhas, S55)
 │       ├── config.js                 — SUPABASE_URL + ANON_KEY
-│       ├── header.js                 — header global + drawer mobile hierárquico
-│       ├── header.css                — 715 linhas, mobile drawer destacado (S48)
+│       ├── header.js                 — hierárquico (446 linhas)
+│       ├── header.css                — drawer mobile destacado (S48)
 │       ├── breadcrumb.css            — page-subbar + .anchor-nav global (S48/S49)
 │       ├── footer.css
-│       ├── bottom-sheet.{css,js}     — sheet pra filtros mobile
-│       ├── supabase-store.js         — peças/aprovações (705 linhas)
-│       ├── files-store.js            — arquivos
-│       ├── events-store.js           — eventos da jornada
-│       └── aprovacao.{css,js}        — SPA aprovação (~3000 linhas)
+│       ├── bottom-sheet.{css,js}
+│       ├── supabase-store.js         — peças/aprovações (704 linhas)
+│       ├── files-store.js            — arquivos (134 linhas)
+│       ├── events-store.js           — eventos da jornada (140 linhas)
+│       └── aprovacao.{css,js}        — SPA aprovação (~3200 linhas)
 ├── docs/
 │   ├── MASTER.md                     — este arquivo
 │   ├── ROADMAP.md
@@ -95,6 +106,11 @@ metlife_brasil/
 | **S49** | Anchor-nav respeita grid 1180px (outer full-width sticky + inner contido) |
 | **S50** | 4 gráficos Chart.js do Rafael no `/performance` + rodapé padronizado |
 | **S51** | Anchor `Comparativo diarizado` na nav do `/performance` (`<section id="comparativo">`) |
+| **S52** | **Página completa "Muito Além do Jogo"** (1017 linhas) substitui o stub — Seu Jogo Muda o Mundo + Global Station + Investimento |
+| **S53** | Refinos visuais `/muito-alem`: H1 "MUITO ALÉM DO JOGO" + 5 imagens (KV/chuteira/bar/social/theparlor) + footer grande padrão + fix card "Durante o evento" + imagens 100% sem corte + KV full-width |
+| **S54** | Galeria masonry do The Parlor (vídeo theparlor.mp4 + 4 jpegs) + imagem do card Local reduzida |
+| **S55** | **Auth persistente entre abas** — `sessionStorage` → `localStorage` com fallback + sync entre abas via `storage` event |
+| **S56** | Card "Muito Além do Jogo" na home atualizado (deixa de ser "em construção", reflete conteúdo real) |
 
 ---
 
@@ -111,12 +127,12 @@ M�dia ▾
   └─ Elemidia                    → /elemidia
 Operação ▾
   ├─ Blitz                       → /blitz
-  └─ Muito Além do Jogo          [EM BREVE · disabled]
+  └─ Muito Além do Jogo          → /muito-alem-do-jogo  (S52, ativa desde S52)
 Aprovação                        → /aprovacao
 Arquivos                         → /arquivos
 ```
 
-**Breadcrumbs** (hierárquicos, vistos em cima da página):
+**Breadcrumbs**:
 
 | Página | Breadcrumb |
 |--------|-----------|
@@ -135,7 +151,8 @@ Arquivos                         → /arquivos
 ## 🎯 Estado atual de cada página
 
 ### Hub `/` (index.html · 288 linhas)
-Central do cliente com cards pras 8 páginas principais. Login obrigatório.
+Central do cliente com 8 cards (cada um leva pra uma página principal). Login obrigatório.
+Card "Muito Além do Jogo" atualizado em S56 com o conteúdo real ("Seu Jogo Muda o Mundo").
 
 ### `/jornada` (jornada.html · 67 linhas)
 Timeline macro da campanha (26 eventos). Toolbar padrão (refatorado em S48 igual arquivos):
@@ -152,12 +169,21 @@ Crono Ads 75 dias, 3 ondas (Lançamento, Intensificação, Otimização), Linked
 A/B testing diarizado, 10 lotes A/B, 36 criativos.
 
 ### `/performance` (performance.html · 1185 linhas)
-Report semanal de Mídia & Performance. Pós S50/S51:
+Report semanal de Mídia & Performance:
 - **5 seções ancoradas:** Como ler · Os 6 dias em 5 leituras · ENG e TRF no detalhe · **Comparativo diarizado** · Pra onde vamos agora
 - 4 gráficos Chart.js: Alcance (área), Impressões (barras), Cliques×Visitas (linhas), CPC×CPV (linhas com R$)
 - Tabelas diárias ENG e TRF
 - Conclusão "Quem entrega o quê" (ENG mais profundidade × TRF mais escala)
 - 6 recomendações pros próximos 14 dias
+
+### `/muito-alem-do-jogo` (muito-alem-do-jogo.html · 1176 linhas) 🆕
+**Programa "Muito Além do Jogo · Seu Jogo Muda o Mundo"**. Sessões com âncora:
+- `#visao` — Hero + 2 projetos globais (Pinta tu Cancha + Footwork for Futures) + KV banner full-width + statement card
+- `#seu-jogo` (Ação 1 · 70%) — 3 etapas, mecânica de 7 passos, plano comunicação Pré/Durante/Pós, residual (vídeo + documentário), benefits, legado
+- `#global-station` (Ação 2 · 30%) — 3 pilares de memória, The Parlor + galeria masonry (vídeo + 4 fotos), 3 públicos, embaixada MetLife, concept-strip
+- `#investimento` — split visual 70/30
+
+5 imagens + 1 vídeo de apoio em `/img/`. Footer grande padronizado.
 
 ### `/elemidia` (elemidia.html · 114 linhas)
 Proposta Eletromidia com 22 prédios em SP. 7 seções: Resumo, Métricas no Período,
@@ -176,9 +202,6 @@ referência pro jornada na S48).
 SPA hash-routed. Rotas: `/#/`, `/#/peca/:id`, `/#/aprovadas`. Todos os criativos da
 campanha pra aprovação MetLife (Lotes A/B, fases 1-4). 516 testes na galeria.
 
-### `/muito-alem-do-jogo` (131 linhas)
-Stub "Em construção". Disabled no menu com badge "Em breve".
-
 ### `/ajuda` (ajuda.html · 504 linhas)
 Guia visual passo-a-passo de como usar o hub.
 
@@ -193,7 +216,6 @@ Guia visual passo-a-passo de como usar o hub.
 | `--blue` | `#2DB5DF` | Azul accent (TRF, hover anchor) |
 | `--teal` | `#27C7BD` | Verde-azulado (cards diferenciados) |
 | `--green` | `#50E596` | Verde positivo (sucesso, accent KPI) |
-| `--green-deep` | `#27C7BD` | Gradientes |
 | `--light` | `#EEF6F8` | Background neutro |
 | `--success` | `#50E596` | Estados ok (S46) |
 | `--warning` | `#F5A524` | Avisos / "Em breve" badge |
@@ -202,20 +224,20 @@ Guia visual passo-a-passo de como usar o hub.
 
 ### Grid e container
 - **`.container`** — `max-width: 1180px; margin: 0 auto;` (padrão de todas as páginas)
-- **`.section` padding** — `80px 24px` desktop · `48px 16px` mobile
+- **`.section` padding** — `80px 24px` desktop · `56px 16px` mobile
 - **`.anchor-nav-inner`** — `max-width: 1180px; padding: 12px 24px` (alinha às páginas)
 
 ### Tipografia
 - Fonte: Arial, sans-serif (hosting estático sem webfont externo)
 - Pesos: 400, 600, 700, 800
-- H1: 48-64px · H2: 26-36px · H3: 18-22px · body: 14-16px · caption: 11-13px
+- H1: 48-84px (clamp) · H2: 26-52px · H3: 18-24px · body: 14-17px · caption: 11-13px
 - `letter-spacing` em uppercase pequeno: 0.5-0.8px
 
 ### Componentes globais
-- **Header** (`assets/header.css` 715 linhas) — sticky, drawer mobile hierárquico com gradiente verde-teal no item ativo
-- **Breadcrumb / page-subbar** (`assets/breadcrumb.css` 152 linhas) — inclui `.anchor-nav` global
+- **Header** (`assets/header.css`) — sticky, drawer mobile hierárquico com gradiente verde-teal no item ativo
+- **Breadcrumb / page-subbar** (`assets/breadcrumb.css`) — inclui `.anchor-nav` global
 - **Anchor-nav** — outer full-width sticky com blur · inner com max-width 1180px e scroll lateral nowrap · hover lift 1px
-- **Footer** (`assets/footer.css`) — "Agência Molla" único em todas as páginas
+- **Footer grande padrão** (h2 + p + brand-row com border-top) — usado em performance, elemidia, muito-alem
 
 ### Smooth scroll global
 ```css
@@ -232,6 +254,11 @@ section[id] { scroll-margin-top: calc(var(--mlh-header-h, 60px) + 64px); }
 - **Prefixo por página** quando o CSS é local: `jr-` (jornada), `aq-` (arquivos), `bz-` (blitz), `elem-` (elemidia), `mlh-` (header global)
 - **Global** quando reutilizável: `.anchor-nav`, `.container`, `.section-intro`, `.eyebrow`, `.pill`
 - **Estado**: `.is-active`, `.is-expanded`, `.is-current`, `.is-disabled`, `.has-filter`
+
+### Imagens (regra Du · S53)
+- **Nunca cortar** — sempre `width: 100%; height: auto` (sem `object-fit: cover` em imagens de conteúdo)
+- Galleries devem usar **CSS column masonry** (`column-count` + `break-inside: avoid`) pra preservar proporções
+- Imagens com `loading="lazy"` + `alt` descritivo
 
 ### Mobile-first considerations
 - Sticky NUNCA fica sticky em mobile (bug iOS Safari) — usa `position: static` em `@media (max-width: 760px)`
@@ -262,6 +289,35 @@ section[id] { scroll-margin-top: calc(var(--mlh-header-h, 60px) + 64px); }
 </nav>
 ```
 
+### Padrão de footer grande (S50/S53)
+```html
+<footer class="site-footer">
+  <h2>Declaração de fechamento.</h2>
+  <p>Subtítulo contextual descritivo da página.</p>
+  <div class="brand-footer-row">
+    <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+    <p class="brand-footer-text">Agência Molla</p>
+  </div>
+</footer>
+```
+
+---
+
+## 🔐 Auth (S55)
+
+`assets/auth.js` usa `localStorage` desde S55 (antes era `sessionStorage` → perdia sessão a cada aba nova).
+
+**Helpers internos:** `get()` lê localStorage primeiro com fallback de sessionStorage (transição suave) · `set()` escreve em localStorage e limpa sessionStorage stale · `del()` apaga em ambos. Tudo com try/catch pra resiliência (modo privado, quota cheia).
+
+**Comportamento:**
+- Sessão persiste entre abas ✓
+- Sessão persiste após fechar/reabrir navegador ✓
+- Logout em uma aba → outras abas detectam via `storage` event e redirecionam pra `/login`
+
+**Chaves:** `metlife_auth`, `metlife_role`, `metlife_user`.
+
+⚠️ **Segurança:** controle de acesso *visual* apenas. Senhas em texto puro no JS, qualquer um com DevTools dribla. Pra produção real, ainda no roadmap o item de **Supabase Auth**.
+
 ---
 
 ## 🔌 Backend & dados (Supabase)
@@ -277,8 +333,8 @@ section[id] { scroll-margin-top: calc(var(--mlh-header-h, 60px) + 64px); }
 - Eventos: novo evento publica em todos
 - Listening via `supabase.channel(...).on('postgres_changes', ...)`
 
-### Auth (simples)
-Não usa Supabase Auth. Login no `/login.html` valida `password === 'metlife2026' || password === 'molla2026'`. Role guardada em `localStorage` + `sessionStorage` via `auth.js`.
+### Auth
+Não usa Supabase Auth. Login no `/login.html` valida senha em `auth.js`. Role guardada em `localStorage` (S55).
 
 ---
 
@@ -292,6 +348,12 @@ Não usa Supabase Auth. Login no `/login.html` valida `password === 'metlife2026
 | **Total** | **18/05 – 31/07** | **75 dias** | **R$ 340K bruto** |
 
 10 lotes A/B · 36 criativos · 4 fases de variações
+
+### Programa Muito Além do Jogo (paralelo à campanha de mídia)
+| Ação | % investimento | Conteúdo |
+|------|---------|---------|
+| **Seu Jogo Muda o Mundo** | 70% | Pinta tu Cancha (revitalização da quadra) · Art Citizen (3 chuteiras exclusivas) · Evento final na quadra com campeonato de embaixadinhas · Documentário |
+| **MetLife Global Station** | 30% | The Parlor (Pinheiros) · transmissão dos jogos · convidados + imprensa + creators · Hashtag #FootworkForFutures |
 
 ---
 
@@ -311,15 +373,15 @@ Não usa Supabase Auth. Login no `/login.html` valida `password === 'metlife2026
 
 Listados em ordem de prioridade discutida (não fechada):
 
-1. **Muito Além do Jogo** — quando Du passar detalhes, criar página real (hoje stub)
-2. **Reports semanais futuros** — quando Rafael mandar D+14, D+21, criar arquitetura
+1. **Reports semanais futuros** — quando Rafael mandar D+14, D+21, criar arquitetura
    de janelas (sugestão: `/public/performance/week-N.json` + seletor de períodos)
-3. **Tags/labels** nas peças de aprovação
-4. **Storage Supabase** pra arquivos (hoje aponta pra SharePoint externo)
-5. **Notificações Resend** quando peça é aprovada/reprovada
-6. **Brand Guide** dedicado
-7. **Login Supabase Auth** (substituir password mock)
-8. **Scroll-spy JS** no `.anchor-nav` (adicionar `.is-current` dinamicamente conforme seção visível) — opcional
+2. **Tags/labels** nas peças de aprovação
+3. **Storage Supabase** pra arquivos (hoje aponta pra SharePoint externo)
+4. **Notificações Resend** quando peça é aprovada/reprovada
+5. **Brand Guide** dedicado
+6. **Login Supabase Auth** (substituir password mock — fecha o gap de segurança real)
+7. **Scroll-spy JS** no `.anchor-nav` (adicionar `.is-current` dinamicamente conforme seção visível) — opcional
+8. **Atualizações no programa Muito Além do Jogo** conforme materiais chegarem (data do evento final, comprovações de impacto, etc.)
 
 ---
 
@@ -342,7 +404,8 @@ Listados em ordem de prioridade discutida (não fechada):
 - Linguagem **clara e informal** pro cliente final MetLife (não especialista em mídia)
 - Comandos zsh sem parênteses em comentários inline (zsh quebra)
 - `--success` no `:root` desde S46
+- **Imagens nunca cortar** (regra Du · S53) — `width: 100%; height: auto`, sem `object-fit: cover`
 
 ---
 
-*MASTER mantido por Mia · última revisão S51 (25/05/2026)*
+*MASTER mantido por Mia · última revisão S56 (25/05/2026)*
