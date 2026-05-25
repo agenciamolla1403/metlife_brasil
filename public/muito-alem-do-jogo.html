@@ -607,15 +607,9 @@
       letter-spacing: 0.2px;
     }
 
-    /* KV ROW (key visual + statement lado a lado) */
-    .kv-row {
-      margin-top: 56px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: center;
-    }
+    /* KV CAMPANHA (imagem full-width) + STATEMENT abaixo */
     .kv-img {
+      margin-top: 56px;
       width: 100%;
       height: auto;
       display: block;
@@ -624,7 +618,7 @@
       background: rgba(0, 59, 92, 0.06);
     }
     .kv-statement {
-      margin: 0;
+      margin: 24px 0 0;
     }
 
     /* INTRO + IMAGEM lado a lado (mecânica, plano, global station) */
@@ -675,7 +669,6 @@
       .concept-strip,
       .invest-grid,
       .benefits-grid,
-      .kv-row,
       .intro-with-img,
       .local-with-img {
         grid-template-columns: 1fr;
@@ -751,14 +744,13 @@
       </div>
 
       <!-- KV DA CAMPANHA + STATEMENT -->
-      <div class="kv-row">
-        <img class="kv-img" src="/img/kv.jpg" alt="Key visual da campanha MetLife — Seu Jogo Muda o Mundo" loading="lazy" />
-        <div class="statement-card kv-statement">
-          <h2>Seu Jogo Muda o Mundo</h2>
-          <p>Um importante impacto social e de inclusão por meio do esporte e da arte.</p>
-          <p><strong>Pinta tu Cancha &amp; Footwork for Futures.</strong> Agimos local, mudamos global. O programa vai conectar os dois projetos globais da MetLife com o Global Citizen em uma mesma jornada.</p>
-          <p>Por meio dessas duas ações, vamos muito além da recuperação de um espaço ou das doações. Será uma ação de impacto social que vai gerar um importante retorno referente à percepção de marca.</p>
-        </div>
+      <img class="kv-img" src="/img/kv.jpg" alt="Key visual da campanha MetLife — Seu Jogo Muda o Mundo" loading="lazy" />
+
+      <div class="statement-card kv-statement">
+        <h2>Seu Jogo Muda o Mundo</h2>
+        <p>Um importante impacto social e de inclusão por meio do esporte e da arte.</p>
+        <p><strong>Pinta tu Cancha &amp; Footwork for Futures.</strong> Agimos local, mudamos global. O programa vai conectar os dois projetos globais da MetLife com o Global Citizen em uma mesma jornada.</p>
+        <p>Por meio dessas duas ações, vamos muito além da recuperação de um espaço ou das doações. Será uma ação de impacto social que vai gerar um importante retorno referente à percepção de marca.</p>
       </div>
     </div>
   </section>
