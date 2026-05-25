@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/assets/header.css" />
   <link rel="stylesheet" href="/assets/breadcrumb.css" />
   <link rel="stylesheet" href="/assets/footer.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --navy: #003B5C;
@@ -389,6 +390,45 @@
     }
     .insight-strip strong { color: var(--navy); }
 
+    /* GRÁFICOS COMPARATIVOS (S50) */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .chart-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .chart-card-header { margin-bottom: 18px; }
+    .chart-card-header .chart-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.12);
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .chart-card-header h3 { margin: 0; font-size: 18px; color: var(--navy); }
+    .chart-card-header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 280px;
+    }
+
     /* RECOMENDAÇÕES */
     .rec-grid {
       display: grid;
@@ -458,7 +498,7 @@
     .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
 
     @media (max-width: 920px) {
-      .hero, .cards, .cards-2, .rec-grid, .insights-grid { grid-template-columns: 1fr; }
+      .hero, .cards, .cards-2, .rec-grid, .insights-grid, .charts-grid { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: 1fr; }
       .campaign-banner { flex-wrap: wrap; }
       .campaign-stamp { text-align: left; }
@@ -665,7 +705,52 @@
         <strong>Leitura rápida:</strong> volume explosivo desde o dia 19/05 — picos de 215K de alcance/dia. CPM em R$ 4,44 (84% abaixo do benchmark) explica o salto. Engajamento de 54K mostra que peças com CTA de clique também estão gerando interação orgânica — comportamento de dupla entrega.
       </div>
 
-      <!-- COMPARATIVO -->
+      <!-- COMPARATIVO DIARIZADO · 4 gráficos -->
+      <div class="section-intro" style="margin-top: 56px;">
+        <span class="eyebrow white-pill">Comparativo diarizado</span>
+        <h2 style="font-size: 26px;">ENG × TRF dia a dia, nas 4 métricas-chave.</h2>
+        <p>Evolução diária comparando as duas campanhas. A curva de crescimento de TRF é mais acentuada nos primeiros dias, enquanto ENG mostra crescimento mais consistente até o pico do dia 23/05.</p>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-tag">Volume</span>
+            <h3>Alcance diário</h3>
+            <p>Pessoas únicas impactadas por dia em cada campanha.</p>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-alcance"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-tag">Volume</span>
+            <h3>Impressões diárias</h3>
+            <p>Total de exibições registradas por dia.</p>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-impressoes"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-tag">Ação</span>
+            <h3>Cliques no link × Visitas ao perfil</h3>
+            <p>Comparação de ações geradas. Visitas ao perfil são acompanhadas apenas na campanha de Engajamento, que tem esse KPI alinhado ao objetivo.</p>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-acoes"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-tag">Eficiência</span>
+            <h3>CPC × Custo por visita ao perfil</h3>
+            <p>Custos unitários por ação. <strong>Quanto menor, melhor</strong> a eficiência — significa que cada ação custou menos pra marca.</p>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-custos"></canvas></div>
+        </div>
+      </div>
+
+      <!-- CONCLUSÃO COMPARATIVA -->
       <div class="section-intro" style="margin-top: 56px;">
         <h2 style="font-size: 26px;">Quem entrega o quê: ENG × TRF lado a lado</h2>
         <p>Volume vs eficiência. Cada campanha tem seu papel — uma alcança mais, outra engaja mais.</p>
@@ -755,7 +840,7 @@
     </div>
     <div class="brand-footer-row">
       <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
-      <p class="brand-footer-text">Agência Molla · Rafael Moraes (time de Mídia & Performance)</p>
+      <p class="brand-footer-text">Agência Molla</p>
     </div>
   </footer>
 
@@ -766,21 +851,21 @@
     // DADOS REAIS (do report do Rafael · 18/05 a 23/05)
     // ============================================================
     const dadosEng = [
-      {dia: "18/05", alcance: 14,     impressoes: 22,     cpm: 24.55, cliques: 2,    ctr: 9.09, visitas_perfil: 4,    engajamento: 6,     gasto: 0.54},
-      {dia: "19/05", alcance: 28318,  impressoes: 37565,  cpm: 10.99, cliques: 567,  ctr: 1.51, visitas_perfil: 313,  engajamento: 3573,  gasto: 412.80},
-      {dia: "20/05", alcance: 54838,  impressoes: 88383,  cpm: 9.19,  cliques: 1164, ctr: 1.32, visitas_perfil: 638,  engajamento: 6093,  gasto: 811.87},
-      {dia: "21/05", alcance: 50343,  impressoes: 79991,  cpm: 9.33,  cliques: 1090, ctr: 1.36, visitas_perfil: 613,  engajamento: 5292,  gasto: 746.31},
-      {dia: "22/05", alcance: 74550,  impressoes: 90567,  cpm: 8.84,  cliques: 1984, ctr: 2.19, visitas_perfil: 1193, engajamento: 4901,  gasto: 800.58},
-      {dia: "23/05", alcance: 117418, impressoes: 162624, cpm: 10.37, cliques: 3425, ctr: 2.11, visitas_perfil: 2316, engajamento: 16355, gasto: 1687.11}
+      {dia: "18/05", alcance: 14,     impressoes: 22,     cpm: 24.55, cliques: 2,    cpc: 0.27, ctr: 9.09, visitas_perfil: 4,    engajamento: 6,     gasto: 0.54},
+      {dia: "19/05", alcance: 28318,  impressoes: 37565,  cpm: 10.99, cliques: 567,  cpc: 0.73, ctr: 1.51, visitas_perfil: 313,  engajamento: 3573,  gasto: 412.80},
+      {dia: "20/05", alcance: 54838,  impressoes: 88383,  cpm: 9.19,  cliques: 1164, cpc: 0.70, ctr: 1.32, visitas_perfil: 638,  engajamento: 6093,  gasto: 811.87},
+      {dia: "21/05", alcance: 50343,  impressoes: 79991,  cpm: 9.33,  cliques: 1090, cpc: 0.68, ctr: 1.36, visitas_perfil: 613,  engajamento: 5292,  gasto: 746.31},
+      {dia: "22/05", alcance: 74550,  impressoes: 90567,  cpm: 8.84,  cliques: 1984, cpc: 0.40, ctr: 2.19, visitas_perfil: 1193, engajamento: 4901,  gasto: 800.58},
+      {dia: "23/05", alcance: 117418, impressoes: 162624, cpm: 10.37, cliques: 3425, cpc: 0.49, ctr: 2.11, visitas_perfil: 2316, engajamento: 16355, gasto: 1687.11}
     ];
 
     const dadosTrf = [
-      {dia: "18/05", alcance: 3,      impressoes: 3,      cpm: 0,    cliques: 0,    ctr: 0,    engajamento: 0,     gasto: 0},
-      {dia: "19/05", alcance: 82940,  impressoes: 91418,  cpm: 3.89, cliques: 1499, ctr: 1.64, engajamento: 4653,  gasto: 355.48},
-      {dia: "20/05", alcance: 154898, impressoes: 187253, cpm: 4.22, cliques: 3163, ctr: 1.69, engajamento: 12723, gasto: 790.36},
-      {dia: "21/05", alcance: 175201, impressoes: 202061, cpm: 4.36, cliques: 3742, ctr: 1.85, engajamento: 13236, gasto: 881.37},
-      {dia: "22/05", alcance: 215389, impressoes: 250055, cpm: 4.39, cliques: 4823, ctr: 1.93, engajamento: 11101, gasto: 1097.28},
-      {dia: "23/05", alcance: 107783, impressoes: 143890, cpm: 5.25, cliques: 4367, ctr: 3.03, engajamento: 12855, gasto: 755.03}
+      {dia: "18/05", alcance: 3,      impressoes: 3,      cpm: 0,    cliques: 0,    cpc: 0,    ctr: 0,    visitas_perfil: 0,  engajamento: 0,     gasto: 0},
+      {dia: "19/05", alcance: 82940,  impressoes: 91418,  cpm: 3.89, cliques: 1499, cpc: 0.24, ctr: 1.64, visitas_perfil: 4,  engajamento: 4653,  gasto: 355.48},
+      {dia: "20/05", alcance: 154898, impressoes: 187253, cpm: 4.22, cliques: 3163, cpc: 0.25, ctr: 1.69, visitas_perfil: 6,  engajamento: 12723, gasto: 790.36},
+      {dia: "21/05", alcance: 175201, impressoes: 202061, cpm: 4.36, cliques: 3742, cpc: 0.24, ctr: 1.85, visitas_perfil: 3,  engajamento: 13236, gasto: 881.37},
+      {dia: "22/05", alcance: 215389, impressoes: 250055, cpm: 4.39, cliques: 4823, cpc: 0.23, ctr: 1.93, visitas_perfil: 6,  engajamento: 11101, gasto: 1097.28},
+      {dia: "23/05", alcance: 107783, impressoes: 143890, cpm: 5.25, cliques: 4367, cpc: 0.17, ctr: 3.03, visitas_perfil: 18, engajamento: 12855, gasto: 755.03}
     ];
 
     const metaEng = { alcance: 95524, impressoes: 286571, cpm: 28, cliques: 2293, ctr: 0.80, visitas_perfil: 917, engajamento: 9280, gasto: 8024 };
@@ -896,7 +981,199 @@
       renderCampaignGrid('grid-trf', realTrf, metaTrf, false);
       renderTable('tabela-eng', dadosEng, true);
       renderTable('tabela-trf', dadosTrf, false);
+      renderCharts();
     });
+
+    // ============================================================
+    // GRÁFICOS COMPARATIVOS (Chart.js · do report do Rafael)
+    // ============================================================
+    function renderCharts() {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js não carregou — gráficos comparativos não renderizados.');
+        return;
+      }
+      const dias = dadosEng.map(d => d.dia);
+
+      const colorEng = '#003B5C';
+      const colorEngLight = 'rgba(0, 59, 92, 0.12)';
+      const colorTrf = '#2DB5DF';
+      const colorTrfLight = 'rgba(45, 181, 223, 0.18)';
+      const colorAccent = '#50E596';
+      const colorAccentLight = 'rgba(80, 229, 150, 0.18)';
+
+      const baseOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { family: 'Arial', size: 12, weight: '700' },
+              color: '#003B5C',
+              usePointStyle: true,
+              padding: 18
+            }
+          },
+          tooltip: {
+            backgroundColor: '#003B5C',
+            titleFont: { family: 'Arial', size: 13, weight: '700' },
+            bodyFont: { family: 'Arial', size: 12 },
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: true,
+            boxPadding: 4
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: '#5B7280', font: { family: 'Arial', size: 11, weight: '600' } }
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: 'rgba(0,59,92,.06)' },
+            ticks: {
+              color: '#5B7280',
+              font: { family: 'Arial', size: 11 },
+              callback: function(v) { return v.toLocaleString('pt-BR'); }
+            }
+          }
+        }
+      };
+
+      // GRÁFICO 1 — ALCANCE diário (área)
+      new Chart(document.getElementById('chart-alcance'), {
+        type: 'line',
+        data: {
+          labels: dias,
+          datasets: [
+            {
+              label: 'Engajamento',
+              data: dadosEng.map(d => d.alcance),
+              borderColor: colorEng, backgroundColor: colorEngLight,
+              borderWidth: 3, tension: 0.35, fill: true,
+              pointBackgroundColor: colorEng, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7
+            },
+            {
+              label: 'Tráfego',
+              data: dadosTrf.map(d => d.alcance),
+              borderColor: colorTrf, backgroundColor: colorTrfLight,
+              borderWidth: 3, tension: 0.35, fill: true,
+              pointBackgroundColor: colorTrf, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7
+            }
+          ]
+        },
+        options: baseOptions
+      });
+
+      // GRÁFICO 2 — IMPRESSÕES (barras)
+      new Chart(document.getElementById('chart-impressoes'), {
+        type: 'bar',
+        data: {
+          labels: dias,
+          datasets: [
+            {
+              label: 'Engajamento',
+              data: dadosEng.map(d => d.impressoes),
+              backgroundColor: colorEng,
+              borderRadius: 8, barPercentage: 0.7, categoryPercentage: 0.7
+            },
+            {
+              label: 'Tráfego',
+              data: dadosTrf.map(d => d.impressoes),
+              backgroundColor: colorTrf,
+              borderRadius: 8, barPercentage: 0.7, categoryPercentage: 0.7
+            }
+          ]
+        },
+        options: baseOptions
+      });
+
+      // GRÁFICO 3 — CLIQUES × VISITAS AO PERFIL
+      new Chart(document.getElementById('chart-acoes'), {
+        type: 'line',
+        data: {
+          labels: dias,
+          datasets: [
+            {
+              label: 'Cliques — Tráfego',
+              data: dadosTrf.map(d => d.cliques),
+              borderColor: colorTrf, backgroundColor: colorTrfLight,
+              borderWidth: 3, tension: 0.35, fill: false,
+              pointBackgroundColor: colorTrf, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5
+            },
+            {
+              label: 'Cliques — Engajamento',
+              data: dadosEng.map(d => d.cliques),
+              borderColor: colorEng, backgroundColor: colorEngLight,
+              borderWidth: 3, tension: 0.35, fill: false,
+              pointBackgroundColor: colorEng, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5
+            },
+            {
+              label: 'Visitas perfil — Engajamento',
+              data: dadosEng.map(d => d.visitas_perfil),
+              borderColor: colorAccent, backgroundColor: colorAccentLight,
+              borderWidth: 3, tension: 0.35, fill: false, borderDash: [6, 4],
+              pointBackgroundColor: colorAccent, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5
+            }
+          ]
+        },
+        options: baseOptions
+      });
+
+      // GRÁFICO 4 — CPC × CUSTO POR VISITA AO PERFIL
+      const cpvEng = dadosEng.map(d => d.visitas_perfil > 0 ? +(d.gasto / d.visitas_perfil).toFixed(2) : 0);
+      new Chart(document.getElementById('chart-custos'), {
+        type: 'line',
+        data: {
+          labels: dias,
+          datasets: [
+            {
+              label: 'CPC — Engajamento',
+              data: dadosEng.map(d => d.cpc),
+              borderColor: colorEng, backgroundColor: colorEngLight,
+              borderWidth: 3, tension: 0.35, fill: false,
+              pointBackgroundColor: colorEng, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5
+            },
+            {
+              label: 'CPC — Tráfego',
+              data: dadosTrf.map(d => d.cpc),
+              borderColor: colorTrf, backgroundColor: colorTrfLight,
+              borderWidth: 3, tension: 0.35, fill: false,
+              pointBackgroundColor: colorTrf, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 5
+            },
+            {
+              label: 'Custo por visita ao perfil — Engajamento',
+              data: cpvEng,
+              borderColor: colorAccent, backgroundColor: colorAccentLight,
+              borderWidth: 2, borderDash: [6, 4], tension: 0.35, fill: false,
+              pointBackgroundColor: colorAccent, pointBorderColor: 'white',
+              pointBorderWidth: 2, pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          ...baseOptions,
+          scales: {
+            ...baseOptions.scales,
+            y: {
+              ...baseOptions.scales.y,
+              ticks: {
+                ...baseOptions.scales.y.ticks,
+                callback: function(v) { return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+              }
+            }
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>
