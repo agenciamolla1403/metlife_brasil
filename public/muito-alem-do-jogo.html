@@ -273,6 +273,19 @@
       color: white;
       border: 0;
     }
+    .phase-card.blue h3 { color: white; }
+    .phase-card.blue .phase-goal {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .phase-card.blue ul {
+      color: rgba(255, 255, 255, 0.94);
+    }
+    .phase-card.blue ul li::marker {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .phase-card.blue ul li strong {
+      color: white;
+    }
     .phase-card h3 {
       font-size: 22px;
       margin: 12px 0 6px;
@@ -585,6 +598,77 @@
     .brand-logo-footer { height: 22px; opacity: 0.9; }
     .brand-footer-text { font-size: 11px; opacity: 0.7; margin: 0; }
 
+    /* HERO TAGLINE (subtítulo do h1) */
+    .hero-tagline {
+      margin: 20px 0 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.2px;
+    }
+
+    /* KV ROW (key visual + statement lado a lado) */
+    .kv-row {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+    .kv-img {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      object-fit: cover;
+      border-radius: 28px;
+      display: block;
+      box-shadow: 0 24px 48px rgba(0, 59, 92, 0.18);
+      background: rgba(0, 59, 92, 0.06);
+    }
+    .kv-statement {
+      margin: 0;
+    }
+
+    /* INTRO + IMAGEM lado a lado (mecânica, plano, global station) */
+    .intro-with-img {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-top: 64px;
+      margin-bottom: 28px;
+    }
+    .intro-with-img.reverse > :first-child { order: 2; }
+    .intro-with-img.reverse > :last-child  { order: 1; }
+    .intro-with-img .section-intro { margin-bottom: 0; }
+    .intro-img {
+      width: 100%;
+      border-radius: 24px;
+      display: block;
+      box-shadow: 0 20px 40px rgba(0, 59, 92, 0.14);
+      aspect-ratio: 16 / 11;
+      object-fit: cover;
+      background: rgba(0, 59, 92, 0.06);
+    }
+
+    /* LOCAL CARD com imagem (The Parlor) */
+    .local-with-img {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .local-with-img .local-content > h2 { margin-top: 12px; }
+    .local-img {
+      width: 100%;
+      border-radius: 20px;
+      display: block;
+      box-shadow: 0 14px 32px rgba(0, 59, 92, 0.16);
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: rgba(0, 59, 92, 0.06);
+    }
+
     /* RESPONSIVO */
     @media (max-width: 900px) {
       .hero-grid,
@@ -594,10 +678,16 @@
       .embaixada-card,
       .concept-strip,
       .invest-grid,
-      .benefits-grid {
+      .benefits-grid,
+      .kv-row,
+      .intro-with-img,
+      .local-with-img {
         grid-template-columns: 1fr;
       }
+      .intro-with-img.reverse > :first-child { order: 1; }
+      .intro-with-img.reverse > :last-child  { order: 2; }
       .mech-card.span-2 { grid-column: span 1; }
+      .kv-img { min-height: 240px; }
       section { padding: 56px 16px; }
     }
   </style>
@@ -625,24 +715,19 @@
     <div class="container">
       <div class="hero-grid">
         <div>
-          <span class="eyebrow">Muito Além do Jogo</span>
-          <h1>Da revitalização<br>ao impacto coletivo.</h1>
+          <span class="eyebrow">Programa de marca</span>
+          <h1>Muito Além<br>do Jogo.</h1>
+          <p class="hero-tagline">Da revitalização ao impacto coletivo.</p>
         </div>
         <div class="hero-text">
           <p>Vamos aproveitar MetLife, futebol e comunidade pra aumentar os resultados de branding da marca e transformar um projeto em um movimento: arte, comunidade, esporte e mobilização social conectados pela ideia de coletividade que a Copa do Mundo traz.</p>
         </div>
       </div>
 
-      <!-- STATEMENT -->
-      <div class="statement-card">
-        <h2>Seu Jogo Muda o Mundo</h2>
-        <p>Um importante impacto social e de inclusão por meio do esporte e da arte.</p>
-        <p><strong>Pinta tu Cancha &amp; Footwork for Futures.</strong> Agimos local, mudamos global. O programa vai conectar os dois projetos globais da MetLife com o Global Citizen em uma mesma jornada.</p>
-        <p>Por meio dessas duas ações, vamos muito além da recuperação de um espaço ou das doações. Será uma ação de impacto social que vai gerar um importante retorno referente à percepção de marca.</p>
-      </div>
+      <!-- STATEMENT removido daqui — agora aparece embaixo, junto do KV (kv-row) -->
 
       <!-- 2 PROJETOS GLOBAIS -->
-      <div class="section-intro" style="margin-top: 64px;">
+      <div class="section-intro" style="margin-top: 0;">
         <span class="eyebrow">Projetos globais da marca</span>
         <h2>De onde vem essa ativação.</h2>
         <p>O ponto de partida da ação são dois dos principais projetos da MetLife em parceria com o Global Citizen.</p>
@@ -667,6 +752,17 @@
             <li>Relaciona o futebol no período da Copa</li>
             <li>Mobilização digital</li>
           </ul>
+        </div>
+      </div>
+
+      <!-- KV DA CAMPANHA + STATEMENT -->
+      <div class="kv-row">
+        <img class="kv-img" src="/img/kv.jpg" alt="Key visual da campanha MetLife — Seu Jogo Muda o Mundo" loading="lazy" />
+        <div class="statement-card kv-statement">
+          <h2>Seu Jogo Muda o Mundo</h2>
+          <p>Um importante impacto social e de inclusão por meio do esporte e da arte.</p>
+          <p><strong>Pinta tu Cancha &amp; Footwork for Futures.</strong> Agimos local, mudamos global. O programa vai conectar os dois projetos globais da MetLife com o Global Citizen em uma mesma jornada.</p>
+          <p>Por meio dessas duas ações, vamos muito além da recuperação de um espaço ou das doações. Será uma ação de impacto social que vai gerar um importante retorno referente à percepção de marca.</p>
         </div>
       </div>
     </div>
@@ -717,10 +813,13 @@
       </div>
 
       <!-- MECÂNICA · 7 PASSOS -->
-      <div class="section-intro" style="margin-top: 64px;">
-        <span class="eyebrow">Mecânica do evento</span>
-        <h2>7 passos da experiência.</h2>
-        <p>Do momento que o participante chega até a premiação final.</p>
+      <div class="intro-with-img">
+        <div class="section-intro" style="margin: 0;">
+          <span class="eyebrow">Mecânica do evento</span>
+          <h2>7 passos da experiência.</h2>
+          <p>Do momento que o participante chega até a premiação final.</p>
+        </div>
+        <img class="intro-img" src="/img/chuteira.jpg" alt="Chuteiras personalizadas pelos artistas convidados" loading="lazy" />
       </div>
       <div class="mech-grid">
         <div class="mech-card">
@@ -761,10 +860,13 @@
       </div>
 
       <!-- PLANO DE COMUNICAÇÃO -->
-      <div class="section-intro" style="margin-top: 64px;">
-        <span class="eyebrow">Plano de comunicação</span>
-        <h2>Pré, durante e pós evento.</h2>
-        <p>Estratégia em 3 fases pra ativar antes, ampliar durante e legar depois.</p>
+      <div class="intro-with-img reverse">
+        <img class="intro-img" src="/img/social.png" alt="Plano de comunicação nas redes sociais" loading="lazy" />
+        <div class="section-intro" style="margin: 0;">
+          <span class="eyebrow">Plano de comunicação</span>
+          <h2>Pré, durante e pós evento.</h2>
+          <p>Estratégia em 3 fases pra ativar antes, ampliar durante e legar depois.</p>
+        </div>
       </div>
       <div class="cards-3">
         <div class="phase-card">
@@ -850,10 +952,13 @@
   <!-- ============ SEÇÃO 3 · METLIFE GLOBAL STATION ============ -->
   <section id="global-station">
     <div class="container">
-      <div class="section-intro">
-        <span class="eyebrow blue-eyebrow">Ação 2 · 30% do investimento</span>
-        <h2>MetLife Global Station</h2>
-        <p>Em parceria com um bar de São Paulo, criamos uma área VIP aberta ao público (com limitação). Personalizada com a comunicação MetLife, lá serão realizadas ações qualificadas que vão gerar maior proximidade entre público e marca. Ação pontual sob tema global — reforçando o branding e ampliando a percepção da marca.</p>
+      <div class="intro-with-img">
+        <div class="section-intro" style="margin: 0;">
+          <span class="eyebrow blue-eyebrow">Ação 2 · 30% do investimento</span>
+          <h2>MetLife Global Station</h2>
+          <p>Em parceria com um bar de São Paulo, criamos uma área VIP aberta ao público (com limitação). Personalizada com a comunicação MetLife, lá serão realizadas ações qualificadas que vão gerar maior proximidade entre público e marca. Ação pontual sob tema global — reforçando o branding e ampliando a percepção da marca.</p>
+        </div>
+        <img class="intro-img" src="/img/bar.jpg" alt="Ambiente do bar parceiro da MetLife Global Station" loading="lazy" />
       </div>
 
       <!-- 3 PILARES DE MEMÓRIA -->
@@ -881,16 +986,19 @@
       </div>
 
       <!-- LOCAL -->
-      <div class="local-card">
-        <span class="eyebrow blue-eyebrow">Local</span>
-        <h2>The Parlor · Pinheiros</h2>
-        <p>O lugar onde a experiência acontece faz toda diferença. Optamos por um bar em Pinheiros, o Parlor — ambiente com proposta mais exclusiva, que atende o público que buscamos no nosso trabalho de posicionamento.</p>
-        <p style="margin-top: 18px;">
-          <a class="external-link" href="https://www.instagram.com/theparlor.sp/" target="_blank" rel="noopener">
-            <span>📸</span>
-            <span>@theparlor.sp</span>
-          </a>
-        </p>
+      <div class="local-card local-with-img">
+        <div class="local-content">
+          <span class="eyebrow blue-eyebrow">Local</span>
+          <h2>The Parlor · Pinheiros</h2>
+          <p>O lugar onde a experiência acontece faz toda diferença. Optamos por um bar em Pinheiros, o Parlor — ambiente com proposta mais exclusiva, que atende o público que buscamos no nosso trabalho de posicionamento.</p>
+          <p style="margin-top: 18px;">
+            <a class="external-link" href="https://www.instagram.com/theparlor.sp/" target="_blank" rel="noopener">
+              <span>📸</span>
+              <span>@theparlor.sp</span>
+            </a>
+          </p>
+        </div>
+        <img class="local-img" src="/img/theparlor.jpg" alt="The Parlor — bar em Pinheiros, São Paulo" loading="lazy" />
       </div>
 
       <!-- AÇÃO -->
