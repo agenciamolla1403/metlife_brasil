@@ -459,3 +459,201 @@
   .mlh-user-avatar { width: 22px; height: 22px; font-size: 10px; }
   .mlh-user-name { max-width: 90px; }
 }
+
+/* ============================================================
+   S47 · DROPDOWNS desktop + ACCORDIONS drawer
+   ============================================================ */
+
+/* Container do dropdown desktop (substitui <a> simples na nav) */
+.mlh-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.mlh-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 0;
+  color: var(--mlh-navy);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s ease;
+}
+.mlh-dropdown-trigger:hover {
+  background: rgba(0, 59, 92, 0.06);
+}
+.mlh-dropdown-trigger.active {
+  background: var(--mlh-navy);
+  color: white;
+}
+.mlh-dropdown-trigger:focus-visible {
+  outline: 2px solid var(--mlh-blue);
+  outline-offset: 2px;
+}
+.mlh-caret {
+  font-size: 10px;
+  opacity: 0.7;
+  transition: transform .2s ease;
+}
+.mlh-dropdown:hover .mlh-caret,
+.mlh-dropdown.is-open .mlh-caret {
+  transform: rotate(180deg);
+}
+
+/* Panel do dropdown */
+.mlh-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  min-width: 240px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 59, 92, 0.18);
+  border: 1px solid rgba(0, 59, 92, 0.08);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  z-index: 100;
+}
+/* Triângulo apontando pro trigger */
+.mlh-dropdown-panel::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-left: 1px solid rgba(0, 59, 92, 0.08);
+  border-top: 1px solid rgba(0, 59, 92, 0.08);
+}
+.mlh-dropdown:hover .mlh-dropdown-panel,
+.mlh-dropdown.is-open .mlh-dropdown-panel {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mlh-dropdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--mlh-navy);
+  text-decoration: none;
+  transition: background .12s ease;
+}
+.mlh-dropdown-item:hover {
+  background: rgba(45, 181, 223, 0.10);
+}
+.mlh-dropdown-item.active {
+  background: var(--mlh-navy);
+  color: white;
+}
+.mlh-dropdown-item.active .mlh-dropdown-hint {
+  color: rgba(255, 255, 255, 0.7);
+}
+.mlh-dropdown-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+.mlh-dropdown-hint {
+  font-size: 12px;
+  color: var(--mlh-muted, #5B7280);
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mlh-dropdown-panel,
+  .mlh-caret { transition: none; }
+}
+
+/* Drawer mobile: accordions pros grupos */
+.mlh-drawer-group {
+  display: flex;
+  flex-direction: column;
+}
+.mlh-drawer-group-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 13px 16px;
+  background: transparent;
+  border: 0;
+  color: var(--mlh-navy);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .15s ease;
+}
+.mlh-drawer-group-trigger:hover {
+  background: rgba(0, 59, 92, 0.04);
+}
+.mlh-drawer-group-trigger.active {
+  background: rgba(45, 181, 223, 0.10);
+}
+.mlh-drawer-caret {
+  font-size: 12px;
+  opacity: 0.65;
+  transition: transform .25s ease;
+}
+.mlh-drawer-group.is-open .mlh-drawer-caret {
+  transform: rotate(180deg);
+}
+.mlh-drawer-sub {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .28s ease;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.mlh-drawer-group.is-open .mlh-drawer-sub {
+  max-height: 400px;
+  padding-bottom: 4px;
+}
+.mlh-drawer-sublink {
+  display: block;
+  padding: 11px 14px 11px 18px;
+  color: var(--mlh-navy);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border-left: 2px solid rgba(0, 59, 92, 0.10);
+  margin-left: 2px;
+}
+.mlh-drawer-sublink:hover {
+  background: rgba(45, 181, 223, 0.08);
+}
+.mlh-drawer-sublink.active {
+  background: var(--mlh-navy);
+  color: white;
+  border-left-color: var(--mlh-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mlh-drawer-sub,
+  .mlh-drawer-caret { transition: none; }
+}

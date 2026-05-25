@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance da Campanha | MetLife 2026</title>
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <style>
+    :root {
+      --navy: #003B5C;
+      --blue: #2DB5DF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --warning: #F5A524;
+      --danger: #E5484D;
+      --success: #50E596;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header.page-hero {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.25);
+    }
+    h1 {
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: .98;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    h2 {
+      font-size: clamp(28px, 3.5vw, 42px);
+      line-height: 1;
+      margin: 0 0 18px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 22px; }
+    h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; opacity: .85; }
+    p { margin: 0 0 14px; }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric.accent {
+      background: rgba(80,229,150,.22);
+      border-color: rgba(80,229,150,.4);
+    }
+    .metric.green strong { color: var(--green); }
+    .metric strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    /* Seletor de semanas (sticky) */
+    .weeks-bar {
+      position: sticky;
+      top: var(--mlh-header-h, 60px);
+      z-index: 20;
+      background: rgba(238,246,248,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 14px 24px;
+    }
+    .weeks-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .weeks-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted);
+      margin-right: 6px;
+    }
+    .week-chip {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: white;
+      border: 1px solid rgba(0,59,92,.10);
+      color: var(--navy);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      text-align: left;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .week-chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,59,92,.10);
+    }
+    .week-chip.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+      box-shadow: 0 4px 14px rgba(0,59,92,.22);
+    }
+    .week-chip.future {
+      cursor: not-allowed;
+      opacity: .55;
+      background: rgba(0,59,92,.04);
+    }
+    .week-chip-period {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: .75;
+    }
+    .week-chip-future-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--blue);
+    }
+    @media (max-width: 760px) {
+      .weeks-bar {
+        position: static;
+        overflow-x: auto;
+        padding: 12px 16px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .weeks-inner { flex-wrap: nowrap; }
+      .week-chip { flex-shrink: 0; }
+    }
+
+    /* Seções gerais (reusa do plano-midia) */
+    section { padding: 80px 24px; }
+    section.dark { background: var(--navy); color: white; }
+    section.dark h2 { color: white; }
+    section.dark .eyebrow { background: rgba(80,229,150,.20); color: var(--green); }
+    section.dark .lead { color: rgba(255,255,255,.78); }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 34px; }
+
+    /* Cards layout */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .cards-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .card.dark { background: var(--navy); color: white; }
+    .card.blue { background: var(--blue); color: white; }
+    .card.green { background: var(--green); color: var(--navy); }
+    .card.teal { background: var(--teal); color: var(--navy); }
+    .card.highlight {
+      background: linear-gradient(135deg, rgba(80,229,150,.16), rgba(45,181,223,.10));
+      border: 2px solid rgba(80,229,150,.55);
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(0,59,92,.10);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .pill-warning {
+      background: rgba(245,165,36,.18);
+      color: #B0700E;
+    }
+
+    .big-num {
+      font-size: 54px;
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      color: var(--blue);
+    }
+    .card.highlight .big-num { color: var(--navy); }
+
+    /* Disclaimer box */
+    .disclaimer {
+      display: flex;
+      gap: 16px;
+      padding: 22px;
+      background: rgba(245,165,36,.08);
+      border-left: 4px solid var(--warning);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .disclaimer-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--warning); color: white;
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 18px;
+      flex-shrink: 0;
+    }
+    .disclaimer-content { font-size: 15px; line-height: 1.55; }
+
+    /* Campaign banner */
+    .campaign-banner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 26px;
+      border-radius: var(--radius);
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+    }
+    .campaign-banner.eng {
+      background: linear-gradient(135deg, rgba(80,229,150,.18), rgba(39,199,189,.08));
+    }
+    .campaign-banner.trf {
+      background: linear-gradient(135deg, rgba(45,181,223,.18), rgba(80,229,150,.08));
+    }
+    .campaign-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--navy); color: white;
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 22px;
+      flex-shrink: 0;
+    }
+    .campaign-banner h3 {
+      margin: 0 0 2px;
+      font-size: 20px;
+    }
+    .campaign-meta {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'Courier New', monospace;
+    }
+    .campaign-stamp {
+      margin-left: auto;
+      font-size: 12px;
+      padding: 6px 12px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    /* Métricas pequenas (KPI grid das campanhas) */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .kpi-card {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 12px rgba(0,59,92,.06);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-name {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .kpi-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .kpi-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+    }
+    .kpi-badge.up   { background: rgba(80,229,150,.20); color: #06823F; }
+    .kpi-badge.down { background: rgba(229,72,77,.18);  color: #B91C1C; }
+    .kpi-badge.neutral { background: rgba(0,59,92,.08); color: var(--muted); }
+    .kpi-target {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* Tabela diária */
+    .table-wrap {
+      overflow-x: auto;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px 0;
+    }
+    .table-header h3 { margin: 0; font-size: 16px; }
+    .table-header span { font-size: 12px; color: var(--muted); }
+    th, td {
+      padding: 12px 14px;
+      text-align: right;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      font-size: 13px;
+    }
+    th:first-child, td:first-child { text-align: left; }
+    th {
+      background: rgba(0,59,92,.04);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+      font-weight: 800;
+      background: rgba(0,59,92,.03);
+    }
+
+    /* Cards de recomendação */
+    .rec-card {
+      position: relative;
+      padding-top: 38px;
+    }
+    .rec-num {
+      position: absolute;
+      top: 18px; right: 18px;
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: var(--green);
+      color: var(--navy);
+      display: grid; place-items: center;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    /* Empty state pra semanas futuras */
+    .future-empty {
+      background: white;
+      border-radius: var(--radius);
+      padding: 80px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .future-empty-icon { font-size: 56px; margin-bottom: 16px; }
+    .future-empty h2 { font-size: 26px; margin-bottom: 12px; }
+    .future-empty p { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 18px; }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; gap: 28px; }
+      .cards { grid-template-columns: 1fr; }
+      .cards-2 { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .campaign-banner { flex-wrap: wrap; }
+      .campaign-stamp { margin-left: 0; width: 100%; text-align: center; margin-top: 6px; }
+    }
+    @media (max-width: 520px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .week-chip { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; Mídia &nbsp;/&nbsp; <strong>Performance</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO (dinâmico) -->
+  <header class="page-hero" id="perfHero">
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Carregando…</span>
+        <h1>Performance da campanha</h1>
+        <p class="lead">Aguardando dados do report mais recente.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Resumo</h3>
+        <p>Carregando…</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA DE SEMANAS (sticky) -->
+  <div class="weeks-bar" id="weeksBar">
+    <div class="weeks-inner">
+      <span class="weeks-label">📊 Semanas</span>
+      <span class="loading" style="padding: 0;">carregando…</span>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO DINÂMICO -->
+  <div id="perfContent">
+    <div class="loading">Carregando report…</div>
+  </div>
+
+  <footer class="site-footer">
+    <h2>Cada semana traz uma nova leitura.</h2>
+    <p>Reports semanais consolidados do time de Mídia & Performance — preparados pro time da MetLife acompanhar a campanha em tempo real.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script>
+    // ============================================================
+    // /performance — galeria de reports semanais (S47)
+    // ============================================================
+    (function () {
+      'use strict';
+
+      const fmtNum = n => Math.round(n).toLocaleString('pt-BR');
+      const fmtMoney = n => 'R$ ' + (n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmtPct = n => (n || 0).toFixed(2).replace('.', ',') + '%';
+      const escapeHtml = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+      const state = {
+        manifesto: null,
+        ativo: null,        // id da semana ativa
+        dados: {}           // cache de week-N.json por id
+      };
+
+      // Soma de uma coluna do array de dias
+      function sumColumn(arr, col) {
+        return arr.reduce((acc, row) => acc + (row[col] || 0), 0);
+      }
+
+      // Métricas realizadas (totais agregados)
+      function calcRealized(arr) {
+        const impressoes = sumColumn(arr, 'impressoes');
+        const cliques = sumColumn(arr, 'cliques');
+        const gasto = sumColumn(arr, 'gasto');
+        return {
+          alcance: sumColumn(arr, 'alcance'),
+          impressoes,
+          cpm: impressoes > 0 ? (gasto / impressoes * 1000) : 0,
+          cliques,
+          ctr: impressoes > 0 ? (cliques / impressoes * 100) : 0,
+          visitas_perfil: sumColumn(arr, 'visitas_perfil'),
+          engajamento: sumColumn(arr, 'engajamento'),
+          seguidores: sumColumn(arr, 'seguidores'),
+          gasto
+        };
+      }
+
+      // Badge up/down/neutral conforme realizado vs meta
+      function getBadge(realizado, meta, isCost) {
+        if (meta === null || meta === undefined) return { cls: 'neutral', txt: 'sem meta' };
+        const ratio = realizado / meta;
+        if (isCost) {
+          if (ratio <= 1.0)  return { cls: 'up',   txt: 'abaixo da meta · bom' };
+          return { cls: 'down', txt: 'acima da meta · atenção' };
+        }
+        if (ratio >= 0.95) return { cls: 'up',   txt: 'acima ou no alvo · bom' };
+        return { cls: 'down', txt: 'abaixo · em curva' };
+      }
+
+      // Fetch helpers (com cache local em sessionStorage pra evitar refetch em troca de aba)
+      async function fetchJson(url) {
+        const cacheKey = 'perf:' + url;
+        try {
+          const cached = sessionStorage.getItem(cacheKey);
+          if (cached) return JSON.parse(cached);
+        } catch (_) {}
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' em ' + url);
+        const data = await res.json();
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch (_) {}
+        return data;
+      }
+
+      // ============================================================
+      // RENDER
+      // ============================================================
+
+      function renderHero(report) {
+        const el = document.getElementById('perfHero');
+        const stats = (report.hero.stats || []).map(s => `
+          <div class="metric${s.accent ? ' accent' : ''}${s.green ? ' green' : ''}">
+            <strong>${escapeHtml(s.valor)}</strong>
+            <span>${escapeHtml(s.label)}</span>
+          </div>
+        `).join('');
+        el.innerHTML = `
+          <div class="hero">
+            <div>
+              <span class="eyebrow"><span class="dot"></span> Report de performance · ${escapeHtml(report.periodo)}</span>
+              <h1>${escapeHtml(report.hero.titulo_principal)} <span class="accent">${escapeHtml(report.hero.subtitulo)}</span>.</h1>
+              <p class="lead">${escapeHtml(report.hero.lead)}</p>
+            </div>
+            <div class="hero-card">
+              <h3>Resumo da ${escapeHtml(report.label.toLowerCase())}</h3>
+              <p>Campanha digital cobrindo o período de <strong>${escapeHtml(report.periodo_completo)}</strong>. Veja abaixo as leituras do especialista, a performance de cada campanha e o que vamos fazer a partir daqui.</p>
+              <div class="metric-grid">${stats}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderWeeksBar() {
+        const bar = document.getElementById('weeksBar');
+        const m = state.manifesto;
+        const semanas = (m.semanas || []).map(w => `
+          <button class="week-chip ${w.id === state.ativo ? 'active' : ''}" data-week="${escapeHtml(w.id)}">
+            <span>${escapeHtml(w.label)}</span>
+            <span class="week-chip-period">${escapeHtml(w.periodo)}</span>
+          </button>
+        `).join('');
+        const futuras = (m.futuras || []).map(f => `
+          <span class="week-chip future" title="Ainda não disponível">
+            <span>${escapeHtml(f.label)}</span>
+            <span class="week-chip-period">${escapeHtml(f.periodo)}</span>
+            <span class="week-chip-future-tag">em ${escapeHtml(f.data_estimada)}</span>
+          </span>
+        `).join('');
+        bar.innerHTML = `
+          <div class="weeks-inner">
+            <span class="weeks-label">📊 Semanas</span>
+            ${semanas}
+            ${futuras}
+          </div>
+        `;
+        bar.querySelectorAll('.week-chip[data-week]').forEach(btn => {
+          btn.addEventListener('click', () => switchWeek(btn.getAttribute('data-week')));
+        });
+      }
+
+      function renderContent(report) {
+        const r = report;
+        // Realizados agregados pra cada campanha
+        const realEng = calcRealized(r.campanhas.engajamento.dados_diarios);
+        const realTrf = calcRealized(r.campanhas.trafego.dados_diarios);
+
+        // ----- Seção 1: Como a gente está lendo -----
+        const ctxSection = `
+          <section id="contexto">
+            <div class="container">
+              <div class="section-intro">
+                <span class="eyebrow">Como a gente está lendo isso</span>
+                <h2>${escapeHtml(report.dias_cobertos)} dias é um recorte inicial — a leitura completa vem com o tempo.</h2>
+              </div>
+              <div class="disclaimer">
+                <div class="disclaimer-icon">!</div>
+                <div class="disclaimer-content">${escapeHtml(r.contexto.alerta)}</div>
+              </div>
+              <p style="font-size: 15px; color: var(--muted); max-width: 920px;">${escapeHtml(r.contexto.base_metas)}</p>
+            </div>
+          </section>
+        `;
+
+        // ----- Seção 2: O resumo que importa -----
+        const leituras = r.leituras.map(l => `
+          <div class="card ${l.destaque ? 'highlight' : ''}">
+            <span class="pill">${escapeHtml(l.tag)}</span>
+            <div class="big-num">${escapeHtml(l.numero)}</div>
+            <h3>${escapeHtml(l.titulo)}</h3>
+            <p style="font-size: 14px; color: var(--muted); margin-top: 8px;">${escapeHtml(l.texto)}</p>
+          </div>
+        `).join('');
+        const resumoSection = `
+          <section id="resumo">
+            <div class="container">
+              <div class="section-intro">
+                <span class="eyebrow">O resumo que importa</span>
+                <h2>${r.leituras.length} leituras sobre os primeiros ${escapeHtml(report.dias_cobertos)} dias.</h2>
+                <p class="lead">Os pontos que a liderança da MetLife precisa saber sobre como a campanha está performando.</p>
+              </div>
+              <div class="cards">${leituras}</div>
+            </div>
+          </section>
+        `;
+
+        // ----- Seção 3: Como cada campanha tá indo -----
+        const kpiCard = (name, value, target, isCost) => {
+          const badge = getBadge(value, target, isCost);
+          let valueDisplay;
+          if (name === 'CPM') valueDisplay = fmtMoney(value);
+          else if (name === 'CTR') valueDisplay = fmtPct(value);
+          else if (name === 'Investido') valueDisplay = fmtMoney(value);
+          else valueDisplay = fmtNum(value);
+          let targetDisplay;
+          if (target === null || target === undefined) targetDisplay = 'sem meta';
+          else if (name === 'CPM') targetDisplay = 'meta ' + fmtMoney(target);
+          else if (name === 'CTR') targetDisplay = 'meta ' + fmtPct(target);
+          else if (name === 'Investido') targetDisplay = 'meta ' + fmtMoney(target);
+          else targetDisplay = 'meta ' + fmtNum(target);
+          return `
+            <div class="kpi-card">
+              <div class="kpi-name">${escapeHtml(name)}</div>
+              <div class="kpi-value">${valueDisplay}</div>
+              <div class="kpi-meta">
+                <span class="kpi-badge ${badge.cls}">${badge.cls === 'up' ? '↑' : badge.cls === 'down' ? '↓' : '•'}</span>
+                <span class="kpi-target">${targetDisplay}</span>
+              </div>
+            </div>
+          `;
+        };
+
+        const renderCampaignKpis = (real, meta) => `
+          ${kpiCard('Alcance', real.alcance, meta.alcance, false)}
+          ${kpiCard('Impressões', real.impressoes, meta.impressoes, false)}
+          ${kpiCard('CPM', real.cpm, meta.cpm, true)}
+          ${kpiCard('CTR', real.ctr, meta.ctr, false)}
+          ${kpiCard('Cliques', real.cliques, meta.cliques, false)}
+          ${kpiCard('Engajamento', real.engajamento, meta.engajamento, false)}
+          ${kpiCard('Visitas perfil', real.visitas_perfil, meta.visitas_perfil, false)}
+          ${kpiCard('Investido', real.gasto, meta.gasto, true)}
+        `;
+
+        const renderDailyTable = (titulo, diasArr) => {
+          const total = calcRealized(diasArr);
+          const rows = diasArr.map(d => `
+            <tr>
+              <td>${escapeHtml(d.dia)}</td>
+              <td>${fmtNum(d.alcance)}</td>
+              <td>${fmtNum(d.impressoes)}</td>
+              <td>${fmtMoney(d.cpm)}</td>
+              <td>${fmtNum(d.cliques)}</td>
+              <td>${fmtNum(d.engajamento)}</td>
+              <td>${fmtMoney(d.gasto)}</td>
+            </tr>
+          `).join('');
+          return `
+            <div class="table-wrap">
+              <div class="table-header">
+                <h3>Dia a dia · ${escapeHtml(titulo)}</h3>
+                <span>${diasArr.length} dias + total</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Dia</th>
+                    <th>Alcance</th>
+                    <th>Impressões</th>
+                    <th>CPM</th>
+                    <th>Cliques</th>
+                    <th>Engajamento</th>
+                    <th>Investido</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows}
+                  <tr>
+                    <td>Total</td>
+                    <td>${fmtNum(total.alcance)}</td>
+                    <td>${fmtNum(total.impressoes)}</td>
+                    <td>${fmtMoney(total.cpm)}</td>
+                    <td>${fmtNum(total.cliques)}</td>
+                    <td>${fmtNum(total.engajamento)}</td>
+                    <td>${fmtMoney(total.gasto)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        };
+
+        const campSection = `
+          <section id="campanhas" style="background: white;">
+            <div class="container">
+              <div class="section-intro">
+                <span class="eyebrow">Como cada campanha tá indo</span>
+                <h2>Engajamento e Tráfego, lado a lado.</h2>
+                <p class="lead">Para cada campanha, mostramos os KPIs do período frente à meta proporcional e o desempenho dia a dia. <strong>Verde</strong> indica que estamos no caminho (acima da meta em volume, abaixo em custo). <strong>Vermelho</strong> indica atenção.</p>
+              </div>
+
+              <div class="campaign-banner eng">
+                <div class="campaign-icon">E</div>
+                <div>
+                  <h3>${escapeHtml(r.campanhas.engajamento.nome)}</h3>
+                  <div class="campaign-meta">${escapeHtml(r.campanhas.engajamento.codigo)} · ${escapeHtml(r.campanhas.engajamento.canal)} · ${escapeHtml(r.campanhas.engajamento.periodo)}</div>
+                </div>
+                <div class="campaign-stamp">${escapeHtml(r.campanhas.engajamento.orcamento_total)}</div>
+              </div>
+              <div class="kpi-grid">${renderCampaignKpis(realEng, r.campanhas.engajamento.metas)}</div>
+              ${renderDailyTable(r.campanhas.engajamento.nome, r.campanhas.engajamento.dados_diarios)}
+
+              <div style="height: 40px;"></div>
+
+              <div class="campaign-banner trf">
+                <div class="campaign-icon" style="background: var(--blue);">T</div>
+                <div>
+                  <h3>${escapeHtml(r.campanhas.trafego.nome)}</h3>
+                  <div class="campaign-meta">${escapeHtml(r.campanhas.trafego.codigo)} · ${escapeHtml(r.campanhas.trafego.canal)} · ${escapeHtml(r.campanhas.trafego.periodo)}</div>
+                </div>
+                <div class="campaign-stamp">${escapeHtml(r.campanhas.trafego.orcamento_total)}</div>
+              </div>
+              <div class="kpi-grid">${renderCampaignKpis(realTrf, r.campanhas.trafego.metas)}</div>
+              ${renderDailyTable(r.campanhas.trafego.nome, r.campanhas.trafego.dados_diarios)}
+            </div>
+          </section>
+        `;
+
+        // ----- Seção 4: O que fazer agora -----
+        const recs = r.recomendacoes.map((rec, i) => `
+          <div class="card rec-card">
+            <div class="rec-num">${i + 1}</div>
+            <h3>${escapeHtml(rec.titulo)}</h3>
+            <p style="font-size: 14px; color: var(--muted); margin-top: 8px;">${escapeHtml(rec.texto)}</p>
+          </div>
+        `).join('');
+        const recSection = `
+          <section id="proximos">
+            <div class="container">
+              <div class="section-intro">
+                <span class="eyebrow">O que fazer agora</span>
+                <h2>${r.recomendacoes.length} movimentos pros próximos 14 dias.</h2>
+                <p class="lead">Com base na leitura desses ${escapeHtml(report.dias_cobertos)} primeiros dias, esses são os ajustes pra maximizar o aprendizado e a eficiência da operação.</p>
+              </div>
+              <div class="cards">${recs}</div>
+            </div>
+          </section>
+        `;
+
+        // ----- Fechamento dark -----
+        const fechamentoSection = `
+          <section class="dark" id="fechamento">
+            <div class="container">
+              <div class="section-intro">
+                <span class="eyebrow">Fechamento da semana</span>
+                <h2 style="max-width: 820px;">${escapeHtml(r.fechamento.titulo)}</h2>
+                <p class="lead">${escapeHtml(r.fechamento.subtitulo)}</p>
+              </div>
+            </div>
+          </section>
+        `;
+
+        document.getElementById('perfContent').innerHTML =
+          ctxSection + resumoSection + campSection + recSection + fechamentoSection;
+      }
+
+      // ============================================================
+      // SWITCH WEEK
+      // ============================================================
+      async function switchWeek(weekId) {
+        const semana = (state.manifesto.semanas || []).find(w => w.id === weekId);
+        if (!semana) return;
+        state.ativo = weekId;
+        renderWeeksBar();
+
+        if (!state.dados[weekId]) {
+          document.getElementById('perfContent').innerHTML = '<div class="loading">Carregando dados…</div>';
+          try {
+            state.dados[weekId] = await fetchJson(semana.arquivo);
+          } catch (err) {
+            document.getElementById('perfContent').innerHTML = `<div class="loading">Erro carregando: ${escapeHtml(err.message)}</div>`;
+            return;
+          }
+        }
+        const report = state.dados[weekId];
+        renderHero(report);
+        renderContent(report);
+        // Scroll suave pro topo da seção de contexto se já tiver rolado
+        if (window.scrollY > 200) {
+          document.getElementById('contexto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // ============================================================
+      // BOOTSTRAP
+      // ============================================================
+      async function init() {
+        try {
+          state.manifesto = await fetchJson('/performance/manifesto.json');
+        } catch (err) {
+          document.getElementById('perfContent').innerHTML = `<div class="loading">Erro carregando manifesto: ${escapeHtml(err.message)}</div>`;
+          return;
+        }
+        // Última semana publicada vira ativa
+        const semanas = state.manifesto.semanas || [];
+        if (semanas.length === 0) {
+          document.getElementById('weeksBar').innerHTML = '<div class="weeks-inner"><span class="weeks-label">📊 Semanas</span><span style="color: var(--muted);">nenhum report publicado ainda.</span></div>';
+          document.getElementById('perfContent').innerHTML = `
+            <div class="container" style="padding: 60px 24px;">
+              <div class="future-empty">
+                <div class="future-empty-icon">📅</div>
+                <h2>Aguardando o primeiro report</h2>
+                <p>O time de Mídia & Performance ainda não publicou nenhum report. Assim que o primeiro chegar, ele aparece aqui automaticamente.</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        // Semana mais recente (maior `ordem`)
+        const ultima = semanas.slice().sort((a, b) => b.ordem - a.ordem)[0];
+        await switchWeek(ultima.id);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
