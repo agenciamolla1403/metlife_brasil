@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+  <title>Performance · Semana 2 · 24/05 a 30/05 · MetLife 2026</title>
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-soft: #A8F2C9;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* HERO */
+    header {
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+      padding: 64px 24px 56px;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(80,229,150,.28), transparent 38%),
+        radial-gradient(circle at 10% 80%, rgba(45,181,223,.20), transparent 42%),
+        linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,59,92,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,59,92,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1180px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: white;
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 22px;
+      font-size: 13px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      box-shadow: 0 6px 18px rgba(0,59,92,.08);
+    }
+    .eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.25);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(80,229,150,.25); }
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,.0); }
+    }
+    h1 {
+      font-size: clamp(38px, 6vw, 60px);
+      line-height: .98;
+      margin: 0 auto 22px;
+      letter-spacing: -2px;
+      max-width: 900px;
+    }
+    h1 span {
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 740px;
+      margin: 0 auto 30px;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: left;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .stat.accent { background: var(--navy); color: white; }
+    .stat.accent span { color: rgba(255,255,255,.7); }
+    .stat.green { background: var(--green); color: var(--navy); }
+    .stat.green span { color: rgba(0,59,92,.7); }
+
+    /* NAV STICKY */
+    nav.sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(238,246,248,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 12px 20px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav.sticky-nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      font-size: 13px;
+      transition: all .2s;
+    }
+    nav.sticky-nav a:hover {
+      background: var(--navy);
+      color: white;
+    }
+
+    /* SECTION GENERAL */
+    section { padding: 70px 24px; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 36px; }
+    h2 {
+      font-size: clamp(28px, 3.6vw, 42px);
+      line-height: 1;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0 0 14px; }
+    .section-intro p { font-size: 17px; color: var(--muted); }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      background: rgba(45,181,223,.12);
+      border-radius: 999px;
+    }
+
+    /* DISCLAIMER */
+    .disclaimer {
+      background: white;
+      border-left: 4px solid var(--amber);
+      padding: 18px 22px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,59,92,.06);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .disclaimer-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--amber);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .disclaimer-content {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .disclaimer-content strong { color: var(--navy); }
+
+    /* WEEK PROGRESS BAR */
+    .week-progress {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+    .week-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .week-progress-header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .week-progress-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .week-bar {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 4px;
+      margin: 18px 0;
+    }
+    .week-cell {
+      height: 38px;
+      border-radius: 6px;
+      background: rgba(0,59,92,.06);
+      position: relative;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .week-cell.done {
+      background: var(--green);
+      color: var(--navy);
+    }
+    .week-cell.partial {
+      background: linear-gradient(90deg, var(--green) 14%, rgba(80,229,150,.2) 14%);
+      color: var(--navy);
+    }
+    .week-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* EXECUTIVE SUMMARY */
+    .executive-summary {
+      background: var(--navy);
+      color: white;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .executive-summary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(80,229,150,.15), transparent 40%),
+        radial-gradient(circle at 5% 90%, rgba(45,181,223,.15), transparent 40%);
+      pointer-events: none;
+    }
+    .executive-summary .container { position: relative; z-index: 1; }
+    .executive-summary h2 { color: white; }
+    .executive-summary .section-label {
+      color: var(--green);
+      background: rgba(80,229,150,.15);
+    }
+    .executive-summary .section-intro p { color: rgba(255,255,255,.8); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .insight-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 28px;
+      border-radius: 18px;
+      position: relative;
+      transition: all .3s;
+    }
+    .insight-card:hover {
+      background: rgba(255,255,255,.1);
+      transform: translateY(-3px);
+    }
+    .insight-card.highlight {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--green);
+    }
+    .insight-card.attention {
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.05));
+      border-color: rgba(245,166,35,.4);
+    }
+    .insight-card.structural {
+      background: linear-gradient(135deg, rgba(45,181,223,.15), rgba(45,181,223,.05));
+      border-color: rgba(45,181,223,.4);
+    }
+    .insight-num {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-num {
+      color: var(--navy);
+    }
+    .insight-card.attention .insight-num {
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-num {
+      color: var(--blue);
+    }
+    .insight-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+      color: white;
+    }
+    .insight-card.highlight h3 { color: var(--navy); }
+    .insight-card p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .insight-card.highlight p {
+      color: rgba(0,59,92,.85);
+    }
+    .insight-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.12);
+      color: white;
+    }
+    .insight-card.highlight .insight-tag {
+      background: var(--navy);
+      color: var(--green);
+    }
+    .insight-card.attention .insight-tag {
+      background: rgba(245,166,35,.25);
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-tag {
+      background: rgba(45,181,223,.25);
+      color: var(--blue);
+    }
+
+    /* CAMPAIGN BANNER */
+    .campaign-banner {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+    .campaign-banner.eng {
+      background: linear-gradient(135deg, var(--navy), #1F5A7D);
+      color: white;
+    }
+    .campaign-banner.trf {
+      background: linear-gradient(135deg, var(--blue), #1B9ECC);
+      color: white;
+    }
+    .campaign-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .campaign-banner h2 {
+      margin: 0;
+      color: white;
+      font-size: clamp(22px, 2.6vw, 30px);
+    }
+    .campaign-banner .campaign-meta {
+      font-size: 13px;
+      opacity: .85;
+      margin-top: 4px;
+    }
+    .campaign-spacer { flex: 1; }
+    .campaign-stamp {
+      background: rgba(255,255,255,.15);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+
+    /* METRICS TABLE */
+    .metrics-table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    .metrics-table th {
+      background: var(--navy);
+      color: white;
+      padding: 16px 18px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border-bottom: 1px solid rgba(0,59,92,.1);
+    }
+    .metrics-table th:first-child {
+      text-align: left;
+      background: var(--navy-deep);
+    }
+    .metrics-table th.totals {
+      background: linear-gradient(135deg, var(--green-deep), #1FA85A);
+      color: white;
+    }
+    .metrics-table .week-sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      opacity: .75;
+      margin-top: 2px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .metrics-table td {
+      padding: 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      vertical-align: middle;
+      text-align: center;
+    }
+    .metrics-table tbody tr:last-child td { border-bottom: none; }
+    .metrics-table tbody tr:hover { background: rgba(45,181,223,.03); }
+
+    .metric-label-cell {
+      text-align: left !important;
+      font-weight: 700;
+      color: var(--navy);
+      position: relative;
+    }
+    .metric-label-cell .kpi-mark {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+      margin-left: 8px;
+      letter-spacing: .3px;
+      vertical-align: middle;
+    }
+    .metric-label-cell .metric-sublabel {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .cell-value {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 6px;
+      letter-spacing: .2px;
+    }
+    .cell-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .cell-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .cell-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .cell-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+    .cell-status.partial { background: rgba(245,166,35,.18); color: var(--amber); }
+
+    .info-tip {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 16px;
+      cursor: pointer;
+      margin-left: 6px;
+      vertical-align: middle;
+      position: relative;
+      transition: all .2s;
+    }
+    .info-tip:hover {
+      background: var(--navy);
+      transform: scale(1.15);
+    }
+    .info-tip.attention { background: var(--amber); }
+    .info-tip.attention:hover { background: #C68318; }
+
+    /* COMMENT EXPANSIBLE */
+    .comment-row td {
+      padding: 0 !important;
+      border-bottom: 1px solid rgba(0,59,92,.06) !important;
+    }
+    .comment-content {
+      background: linear-gradient(90deg, rgba(45,181,223,.06), rgba(45,181,223,.01));
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .4s ease;
+      border-left: 3px solid var(--blue);
+    }
+    .comment-content.attention {
+      background: linear-gradient(90deg, rgba(245,166,35,.07), rgba(245,166,35,.01));
+      border-left-color: var(--amber);
+    }
+    .comment-content.open {
+      max-height: 500px;
+      padding: 16px 24px;
+    }
+    .comment-content p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .comment-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--blue);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .comment-title.attention { color: var(--amber); }
+
+    /* LEGEND */
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 18px 22px;
+      background: rgba(45,181,223,.04);
+      border-radius: 14px;
+      margin-top: 16px;
+      font-size: 12px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 10px;
+    }
+    .legend-chip.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .legend-chip.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .legend-chip.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .legend-chip.partial { background: rgba(245,166,35,.18); color: var(--amber); }
+
+    /* FOOTER */
+    footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer h2 { color: white; max-width: 800px; margin: 0 auto 14px; }
+    footer p { color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto; font-size: 14px; }
+    footer .footer-meta {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    footer .next-step {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 10px 18px;
+      background: rgba(80,229,150,.18);
+      border: 1px solid var(--green);
+      color: var(--green);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 920px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid { grid-template-columns: 1fr; }
+      .campaign-banner { flex-wrap: wrap; }
+      .week-bar { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body data-week-id="week-2">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Semana 2 · 24/05 a 30/05</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero-inner">
+      <span class="eyebrow"><span class="dot"></span> Report semanal · 18/05 – 01/06/2026</span>
+      <h1>Operação <span>em ritmo forte</span>, com sinais de ajuste necessário em frequência.</h1>
+      <p class="lead">Consolidação das campanhas <strong>Engajamento</strong> e <strong>Tráfego</strong> no Meta Ads — 2 semanas completas + 1 dia da S3. Visão semanal vs meta proporcional, com leitura de especialista sobre o que ajustar.</p>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>15 dias</strong>
+          <span>período coberto</span>
+        </div>
+        <div class="stat accent">
+          <strong>R$ 20,1K</strong>
+          <span>investido (de R$ 38,9K)</span>
+        </div>
+        <div class="stat">
+          <strong>2,30M</strong>
+          <span>alcance combinado</span>
+        </div>
+        <div class="stat green">
+          <strong>2,96M</strong>
+          <span>impressões combinadas</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="sticky-nav">
+    <a href="#contexto">Contexto</a>
+    <a href="#progresso">Progresso do plano</a>
+    <a href="#insights">Insights</a>
+    <a href="#engajamento">Engajamento</a>
+    <a href="#trafego">Tráfego</a>
+    <a href="#proximos">Próximos passos</a>
+  </nav>
+
+  <!-- CONTEXTO -->
+  <section id="contexto">
+    <div class="container">
+      <span class="section-label">Como ler esse report</span>
+      <h2>Visão semanal das duas campanhas no Meta Ads.</h2>
+
+      <div class="disclaimer">
+        <div class="disclaimer-icon">i</div>
+        <div class="disclaimer-content">
+          <strong>S1 e S2 são semanas fechadas.</strong> A S3 cobre apenas o dia 01/06 (1 de 7 dias), com dados parciais — métricas dela aparecem com indicador "parcial" e são comparadas com 1/7 da meta semanal. <strong>Métricas como cliques no link em vídeo podem ainda estar em atribuição</strong> no Meta Ads no mesmo dia, então alguns números da S3 vão se ajustar nos próximos dias.
+        </div>
+      </div>
+
+      <p style="font-size: 16px; color: var(--muted); max-width: 820px;">As <strong>metas comparativas</strong> foram derivadas do plano total: R$ 340 mil em 75 dias, com 59% no Meta Ads (R$ 200,6 mil) divididos meio a meio entre Engajamento e Tráfego — R$ 100,3 mil em cada. Distribuído em <strong>11 semanas flat</strong>, isso resulta em ~R$ 9,09K/semana por campanha, com 500K impressões e 159K de alcance semanais. As demais métricas são derivadas a partir do CTR e mix esperados.</p>
+    </div>
+  </section>
+
+  <!-- PROGRESSO DO PLANO -->
+  <section id="progresso" style="padding-top: 0;">
+    <div class="container">
+      <div class="week-progress">
+        <div class="week-progress-header">
+          <div>
+            <h3>Progresso da campanha · onde estamos no plano</h3>
+            <div class="week-progress-meta">Semana 3 em curso (1 de 7 dias contabilizados)</div>
+          </div>
+          <div class="week-progress-meta">
+            <strong style="color: var(--navy); font-size: 14px;">2,14 / 11 semanas</strong> · 19,5% do período concluído
+          </div>
+        </div>
+        <div class="week-bar">
+          <div class="week-cell done">S1</div>
+          <div class="week-cell done">S2</div>
+          <div class="week-cell partial">S3</div>
+          <div class="week-cell">S4</div>
+          <div class="week-cell">S5</div>
+          <div class="week-cell">S6</div>
+          <div class="week-cell">S7</div>
+          <div class="week-cell">S8</div>
+          <div class="week-cell">S9</div>
+          <div class="week-cell">S10</div>
+          <div class="week-cell">S11</div>
+        </div>
+        <div class="week-progress-labels">
+          <span>18/05</span>
+          <span>31/07</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS DO ESPECIALISTA -->
+  <section id="insights" class="executive-summary">
+    <div class="container">
+      <span class="section-label">Leitura do especialista</span>
+      <h2>Os 7 pontos que importam neste momento.</h2>
+      <div class="section-intro">
+        <p>Tudo que você precisa saber sobre o desempenho da operação, em linguagem direta.</p>
+      </div>
+
+      <div class="insights-grid">
+
+        <div class="insight-card highlight">
+          <span class="insight-tag">#1 · Achado diferencial</span>
+          <div class="insight-num">+2.195%</div>
+          <h3>A campanha de Tráfego está gerando engajamento de graça.</h3>
+          <p>O objetivo dela é fazer as pessoas clicarem. Mas, além disso, está gerando muita interação com a marca também. Foram <strong>129 mil curtidas e comentários</strong> que a gente não esperava. É um bônus que ajuda a construir a marca.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#2 · KPIs do plano</span>
+          <div class="insight-num">65% / 27%</div>
+          <h3>Já alcançamos muita gente, mas cada um viu pouco.</h3>
+          <p>A meta total do projeto é alcançar 3,5 milhões de pessoas e gerar 11 milhões de visualizações. Em 2 semanas, já chegamos em <strong>2,3 milhões de pessoas (65% da meta)</strong>. Mas as visualizações estão em <strong>2,96 milhões (27%)</strong>. A conta não fecha porque cada pessoa está vendo o anúncio poucas vezes. É isso que vamos ajustar.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#3 · Eficiência</span>
+          <div class="insight-num">−60%</div>
+          <h3>Estamos pagando bem menos para mostrar a marca.</h3>
+          <p>O preço para mostrar o anúncio mil vezes está em <strong>R$ 6,55</strong>. Era pra estar em R$ 18,18. Ou seja: cada real está rendendo quase 3x mais do que o esperado. Isso acontece porque os criativos estão fazendo sucesso — quando o anúncio é bom, o Meta cobra mais barato para mostrá-lo.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#4 · Confirmação</span>
+          <div class="insight-num">2,1%</div>
+          <h3>As pessoas estão clicando muito mais do que o esperado.</h3>
+          <p>A cada 100 pessoas que veem o anúncio, <strong>mais de 2 clicam</strong>. A meta era menos da metade disso. E o melhor: esse número está estável nas duas semanas. Isso quer dizer que o público certo está sendo impactado pela mensagem certa.</p>
+        </div>
+
+        <div class="insight-card attention">
+          <span class="insight-tag">#5 · Ponto de atenção</span>
+          <div class="insight-num">1,87 / 1,62</div>
+          <h3>Cada pessoa está vendo a marca poucas vezes.</h3>
+          <p>O ideal para campanhas de Copa do Mundo é que cada pessoa veja a marca de <strong>3 a 3,5 vezes</strong> — assim ela lembra. Hoje, em Engajamento, cada pessoa vê 1,87 vezes. Em Tráfego, 1,62. E pior: esse número está caindo. Vamos ajustar nesta semana para resolver isso.</p>
+        </div>
+
+        <div class="insight-card attention">
+          <span class="insight-tag">#6 · Ponto de atenção</span>
+          <div class="insight-num">−53%</div>
+          <h3>A campanha de Tráfego desacelerou na 2ª semana.</h3>
+          <p>Na primeira semana, a campanha de Tráfego alcançou <strong>901 mil pessoas</strong>. Na segunda, só <strong>426 mil</strong>. Isso pode ser cansaço do criativo (a galera já viu, ficou enjoado) ou ajuste do algoritmo. Novos criativos entram esta semana para resolver isso.</p>
+        </div>
+
+        <div class="insight-card structural">
+          <span class="insight-tag">#7 · Próximos passos</span>
+          <div class="insight-num">52%</div>
+          <h3>Ainda temos metade do orçamento e estamos no caminho certo.</h3>
+          <p>Gastamos <strong>R$ 20 mil dos R$ 39 mil</strong> previstos para esse período. Como tudo está mais barato que o esperado, sobra dinheiro para investir nos criativos que estão funcionando melhor. <strong>Novos criativos chegam esta semana</strong> para fortalecer ainda mais a marca.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPANHA ENGAJAMENTO -->
+  <section id="engajamento">
+    <div class="container">
+      <div class="campaign-banner eng">
+        <div class="campaign-icon">E</div>
+        <div>
+          <h2>Campanha de Engajamento</h2>
+          <div class="campaign-meta">M_META_POC_ENG_* · Meta Ads · KPI principal: Engajamento</div>
+        </div>
+        <div class="campaign-spacer"></div>
+        <div class="campaign-stamp">R$ 100,3K alocados / 11 semanas</div>
+      </div>
+
+      <div class="section-intro">
+        <p>Comparativo semanal de cada métrica vs meta proporcional. <strong>Status com tolerância de ±5%</strong>: <span style="color:var(--green-deep); font-weight:700;">acima</span>, <span style="color:var(--muted); font-weight:700;">dentro</span> ou <span style="color:var(--red); font-weight:700;">abaixo do esperado</span>. Clique nos ícones <span class="info-tip">i</span> para comentários contextuais.</p>
+      </div>
+
+      <div class="metrics-table-wrap">
+        <table class="metrics-table" id="table-eng"></table>
+      </div>
+
+      <div class="legend">
+        <strong style="color: var(--navy);">Legenda:</strong>
+        <span class="legend-item"><span class="legend-chip above">▲ Acima</span> &gt;105% da meta</span>
+        <span class="legend-item"><span class="legend-chip within">● Dentro</span> 95-105% da meta</span>
+        <span class="legend-item"><span class="legend-chip below">▼ Abaixo</span> &lt;95% da meta</span>
+        <span class="legend-item"><span class="legend-chip partial">◐ Parcial</span> S3 — 1/7 da semana</span>
+        <span class="legend-item">📌 <strong>Custos</strong>: abaixo da meta = positivo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPANHA TRÁFEGO -->
+  <section id="trafego" style="background: rgba(45,181,223,.04);">
+    <div class="container">
+      <div class="campaign-banner trf">
+        <div class="campaign-icon">T</div>
+        <div>
+          <h2>Campanha de Tráfego</h2>
+          <div class="campaign-meta">M_META_POC_TRF_* · Meta Ads · KPI principal: Cliques no link</div>
+        </div>
+        <div class="campaign-spacer"></div>
+        <div class="campaign-stamp">R$ 100,3K alocados / 11 semanas</div>
+      </div>
+
+      <div class="section-intro">
+        <p>Comparativo semanal de cada métrica vs meta proporcional. <strong>Atenção especial à linha de Engajamento</strong> — está muito acima da meta, sinalizando que o criativo de TRF gera interação além do clique no link, um benefício secundário relevante para a marca.</p>
+      </div>
+
+      <div class="metrics-table-wrap">
+        <table class="metrics-table" id="table-trf"></table>
+      </div>
+
+      <div class="legend">
+        <strong style="color: var(--navy);">Legenda:</strong>
+        <span class="legend-item"><span class="legend-chip above">▲ Acima</span> &gt;105% da meta</span>
+        <span class="legend-item"><span class="legend-chip within">● Dentro</span> 95-105% da meta</span>
+        <span class="legend-item"><span class="legend-chip below">▼ Abaixo</span> &lt;95% da meta</span>
+        <span class="legend-item"><span class="legend-chip partial">◐ Parcial</span> S3 — 1/7 da semana</span>
+        <span class="legend-item">📌 <strong>Custos</strong>: abaixo da meta = positivo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASSOS -->
+  <section id="proximos">
+    <div class="container">
+      <span class="section-label">Próximos passos · O que vem na S3</span>
+      <h2>Foco operacional: equilibrar alcance com frequência.</h2>
+      <div class="section-intro">
+        <p>Com base na leitura das 2 primeiras semanas, o plano para o restante da campanha tem 3 frentes claras.</p>
+      </div>
+
+      <div class="insights-grid">
+
+        <div class="insight-card structural" style="background: white; border: 1px solid rgba(0,59,92,.1);">
+          <span class="insight-tag" style="background: rgba(45,181,223,.15); color: var(--blue);">1</span>
+          <h3 style="color: var(--navy);">Aumentar frequência via retargeting</h3>
+          <p style="color: var(--muted);">Construir audiência custom de quem viu 75%+ do vídeo manifesto e rodar criativos curtos (cortes de 6-15s) apenas para essa base. Esse movimento aumenta a frequência sobre quem já demonstrou interesse, sem perder eficiência de CPM.</p>
+        </div>
+
+        <div class="insight-card structural" style="background: white; border: 1px solid rgba(0,59,92,.1);">
+          <span class="insight-tag" style="background: rgba(45,181,223,.15); color: var(--blue);">2</span>
+          <h3 style="color: var(--navy);">Rotacionar novos criativos esta semana</h3>
+          <p style="color: var(--muted);">Novos ativos entrando em rotação na S3 para combater fadiga de criativo nas campanhas atuais (queda de entrega em TRF entre S1 e S2 é sinal disso). Refresh garante engajamento sustentado e curva de CPM estável.</p>
+        </div>
+
+        <div class="insight-card structural" style="background: white; border: 1px solid rgba(0,59,92,.1);">
+          <span class="insight-tag" style="background: rgba(45,181,223,.15); color: var(--blue);">3</span>
+          <h3 style="color: var(--navy);">Realocar verba não consumida com inteligência</h3>
+          <p style="color: var(--muted);">Sobram R$ 18,8K do orçamento previsto até aqui. Em vez de gastar uniformemente, alocar reforço nos próximos picos (jogos do Brasil) e em audiências já aquecidas — extraindo mais frequência da mesma base.</p>
+        </div>
+
+        <div class="insight-card structural" style="background: white; border: 1px solid rgba(0,59,92,.1);">
+          <span class="insight-tag" style="background: rgba(45,181,223,.15); color: var(--blue);">4</span>
+          <h3 style="color: var(--navy);">Próximo report: S3 fechada</h3>
+          <p style="color: var(--muted);">O próximo report cobrirá a semana 3 inteira (01/06 a 07/06), permitindo confirmar se a queda de entrega em TRF foi pontual ou tendência. Também trará leitura preliminar do impacto dos novos criativos sobre frequência e custos unitários.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h2>Volume forte, eficiência confirmada, frequência em ajuste.</h2>
+    <p>O report consolida 2,14 semanas das 11 previstas. A operação está saudável e os ajustes operacionais identificados visam transformar volume em memorização de marca.</p>
+    <div class="next-step">⏭ Próximo entregável: análise de criativos (em desenvolvimento)</div>
+    <div class="footer-meta">
+      Report gerado em 01/06/2026 · Período: 18/05 a 01/06/2026 · Fonte: Meta Ads · Confidential — Internal use only
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================
+    // DADOS REALIZADOS (consolidados por semana)
+    // =========================================================
+    const dados = {
+      eng: {
+        s1: {alcance: 459253, impressoes: 654048, cpm: 9.40, cliques: 11987, ctr: 1.83, visitas_perfil: 7621, engajamento: 54595, seguidores: 126, gasto: 6148.07, freq: 1.99, dias: 7},
+        s2: {alcance: 498148, impressoes: 640298, cpm: 8.85, cliques: 11574, ctr: 1.81, visitas_perfil: 7855, engajamento: 98405, seguidores: 69, gasto: 5663.92, freq: 1.76, dias: 7},
+        s3: {alcance: 10532, impressoes: 11071, cpm: 4.96, cliques: 10, ctr: 0.09, visitas_perfil: 5, engajamento: 5072, seguidores: 0, gasto: 54.94, freq: 1.09, dias: 1},
+        acum: {alcance: 967933, impressoes: 1305417, cpm: 9.09, cliques: 23571, ctr: 1.81, visitas_perfil: 15481, engajamento: 158072, seguidores: 195, gasto: 11866.93, freq: 1.87, dias: 15}
+      },
+      trf: {
+        s1: {alcance: 900987, impressoes: 1119039, cpm: 4.36, cliques: 23620, ctr: 2.11, visitas_perfil: 49, engajamento: 72737, seguidores: 0, gasto: 4883.93, freq: 1.66, dias: 7},
+        s2: {alcance: 426212, impressoes: 530817, cpm: 6.21, cliques: 18797, ctr: 3.54, visitas_perfil: 113, engajamento: 56228, seguidores: 0, gasto: 3297.81, freq: 1.55, dias: 7},
+        s3: {alcance: 5075, impressoes: 5623, cpm: 9.79, cliques: 352, ctr: 6.26, visitas_perfil: 6, engajamento: 662, seguidores: 0, gasto: 55.06, freq: 1.10, dias: 1},
+        acum: {alcance: 1332274, impressoes: 1655479, cpm: 4.98, cliques: 42769, ctr: 2.58, visitas_perfil: 168, engajamento: 129627, seguidores: 0, gasto: 8236.80, freq: 1.62, dias: 15}
+      }
+    };
+
+    // =========================================================
+    // METAS SEMANAIS (flat por 11 semanas)
+    // =========================================================
+    // R$ 100K / 11 = R$ 9.091/semana por campanha
+    // Alcance: 1.75M / 11 = 159.091/semana
+    // Impressões: 5.5M / 11 = 500.000/semana
+    // CPM derivado: R$ 18,18
+    // Freq alvo: 3 a 3,5 (média 3,25)
+
+    const metaSemanaENG = {
+      alcance: 159091,
+      impressoes: 500000,
+      cpm: 18.18,
+      cliques: 4000,     // CTR 0,80% * 500K impressões
+      ctr: 0.80,
+      visitas_perfil: 1600, // 40% dos cliques
+      engajamento: 10545,   // 145K * 80% / 11
+      seguidores: null,     // SEM META
+      gasto: 9090.91,
+      freq: 3.25
+    };
+
+    const metaSemanaTRF = {
+      alcance: 159091,
+      impressoes: 500000,
+      cpm: 18.18,
+      cliques: 7500,    // CTR 1,50% * 500K impressões
+      ctr: 1.50,
+      // visitas_perfil removida do TRF
+      engajamento: 2636,    // 145K * 20% / 11
+      seguidores: null,
+      gasto: 9090.91,
+      freq: 3.25
+    };
+
+    // =========================================================
+    // FORMATAÇÃO
+    // =========================================================
+    const fmtNum = n => Math.round(n).toLocaleString('pt-BR');
+    const fmtMoney = n => 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const fmtPct = n => n.toFixed(2).replace('.', ',') + '%';
+    const fmtFreq = n => n.toFixed(2).replace('.', ',');
+
+    // =========================================================
+    // STATUS / CLASSIFICAÇÃO COM TOLERÂNCIA ±5%
+    // =========================================================
+    function calcStatus(realizado, meta, isCostMetric) {
+      if (meta === null || meta === undefined) return {cls: 'no-target', label: 'sem meta', pct: null};
+      if (meta === 0) return {cls: 'no-target', label: 'sem meta', pct: null};
+
+      const ratio = realizado / meta;
+      const pct = (ratio - 1) * 100;
+
+      // Tolerância ±5%
+      if (Math.abs(pct) <= 5) {
+        return {cls: 'within', label: '● dentro', pct: pct, sign: ''};
+      }
+
+      if (isCostMetric) {
+        // Para custos: abaixo da meta = positivo
+        if (pct < -5) return {cls: 'above', label: '▲ ' + Math.abs(pct).toFixed(0) + '% mais barato', pct: pct, sign: '-'};
+        return {cls: 'below', label: '▼ ' + pct.toFixed(0) + '% acima', pct: pct, sign: '+'};
+      } else {
+        // Para volume: acima da meta = positivo
+        if (pct > 5) return {cls: 'above', label: '▲ +' + pct.toFixed(0) + '% acima', pct: pct, sign: '+'};
+        return {cls: 'below', label: '▼ ' + pct.toFixed(0) + '% abaixo', pct: pct, sign: ''};
+      }
+    }
+
+    // =========================================================
+    // CONSTRUÇÃO DA TABELA
+    // =========================================================
+    function buildCell(realizado, meta, formatter, isCostMetric, isPartial) {
+      // Para semana parcial (S3 = 1 dia), meta é proporcional (1/7)
+      const metaUse = isPartial && meta !== null ? meta / 7 : meta;
+      const status = calcStatus(realizado, metaUse, isCostMetric);
+
+      // Se valor realizado é zero ou meta é null, simplificar
+      if (meta === null) {
+        return `
+          <td>
+            <div class="cell-value">${formatter(realizado)}</div>
+            <div class="cell-meta">—</div>
+            <div class="cell-status no-target">sem meta</div>
+          </td>
+        `;
+      }
+
+      const partialLabel = isPartial ? '<div class="cell-status partial" style="margin-top:4px;">◐ parcial</div>' : '';
+
+      return `
+        <td>
+          <div class="cell-value">${formatter(realizado)}</div>
+          <div class="cell-meta">Meta: ${formatter(metaUse)}</div>
+          <div class="cell-status ${status.cls}">${status.label}</div>
+          ${partialLabel}
+        </td>
+      `;
+    }
+
+    function buildRow(label, sublabel, key, formatter, isCostMetric, isKPI, campanha, comments) {
+      const meta = campanha === 'eng' ? metaSemanaENG[key] : metaSemanaTRF[key];
+      const data = dados[campanha];
+      const tipHtml = comments ? `<span class="info-tip ${comments.attention ? 'attention' : ''}" onclick="toggleComment('comment-${campanha}-${key}')">i</span>` : '';
+
+      // META acumulada = meta semanal × 2,14 semanas
+      // Para S1 e S2: meta semanal completa
+      // Para S3: 1/7 da meta semanal
+      // Acumulado: 2 semanas + 1 dia = 2 + 1/7 = 2,143 semanas
+      const metaAcum = meta !== null ? meta * (2 + 1/7) : null;
+
+      return `
+        <tr>
+          <td class="metric-label-cell">
+            ${label}
+            ${isKPI ? '<span class="kpi-mark">KPI</span>' : ''}
+            ${tipHtml}
+            ${sublabel ? `<span class="metric-sublabel">${sublabel}</span>` : ''}
+          </td>
+          ${buildCell(data.s1[key], meta, formatter, isCostMetric, false)}
+          ${buildCell(data.s2[key], meta, formatter, isCostMetric, false)}
+          ${buildCell(data.s3[key], meta, formatter, isCostMetric, true)}
+          ${buildCell(data.acum[key], metaAcum, formatter, isCostMetric, false)}
+        </tr>
+        ${comments ? `
+          <tr class="comment-row">
+            <td colspan="5">
+              <div class="comment-content${comments.attention ? ' attention' : ''}" id="comment-${campanha}-${key}">
+                <span class="comment-title${comments.attention ? ' attention' : ''}">${comments.title}</span>
+                <p>${comments.body}</p>
+              </div>
+            </td>
+          </tr>
+        ` : ''}
+      `;
+    }
+
+    function buildTableHTML(campanha) {
+      const isEng = campanha === 'eng';
+
+      const header = `
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th>S1 <span class="week-sublabel">18-24/05 · completa</span></th>
+            <th>S2 <span class="week-sublabel">25-31/05 · completa</span></th>
+            <th>S3 <span class="week-sublabel">01-07/06 · parcial (1/7)</span></th>
+            <th class="totals">Acumulado <span class="week-sublabel">15 dias / 75</span></th>
+          </tr>
+        </thead>
+      `;
+
+      let rows = '';
+
+      if (isEng) {
+        // Ordem para ENG: ENGAJAMENTO (KPI), ALCANCE, IMPRESSÕES, FREQUÊNCIA, CPM, CLIQUES, CTR, VISITAS, SEGUIDORES, INVESTIDO
+        rows += buildRow('Engajamento', 'Interações totais com a marca', 'engajamento', fmtNum, false, true, 'eng', {
+          title: 'Insight: KPI principal muito acima da meta',
+          body: 'A entrega de engajamento está consistentemente acima da meta nas duas semanas fechadas. Isso confirma o fit entre criativo e audiência. Acumulado de 158K interações (meta proporcional: 22,6K) — 599% acima.'
+        });
+        rows += buildRow('Alcance', 'Pessoas únicas impactadas', 'alcance', fmtNum, false, false, 'eng', null);
+        rows += buildRow('Impressões', 'Total de exibições', 'impressoes', fmtNum, false, false, 'eng', null);
+        rows += buildRow('Frequência', 'Impressões ÷ Alcance · meta plano: 3 a 3,5', 'freq', fmtFreq, false, false, 'eng', {
+          attention: true,
+          title: 'Atenção: frequência abaixo da meta de branding',
+          body: 'Frequência ideal para campanhas de awareness é 3 a 3,5 (benchmark do plano). Estamos em 1,87 acumulado, e caindo entre S1 e S2 (1,99 → 1,76). Significa que cada pessoa está vendo a marca poucas vezes — ajuste necessário via retargeting e fechamento de audiência.'
+        });
+        rows += buildRow('CPM', 'Custo por mil impressões · custo baixo = positivo', 'cpm', fmtMoney, true, false, 'eng', null);
+        rows += buildRow('Cliques no link', 'Cliques registrados em links das peças', 'cliques', fmtNum, false, false, 'eng', null);
+        rows += buildRow('CTR', 'Taxa de clique sobre impressões', 'ctr', fmtPct, false, false, 'eng', {
+          title: 'CTR consistente acima da meta',
+          body: 'CTR esperado de 0,80% para campanhas de engajamento. Estamos em 1,81% acumulado — mais do que o dobro do benchmark, e estável entre S1 e S2. ⚠ Em S3 o número está em 0,09% por atribuição parcial (D-0 do Meta Ads).'
+        });
+        rows += buildRow('Visitas ao perfil', 'Acessos ao perfil do Instagram', 'visitas_perfil', fmtNum, false, false, 'eng', null);
+        rows += buildRow('Seguidores', 'Novos seguidores no Instagram · sem meta', 'seguidores', fmtNum, false, false, 'eng', null);
+        rows += buildRow('Valor investido', 'Custo total da campanha · gasto abaixo = positivo', 'gasto', fmtMoney, true, false, 'eng', {
+          title: 'Ritmo de investimento abaixo do planejado é positivo',
+          body: 'CPM mais barato permite entregar mais com menos. Sobra orçamento para escalar criativos vencedores e reforçar audiências quentes nas próximas semanas — sem comprometer o budget total.'
+        });
+      } else {
+        // Ordem para TRF: CLIQUES (KPI), ALCANCE, IMPRESSÕES, FREQUÊNCIA, CTR, CPM, ENGAJAMENTO, INVESTIDO
+        rows += buildRow('Cliques no link', 'KPI principal de Tráfego', 'cliques', fmtNum, false, true, 'trf', {
+          title: 'KPI principal performando bem acima',
+          body: 'Acumulado de 42.769 cliques contra meta proporcional de 16.072 — 166% acima. Sinal de que o criativo está convertendo a impressão em ação concreta.'
+        });
+        rows += buildRow('Alcance', 'Pessoas únicas impactadas', 'alcance', fmtNum, false, false, 'trf', {
+          attention: true,
+          title: 'Atenção: queda significativa entre S1 e S2',
+          body: 'Alcance caiu 53% (901K → 426K) entre S1 e S2, mesmo com investimento caindo apenas 32%. Possíveis causas: saturação de audiência inicial, fadiga de criativo, ou ajuste de leilão. Ação: refresh criativo na S3 e revisão de audiências.'
+        });
+        rows += buildRow('Impressões', 'Total de exibições', 'impressoes', fmtNum, false, false, 'trf', null);
+        rows += buildRow('Frequência', 'Impressões ÷ Alcance · meta plano: 3 a 3,5', 'freq', fmtFreq, false, false, 'trf', {
+          attention: true,
+          title: 'Atenção: frequência abaixo da meta',
+          body: 'TRF está com frequência ainda mais baixa que ENG (1,62 acumulado). Para campanhas de Tráfego a frequência é menos crítica do que para Engajamento, mas ainda assim influencia memorização da marca. Estratégia: fechar lookalikes e ativar retargeting.'
+        });
+        rows += buildRow('CTR', 'Taxa de clique sobre impressões', 'ctr', fmtPct, false, false, 'trf', null);
+        rows += buildRow('CPM', 'Custo por mil impressões · custo baixo = positivo', 'cpm', fmtMoney, true, false, 'trf', null);
+        rows += buildRow('Engajamento', 'Interações com a Página · não é KPI desta campanha', 'engajamento', fmtNum, false, false, 'trf', {
+          title: 'O "plus" da campanha de Tráfego',
+          body: 'Engajamento não estava previsto como objetivo do Tráfego, mas a campanha acumulou 129.627 interações — 2.195% acima da meta proporcional. Isso significa que o criativo de Tráfego está construindo marca além do clique. Ganho extra significativo para a equação geral.'
+        });
+        rows += buildRow('Valor investido', 'Custo total da campanha · gasto abaixo = positivo', 'gasto', fmtMoney, true, false, 'trf', null);
+      }
+
+      return header + '<tbody>' + rows + '</tbody>';
+    }
+
+    document.getElementById('table-eng').innerHTML = buildTableHTML('eng');
+    document.getElementById('table-trf').innerHTML = buildTableHTML('trf');
+
+    // =========================================================
+    // TOGGLE COMENTÁRIO
+    // =========================================================
+    function toggleComment(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('open');
+    }
+  </script>
+
+  <footer class="site-footer">
+    <h2>Volume forte, eficiência confirmada, frequência em ajuste.</h2>
+    <p>Operação caminha bem aos 19,5% do plano. Próximo report fecha a Semana 3 e traz leitura da campanha completa.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/performance-timeline.js" defer></script>
+</body>
+</html>

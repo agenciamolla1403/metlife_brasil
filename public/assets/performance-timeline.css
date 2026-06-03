@@ -1,0 +1,127 @@
+/* ============================================================
+   MetLife Brasil — Performance Timeline (CSS)
+   Sticky abaixo do header global, scroll lateral em mobile,
+   pills com 3 estados: publicado · current · em breve.
+   ============================================================ */
+
+.performance-timeline {
+  position: sticky;
+  top: var(--mlh-header-h, 60px);
+  z-index: 25;
+  background: rgba(238, 246, 248, 0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 59, 92, 0.08);
+}
+
+.performance-timeline-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.performance-timeline-inner::-webkit-scrollbar { display: none; }
+
+.performance-timeline-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #5B7280;
+  flex-shrink: 0;
+  padding-right: 4px;
+}
+
+.pt-pill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: Arial, sans-serif;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  border: 1px solid transparent;
+  line-height: 1.2;
+}
+.pt-pill-label {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.pt-pill-period {
+  font-size: 10.5px;
+  font-weight: 400;
+  opacity: 0.7;
+  letter-spacing: 0.1px;
+}
+
+/* Estado: publicado (clicável) */
+.pt-pill.is-published {
+  background: white;
+  color: #003B5C;
+  border-color: rgba(0, 59, 92, 0.10);
+}
+.pt-pill.is-published:hover {
+  background: rgba(45, 181, 223, 0.12);
+  border-color: rgba(45, 181, 223, 0.30);
+  transform: translateY(-1px);
+}
+
+/* Estado: semana atual */
+.pt-pill.is-current {
+  background: #003B5C;
+  color: white;
+  border-color: #003B5C;
+  box-shadow: 0 4px 12px rgba(0, 59, 92, 0.18);
+}
+.pt-pill.is-current:hover {
+  background: #002940;
+  border-color: #002940;
+  transform: translateY(-1px);
+}
+.pt-pill.is-current .pt-pill-period {
+  color: rgba(255, 255, 255, 0.88);
+  opacity: 1;
+}
+
+/* Estado: em breve (não clicável) */
+.pt-pill.is-upcoming {
+  background: transparent;
+  color: rgba(0, 59, 92, 0.45);
+  border-color: rgba(0, 59, 92, 0.12);
+  border-style: dashed;
+  cursor: default;
+}
+.pt-pill.is-upcoming .pt-pill-period {
+  opacity: 0.7;
+}
+
+/* Erro silencioso (manifesto fora do ar) */
+.performance-timeline-error .performance-timeline-label {
+  color: #E55B5B;
+  letter-spacing: 0.2px;
+  text-transform: none;
+}
+
+/* Mobile: sticky NÃO em mobile (regra geral do projeto, iOS Safari bug) */
+@media (max-width: 760px) {
+  .performance-timeline {
+    position: static;
+  }
+  .performance-timeline-inner {
+    padding: 8px 16px;
+    gap: 6px;
+  }
+  .pt-pill {
+    padding: 5px 11px;
+  }
+  .pt-pill-label { font-size: 11.5px; }
+  .pt-pill-period { font-size: 9.5px; }
+}
