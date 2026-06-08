@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+  <title>Performance · Semana 3 · 31/05 a 06/06 · MetLife 2026</title>
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      /* Cores por canal */
+      --meta: #0866FF;
+      --youtube: #FF0033;
+      --linkedin: #0A66C2;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* ===== HERO (padrão do hub · igual week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); }
+    }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* anchor-nav vem do /assets/breadcrumb.css (sticky com top correto + responsivo) */
+
+    /* ===== SECTION GENERAL ===== */
+    section { padding: 70px 24px; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 36px; }
+    h2 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0 0 14px; }
+    .section-intro p { font-size: 16px; color: var(--muted); }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      background: rgba(45,181,223,.12);
+      border-radius: 999px;
+    }
+
+    /* ===== BUDGET PANEL ===== */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+    .budget-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .budget-card.dark {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+    }
+    .budget-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .budget-card.dark .budget-label { color: rgba(255,255,255,.6); }
+    .budget-value {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .budget-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .budget-card.dark .budget-meta { color: rgba(255,255,255,.7); }
+    .progress-bar {
+      height: 14px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 18px 0 10px;
+      position: relative;
+    }
+    .budget-card.dark .progress-bar { background: rgba(255,255,255,.1); }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--green-deep));
+      border-radius: 999px;
+      transition: width .8s ease;
+      position: relative;
+    }
+    .progress-marker {
+      position: absolute;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .progress-marker::after {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 22px;
+      background: var(--amber);
+      margin: 4px auto 0;
+    }
+    .progress-pct {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .budget-card.dark .progress-pct { color: rgba(255,255,255,.7); }
+
+    .channels-mini {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .channel-row {
+      display: grid;
+      grid-template-columns: 32px 80px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .channel-row .name {
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .budget-card.dark .channel-row .name { color: white; }
+    .channel-row .bar-wrap {
+      height: 8px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .budget-card.dark .channel-row .bar-wrap { background: rgba(255,255,255,.12); }
+    .channel-row .bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .8s ease;
+    }
+    .channel-row .pct {
+      font-weight: 800;
+      font-size: 13px;
+      min-width: 56px;
+      text-align: right;
+    }
+    .ch-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .ch-icon.meta { background: var(--meta); }
+    .ch-icon.youtube { background: var(--youtube); }
+    .ch-icon.linkedin { background: var(--linkedin); }
+
+    /* ===== TIMELINE / CRONOGRAMA ===== */
+    .timeline-section {
+      background: white;
+    }
+    .timeline-block {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .timeline-block-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .timeline-block-header .ch-icon { width: 36px; height: 36px; font-size: 14px; }
+    .timeline-block-header h3 { margin: 0; font-size: 19px; }
+    .timeline-block-header .share-chip {
+      background: rgba(0,59,92,.06);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .timeline-block-header .spacer { flex: 1; }
+    .timeline-block-header .budget-chip {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .timeline-block-header .budget-chip strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .timeline-row-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .timeline-row-label .camp-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .timeline-row-label .camp-share {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .timeline-bar-container {
+      height: 28px;
+      background: rgba(0,59,92,.04);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .timeline-bar-bg {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .timeline-cell {
+      border-right: 1px dashed rgba(0,59,92,.08);
+    }
+    .timeline-cell:last-child { border-right: none; }
+    .timeline-fill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: .3px;
+      transition: all .3s;
+    }
+    .timeline-fill.active {
+      background: linear-gradient(90deg, var(--green-deep), var(--green));
+      color: var(--navy);
+    }
+    .timeline-fill.scheduled {
+      background: repeating-linear-gradient(45deg, rgba(91,114,128,.15), rgba(91,114,128,.15) 6px, rgba(91,114,128,.08) 6px, rgba(91,114,128,.08) 12px);
+      color: var(--muted);
+      border: 1px dashed rgba(91,114,128,.3);
+    }
+    .timeline-fill.delayed {
+      background: linear-gradient(90deg, var(--amber), #E89A1E);
+      color: white;
+    }
+
+    .timeline-axis {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,59,92,.06);
+    }
+    .timeline-axis-weeks {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+    .timeline-axis-weeks span {
+      padding: 2px 0;
+    }
+    .timeline-ondas {
+      display: grid;
+      grid-template-columns: 4fr 4fr 3fr;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .timeline-ondas div {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px;
+      border-radius: 4px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .timeline-ondas .o1 { background: rgba(45,181,223,.15); color: var(--blue); }
+    .timeline-ondas .o2 { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .timeline-ondas .o3 { background: rgba(0,59,92,.1); color: var(--navy); }
+
+    .delay-notice {
+      background: rgba(245,166,35,.08);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .delay-notice strong { color: var(--amber); }
+
+    /* ===== INSIGHTS ===== */
+    .executive-summary {
+      background: var(--navy);
+      color: white;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .executive-summary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(80,229,150,.15), transparent 40%),
+        radial-gradient(circle at 5% 90%, rgba(45,181,223,.15), transparent 40%);
+      pointer-events: none;
+    }
+    .executive-summary .container { position: relative; z-index: 1; }
+    .executive-summary h2 { color: white; }
+    .executive-summary .section-label {
+      color: var(--green);
+      background: rgba(80,229,150,.15);
+    }
+    .executive-summary .section-intro p { color: rgba(255,255,255,.8); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .insight-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 28px;
+      border-radius: 18px;
+      transition: all .3s;
+    }
+    .insight-card:hover { transform: translateY(-3px); }
+    .insight-card.highlight {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--green);
+    }
+    .insight-card.attention {
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.05));
+      border-color: rgba(245,166,35,.4);
+    }
+    .insight-card.structural {
+      background: linear-gradient(135deg, rgba(45,181,223,.15), rgba(45,181,223,.05));
+      border-color: rgba(45,181,223,.4);
+    }
+    .insight-num {
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-num { color: var(--navy); }
+    .insight-card.attention .insight-num { color: var(--amber); }
+    .insight-card.structural .insight-num { color: var(--blue); }
+    .insight-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+      color: white;
+    }
+    .insight-card.highlight h3 { color: var(--navy); }
+    .insight-card p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .insight-card.highlight p { color: rgba(0,59,92,.85); }
+    .insight-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.12);
+      color: white;
+    }
+    .insight-card.highlight .insight-tag {
+      background: var(--navy);
+      color: var(--green);
+    }
+    .insight-card.attention .insight-tag {
+      background: rgba(245,166,35,.25);
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-tag {
+      background: rgba(45,181,223,.25);
+      color: var(--blue);
+    }
+
+    /* ===== TABS DE CANAIS ===== */
+    .tabs-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 0 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 22px 28px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: .3px;
+      position: relative;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -1px;
+      height: 3px;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-btn .tab-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .tab-pane {
+      display: none;
+      padding: 36px;
+    }
+    .tab-pane.active { display: block; }
+
+    /* ===== METRIC CARD ===== */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+    }
+    .metric-card.cost-good {
+      background: linear-gradient(135deg, white 60%, rgba(80,229,150,.06));
+      border-color: rgba(80,229,150,.25);
+    }
+    .metric-card.attention {
+      background: linear-gradient(135deg, white 60%, rgba(245,166,35,.06));
+      border-color: rgba(245,166,35,.3);
+    }
+    .metric-card .metric-name {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .metric-card .metric-value {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-card .metric-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .metric-card .metric-status {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
+    .metric-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .metric-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .metric-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .metric-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+    .kpi-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+    }
+
+    /* ===== TABLES ===== */
+    .metrics-table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .metrics-table-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .metrics-table-header h4 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .metrics-table-header .table-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    .metrics-table th {
+      background: rgba(0,59,92,.03);
+      padding: 14px 16px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    .metrics-table th:first-child { text-align: left; }
+    .metrics-table th.totals {
+      background: linear-gradient(135deg, var(--green-deep), #1FA85A);
+      color: white;
+    }
+    .metrics-table .week-sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      opacity: .65;
+      margin-top: 2px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .metrics-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,59,92,.05);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .metrics-table tbody tr:last-child td { border-bottom: none; }
+    .metrics-table tbody tr:hover { background: rgba(45,181,223,.03); }
+    .metric-label-cell {
+      text-align: left !important;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .metric-label-cell .metric-sublabel {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .metric-label-cell .kpi-mark {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .cell-value {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .cell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 6px;
+    }
+    .cell-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .cell-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .cell-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .cell-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+
+    .empty-cell {
+      color: var(--muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* ===== CHANNEL COMPARISON ===== */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid;
+    }
+    .comparison-card.meta { border-top-color: var(--meta); }
+    .comparison-card.youtube { border-top-color: var(--youtube); }
+    .comparison-card.linkedin { border-top-color: var(--linkedin); }
+    .comparison-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .comparison-card h3 { font-size: 20px; margin: 0; }
+    .comparison-role {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .comparison-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .comparison-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .comparison-list li:last-child { border-bottom: none; }
+    .comparison-list li .label { color: var(--muted); }
+    .comparison-list li .value {
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* ===== PROXIMOS PASSOS ===== */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .next-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.1);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .next-card .num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .next-card h3 { color: var(--navy); margin: 0 0 8px; font-size: 16px; }
+    .next-card p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer h2 { color: white; max-width: 800px; margin: 0 auto 14px; }
+    footer p { color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto; font-size: 14px; }
+    footer .footer-meta {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid, .next-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .timeline-grid, .timeline-axis { grid-template-columns: 1fr; }
+      .tab-btn { padding: 16px 18px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body data-week-id="week-3">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Semana 3 · 31/05 a 06/06</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Report geral · 18/05 a 07/06/2026</span>
+        <h1>3 canais ativos, <span class="accent">R$ 40K investidos</span>, operação em ritmo.</h1>
+        <p class="lead">Consolidação dos primeiros 21 dias da campanha "Patrocinadora Oficial do Cuidado" nos canais <strong>Meta Ads</strong>, <strong>YouTube</strong> e <strong>LinkedIn</strong> — investimento, performance por canal e o que vem na próxima onda.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte deste report</h3>
+        <p>21 dias rodados de uma operação de 75. Tráfego e Engajamento no Meta seguem em ritmo, com YouTube e LinkedIn agora compondo a entrega multi-canal.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>R$ 40,2K</strong><span>investido (3 canais)</span></div>
+          <div class="metric"><strong>11,8%</strong><span>de R$ 340K do plano</span></div>
+          <div class="metric"><strong>21 / 75</strong><span>dias do plano</span></div>
+          <div class="metric"><strong>4,52M</strong><span>impressões combinadas</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#investimento">Investimento</a>
+      <a href="#cronograma">Cronograma</a>
+      <a href="#insights">Leitura do especialista</a>
+      <a href="#canais">Detalhamento por canal</a>
+      <a href="#comparativo">Comparativo</a>
+      <a href="#proximos">Próximos passos</a>
+    </div>
+  </nav>
+
+  <!-- VISÃO GERAL DO INVESTIMENTO -->
+  <section id="investimento">
+    <div class="container">
+      <span class="section-label">Visão geral do investimento</span>
+      <h2>Onde está o dinheiro nos primeiros 21 dias.</h2>
+      <div class="section-intro">
+        <p>A campanha foi planejada para 75 dias com R$ 340 mil de investimento bruto. Até aqui, consumimos R$ 40,2 mil (cerca de 12% da verba) em 28% do tempo. O ritmo está intencionalmente conservador no início — operações de mídia paga aceleram conforme os criativos saem da fase de aprendizado.</p>
+      </div>
+
+      <div class="budget-grid">
+        <!-- BARRA DE PROGRESSO -->
+        <div class="budget-card dark">
+          <div class="budget-label">Orçamento total bruto · 3 canais combinados</div>
+          <div class="budget-value">R$ 340.000</div>
+          <div class="budget-meta">75 dias de campanha · 18/05 a 31/07/2026</div>
+
+          <div class="progress-bar" style="margin-top: 28px;">
+            <div class="progress-marker" style="left: 28%;">Hoje · dia 21</div>
+            <div class="progress-fill" style="width: 11.8%;"></div>
+          </div>
+          <div class="progress-pct">
+            <span>Investido: <strong style="color: var(--green);">R$ 40,2K (11,8%)</strong></span>
+            <span>Restante: R$ 299,8K (88,2%)</span>
+          </div>
+
+          <div class="channels-mini">
+            <div class="channel-row">
+              <div class="ch-icon meta">M</div>
+              <div class="name">Meta Ads</div>
+              <div class="bar-wrap"><div class="bar" style="width: 13.9%; background: var(--meta);"></div></div>
+              <div class="pct">R$ 27,7K</div>
+            </div>
+            <div class="channel-row">
+              <div class="ch-icon youtube">YT</div>
+              <div class="name">YouTube</div>
+              <div class="bar-wrap"><div class="bar" style="width: 7.5%; background: var(--youtube);"></div></div>
+              <div class="pct">R$ 5,9K</div>
+            </div>
+            <div class="channel-row">
+              <div class="ch-icon linkedin">in</div>
+              <div class="name">LinkedIn</div>
+              <div class="bar-wrap"><div class="bar" style="width: 10.8%; background: var(--linkedin);"></div></div>
+              <div class="pct">R$ 6,5K</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DISTRIBUIÇÃO PLANEJADA -->
+        <div class="budget-card">
+          <div class="budget-label">Distribuição por canal · plano original</div>
+          <h3 style="margin-top: 4px; color: var(--navy);">Share do plano de mídia</h3>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px;">Mix de canais aprovado para o projeto inteiro, com valores brutos.</p>
+
+          <div class="channels-mini">
+            <div class="channel-row">
+              <div class="ch-icon meta">M</div>
+              <div class="name">Meta</div>
+              <div class="bar-wrap"><div class="bar" style="width: 59%; background: var(--meta);"></div></div>
+              <div class="pct">59%</div>
+            </div>
+            <div class="channel-row">
+              <div class="ch-icon youtube">YT</div>
+              <div class="name">YouTube</div>
+              <div class="bar-wrap"><div class="bar" style="width: 23%; background: var(--youtube);"></div></div>
+              <div class="pct">23%</div>
+            </div>
+            <div class="channel-row">
+              <div class="ch-icon linkedin">in</div>
+              <div class="name">LinkedIn</div>
+              <div class="bar-wrap"><div class="bar" style="width: 18%; background: var(--linkedin);"></div></div>
+              <div class="pct">18%</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(0,59,92,.08); font-size: 12px; color: var(--muted);">
+            <strong style="color: var(--navy);">Meta Ads:</strong> R$ 200.000 (sujeito a imposto 12,15%)<br>
+            <strong style="color: var(--navy);">YouTube:</strong> R$ 80.000 · <strong style="color: var(--navy);">LinkedIn:</strong> R$ 60.000
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRONOGRAMA DE ATIVAÇÃO -->
+  <section id="cronograma" class="timeline-section">
+    <div class="container">
+      <span class="section-label">Share + cronograma de ativação</span>
+      <h2>Quem está ativo, quem vai entrar em qual semana.</h2>
+      <div class="section-intro">
+        <p>Cada canal tem sub-campanhas com objetivos diferentes — algumas já estão rodando, outras entram em ondas específicas conforme a estratégia do plano. Aqui está o mapa visual de quando cada uma ativa.</p>
+      </div>
+
+      <!-- META -->
+      <div class="timeline-block">
+        <div class="timeline-block-header">
+          <div class="ch-icon meta">M</div>
+          <h3>Meta Ads</h3>
+          <span class="share-chip">59% do orçamento</span>
+          <div class="spacer"></div>
+          <div class="budget-chip">Total: <strong>R$ 200.000</strong> bruto · <strong>R$ 178.333</strong> líquido</div>
+        </div>
+
+        <!-- Linha META_TRF -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">META_TRF</span>
+            <span class="camp-share">Tráfego · 25% · R$ 50K · iniciou 18/05</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill active" style="left: 0%; width: 100%;">ATIVO desde W1</div>
+          </div>
+        </div>
+
+        <!-- Linha META_ENG -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">META_ENG</span>
+            <span class="camp-share">Engajamento · 20% · R$ 40K · iniciou 18/05</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill active" style="left: 0%; width: 100%;">ATIVO desde W1</div>
+          </div>
+        </div>
+
+        <!-- Linha META_AWA -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">META_AWA</span>
+            <span class="camp-share">Awareness · 45% · R$ 90K · entra 08/06 (W4)</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill scheduled" style="left: 27.27%; width: 72.73%;">A INICIAR · 08/06 (W4)</div>
+          </div>
+        </div>
+
+        <!-- Linha META_RET -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">META_RET</span>
+            <span class="camp-share">Retargeting · 10% · R$ 20K · entra 15/06 (W5)</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill scheduled" style="left: 36.36%; width: 63.64%;">A INICIAR · 15/06 (W5)</div>
+          </div>
+        </div>
+
+        <!-- Eixo de semanas -->
+        <div class="timeline-axis">
+          <div></div>
+          <div>
+            <div class="timeline-axis-weeks">
+              <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span><span>W9</span><span>W10</span><span>W11</span>
+            </div>
+            <div class="timeline-ondas">
+              <div class="o1">Onda 1 · Lançamento</div>
+              <div class="o2">Onda 2 · Intensificação</div>
+              <div class="o3">Onda 3 · Performance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YOUTUBE -->
+      <div class="timeline-block">
+        <div class="timeline-block-header">
+          <div class="ch-icon youtube">YT</div>
+          <h3>YouTube Ads</h3>
+          <span class="share-chip">23% do orçamento</span>
+          <div class="spacer"></div>
+          <div class="budget-chip">Total: <strong>R$ 80.000</strong> bruto</div>
+        </div>
+
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">YT_AWA</span>
+            <span class="camp-share">Vídeo Manifesto · 100% · R$ 80K · iniciou 03/06</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill delayed" style="left: 22.5%; width: 77.5%;">ATIVO · 03/06 (W3) · atraso técnico</div>
+          </div>
+        </div>
+
+        <div class="timeline-axis">
+          <div></div>
+          <div>
+            <div class="timeline-axis-weeks">
+              <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span><span>W9</span><span>W10</span><span>W11</span>
+            </div>
+            <div class="timeline-ondas">
+              <div class="o1">Onda 1</div>
+              <div class="o2">Onda 2</div>
+              <div class="o3">Onda 3</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="delay-notice">
+          <strong>⚠ Atraso de ativação documentado:</strong> O YouTube deveria ter começado em 18/05 (W1) mas teve problema técnico na conta. Após dossiê de e-mails e protocolos de atendimento, foi liberado e começou a veicular em <strong>03/06</strong>. Os R$ 16K não consumidos nas W1+W2 foram <strong>redistribuídos entre as semanas restantes</strong>, mantendo o orçamento total de R$ 80K. Meta semanal recalculada: <strong>R$ 9.185/semana</strong>.
+        </div>
+      </div>
+
+      <!-- LINKEDIN -->
+      <div class="timeline-block">
+        <div class="timeline-block-header">
+          <div class="ch-icon linkedin">in</div>
+          <h3>LinkedIn Ads</h3>
+          <span class="share-chip">18% do orçamento</span>
+          <div class="spacer"></div>
+          <div class="budget-chip">Total: <strong>R$ 60.000</strong> bruto</div>
+        </div>
+
+        <!-- Linha LI_INST -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">LI_INST</span>
+            <span class="camp-share">Institucional · 42% · R$ 25K · iniciou 27/05 (W2)</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill active" style="left: 9.09%; width: 90.91%;">ATIVO desde W2 (27/05)</div>
+          </div>
+        </div>
+
+        <!-- Linha LI_LEADGEN -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">LI_LEADGEN</span>
+            <span class="camp-share">Lead Gen Corretores · 42% · R$ 25K · entra W5 (15/06)</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill scheduled" style="left: 36.36%; width: 63.64%;">A INICIAR · 15/06 (W5)</div>
+          </div>
+        </div>
+
+        <!-- Linha LI_B2B -->
+        <div class="timeline-grid">
+          <div class="timeline-row-label">
+            <span class="camp-name">LI_B2B</span>
+            <span class="camp-share">Engajamento B2B · 17% · R$ 10K · entra W5 (15/06)</span>
+          </div>
+          <div class="timeline-bar-container">
+            <div class="timeline-bar-bg">
+              <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+            </div>
+            <div class="timeline-fill scheduled" style="left: 36.36%; width: 63.64%;">A INICIAR · 15/06 (W5)</div>
+          </div>
+        </div>
+
+        <div class="timeline-axis">
+          <div></div>
+          <div>
+            <div class="timeline-axis-weeks">
+              <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span><span>W8</span><span>W9</span><span>W10</span><span>W11</span>
+            </div>
+            <div class="timeline-ondas">
+              <div class="o1">Onda 1</div>
+              <div class="o2">Onda 2</div>
+              <div class="o3">Onda 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INSIGHTS DO ESPECIALISTA -->
+  <section id="insights" class="executive-summary">
+    <div class="container">
+      <span class="section-label">Leitura do especialista</span>
+      <h2>Os 7 pontos que importam neste momento.</h2>
+      <div class="section-intro">
+        <p>Tudo que você precisa saber sobre o desempenho da operação, em linguagem direta.</p>
+      </div>
+
+      <div class="insights-grid">
+
+        <div class="insight-card highlight">
+          <span class="insight-tag">#1 · Cada canal no seu papel</span>
+          <div class="insight-num">3 / 3</div>
+          <h3>Cada canal está fazendo a função que foi planejada.</h3>
+          <p>O Meta está sendo o motor de <strong>volume e eficiência</strong> (4 milhões de impressões a um custo baixo). O YouTube está construindo <strong>memorização</strong> com vídeos longos. O LinkedIn está alcançando o <strong>público profissional certo</strong>, mesmo que em volume menor. É exatamente o que esperávamos do mix de canais.</p>
+        </div>
+
+        <div class="insight-card">
+          <span class="insight-tag">#2 · Meta como motor</span>
+          <div class="insight-num">R$ 6,90</div>
+          <h3>O Meta segue sendo o canal mais barato e eficiente.</h3>
+          <p>O preço para mostrar o anúncio mil vezes no Meta está em <strong>R$ 6,90</strong> — bem abaixo da meta de R$ 25 do plano. Em 21 dias, o Meta sozinho gerou <strong>4 milhões de impressões</strong> e alcançou <strong>3,1 milhões de pessoas</strong>. É o canal que está entregando o maior volume com o menor custo.</p>
+        </div>
+
+        <div class="insight-card attention">
+          <span class="insight-tag">#3 · Ponto de atenção</span>
+          <div class="insight-num">5 dias</div>
+          <h3>YouTube começou atrasado por problema técnico.</h3>
+          <p>O YouTube deveria ter começado em 18/05, mas teve um problema na conta de anúncios. Resolvemos com a plataforma após troca de e-mails e protocolos, e a campanha começou em <strong>03/06</strong>. Como temos só 5 dias rodando, ainda é cedo para tirar conclusões — o algoritmo do Google está em fase de aprendizado, e o CPM tende a cair nos próximos dias.</p>
+        </div>
+
+        <div class="insight-card attention">
+          <span class="insight-tag">#4 · Ponto de atenção</span>
+          <div class="insight-num">R$ 103</div>
+          <h3>LinkedIn é caro, mas é assim que funciona o canal.</h3>
+          <p>O preço para mostrar anúncios no LinkedIn está em <strong>R$ 103,17</strong> a cada mil impressões — muito mais caro que Meta e YouTube. Isso é normal: o LinkedIn cobra mais porque o público é qualificado (corretores, gerentes, executivos). Em 12 dias, alcançamos 5,8 mil pessoas com <strong>3,23% de cliques</strong> — boa taxa para um público B2B.</p>
+        </div>
+
+        <div class="insight-card highlight">
+          <span class="insight-tag">#5 · Achado relevante</span>
+          <div class="insight-num">573K</div>
+          <h3>O Meta está gerando muita interação com a marca.</h3>
+          <p>Entre as campanhas de Engajamento e Tráfego do Meta, já somamos <strong>573 mil interações</strong> (curtidas, comentários, compartilhamentos, visitas ao perfil). Isso mostra que o conceito "Patrocinadora Oficial do Cuidado" está conectando com o público — não é só visualização passiva, é envolvimento real.</p>
+        </div>
+
+        <div class="insight-card attention">
+          <span class="insight-tag">#6 · Ponto de atenção</span>
+          <div class="insight-num">~2x</div>
+          <h3>Cada pessoa ainda está vendo a marca poucas vezes no Meta.</h3>
+          <p>O ideal para campanhas de Copa do Mundo é que cada pessoa veja a marca de <strong>3 a 3,5 vezes</strong>. No Meta, estamos em torno de 2 vezes por pessoa. Vamos ajustar as audiências e ativar retargeting nas próximas semanas para que cada pessoa impactada veja a marca mais vezes — assim ela lembra.</p>
+        </div>
+
+        <div class="insight-card structural">
+          <span class="insight-tag">#7 · Próximos passos</span>
+          <div class="insight-num">W4</div>
+          <h3>Semana que vem aceleramos: AWA entra em jogo.</h3>
+          <p>Na próxima semana (08/06), entra a <strong>campanha de Awareness do Meta</strong>, que é a maior do plano (45% do orçamento do canal). Com isso, mais vídeos manifesto vão rodar e o investimento semanal vai praticamente triplicar. É o início da fase de intensificação.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DETALHAMENTO POR CANAL (TABS) -->
+  <section id="canais">
+    <div class="container">
+      <span class="section-label">Detalhamento por canal</span>
+      <h2>Performance de cada canal, lado a lado.</h2>
+      <div class="section-intro">
+        <p>Cada canal tem suas próprias métricas e seu próprio ritmo. Clique nas abas abaixo para ver o detalhamento completo de Meta, YouTube e LinkedIn.</p>
+      </div>
+
+      <div class="tabs-wrap">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="tab-meta">
+            <div class="tab-icon" style="background: var(--meta);">M</div>
+            <span>Meta Ads</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-youtube">
+            <div class="tab-icon" style="background: var(--youtube);">YT</div>
+            <span>YouTube Ads</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-linkedin">
+            <div class="tab-icon" style="background: var(--linkedin);">in</div>
+            <span>LinkedIn Ads</span>
+          </button>
+        </div>
+
+        <!-- TAB META -->
+        <div class="tab-pane active" id="tab-meta">
+          <h3 style="font-size: 22px; margin-bottom: 6px;">Meta Ads — Resumo consolidado</h3>
+          <p style="color: var(--muted); font-size: 14px; margin-bottom: 24px;">Soma das campanhas de Engajamento (ENG) e Tráfego (TRF) rodando desde 18/05. <strong>R$ 27,7K investidos · 21 dias de operação.</strong></p>
+
+          <!-- Cards de Resumo Meta -->
+          <div class="metric-row" id="meta-resumo-cards"></div>
+
+          <!-- Sub-seção ENG -->
+          <h4 style="margin-top: 36px; font-size: 18px; color: var(--navy);">▸ Campanha META_ENG · Engajamento</h4>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 14px;">KPI principal: <strong>engajamento com a página</strong>. Roda desde W1.</p>
+
+          <div class="metrics-table-wrap">
+            <div class="metrics-table-header">
+              <h4>Desempenho semanal — ENG</h4>
+              <div class="table-meta">3 semanas completas · 21 dias</div>
+            </div>
+            <table class="metrics-table" id="table-eng"></table>
+          </div>
+
+          <!-- Sub-seção TRF -->
+          <h4 style="margin-top: 36px; font-size: 18px; color: var(--navy);">▸ Campanha META_TRF · Tráfego</h4>
+          <p style="color: var(--muted); font-size: 13px; margin-bottom: 14px;">KPI principal: <strong>cliques no link</strong>. Roda desde W1.</p>
+
+          <div class="metrics-table-wrap">
+            <div class="metrics-table-header">
+              <h4>Desempenho semanal — TRF</h4>
+              <div class="table-meta">3 semanas completas · 21 dias</div>
+            </div>
+            <table class="metrics-table" id="table-trf"></table>
+          </div>
+        </div>
+
+        <!-- TAB YOUTUBE -->
+        <div class="tab-pane" id="tab-youtube">
+          <h3 style="font-size: 22px; margin-bottom: 6px;">YouTube Ads — Vídeo manifesto</h3>
+          <p style="color: var(--muted); font-size: 14px; margin-bottom: 24px;">Campanha YT_AWA com objetivo de construir reconhecimento e memorização da marca via vídeo. <strong>Iniciou em 03/06 — 5 dias de operação até 07/06.</strong></p>
+
+          <div class="metric-row" id="youtube-cards"></div>
+
+          <div class="metrics-table-wrap">
+            <div class="metrics-table-header">
+              <h4>Desempenho semanal — YouTube</h4>
+              <div class="table-meta">W1 e W2 sem veiculação · W3 parcial (5 dias)</div>
+            </div>
+            <table class="metrics-table" id="table-youtube"></table>
+          </div>
+
+          <div style="margin-top: 28px; padding: 20px; background: rgba(245,166,35,.06); border-radius: 14px; border-left: 3px solid var(--amber);">
+            <strong style="color: var(--amber); font-size: 13px;">⓵ Sobre o atraso técnico</strong>
+            <p style="margin: 8px 0 0; font-size: 13.5px; color: var(--text);">A campanha YT_AWA deveria ter começado em 18/05 (W1), mas teve problema técnico na conta de anúncios do Google Ads. O atendimento foi resolvido após troca de e-mails e abertura de protocolos. A campanha foi efetivamente ativada em <strong>03/06</strong>. Para manter o orçamento total de R$ 80K, redistribuímos os R$ 16K não consumidos nas W1 e W2 entre as semanas restantes — meta semanal recalculada para <strong>R$ 9.185</strong>.</p>
+          </div>
+        </div>
+
+        <!-- TAB LINKEDIN -->
+        <div class="tab-pane" id="tab-linkedin">
+          <h3 style="font-size: 22px; margin-bottom: 6px;">LinkedIn Ads — Institucional</h3>
+          <p style="color: var(--muted); font-size: 14px; margin-bottom: 24px;">Apenas a campanha LI_INST (Institucional Brand Awareness) está rodando. <strong>Iniciou em 27/05 (W2) — 12 dias de operação.</strong> As campanhas de Lead Gen e B2B entram na W5 (15/06).</p>
+
+          <div class="metric-row" id="linkedin-cards"></div>
+
+          <div class="metrics-table-wrap">
+            <div class="metrics-table-header">
+              <h4>Desempenho semanal — LinkedIn</h4>
+              <div class="table-meta">W1 sem veiculação · W2 (5 dias) + W3 (7 dias) ativas</div>
+            </div>
+            <table class="metrics-table" id="table-linkedin"></table>
+          </div>
+
+          <div style="margin-top: 28px; padding: 20px; background: rgba(45,181,223,.06); border-radius: 14px; border-left: 3px solid var(--blue);">
+            <strong style="color: var(--blue); font-size: 13px;">ⓘ Sobre o CPM do LinkedIn</strong>
+            <p style="margin: 8px 0 0; font-size: 13.5px; color: var(--text);">O CPM de R$ 103,17 está acima do benchmark do plano (R$ 70 para LI_INST), mas <strong>é normal para o LinkedIn</strong>. A plataforma cobra mais porque o público é segmentado por cargo, empresa e nível profissional. A <strong>frequência de 10,69</strong> indica que estamos batendo bastante na mesma audiência, sinal de uma audiência intencionalmente fechada e qualificada. CTR de 3,23% confirma o engajamento.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVO -->
+  <section id="comparativo" style="background: white;">
+    <div class="container">
+      <span class="section-label">Comparativo entre canais</span>
+      <h2>O papel de cada canal nos primeiros 21 dias.</h2>
+      <div class="section-intro">
+        <p>Os números absolutos enganam quando os canais têm escalas tão diferentes. O que importa é se cada um está cumprindo seu papel estratégico.</p>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comparison-card meta">
+          <div class="comparison-card-header">
+            <div class="ch-icon meta">M</div>
+            <h3>Meta Ads</h3>
+          </div>
+          <div class="comparison-role">Escala e eficiência</div>
+          <ul class="comparison-list">
+            <li><span class="label">Investido</span><span class="value">R$ 27,7K</span></li>
+            <li><span class="label">Dias ativos</span><span class="value">21 dias</span></li>
+            <li><span class="label">Alcance</span><span class="value">3,1M</span></li>
+            <li><span class="label">Impressões</span><span class="value">4,0M</span></li>
+            <li><span class="label">CPM médio</span><span class="value">R$ 6,90</span></li>
+            <li><span class="label">Cliques</span><span class="value">81,5K</span></li>
+            <li><span class="label">Engajamento</span><span class="value">573,9K</span></li>
+          </ul>
+        </div>
+
+        <div class="comparison-card youtube">
+          <div class="comparison-card-header">
+            <div class="ch-icon youtube">YT</div>
+            <h3>YouTube</h3>
+          </div>
+          <div class="comparison-role">Memorização emocional</div>
+          <ul class="comparison-list">
+            <li><span class="label">Investido</span><span class="value">R$ 5,9K</span></li>
+            <li><span class="label">Dias ativos</span><span class="value">5 dias</span></li>
+            <li><span class="label">Usuários únicos</span><span class="value">480K</span></li>
+            <li><span class="label">Impressões</span><span class="value">441K</span></li>
+            <li><span class="label">CPM médio</span><span class="value">R$ 13,51</span></li>
+            <li><span class="label">Views TrueView</span><span class="value">258,6K</span></li>
+            <li><span class="label">Taxa interação</span><span class="value">72,42%</span></li>
+          </ul>
+        </div>
+
+        <div class="comparison-card linkedin">
+          <div class="comparison-card-header">
+            <div class="ch-icon linkedin">in</div>
+            <h3>LinkedIn</h3>
+          </div>
+          <div class="comparison-role">Público profissional</div>
+          <ul class="comparison-list">
+            <li><span class="label">Investido</span><span class="value">R$ 6,5K</span></li>
+            <li><span class="label">Dias ativos</span><span class="value">12 dias</span></li>
+            <li><span class="label">Alcance</span><span class="value">5,9K</span></li>
+            <li><span class="label">Impressões</span><span class="value">62,9K</span></li>
+            <li><span class="label">CPM médio</span><span class="value">R$ 103,17</span></li>
+            <li><span class="label">Cliques</span><span class="value">2,0K</span></li>
+            <li><span class="label">CTR</span><span class="value">3,23%</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASSOS -->
+  <section id="proximos" style="background: rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">Próximos passos · W4 em diante</span>
+      <h2>O que muda na próxima semana.</h2>
+      <div class="section-intro">
+        <p>Na semana 4 (08/06), entram novas campanhas e a operação ganha escala. Aqui está o que vamos acompanhar.</p>
+      </div>
+
+      <div class="next-grid">
+
+        <div class="next-card">
+          <div class="num">1</div>
+          <h3>META_AWA entra em jogo</h3>
+          <p>A campanha de Awareness do Meta (a maior do plano, 45% do orçamento do canal) começa em 08/06. Vai amplificar o vídeo manifesto e elevar o alcance e a frequência. Investimento semanal do Meta praticamente triplica.</p>
+        </div>
+
+        <div class="next-card">
+          <div class="num">2</div>
+          <h3>YouTube ganha tração</h3>
+          <p>Com 5 dias de operação, o YouTube ainda está em fase de aprendizado. Esperamos que o CPM caia nas próximas semanas conforme o algoritmo do Google encontra a audiência certa. Meta semanal: R$ 9.185.</p>
+        </div>
+
+        <div class="next-card">
+          <div class="num">3</div>
+          <h3>Aumentar frequência no Meta</h3>
+          <p>Vamos fechar audiências, ativar retargeting de quem viu o vídeo manifesto e rodar novos criativos para que cada pessoa veja a marca mais vezes — meta de frequência 3 a 3,5.</p>
+        </div>
+
+        <div class="next-card">
+          <div class="num">4</div>
+          <h3>LinkedIn: aguardar W5</h3>
+          <p>LI_INST segue rodando. Em 15/06 (W5), entram LI_LEADGEN (corretores) e LI_B2B (engajamento institucional), aumentando o volume e diversificando os formatos.</p>
+        </div>
+
+        <div class="next-card">
+          <div class="num">5</div>
+          <h3>Acompanhar fim da Onda 1</h3>
+          <p>A Onda 1 termina em 14/06 (W4). Próximo report fecha a Onda 1 inteira, com leitura final sobre lançamento e reconhecimento, antes da Onda 2 começar (intensificação).</p>
+        </div>
+
+        <div class="next-card">
+          <div class="num">6</div>
+          <h3>Estrutura de report mantida</h3>
+          <p>Este formato será mantido nos próximos reports. A cada nova semana, atualizamos os dados — você pode acompanhar a evolução de investimento, performance e KPIs no mesmo lugar.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h2>3 canais ativos. Operação no ritmo planejado. Aceleração na próxima semana.</h2>
+    <p>21 dias de campanha consolidados — base sólida para a fase de intensificação que começa em 08/06 com a entrada da campanha de Awareness do Meta.</p>
+    <div class="footer-meta">
+      Report gerado em 07/06/2026 · Período: 18/05 a 07/06/2026 · Fonte: Meta Ads, Google Ads, LinkedIn Campaign Manager · Confidential — Internal use only
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================
+    // DADOS DO REPORT — atualizar aqui a cada novo período
+    // =========================================================
+
+    const dados = {
+      meta: {
+        eng: {
+          s1: {alcance: 459253, impressoes: 654048, cpm: 9.40, cliques: 11987, ctr: 1.83, visitas_perfil: 7621, engajamento: 54595, seguidores: 126, gasto: 6148.07, freq: 1.99, visualizacoes: 628640},
+          s2: {alcance: 498334, impressoes: 640500, cpm: 8.84, cliques: 11574, ctr: 1.81, visitas_perfil: 7856, engajamento: 98511, seguidores: 69, gasto: 5664.77, freq: 1.76, visualizacoes: 629612},
+          s3: {alcance: 553711, impressoes: 704929, cpm: 6.63, cliques: 2354, ctr: 0.33, visitas_perfil: 1333, engajamento: 265044, seguidores: 18, gasto: 4674.23, freq: 1.27, visualizacoes: 723910},
+          acum: {alcance: 1511298, impressoes: 1999477, cpm: 8.25, cliques: 25915, ctr: 1.30, visitas_perfil: 16810, engajamento: 418150, seguidores: 213, gasto: 16487.07, freq: 1.32, visualizacoes: 1982162}
+        },
+        trf: {
+          s1: {alcance: 900987, impressoes: 1119039, cpm: 4.36, cliques: 23620, ctr: 2.11, engajamento: 72737, gasto: 4883.93, freq: 1.66, visualizacoes: 965344},
+          s2: {alcance: 426253, impressoes: 530883, cpm: 6.21, cliques: 18802, ctr: 3.54, engajamento: 56249, gasto: 3298.58, freq: 1.55, visualizacoes: 346860},
+          s3: {alcance: 306553, impressoes: 368672, cpm: 8.35, cliques: 13138, ctr: 3.56, engajamento: 26802, gasto: 3079.03, freq: 1.20, visualizacoes: 292900},
+          acum: {alcance: 1633793, impressoes: 2018594, cpm: 5.58, cliques: 55560, ctr: 2.75, engajamento: 155788, gasto: 11261.54, freq: 1.24, visualizacoes: 1605104}
+        }
+      },
+      youtube: {
+        // Apenas S3 com 5 dias (03-07/06)
+        s3: {investido: 5962.10, impressoes: 441223, usuarios_unicos: 480192, visualizacoes: 258608, cpm: 13.51, cpv: 0.02, vtr: 58.62, interacoes: 319530, taxa_interacao: 72.42, freq: 1.1, dias: 5}
+      },
+      linkedin: {
+        // Acumulado 27/05 a 07/06 (12 dias) — só LI_INST ativa
+        acum: {investido: 6494.00, impressoes: 62942, alcance: 5889, cpm: 103.17, cliques: 2031, ctr: 3.23, cpc: 3.20, engajamento: 2049, taxa_engajamento: 3.26, freq: 10.69, leads: 0, dias: 12}
+      }
+    };
+
+    // =========================================================
+    // METAS SEMANAIS — derivadas do plano de mídia
+    // =========================================================
+    // Meta: valores líquidos. ENG R$ 7.579/sem · TRF R$ 8.471/sem (W1-W3 com extra AWA)
+    // Cálculo das demais metas a partir dos benchmarks do plano:
+    //   ENG: CPM R$ 22 / CTR 0,80% / Eng. Rate 8,0%
+    //   TRF: CPM R$ 28 / CTR 1,50% / Eng. Rate 4,0%
+
+    const metaSemana = {
+      eng: {
+        gasto: 7579,
+        impressoes: 344506, // 7579 / 22 * 1000
+        alcance: 114835,    // impr / freq 3
+        cpm: 22,
+        cliques: 2756,      // 0,8% de 344506
+        ctr: 0.80,
+        visitas_perfil: 1100,
+        engajamento: 27560, // 8% das impressões
+        seguidores: null,
+        freq: 3.25
+      },
+      trf: {
+        gasto: 8471,
+        impressoes: 302529,
+        alcance: 100843,
+        cpm: 28,
+        cliques: 4538,      // 1,5% de 302529
+        ctr: 1.50,
+        engajamento: 12101,
+        freq: 3.25
+      },
+      youtube: {
+        // Recalculado pelo plano original: R$ 80K / 8,71 semanas restantes
+        gasto: 9185,
+        impressoes: 183700, // CPM 50 → 9185/50*1000
+        usuarios_unicos: 61233,
+        visualizacoes: 61716,
+        cpm: 50,
+        cpv: 0.27,
+        vtr: 33.6,
+        taxa_interacao: 1.5,
+        freq: 3.0
+      },
+      linkedin: {
+        // LI_INST nas W2-W4: R$ 10K/3 = R$ 3.333/semana
+        gasto: 3333,
+        impressoes: 47614,  // CPM 70 → 3333/70*1000
+        alcance: 15871,
+        cpm: 70,
+        cliques: 238,       // 0,5% de 47614
+        ctr: 0.50,
+        engajamento: 1428,  // 3% das impressões
+        freq: 3.0
+      }
+    };
+
+    // =========================================================
+    // FORMATAÇÃO
+    // =========================================================
+    const fmtNum = n => Math.round(n).toLocaleString('pt-BR');
+    const fmtMoney = n => 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const fmtPct = n => n.toFixed(2).replace('.', ',') + '%';
+    const fmtFreq = n => n.toFixed(2).replace('.', ',');
+
+    // =========================================================
+    // STATUS CALC (tolerância ±5%)
+    // =========================================================
+    function calcStatus(realizado, meta, isCostMetric) {
+      if (meta === null || meta === undefined || meta === 0) return {cls: 'no-target', label: 'sem meta'};
+      const ratio = realizado / meta;
+      const pct = (ratio - 1) * 100;
+
+      if (Math.abs(pct) <= 5) return {cls: 'within', label: '● dentro'};
+
+      if (isCostMetric) {
+        if (pct < -5) return {cls: 'above', label: '▲ ' + Math.abs(pct).toFixed(0) + '% mais barato'};
+        return {cls: 'below', label: '▼ ' + pct.toFixed(0) + '% acima'};
+      }
+      if (pct > 5) return {cls: 'above', label: '▲ +' + pct.toFixed(0) + '%'};
+      return {cls: 'below', label: '▼ ' + pct.toFixed(0) + '%'};
+    }
+
+    // =========================================================
+    // META — RESUMO CARDS
+    // =========================================================
+    function renderMetaResumoCards() {
+      const eng = dados.meta.eng.acum;
+      const trf = dados.meta.trf.acum;
+      const totalInvestido = eng.gasto + trf.gasto;
+      const totalImpr = eng.impressoes + trf.impressoes;
+      const totalAlcance = eng.alcance + trf.alcance;
+      const totalCliques = eng.cliques + trf.cliques;
+      const totalEngajamento = eng.engajamento + trf.engajamento;
+      const cpmMedio = totalInvestido / totalImpr * 1000;
+      const ctrMedio = totalCliques / totalImpr * 100;
+
+      const cards = [
+        {name: 'Investido', value: fmtMoney(totalInvestido), meta: 'Meta: R$ 48.150 (W1-W3)', status: 'within'},
+        {name: 'Alcance', value: fmtNum(totalAlcance), meta: 'Soma ENG + TRF'},
+        {name: 'Impressões', value: fmtNum(totalImpr), meta: 'Soma ENG + TRF'},
+        {name: 'CPM médio', value: fmtMoney(cpmMedio), meta: 'Meta: R$ 22-28', costGood: true, status: 'above', statusLabel: '69% mais barato'},
+        {name: 'Cliques no link', value: fmtNum(totalCliques), meta: 'ENG + TRF'},
+        {name: 'CTR médio', value: fmtPct(ctrMedio), meta: 'Meta: 0,80-1,50%', status: 'above'},
+        {name: 'Engajamento total', value: fmtNum(totalEngajamento), meta: 'KPI principal Meta', kpi: true, status: 'above'},
+        {name: 'Frequência média', value: '~1,3', meta: 'Meta plano: 3,0-3,5', status: 'below', attention: true}
+      ];
+
+      return cards.map(c => `
+        <div class="metric-card ${c.costGood ? 'cost-good' : ''} ${c.attention ? 'attention' : ''}">
+          ${c.kpi ? '<span class="kpi-badge">KPI</span>' : ''}
+          <div class="metric-name">${c.name}</div>
+          <div class="metric-value">${c.value}</div>
+          <div class="metric-meta">${c.meta}</div>
+          ${c.status ? `<span class="metric-status ${c.status}">${c.statusLabel || (c.status === 'above' ? '▲ acima' : c.status === 'below' ? '▼ abaixo' : c.status === 'within' ? '● dentro' : '—')}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('meta-resumo-cards').innerHTML = renderMetaResumoCards();
+
+    // =========================================================
+    // YOUTUBE — CARDS
+    // =========================================================
+    function renderYouTubeCards() {
+      const d = dados.youtube.s3;
+      const meta = metaSemana.youtube;
+      // Para 5 dias, meta proporcional = meta * 5/7
+      const metaPropGasto = meta.gasto * 5/7;
+      const metaPropImpr = meta.impressoes * 5/7;
+      const statusGasto = calcStatus(d.investido, metaPropGasto, true);
+      const statusCPM = calcStatus(d.cpm, meta.cpm, true);
+
+      const cards = [
+        {name: 'Investido (5 dias)', value: fmtMoney(d.investido), meta: 'Meta 5 dias: ' + fmtMoney(metaPropGasto), status: statusGasto.cls, statusLabel: statusGasto.label, costGood: statusGasto.cls === 'above'},
+        {name: 'Impressões', value: fmtNum(d.impressoes), meta: 'Meta 5 dias: ' + fmtNum(metaPropImpr)},
+        {name: 'Usuários únicos', value: fmtNum(d.usuarios_unicos), meta: 'Alcance YouTube'},
+        {name: 'Views TrueView', value: fmtNum(d.visualizacoes), meta: 'Visualizações de vídeo'},
+        {name: 'CPM', value: fmtMoney(d.cpm), meta: 'Meta plano: R$ 50', status: statusCPM.cls, statusLabel: statusCPM.label, costGood: statusCPM.cls === 'above'},
+        {name: 'CPV (custo/view)', value: fmtMoney(d.cpv), meta: 'Meta plano: R$ 0,27', costGood: true},
+        {name: 'Taxa interação', value: fmtPct(d.taxa_interacao), meta: 'Meta plano: 1,5%', status: 'above', kpi: true},
+        {name: 'Frequência', value: fmtFreq(d.freq), meta: 'Meta plano: 3,0 (longo prazo)', status: 'below', attention: true}
+      ];
+
+      return cards.map(c => `
+        <div class="metric-card ${c.costGood ? 'cost-good' : ''} ${c.attention ? 'attention' : ''}">
+          ${c.kpi ? '<span class="kpi-badge">KPI</span>' : ''}
+          <div class="metric-name">${c.name}</div>
+          <div class="metric-value">${c.value}</div>
+          <div class="metric-meta">${c.meta}</div>
+          ${c.status ? `<span class="metric-status ${c.status}">${c.statusLabel || (c.status === 'above' ? '▲ acima' : c.status === 'below' ? '▼ abaixo' : '● dentro')}</span>` : ''}
+        </div>
+      `).join('');
+    }
+    document.getElementById('youtube-cards').innerHTML = renderYouTubeCards();
+
+    // =========================================================
+    // LINKEDIN — CARDS
+    // =========================================================
+    function renderLinkedInCards() {
+      const d = dados.linkedin.acum;
+      const meta = metaSemana.linkedin;
+      // 12 dias = 1,71 semanas
+      const fator = 12/7;
+      const metaGastoProp = meta.gasto * fator;
+      const metaImprProp = meta.impressoes * fator;
+      const metaAlcanceProp = meta.alcance * fator;
+
+      const statusGasto = calcStatus(d.investido, metaGastoProp, true);
+      const statusCPM = calcStatus(d.cpm, meta.cpm, true);
+
+      const cards = [
+        {name: 'Investido (12 dias)', value: fmtMoney(d.investido), meta: 'Meta 12 dias: ' + fmtMoney(metaGastoProp), status: statusGasto.cls, statusLabel: statusGasto.label, costGood: statusGasto.cls === 'above'},
+        {name: 'Impressões', value: fmtNum(d.impressoes), meta: 'Meta 12 dias: ' + fmtNum(metaImprProp), status: 'below'},
+        {name: 'Alcance', value: fmtNum(d.alcance), meta: 'Público B2B segmentado', attention: true},
+        {name: 'CPM', value: fmtMoney(d.cpm), meta: 'Meta plano: R$ 70', status: statusCPM.cls, statusLabel: statusCPM.label, attention: true},
+        {name: 'Cliques', value: fmtNum(d.cliques), meta: 'Cliques no link'},
+        {name: 'CTR', value: fmtPct(d.ctr), meta: 'Meta plano: 0,50%', status: 'above'},
+        {name: 'Engajamento', value: fmtNum(d.engajamento), meta: 'Interações totais', kpi: true},
+        {name: 'Frequência', value: fmtFreq(d.freq), meta: 'Meta plano: 3,0', attention: true}
+      ];
+
+      return cards.map(c => `
+        <div class="metric-card ${c.costGood ? 'cost-good' : ''} ${c.attention ? 'attention' : ''}">
+          ${c.kpi ? '<span class="kpi-badge">KPI</span>' : ''}
+          <div class="metric-name">${c.name}</div>
+          <div class="metric-value">${c.value}</div>
+          <div class="metric-meta">${c.meta}</div>
+          ${c.status ? `<span class="metric-status ${c.status}">${c.statusLabel || (c.status === 'above' ? '▲ acima' : c.status === 'below' ? '▼ abaixo' : '● dentro')}</span>` : ''}
+        </div>
+      `).join('');
+    }
+    document.getElementById('linkedin-cards').innerHTML = renderLinkedInCards();
+
+    // =========================================================
+    // TABELAS SEMANAIS — META ENG e TRF
+    // =========================================================
+    function buildMetricCell(realizado, meta, formatter, isCostMetric) {
+      if (meta === null) {
+        return `<td><div class="cell-value">${formatter(realizado)}</div><div class="cell-meta">—</div><span class="cell-status no-target">sem meta</span></td>`;
+      }
+      const status = calcStatus(realizado, meta, isCostMetric);
+      return `
+        <td>
+          <div class="cell-value">${formatter(realizado)}</div>
+          <div class="cell-meta">Meta: ${formatter(meta)}</div>
+          <span class="cell-status ${status.cls}">${status.label}</span>
+        </td>
+      `;
+    }
+
+    function buildMetaTable(camp) {
+      const data = dados.meta[camp];
+      const meta = metaSemana[camp];
+      const metaAcum = {};
+      Object.keys(meta).forEach(k => metaAcum[k] = meta[k] !== null ? meta[k] * 3 : null);
+
+      const header = `
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th>S1 <span class="week-sublabel">18-24/05</span></th>
+            <th>S2 <span class="week-sublabel">25-31/05</span></th>
+            <th>S3 <span class="week-sublabel">01-07/06</span></th>
+            <th class="totals">Acumulado <span class="week-sublabel">21 dias</span></th>
+          </tr>
+        </thead>
+      `;
+
+      const rows = [];
+
+      if (camp === 'eng') {
+        // KPI ENG = Engajamento
+        rows.push({label: 'Engajamento', sub: 'Interações com a Página', kpi: true, key: 'engajamento', fmt: fmtNum, cost: false});
+        rows.push({label: 'Alcance', sub: 'Pessoas únicas', kpi: false, key: 'alcance', fmt: fmtNum, cost: false});
+        rows.push({label: 'Impressões', sub: 'Total de exibições', kpi: false, key: 'impressoes', fmt: fmtNum, cost: false});
+        rows.push({label: 'Frequência', sub: 'Meta plano: 3,0-3,5', kpi: false, key: 'freq', fmt: fmtFreq, cost: false});
+        rows.push({label: 'CPM', sub: 'Custo por mil impressões', kpi: false, key: 'cpm', fmt: fmtMoney, cost: true});
+        rows.push({label: 'Cliques no link', sub: 'Cliques registrados', kpi: false, key: 'cliques', fmt: fmtNum, cost: false});
+        rows.push({label: 'CTR', sub: 'Taxa de clique', kpi: false, key: 'ctr', fmt: fmtPct, cost: false});
+        rows.push({label: 'Visitas ao perfil', sub: 'Acessos ao Instagram', kpi: false, key: 'visitas_perfil', fmt: fmtNum, cost: false});
+        rows.push({label: 'Seguidores', sub: 'Novos seguidores · sem meta', kpi: false, key: 'seguidores', fmt: fmtNum, cost: false, noTarget: true});
+        rows.push({label: 'Valor investido', sub: 'Custo total · líquido', kpi: false, key: 'gasto', fmt: fmtMoney, cost: true});
+      } else {
+        // KPI TRF = Cliques
+        rows.push({label: 'Cliques no link', sub: 'KPI principal de Tráfego', kpi: true, key: 'cliques', fmt: fmtNum, cost: false});
+        rows.push({label: 'Alcance', sub: 'Pessoas únicas', kpi: false, key: 'alcance', fmt: fmtNum, cost: false});
+        rows.push({label: 'Impressões', sub: 'Total de exibições', kpi: false, key: 'impressoes', fmt: fmtNum, cost: false});
+        rows.push({label: 'Frequência', sub: 'Meta plano: 3,0-3,5', kpi: false, key: 'freq', fmt: fmtFreq, cost: false});
+        rows.push({label: 'CTR', sub: 'Taxa de clique', kpi: false, key: 'ctr', fmt: fmtPct, cost: false});
+        rows.push({label: 'CPM', sub: 'Custo por mil impressões', kpi: false, key: 'cpm', fmt: fmtMoney, cost: true});
+        rows.push({label: 'Engajamento', sub: 'Plus da campanha', kpi: false, key: 'engajamento', fmt: fmtNum, cost: false});
+        rows.push({label: 'Valor investido', sub: 'Custo total · líquido', kpi: false, key: 'gasto', fmt: fmtMoney, cost: true});
+      }
+
+      const tbody = rows.map(r => {
+        const metaW = r.noTarget ? null : meta[r.key];
+        const metaA = r.noTarget ? null : metaAcum[r.key];
+        return `
+          <tr>
+            <td class="metric-label-cell">${r.label}${r.kpi ? '<span class="kpi-mark">KPI</span>' : ''}<span class="metric-sublabel">${r.sub}</span></td>
+            ${buildMetricCell(data.s1[r.key], metaW, r.fmt, r.cost)}
+            ${buildMetricCell(data.s2[r.key], metaW, r.fmt, r.cost)}
+            ${buildMetricCell(data.s3[r.key], metaW, r.fmt, r.cost)}
+            ${buildMetricCell(data.acum[r.key], metaA, r.fmt, r.cost)}
+          </tr>
+        `;
+      }).join('');
+
+      return header + '<tbody>' + tbody + '</tbody>';
+    }
+
+    document.getElementById('table-eng').innerHTML = buildMetaTable('eng');
+    document.getElementById('table-trf').innerHTML = buildMetaTable('trf');
+
+    // =========================================================
+    // TABELA YOUTUBE
+    // =========================================================
+    function buildYouTubeTable() {
+      const d = dados.youtube.s3;
+      const meta = metaSemana.youtube;
+      const metaProp5d = {};
+      Object.keys(meta).forEach(k => metaProp5d[k] = typeof meta[k] === 'number' ? meta[k] * 5/7 : meta[k]);
+
+      const header = `
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th>W1 <span class="week-sublabel">18-24/05</span></th>
+            <th>W2 <span class="week-sublabel">25-31/05</span></th>
+            <th>W3 <span class="week-sublabel">03-07/06 · 5 dias</span></th>
+            <th class="totals">Acumulado</th>
+          </tr>
+        </thead>
+      `;
+
+      const emptyCell = '<td><div class="empty-cell">Não veiculado</div></td>';
+
+      const rows = [
+        {label: 'Impressões', sub: 'KPI volume', kpi: true, value: d.impressoes, meta: metaProp5d.impressoes, fmt: fmtNum, cost: false},
+        {label: 'Usuários únicos', sub: 'Alcance YouTube', value: d.usuarios_unicos, meta: metaProp5d.usuarios_unicos, fmt: fmtNum, cost: false},
+        {label: 'Views TrueView', sub: 'Visualizações de vídeo', value: d.visualizacoes, meta: metaProp5d.visualizacoes, fmt: fmtNum, cost: false},
+        {label: 'CPM', sub: 'Custo por mil impressões', value: d.cpm, meta: meta.cpm, fmt: fmtMoney, cost: true},
+        {label: 'CPV', sub: 'Custo por view', value: d.cpv, meta: meta.cpv, fmt: fmtMoney, cost: true},
+        {label: 'Taxa interação', sub: 'Engajamento sobre views', value: d.taxa_interacao, meta: meta.taxa_interacao, fmt: fmtPct, cost: false},
+        {label: 'Frequência', sub: 'Meta plano: 3,0', value: d.freq, meta: meta.freq, fmt: fmtFreq, cost: false},
+        {label: 'Valor investido', sub: 'Custo total · sem imposto', value: d.investido, meta: metaProp5d.gasto, fmt: fmtMoney, cost: true}
+      ];
+
+      const tbody = rows.map(r => `
+        <tr>
+          <td class="metric-label-cell">${r.label}${r.kpi ? '<span class="kpi-mark">KPI</span>' : ''}<span class="metric-sublabel">${r.sub}</span></td>
+          ${emptyCell}
+          ${emptyCell}
+          ${buildMetricCell(r.value, r.meta, r.fmt, r.cost)}
+          ${buildMetricCell(r.value, r.meta, r.fmt, r.cost)}
+        </tr>
+      `).join('');
+
+      return header + '<tbody>' + tbody + '</tbody>';
+    }
+    document.getElementById('table-youtube').innerHTML = buildYouTubeTable();
+
+    // =========================================================
+    // TABELA LINKEDIN
+    // =========================================================
+    function buildLinkedInTable() {
+      const d = dados.linkedin.acum;
+      const meta = metaSemana.linkedin;
+      const metaAcum12d = {};
+      Object.keys(meta).forEach(k => metaAcum12d[k] = typeof meta[k] === 'number' ? meta[k] * 12/7 : meta[k]);
+
+      const header = `
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th>W1 <span class="week-sublabel">18-24/05</span></th>
+            <th>W2 <span class="week-sublabel">27-31/05 · 5 dias</span></th>
+            <th>W3 <span class="week-sublabel">01-07/06 · 7 dias</span></th>
+            <th class="totals">Acumulado <span class="week-sublabel">12 dias</span></th>
+          </tr>
+        </thead>
+      `;
+
+      const emptyCell = '<td><div class="empty-cell">Não veiculado</div></td>';
+      const naCell = '<td><div class="empty-cell">Dado consolidado</div></td>';
+
+      const rows = [
+        {label: 'Cliques', sub: 'KPI principal LI_INST', kpi: true, value: d.cliques, meta: metaAcum12d.cliques, fmt: fmtNum, cost: false},
+        {label: 'Alcance', sub: 'Pessoas únicas B2B', value: d.alcance, meta: metaAcum12d.alcance, fmt: fmtNum, cost: false},
+        {label: 'Impressões', sub: 'Total de exibições', value: d.impressoes, meta: metaAcum12d.impressoes, fmt: fmtNum, cost: false},
+        {label: 'Frequência', sub: 'Meta plano: 3,0', value: d.freq, meta: meta.freq, fmt: fmtFreq, cost: false},
+        {label: 'CTR', sub: 'Taxa de clique', value: d.ctr, meta: meta.ctr, fmt: fmtPct, cost: false},
+        {label: 'CPM', sub: 'Custo por mil impressões', value: d.cpm, meta: meta.cpm, fmt: fmtMoney, cost: true},
+        {label: 'CPC', sub: 'Custo por clique', value: d.cpc, meta: null, fmt: fmtMoney, cost: true},
+        {label: 'Engajamento', sub: 'Interações totais', value: d.engajamento, meta: metaAcum12d.engajamento, fmt: fmtNum, cost: false},
+        {label: 'Leads', sub: 'LI_LEADGEN entra W5', value: d.leads, meta: null, fmt: fmtNum, cost: false},
+        {label: 'Valor investido', sub: 'Custo total', value: d.investido, meta: metaAcum12d.gasto, fmt: fmtMoney, cost: true}
+      ];
+
+      const tbody = rows.map(r => `
+        <tr>
+          <td class="metric-label-cell">${r.label}${r.kpi ? '<span class="kpi-mark">KPI</span>' : ''}<span class="metric-sublabel">${r.sub}</span></td>
+          ${emptyCell}
+          ${naCell}
+          ${naCell}
+          ${buildMetricCell(r.value, r.meta, r.fmt, r.cost)}
+        </tr>
+      `).join('');
+
+      return header + '<tbody>' + tbody + '</tbody>';
+    }
+    document.getElementById('table-linkedin').innerHTML = buildLinkedInTable();
+
+    // =========================================================
+    // TABS LOGIC
+    // =========================================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+
+  <footer class="site-footer">
+    <h2>3 canais ativos. Operação no ritmo certo, com R$ 40K investidos.</h2>
+    <p>Os dados orientam ajustes táticos e mantêm a operação alinhada aos objetivos de marca da MetLife pra Copa de 2026.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/performance-timeline.js" defer></script>
+</body>
+</html>
