@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics · Semana 1 · 18/05 a 24/05 · MetLife 2026</title>
+
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-soft: #A8F2C9;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+      --success: #50E596;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.55;
+    }
+
+    /* ===== HERO (padrão do hub · igual /performance/week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); }
+    }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 80px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    section:nth-of-type(even) {
+      background: rgba(45,181,223,.04);
+      max-width: none;
+      padding-left: calc((100vw - 1180px) / 2 + 24px);
+      padding-right: calc((100vw - 1180px) / 2 + 24px);
+    }
+    @media (max-width: 1200px) {
+      section:nth-of-type(even) {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(45,181,223,.12);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(26px, 3.5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+    section .section-lead {
+      font-size: 16.5px;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .kpi-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .kpi-card.alert strong { color: var(--red); }
+    .kpi-card.warn strong { color: var(--amber); }
+    .kpi-card.good strong { color: var(--green-deep); }
+
+    /* ===== CHART WRAP ===== */
+    .chart-wrap {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      margin-bottom: 24px;
+    }
+    .chart-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .chart-container {
+      position: relative;
+      height: 320px;
+    }
+    .chart-container.tall { height: 380px; }
+    .chart-container.short { height: 220px; }
+
+    /* ===== INSIGHT BOX ===== */
+    .insight {
+      background: white;
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.06);
+      margin-top: 24px;
+    }
+    .insight.alert { border-left-color: var(--red); }
+    .insight.warn { border-left-color: var(--amber); }
+    .insight.good { border-left-color: var(--green-deep); }
+    .insight strong { color: var(--navy); }
+    .insight p { margin: 0; font-size: 14.5px; color: var(--text); }
+
+    /* ===== CANAIS · MINI CARDS ===== */
+    .channels-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .channel-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+    }
+    .channel-mini .channel-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .channel-mini .channel-pct {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .channel-mini .channel-abs {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ===== TABELA ===== */
+    .table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: rgba(0,59,92,.04);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    th.num, td.num { text-align: right; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    td.label-cell { font-weight: 700; }
+    .pill-bad { background: rgba(229,91,91,.14); color: #B12C2C; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-mid { background: rgba(245,166,35,.14); color: #8A5A0A; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-good { background: rgba(80,229,150,.18); color: #1F8F4F; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+
+    /* ===== FUNIL DE FORMULÁRIO ===== */
+    .funnel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .funnel-step {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+      position: relative;
+    }
+    .funnel-step .step-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .funnel-step .step-value {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .funnel-step .step-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .funnel-step.error .step-value { color: var(--green-deep); }
+
+    /* ===== STAT MINI ===== */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .stat-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .stat-mini .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-mini .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ===== ALERT BOX (vermelho - forte) ===== */
+    .alert-strong {
+      background: linear-gradient(135deg, rgba(229,91,91,.10), rgba(229,91,91,.04));
+      border: 1px solid rgba(229,91,91,.30);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      margin-top: 24px;
+    }
+    .alert-strong h4 {
+      margin: 0 0 6px;
+      color: #B12C2C;
+      font-size: 16px;
+    }
+    .alert-strong p {
+      margin: 0;
+      color: #6F1D1D;
+      font-size: 14.5px;
+    }
+
+    /* ===== FOOTER GRANDE PADRÃO ===== */
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      margin-top: 0;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      color: white;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .channels-row { grid-template-columns: repeat(2, 1fr); }
+      .funnel { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      section { padding: 56px 16px; }
+    }
+  </style>
+</head>
+<body data-week-id="week-1">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/landing-page">Analytics</a> &nbsp;/&nbsp; <strong>Semana 1 · 18/05 a 24/05</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Analytics LP · 18/05 a 24/05/2026</span>
+        <h1>1.212 page views na primeira semana, com <span class="accent">volume forte de tráfego</span>.</h1>
+        <p class="lead">Análise dos acessos à Landing Page da Copa 2026 — tráfego orgânico, campanhas UTM e funil de conversão da 1ª semana monitorada. Dados consolidados pela dti.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>Boa entrada de volume — Direct concentra 71% dos acessos e Insta Vídeo Manifesto lidera entre as UTMs.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>1.212</strong><span>page views</span></div>
+          <div class="metric"><strong>977</strong><span>visitas</span></div>
+          <div class="metric"><strong>66,8%</strong><span>bounce rate</span></div>
+          <div class="metric"><strong>02:03</strong><span>tempo médio</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#visao">Visão geral</a>
+      <a href="#horarios">Horários</a>
+      <a href="#canais">Canais</a>
+      <a href="#qualidade">Qualidade</a>
+      <a href="#formularios">Formulários</a>
+      <a href="#botoes">Botões</a>
+      <a href="#utms">Campanhas (UTM)</a>
+    </div>
+  </nav>
+
+  <!-- §1 VISÃO GERAL -->
+  <section id="visao">
+    <span class="section-eyebrow">§1 · Visão geral</span>
+    <h2>Tráfego alto e concentrado em quarta-feira.</h2>
+    <p class="section-lead">Tráfego orgânico (sem UTMs) na LP da Copa entre 18 e 24 de maio.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><strong>1.212</strong><span class="label">Acessos</span></div>
+      <div class="kpi-card"><strong>460</strong><span class="label">Cliques</span></div>
+      <div class="kpi-card warn"><strong>66,8%</strong><span class="label">Bounce rate</span></div>
+      <div class="kpi-card alert"><strong>87%</strong><span class="label">Exit rate</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por dia da semana</p>
+      <div class="chart-container"><canvas id="chart-dias"></canvas></div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Quarta-feira concentra 27% do tráfego semanal</strong> (329 acessos), com terça sendo o pior dia (36 acessos). Padrão atípico — recomenda-se cruzar com calendário de mídia paga pra entender o pico do meio da semana.</p>
+    </div>
+  </section>
+
+  <!-- §2 HORÁRIOS -->
+  <section id="horarios">
+    <span class="section-eyebrow">§2 · Horários</span>
+    <h2>Pico claro às 16h, com 14% do tráfego diário.</h2>
+    <p class="section-lead">61% dos acessos acontecem em horário comercial, mas 39% fora do expediente indica interesse orgânico além do trabalho.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por horário do dia</p>
+      <div class="chart-container"><canvas id="chart-horarios"></canvas></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-mini">
+        <div class="stat-value">16h</div>
+        <div class="stat-label">pico absoluto · 174 acessos (14% do dia)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">61%</div>
+        <div class="stat-label">tráfego em horário comercial (8h-18h)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">35%</div>
+        <div class="stat-label">na janela 12h-17h</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>O horário das 16h merece prioridade em pushes e comunicações.</strong> Dois picos identificados: 7h-12h (17%) e 12h-17h (35%) — padrão típico de consumo em horário de trabalho, mas com cauda relevante fora do expediente.</p>
+    </div>
+  </section>
+
+  <!-- §3 CANAIS -->
+  <section id="canais">
+    <span class="section-eyebrow">§3 · Canais de acesso</span>
+    <h2>Direct domina com 71% do tráfego.</h2>
+    <p class="section-lead">Distribuição dos acessos pelas 4 fontes monitoradas. Concentração forte em Direct sugere acessos colados (URL digitada ou clicada via apps fora do browser).</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Distribuição por canal</p>
+      <div class="chart-container short"><canvas id="chart-canais"></canvas></div>
+    </div>
+
+    <div class="channels-row">
+      <div class="channel-mini">
+        <div class="channel-name">Direct</div>
+        <div class="channel-pct">71%</div>
+        <div class="channel-abs">850 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Referral</div>
+        <div class="channel-pct">15%</div>
+        <div class="channel-abs">183 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Interno</div>
+        <div class="channel-pct">8%</div>
+        <div class="channel-abs">93 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">SEO</div>
+        <div class="channel-pct">6%</div>
+        <div class="channel-abs">72 acessos</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §4 QUALIDADE -->
+  <section id="qualidade">
+    <span class="section-eyebrow">§4 · Qualidade dos canais</span>
+    <h2>Interno traz o público mais engajado.</h2>
+    <p class="section-lead">Bounce e exit rate por canal. Quanto menor, melhor a qualidade.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th class="num">Acessos</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Exit rate</th>
+            <th>Qualidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Interno</td>
+            <td class="num">93</td>
+            <td class="num">35,94%</td>
+            <td class="num">80,0%</td>
+            <td><span class="pill-good">Melhor</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">SEO</td>
+            <td class="num">72</td>
+            <td class="num">67,44%</td>
+            <td class="num">77,2%</td>
+            <td><span class="pill-mid">Intermediária</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Direct</td>
+            <td class="num">850</td>
+            <td class="num">73,63%</td>
+            <td class="num">89,2%</td>
+            <td><span class="pill-bad">Baixo engajamento</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight good">
+      <p><strong>Interno traz o público mais engajado (BR 35,94%)</strong> — usuários vindos de outras áreas do site MetLife são os mais qualificados. SEO tem qualidade intermediária. Direct, apesar de líder em volume, tem BR alto (73,63%) — vale investigar a origem desse "Direct" no Analytics.</p>
+    </div>
+  </section>
+
+  <!-- §5 FORMULÁRIOS -->
+  <section id="formularios">
+    <span class="section-eyebrow">§5 · Funil de formulários</span>
+    <h2>56% dos que iniciam o form chegam até o fim.</h2>
+    <p class="section-lead">64 visitantes iniciaram o preenchimento e 36 concluíram. Zero erros registrados — boa indicação do funcionamento técnico.</p>
+
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="step-num">1 · Início</div>
+        <div class="step-value">64</div>
+        <div class="step-label">iniciaram o preenchimento</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-num">2 · Conclusão</div>
+        <div class="step-value">36</div>
+        <div class="step-label">conversões completas (56%)</div>
+      </div>
+      <div class="funnel-step error">
+        <div class="step-num">3 · Erros</div>
+        <div class="step-value">0</div>
+        <div class="step-label">nenhum erro técnico</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Base sólida na 1ª semana: 36 conversões reais.</strong> Conversion rate de 56% é saudável e 44% de abandono no preenchimento é o ponto a otimizar. Vale revisar campos que mais geram desistência.</p>
+    </div>
+  </section>
+
+  <!-- §6 BOTÕES -->
+  <section id="botoes">
+    <span class="section-eyebrow">§6 · Botões & CTAs</span>
+    <h2>Top 10 botões mais clicados.</h2>
+    <p class="section-lead">Atenção ao filtrar: <strong>CONCORDO</strong> (cookies) e <strong>ENTRAR</strong> (login) lideram, mas não são CTAs de campanha.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Cliques por botão (ranking)</p>
+      <div class="chart-container tall"><canvas id="chart-botoes"></canvas></div>
+    </div>
+
+    <div class="insight warn">
+      <p><strong>"Responder Quiz" (58 cliques) é o CTA intencional com melhor performance.</strong> "Fale com a MetLife" (15) também aparece com volume relevante. Os demais CTAs ("Para Você", "Ver mais", "Dúvidas Frequentes") ficaram com baixo volume — vale reforço visual.</p>
+    </div>
+  </section>
+
+  <!-- §7 UTM CAMPANHAS -->
+  <section id="utms">
+    <span class="section-eyebrow">§7 · Análise por UTM</span>
+    <h2>Insta Vídeo Manifesto lidera as campanhas com 42% do tráfego.</h2>
+    <p class="section-lead">5 campanhas trouxeram 3.287 page views no total. Bounce rate médio das campanhas é 93,9% — alto, mas natural para LPs de divulgação.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Page views por campanha</p>
+      <div class="chart-container"><canvas id="chart-utms"></canvas></div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Campanha</th>
+            <th class="num">Page views</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+            <th class="num">Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Insta · Vídeo Manifesto</td>
+            <td class="num">1.372</td>
+            <td class="num">92,9%</td>
+            <td class="num">02:00</td>
+            <td class="num">100%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Insta · Post Estático</td>
+            <td class="num">739</td>
+            <td class="num">95,5%</td>
+            <td class="num">03:00</td>
+            <td class="num">96%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Insta · Post Estático A2</td>
+            <td class="num">674</td>
+            <td class="num">86,3%</td>
+            <td class="num">03:00</td>
+            <td class="num">99%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Insta · Vídeo 6s A2</td>
+            <td class="num">500</td>
+            <td class="num">94,5%</td>
+            <td class="num">01:00</td>
+            <td class="num">99%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">YouTube · Vídeo Manifesto</td>
+            <td class="num">2</td>
+            <td class="num">100%</td>
+            <td class="num">00:00</td>
+            <td class="num">100%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert-strong">
+      <h4>⚠ Alerta de funil — UTMs com baixíssima conversão</h4>
+      <p><strong>179 cliques totais via UTM trouxeram apenas 14 form starts e 1 conversão completa (7%).</strong> O público vindo de campanhas tem dificuldade em converter — diferente do tráfego orgânico (56% de conversão). Vale revisar copy do form, fricções específicas e alinhamento entre criativo e LP.</p>
+    </div>
+
+    <div class="insight good">
+      <p><strong>Insta Post Estático A2 é o melhor criativo:</strong> menor bounce rate (86,3%) entre as campanhas e a única que registrou conversão (1 form complete). Vale usar como referência criativa pras próximas peças.</p>
+    </div>
+
+    <div class="insight">
+      <p><strong>98% mobile vs 2% desktop</strong> — campanhas Insta entregam quase 100% mobile, como esperado. Otimização da LP pra mobile é prioridade absoluta.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER PADRÃO -->
+  <footer class="site-footer">
+    <h2>1.212 page views, 36 conversões reais. Base sólida pra leitura semana a semana.</h2>
+    <p>A 1ª semana mostra volume forte e funil técnico saudável (zero erros). Próximo report vai comparar evolução de volume, qualidade e conversão.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // DADOS DO REPORT — fonte: relatório dti (PDF) 18-24/05/2026
+    // ============================================================
+
+    const COLORS = {
+      navy: '#003B5C',
+      blue: '#2DB5DF',
+      teal: '#27C7BD',
+      green: '#50E596',
+      amber: '#F5A623',
+      red: '#E55B5B',
+      muted: '#5B7280',
+      light: 'rgba(45,181,223,.12)'
+    };
+
+    Chart.defaults.font.family = 'Arial, sans-serif';
+    Chart.defaults.color = COLORS.navy;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+    // §1 · Acessos por dia (Seg, Ter, Qua, Qui, Sex, Sáb, Dom)
+    new Chart(document.getElementById('chart-dias'), {
+      type: 'bar',
+      data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        datasets: [{
+          label: 'Acessos',
+          data: [87, 36, 329, 274, 225, 207, 54],
+          backgroundColor: (ctx) => ctx.parsed && ctx.parsed.y === 329 ? COLORS.amber : COLORS.blue,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §2 · Horários (0h-23h) - pico às 16h
+    new Chart(document.getElementById('chart-horarios'), {
+      type: 'line',
+      data: {
+        labels: ['0h','1h','2h','3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+        datasets: [{
+          label: 'Acessos',
+          data: [18, 12, 8, 5, 4, 6, 22, 48, 76, 88, 92, 65, 102, 89, 110, 132, 174, 95, 62, 58, 45, 30, 28, 20],
+          borderColor: COLORS.teal,
+          backgroundColor: 'rgba(39,199,189,.14)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §3 · Canais (doughnut)
+    new Chart(document.getElementById('chart-canais'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Direct', 'Referral', 'Interno', 'SEO'],
+        datasets: [{
+          data: [850, 183, 93, 72],
+          backgroundColor: [COLORS.navy, COLORS.teal, COLORS.amber, COLORS.blue],
+          borderColor: 'white',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, padding: 14 } }
+        },
+        cutout: '60%'
+      }
+    });
+
+    // §6 · Botões (horizontal bar) - top 10 do PDF
+    new Chart(document.getElementById('chart-botoes'), {
+      type: 'bar',
+      data: {
+        labels: ['CONCORDO', 'ENTRAR', 'Responder Quiz', 'Unspecified', 'Fale com a MetLife', 'Para Você', 'Ver mais', 'Dúvidas Frequentes', 'confira os jogos', 'Ver mais (2)'],
+        datasets: [{
+          label: 'Cliques',
+          data: [181, 103, 58, 19, 15, 7, 7, 5, 5, 4],
+          backgroundColor: (ctx) => {
+            const i = ctx.dataIndex;
+            if (i <= 1) return COLORS.muted; // CONCORDO + ENTRAR = ruído
+            return COLORS.blue;
+          },
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §7 · UTMs (bar) - 5 campanhas
+    new Chart(document.getElementById('chart-utms'), {
+      type: 'bar',
+      data: {
+        labels: ['Insta Vídeo\nManifesto', 'Insta Post\nEstático', 'Insta Post\nEstático A2', 'Insta Vídeo\n6s A2', 'YouTube Vídeo\nManifesto'],
+        datasets: [{
+          label: 'Page Views',
+          data: [1372, 739, 674, 500, 2],
+          backgroundColor: [COLORS.navy, COLORS.blue, COLORS.green, COLORS.teal, COLORS.red],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  </script>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/analytics-timeline.js" defer></script>
+</body>
+</html>

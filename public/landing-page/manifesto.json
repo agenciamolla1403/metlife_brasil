@@ -1,6 +1,15 @@
 {
   "semanas": [
     {
+      "id": "week-1",
+      "ordem": 1,
+      "label": "Semana 1",
+      "periodo": "18/05 a 24/05",
+      "data_publicacao": "2026-05-26",
+      "status": "publicado",
+      "arquivo": "/landing-page/week-1"
+    },
+    {
       "id": "week-2",
       "ordem": 2,
       "label": "Semana 2",
