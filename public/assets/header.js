@@ -36,6 +36,7 @@
         { href: '/plano-midia', id: 'plano',       label: 'Plano' },
         { href: '/cronograma',  id: 'cronograma',  label: 'Crono Ads' },
         { href: '/performance', id: 'performance', label: 'Performance' },
+        { href: '/landing-page', id: 'analytics',  label: 'Analytics' },
         { href: '/elemidia',    id: 'elemidia',    label: 'Elemidia' }
       ]
     },
