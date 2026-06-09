@@ -113,6 +113,12 @@
       height: 4px;
       background: linear-gradient(90deg, var(--blue), var(--teal));
     }
+    .report-card.is-checking::before {
+      background: linear-gradient(90deg, #2EC773, #50E596);
+    }
+    .report-card.is-checking .cta {
+      color: #2EC773;
+    }
 
     .report-card.is-upcoming {
       background: rgba(0, 59, 92, 0.03);
@@ -139,6 +145,14 @@
     }
     .report-tag.published {
       background: rgba(80, 229, 150, 0.18);
+      color: #1F8F4F;
+    }
+    .report-tag.proposta {
+      background: rgba(45, 181, 223, 0.16);
+      color: #1B6A8A;
+    }
+    .report-tag.checking {
+      background: rgba(46, 199, 115, 0.18);
       color: #1F8F4F;
     }
     .report-tag.upcoming {
@@ -295,6 +309,7 @@
 
       const params = new URLSearchParams(window.location.search);
       const ftParam = params.get('ft');
+      const chtParam = params.get('cht');
 
       function el(tag, attrs = {}, ...children) {
         const node = document.createElement(tag);
@@ -310,21 +325,40 @@
         return node;
       }
 
-      function renderPublishedCard(s) {
+      function renderPropostaCard(p) {
         return el('a', {
           class: 'report-card is-published',
-          href: '/elemidia/' + s.id,
-          'aria-label': 'Abrir ' + s.label + ' — ' + s.periodo
+          href: '/elemidia/' + p.id,
+          'aria-label': 'Abrir proposta ' + p.label + ' — ' + p.periodo
         },
-          el('span', { class: 'report-tag published' }, '✓ Publicado'),
+          el('span', { class: 'report-tag proposta' }, '📄 Proposta'),
           el('div', {},
-            el('h2', {}, s.label),
-            el('div', { class: 'period' }, s.periodo)
+            el('h2', {}, p.label),
+            el('div', { class: 'period' }, p.periodo)
           ),
           el('p', { class: 'desc' },
-            'Publicado em ' + formatDate(s.data_publicacao) + '.'
+            'Publicada em ' + formatDate(p.data_publicacao) + '.'
           ),
-          el('span', { class: 'cta' }, 'Abrir report →')
+          el('span', { class: 'cta' }, 'Abrir proposta →')
+        );
+      }
+
+      function renderCheckingCard(c) {
+        const bonus = c.resumo && c.resumo.bonus_pct ? ' · +' + c.resumo.bonus_pct + '% bônus' : '';
+        return el('a', {
+          class: 'report-card is-published is-checking',
+          href: '/elemidia/' + c.id,
+          'aria-label': 'Abrir checking ' + c.label + ' — ' + c.periodo
+        },
+          el('span', { class: 'report-tag checking' }, '✓ Checking'),
+          el('div', {},
+            el('h2', {}, c.label),
+            el('div', { class: 'period' }, c.periodo)
+          ),
+          el('p', { class: 'desc' },
+            'Comprovação de veiculação · publicado em ' + formatDate(c.data_publicacao) + bonus + '.'
+          ),
+          el('span', { class: 'cta' }, 'Abrir checking →')
         );
       }
 
@@ -371,19 +405,28 @@
         const grid = document.getElementById('reports-grid');
         grid.innerHTML = '';
 
-        const propostas = (manifest.propostas || []).slice().sort((a, b) => b.ordem - a.ordem);  // mais recente primeiro
+        // Mistura propostas e checkings num único grid, ordenando por data_publicacao DESC (mais recente primeiro)
+        const propostas = (manifest.propostas || []).map(p => ({ ...p, _tipo: 'proposta' }));
+        const checkings = (manifest.checkings || []).map(c => ({ ...c, _tipo: 'checking' }));
+        const todos = [...propostas, ...checkings].sort((a, b) => {
+          return (b.data_publicacao || '').localeCompare(a.data_publicacao || '');
+        });
         const futuras = (manifest.futuras || []).slice().sort((a, b) => a.ordem - b.ordem);
 
-        for (const p of propostas) {
-          grid.appendChild(renderPublishedCard(p));
+        for (const item of todos) {
+          if (item._tipo === 'checking') {
+            grid.appendChild(renderCheckingCard(item));
+          } else {
+            grid.appendChild(renderPropostaCard(item));
+          }
         }
         for (const f of futuras) {
           grid.appendChild(renderUpcomingCard(f));
         }
 
-        if (propostas.length === 0 && futuras.length === 0) {
+        if (todos.length === 0 && futuras.length === 0) {
           grid.appendChild(el('div', { class: 'reports-loading' },
-            'Nenhuma proposta cadastrada ainda.'
+            'Nenhuma proposta ou checking cadastrado ainda.'
           ));
         }
       }
@@ -394,17 +437,26 @@
           if (!res.ok) throw new Error('Manifesto HTTP ' + res.status);
           const manifest = await res.json();
 
-          // Se URL traz ?ft=N, tenta redirecionar
+          // Se URL traz ?ft=N, tenta redirecionar pra proposta
           if (ftParam) {
             const ftId = ftParam.startsWith('ft-') ? ftParam : 'ft-' + ftParam;
             const target = (manifest.propostas || []).find(p => p.id === ftId);
             if (target && target.status === 'publicado') {
-              // Redireciona mantendo histórico (replace pra não poluir back-button)
               window.location.replace('/elemidia/' + target.id);
               return;
             }
-            // Não achou → mostra aviso amigável e segue pro grid
             showNotFound('A proposta solicitada não existe ou ainda não foi publicada. Veja a lista abaixo.');
+          }
+
+          // Se URL traz ?cht=N, tenta redirecionar pra checking
+          if (chtParam) {
+            const chtId = chtParam.startsWith('cht-') ? chtParam : 'cht-' + chtParam;
+            const target = (manifest.checkings || []).find(c => c.id === chtId);
+            if (target && target.status === 'publicado') {
+              window.location.replace('/elemidia/' + target.id);
+              return;
+            }
+            showNotFound('O checking solicitado não existe ou ainda não foi publicado. Veja a lista abaixo.');
           }
 
           renderGrid(manifest);

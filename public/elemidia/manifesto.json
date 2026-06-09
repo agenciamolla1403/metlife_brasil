@@ -31,5 +31,23 @@
       }
     }
   ],
+  "checkings": [
+    {
+      "id": "cht-1",
+      "ordem": 1,
+      "label": "Checking FT 1",
+      "ft_relacionada": "ft-1",
+      "periodo": "18/05 a 03/06",
+      "data_publicacao": "2026-06-05",
+      "status": "publicado",
+      "arquivo": "/elemidia/cht-1",
+      "resumo": {
+        "monitores": 222,
+        "insercoes_previstas": 692640,
+        "insercoes_entregues": 820803,
+        "bonus_pct": 18.5
+      }
+    }
+  ],
   "futuras": []
 }

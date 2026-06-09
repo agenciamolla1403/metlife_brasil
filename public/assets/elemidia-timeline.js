@@ -32,27 +32,45 @@
   function renderTimeline(manifest, currentPropostaId) {
     const wrap = el('nav', {
       class: 'performance-timeline',
-      'aria-label': 'Propostas Elemidia',
+      'aria-label': 'Propostas e Checkings Elemidia',
       role: 'navigation'
     });
     const inner = el('div', { class: 'performance-timeline-inner' });
 
     inner.appendChild(el('span', {
       class: 'performance-timeline-label'
-    }, 'Propostas:'));
+    }, 'Hub Elemidia:'));
 
+    // Propostas primeiro (pills com classe is-proposta)
     const propostas = (manifest.propostas || []).slice().sort((a, b) => a.ordem - b.ordem);
     for (const p of propostas) {
       const isCurrent = p.id === currentPropostaId;
       const href = '/elemidia/' + p.id;
       const pill = el('a', {
-        class: 'pt-pill is-published' + (isCurrent ? ' is-current' : ''),
+        class: 'pt-pill is-published is-proposta' + (isCurrent ? ' is-current' : ''),
         href: href,
-        title: p.label + ' · ' + p.periodo,
+        title: 'Proposta · ' + p.label + ' · ' + p.periodo,
         'aria-current': isCurrent ? 'page' : false
       },
         el('span', { class: 'pt-pill-label' }, p.label),
         el('span', { class: 'pt-pill-period' }, p.periodo)
+      );
+      inner.appendChild(pill);
+    }
+
+    // Checkings (pills com classe is-checking)
+    const checkings = (manifest.checkings || []).slice().sort((a, b) => a.ordem - b.ordem);
+    for (const c of checkings) {
+      const isCurrent = c.id === currentPropostaId;
+      const href = '/elemidia/' + c.id;
+      const pill = el('a', {
+        class: 'pt-pill is-published is-checking' + (isCurrent ? ' is-current' : ''),
+        href: href,
+        title: 'Checking · ' + c.label + ' · ' + c.periodo,
+        'aria-current': isCurrent ? 'page' : false
+      },
+        el('span', { class: 'pt-pill-label' }, c.label),
+        el('span', { class: 'pt-pill-period' }, c.periodo)
       );
       inner.appendChild(pill);
     }
@@ -103,7 +121,7 @@
     const fromAttr = document.body && document.body.getAttribute('data-proposta-id');
     if (fromAttr) return fromAttr;
 
-    const m = window.location.pathname.match(/\/elemidia\/(ft-[^/]+)/);
+    const m = window.location.pathname.match(/\/elemidia\/((?:ft|cht)-[^/]+)/);
     if (m) return m[1];
 
     return null;
