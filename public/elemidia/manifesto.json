@@ -1,0 +1,35 @@
+{
+  "propostas": [
+    {
+      "id": "ft-1",
+      "ordem": 1,
+      "label": "FT 1",
+      "periodo": "18/05 a 03/06",
+      "data_publicacao": "2026-05-08",
+      "status": "publicado",
+      "arquivo": "/elemidia/ft-1",
+      "resumo": {
+        "praças": 1,
+        "telas": 222,
+        "valor_negociado": 76800,
+        "dias": 13
+      }
+    },
+    {
+      "id": "ft-2",
+      "ordem": 2,
+      "label": "FT 2",
+      "periodo": "10/06 a 30/06",
+      "data_publicacao": "2026-06-02",
+      "status": "publicado",
+      "arquivo": "/elemidia/ft-2",
+      "resumo": {
+        "praças": 7,
+        "telas": 374,
+        "valor_negociado": 63000,
+        "dias": 15
+      }
+    }
+  ],
+  "futuras": []
+}
