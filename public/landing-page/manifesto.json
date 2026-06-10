@@ -17,10 +17,19 @@
       "data_publicacao": "2026-06-02",
       "status": "publicado",
       "arquivo": "/landing-page/week-2"
+    },
+    {
+      "id": "week-3",
+      "ordem": 3,
+      "label": "Semana 3",
+      "periodo": "01/06 a 07/06",
+      "data_publicacao": "2026-06-09",
+      "status": "publicado",
+      "arquivo": "/landing-page/week-3"
     }
   ],
   "futuras": [
-    { "ordem": 3, "label": "Semana 3", "periodo": "01/06 a 07/06", "data_estimada": "2026-06-09" },
-    { "ordem": 4, "label": "Semana 4", "periodo": "08/06 a 14/06", "data_estimada": "2026-06-16" }
+    { "ordem": 4, "label": "Semana 4", "periodo": "08/06 a 14/06", "data_estimada": "2026-06-16" },
+    { "ordem": 5, "label": "Semana 5", "periodo": "15/06 a 21/06", "data_estimada": "2026-06-23" }
   ]
 }
