@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics · Semana 4 · 08/06 a 14/06 · MetLife 2026</title>
+
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+      --success: #50E596;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.55;
+    }
+
+    /* ===== HERO ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); } }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    section {
+      padding: 80px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(45,181,223,.12);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(26px, 3.5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+    section .section-lead {
+      font-size: 16.5px;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    /* KPI cards */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .kpi-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .kpi-card.alert strong { color: var(--red); }
+    .kpi-card.warn strong { color: var(--amber); }
+    .kpi-card.good strong { color: var(--green-deep); }
+
+    /* Total card (consolidado mês) */
+    .total-card {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-lg);
+      margin-top: 12px;
+    }
+    .total-card h3 {
+      margin: 0 0 22px;
+      font-size: 20px;
+      color: white;
+    }
+    .total-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .total-metric {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+    }
+    .total-metric strong {
+      display: block;
+      font-size: 36px;
+      line-height: 1;
+      color: white;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .total-metric span {
+      color: rgba(255,255,255,.75);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* Tabela */
+    .table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      background: rgba(0,59,92,.04);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    th.num, td.num { text-align: right; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    td.label-cell { font-weight: 700; }
+    tr.total-row td {
+      background: rgba(0,59,92,.04);
+      font-weight: 800;
+    }
+
+    .insight {
+      background: white;
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.06);
+      margin-top: 24px;
+    }
+    .insight.good { border-left-color: var(--green-deep); }
+    .insight strong { color: var(--navy); }
+    .insight p { margin: 0; font-size: 14.5px; color: var(--text); }
+
+    /* Footer */
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      margin-top: 0;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      color: white;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid, .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .total-metrics-row { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 56px 16px; }
+    }
+  </style>
+</head>
+<body data-week-id="week-4">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/landing-page">Analytics</a> &nbsp;/&nbsp; <strong>Semana 4 · 08/06 a 14/06</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Analytics LP · 08/06 a 14/06/2026</span>
+        <h1>1.860 page views, <span class="accent">fechamento do 1º mês</span> de campanha.</h1>
+        <p class="lead">A 4ª semana completa o primeiro mês da Landing Page no ar. Como a dti consolidou o ciclo mensal em um único relatório, esta semana traz o panorama em formato resumido — os totais isolados da S4 e o consolidado das 4 primeiras semanas (mês 1).</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>Forte alta no volume orgânico (+114% vs S3). Tempo médio se mantém em ~02:24. Fechamento do 1º ciclo da campanha.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>1.860</strong><span>page views</span></div>
+          <div class="metric"><strong>368</strong><span>cliques</span></div>
+          <div class="metric"><strong>85,6%</strong><span>bounce rate</span></div>
+          <div class="metric"><strong>02:24</strong><span>tempo médio</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- §1 VISÃO GERAL S4 -->
+  <section id="visao">
+    <span class="section-eyebrow">§1 · Semana 4 isolada</span>
+    <h2>Os números da semana de 08 a 14 de junho.</h2>
+    <p class="section-lead">Tráfego orgânico (sem UTMs) na Landing Page da Copa durante a 4ª semana — fechamento do 1º mês da campanha.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><strong>1.860</strong><span class="label">Acessos</span></div>
+      <div class="kpi-card"><strong>368</strong><span class="label">Cliques</span></div>
+      <div class="kpi-card alert"><strong>85,6%</strong><span class="label">Bounce rate</span></div>
+      <div class="kpi-card"><strong>02:24</strong><span class="label">Tempo médio</span></div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Volume mais que dobrou em relação à S3 (+114%):</strong> de 868 PV para 1.860 PV. A semana foi impulsionada pela <strong>abertura da Copa do Mundo 2026</strong>, segundo a leitura da dti. Bounce Rate subiu (85,6% vs 65% na S3), o que é esperado em períodos de pico de tráfego com audiência menos engajada.</p>
+    </div>
+  </section>
+
+  <!-- §2 FECHAMENTO DO MÊS 1 -->
+  <section id="mes-1">
+    <span class="section-eyebrow">§2 · Fechamento do 1º mês</span>
+    <h2>4 semanas, 29 mil page views, 2,1 mil cliques.</h2>
+    <p class="section-lead">Tráfego total (orgânico + UTM) consolidado das 4 primeiras semanas de operação. Esta semana fecha o ciclo mensal — o report completo da dti com toda a leitura mensal está disponível por solicitação.</p>
+
+    <div class="total-card">
+      <h3>1º mês acumulado · 18/05 a 14/06/2026</h3>
+      <div class="total-metrics-row">
+        <div class="total-metric">
+          <strong>29.830</strong>
+          <span>Page views totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>2.100</strong>
+          <span>Cliques totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>90,1%</strong>
+          <span>Bounce rate médio</span>
+        </div>
+        <div class="total-metric">
+          <strong>03:27</strong>
+          <span>Tempo médio</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th class="num">Page views</th>
+            <th class="num">Cliques</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">18-24 mai (Semana 1)</td>
+            <td class="num">4.499</td>
+            <td class="num">639</td>
+            <td class="num">85,6%</td>
+            <td class="num">02:17</td>
+          </tr>
+          <tr>
+            <td class="label-cell">25-31 mai (Semana 2)</td>
+            <td class="num">4.115</td>
+            <td class="num">279</td>
+            <td class="num">91,5%</td>
+            <td class="num">01:26</td>
+          </tr>
+          <tr>
+            <td class="label-cell">01-07 jun (Semana 3)</td>
+            <td class="num">8.778</td>
+            <td class="num">564</td>
+            <td class="num">90,4%</td>
+            <td class="num">05:39</td>
+          </tr>
+          <tr>
+            <td class="label-cell">08-14 jun (Semana 4)</td>
+            <td class="num">12.438</td>
+            <td class="num">618</td>
+            <td class="num">93,0%</td>
+            <td class="num">04:26</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label-cell">Total / Média</td>
+            <td class="num">29.830</td>
+            <td class="num">2.100</td>
+            <td class="num">90,1%</td>
+            <td class="num">03:27</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight good">
+      <p><strong>S4 entregou o maior volume mensal (12.438 PV).</strong> A abertura da Copa puxou todo o tráfego — orgânico + UTM. Mês fechou com quase 30 mil PVs acumulados, validando a operação. Próxima leitura detalhada já chega com a Semana 5 (15-21 jun).</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <h2>Primeiro mês fechado com quase 30 mil page views acumulados.</h2>
+    <p>A Semana 4 fechou o 1º ciclo da campanha com forte alta orgânica impulsionada pela abertura da Copa. A próxima semana (S5) já tem report completo com comparativos, canais e UTMs detalhados.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/analytics-timeline.js" defer></script>
+</body>
+</html>
