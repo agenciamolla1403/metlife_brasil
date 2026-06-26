@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+  <title>Performance · Semana 4 · 07/06 a 13/06 · MetLife 2026</title>
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      /* Cores por canal */
+      --meta: #0866FF;
+      --youtube: #FF0033;
+      --linkedin: #0A66C2;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* ===== HERO ===== */
+    /* ===== HERO (padrão do hub · igual week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); }
+    }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+
+    /* .hero-stats / .stat — Rafael reusa essas classes em sections internas
+       (não confundir com o hero principal que usa .hero-card + .metric-grid) */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: left;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .stat.accent { background: var(--navy); color: white; }
+    .stat.accent span { color: rgba(255,255,255,.7); }
+    .stat.green { background: var(--green); color: var(--navy); }
+    .stat.green span { color: rgba(0,59,92,.7); }
+
+    /* ===== SECTION GENERAL ===== */
+    section { padding: 70px 24px; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 36px; }
+    h2 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0 0 14px; }
+    .section-intro p { font-size: 16px; color: var(--muted); }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      background: rgba(45,181,223,.12);
+      border-radius: 999px;
+    }
+
+    /* ===== BUDGET PANEL ===== */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+    .budget-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .budget-card.dark {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+    }
+    .budget-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .budget-card.dark .budget-label { color: rgba(255,255,255,.6); }
+    .budget-value {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .budget-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .budget-card.dark .budget-meta { color: rgba(255,255,255,.7); }
+    .progress-bar {
+      height: 14px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 18px 0 10px;
+      position: relative;
+    }
+    .budget-card.dark .progress-bar { background: rgba(255,255,255,.1); }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--green-deep));
+      border-radius: 999px;
+      transition: width .8s ease;
+      position: relative;
+    }
+    .progress-marker {
+      position: absolute;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .progress-marker::after {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 22px;
+      background: var(--amber);
+      margin: 4px auto 0;
+    }
+    .progress-pct {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .budget-card.dark .progress-pct { color: rgba(255,255,255,.7); }
+
+    .channels-mini {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .channel-row {
+      display: grid;
+      grid-template-columns: 32px 80px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .channel-row .name {
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .budget-card.dark .channel-row .name { color: white; }
+    .channel-row .bar-wrap {
+      height: 8px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .budget-card.dark .channel-row .bar-wrap { background: rgba(255,255,255,.12); }
+    .channel-row .bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .8s ease;
+    }
+    .channel-row .pct {
+      font-weight: 800;
+      font-size: 13px;
+      min-width: 56px;
+      text-align: right;
+    }
+    .ch-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .ch-icon.meta { background: var(--meta); }
+    .ch-icon.youtube { background: var(--youtube); }
+    .ch-icon.linkedin { background: var(--linkedin); }
+
+    /* ===== TIMELINE / CRONOGRAMA ===== */
+    .timeline-section {
+      background: white;
+    }
+    .timeline-block {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .timeline-block-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .timeline-block-header .ch-icon { width: 36px; height: 36px; font-size: 14px; }
+    .timeline-block-header h3 { margin: 0; font-size: 19px; }
+    .timeline-block-header .share-chip {
+      background: rgba(0,59,92,.06);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .timeline-block-header .spacer { flex: 1; }
+    .timeline-block-header .budget-chip {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .timeline-block-header .budget-chip strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .timeline-row-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .timeline-row-label .camp-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .timeline-row-label .camp-share {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .timeline-bar-container {
+      height: 28px;
+      background: rgba(0,59,92,.04);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .timeline-bar-bg {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .timeline-cell {
+      border-right: 1px dashed rgba(0,59,92,.08);
+    }
+    .timeline-cell:last-child { border-right: none; }
+    .timeline-fill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: .3px;
+      transition: all .3s;
+    }
+    .timeline-fill.active {
+      background: linear-gradient(90deg, var(--green-deep), var(--green));
+      color: var(--navy);
+    }
+    .timeline-fill.scheduled {
+      background: repeating-linear-gradient(45deg, rgba(91,114,128,.15), rgba(91,114,128,.15) 6px, rgba(91,114,128,.08) 6px, rgba(91,114,128,.08) 12px);
+      color: var(--muted);
+      border: 1px dashed rgba(91,114,128,.3);
+    }
+    .timeline-fill.delayed {
+      background: linear-gradient(90deg, var(--amber), #E89A1E);
+      color: white;
+    }
+
+    .timeline-axis {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,59,92,.06);
+    }
+    .timeline-axis-weeks {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+    .timeline-axis-weeks span {
+      padding: 2px 0;
+    }
+    .timeline-ondas {
+      display: grid;
+      grid-template-columns: 4fr 4fr 3fr;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .timeline-ondas div {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px;
+      border-radius: 4px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .timeline-ondas .o1 { background: rgba(45,181,223,.15); color: var(--blue); }
+    .timeline-ondas .o2 { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .timeline-ondas .o3 { background: rgba(0,59,92,.1); color: var(--navy); }
+
+    .delay-notice {
+      background: rgba(245,166,35,.08);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .delay-notice strong { color: var(--amber); }
+
+    /* ===== INSIGHTS ===== */
+    .executive-summary {
+      background: var(--navy);
+      color: white;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .executive-summary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(80,229,150,.15), transparent 40%),
+        radial-gradient(circle at 5% 90%, rgba(45,181,223,.15), transparent 40%);
+      pointer-events: none;
+    }
+    .executive-summary .container { position: relative; z-index: 1; }
+    .executive-summary h2 { color: white; }
+    .executive-summary .section-label {
+      color: var(--green);
+      background: rgba(80,229,150,.15);
+    }
+    .executive-summary .section-intro p { color: rgba(255,255,255,.8); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .insight-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 28px;
+      border-radius: 18px;
+      transition: all .3s;
+    }
+    .insight-card:hover { transform: translateY(-3px); }
+    .insight-card.highlight {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--green);
+    }
+    .insight-card.attention {
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.05));
+      border-color: rgba(245,166,35,.4);
+    }
+    .insight-card.structural {
+      background: linear-gradient(135deg, rgba(45,181,223,.15), rgba(45,181,223,.05));
+      border-color: rgba(45,181,223,.4);
+    }
+    .insight-num {
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-num { color: var(--navy); }
+    .insight-card.attention .insight-num { color: var(--amber); }
+    .insight-card.structural .insight-num { color: var(--blue); }
+    .insight-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+      color: white;
+    }
+    .insight-card.highlight h3 { color: var(--navy); }
+    .insight-card p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .insight-card.highlight p { color: rgba(0,59,92,.85); }
+    .insight-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.12);
+      color: white;
+    }
+    .insight-card.highlight .insight-tag {
+      background: var(--navy);
+      color: var(--green);
+    }
+    .insight-card.attention .insight-tag {
+      background: rgba(245,166,35,.25);
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-tag {
+      background: rgba(45,181,223,.25);
+      color: var(--blue);
+    }
+
+    /* ===== TABS DE CANAIS ===== */
+    .tabs-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 0 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 22px 28px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: .3px;
+      position: relative;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -1px;
+      height: 3px;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-btn .tab-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .tab-pane {
+      display: none;
+      padding: 36px;
+    }
+    .tab-pane.active { display: block; }
+
+    /* ===== METRIC CARD ===== */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+    }
+    .metric-card.cost-good {
+      background: linear-gradient(135deg, white 60%, rgba(80,229,150,.06));
+      border-color: rgba(80,229,150,.25);
+    }
+    .metric-card.attention {
+      background: linear-gradient(135deg, white 60%, rgba(245,166,35,.06));
+      border-color: rgba(245,166,35,.3);
+    }
+    .metric-card .metric-name {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .metric-card .metric-value {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-card .metric-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .metric-card .metric-status {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
+    .metric-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .metric-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .metric-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .metric-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+    .kpi-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+    }
+
+    /* ===== TABLES ===== */
+    .metrics-table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .metrics-table-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .metrics-table-header h4 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .metrics-table-header .table-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    .metrics-table th {
+      background: rgba(0,59,92,.03);
+      padding: 14px 16px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    .metrics-table th:first-child { text-align: left; }
+    .metrics-table th.totals {
+      background: linear-gradient(135deg, var(--green-deep), #1FA85A);
+      color: white;
+    }
+    .metrics-table .week-sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      opacity: .65;
+      margin-top: 2px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .metrics-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,59,92,.05);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .metrics-table tbody tr:last-child td { border-bottom: none; }
+    .metrics-table tbody tr:hover { background: rgba(45,181,223,.03); }
+    .metric-label-cell {
+      text-align: left !important;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .metric-label-cell .metric-sublabel {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .metric-label-cell .kpi-mark {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .cell-value {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .cell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 6px;
+    }
+    .cell-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .cell-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .cell-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .cell-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+
+    .empty-cell {
+      color: var(--muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* ===== CHANNEL COMPARISON ===== */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid;
+    }
+    .comparison-card.meta { border-top-color: var(--meta); }
+    .comparison-card.youtube { border-top-color: var(--youtube); }
+    .comparison-card.linkedin { border-top-color: var(--linkedin); }
+    .comparison-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .comparison-card h3 { font-size: 20px; margin: 0; }
+    .comparison-role {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .comparison-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .comparison-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .comparison-list li:last-child { border-bottom: none; }
+    .comparison-list li .label { color: var(--muted); }
+    .comparison-list li .value {
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* ===== PROXIMOS PASSOS ===== */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .next-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.1);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .next-card .num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .next-card h3 { color: var(--navy); margin: 0 0 8px; font-size: 16px; }
+    .next-card p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer h2 { color: white; max-width: 800px; margin: 0 auto 14px; }
+    footer p { color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto; font-size: 14px; }
+    footer .footer-meta {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid, .next-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .timeline-grid, .timeline-axis { grid-template-columns: 1fr; }
+      .tab-btn { padding: 16px 18px; font-size: 13px; }
+    }
+  </style>
+  <style>
+    /* ===== EXTRA W4 COMPONENTS ===== */
+    .creative-rank { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+    .cr-row { display:grid; grid-template-columns: 28px 1fr; gap:14px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); transition:transform .15s; }
+    .cr-row:hover { transform: translateX(3px); }
+    .cr-row.win { border-left:4px solid var(--green-deep); }
+    .cr-row.low { border-left:4px solid var(--amber); }
+    .cr-rank { font-size:20px; font-weight:900; color:var(--blue); text-align:center; }
+    .cr-row.win .cr-rank { color:var(--green-deep); }
+    .cr-body { display:flex; flex-direction:column; gap:8px; }
+    .cr-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .cr-name { font-weight:800; font-size:15px; color:var(--navy); }
+    .cr-badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;
+      background:rgba(80,229,150,.18); color:var(--green-deep); white-space:nowrap; }
+    .cr-badge.amber { background:rgba(245,166,35,.15); color:#B97400; }
+    .cr-metrics { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; color:var(--muted); }
+    .cr-metrics b { color:var(--navy); font-weight:700; }
+    .fmt-split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+    @media (max-width:760px){ .fmt-split{grid-template-columns:1fr;} }
+    .fmt-col h5 { font-size:15px; margin:0 0 4px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+    .fmt-tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; color:white; }
+    .fmt-tag.vd { background:var(--blue); }
+    .fmt-tag.st { background:var(--teal); }
+    .fmt-note { font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+
+    /* Planned vs Actual big numbers */
+    .pva-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+    @media (max-width:860px){ .pva-grid{grid-template-columns:1fr;} }
+    .pva-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);
+      border:1px solid rgba(0,59,92,.06); position:relative; overflow:hidden; }
+    .pva-card .pva-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+    .pva-vals { display:flex; align-items:baseline; gap:8px; margin:12px 0 4px; flex-wrap:wrap; }
+    .pva-real { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+    .pva-plan { font-size:14px; color:var(--muted); }
+    .pva-bar { height:12px; border-radius:999px; background:rgba(0,59,92,.08); overflow:hidden; margin:14px 0 8px; }
+    .pva-bar span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+    .pva-pct { font-size:13px; font-weight:800; }
+    .pva-comment { font-size:13px; color:var(--text); margin-top:10px; padding-top:10px; border-top:1px solid rgba(0,59,92,.07); line-height:1.5; }
+    .pva-comment.good { color:var(--green-deep); }
+    .pva-comment.warn { color:#B97400; }
+
+    /* LP attribution */
+    .lp-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:8px 0 24px; }
+    @media (max-width:860px){ .lp-flow{grid-template-columns:1fr 1fr;} }
+    .lp-step { background:white; border-radius:16px; padding:18px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(0,59,92,.06); }
+    .lp-step .lp-big { font-size:26px; font-weight:900; color:var(--navy); }
+    .lp-step .lp-cap { font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .lp-bars { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .lp-bar-row { display:grid; grid-template-columns:160px 1fr 110px; gap:12px; align-items:center; font-size:13.5px; }
+    @media (max-width:680px){ .lp-bar-row{grid-template-columns:110px 1fr 70px; font-size:12px;} }
+    .lp-bar-row .lp-lbl { font-weight:700; color:var(--navy); }
+    .lp-track { height:26px; border-radius:8px; background:rgba(0,59,92,.07); overflow:hidden; }
+    .lp-track span { display:block; height:100%; border-radius:8px; }
+    .lp-val { text-align:right; font-weight:800; color:var(--navy); }
+
+    /* Collapsible campaign accordions (Meta) */
+    .camp-acc { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; border:1px solid rgba(0,59,92,.06); }
+    .camp-summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:18px 22px; font-weight:800; font-size:18px; color:var(--navy); user-select:none; }
+    .camp-summary::-webkit-details-marker { display:none; }
+    .camp-title { flex:1; }
+    .camp-badge { font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; white-space:nowrap; }
+    .camp-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+    .camp-acc[open] .camp-chevron { transform:rotate(180deg); }
+    .camp-content { padding:0 22px 22px; }
+    .acc-controls { display:flex; gap:8px; }
+    .acc-btn { background:white; border:1px solid rgba(0,59,92,.12); color:var(--navy); font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .15s; }
+    .acc-btn:hover { background:var(--navy); color:white; }
+
+    /* Creative recommendation line */
+    .cr-rec { font-size:12.5px; color:var(--text); background:rgba(45,181,223,.07); border-radius:8px; padding:8px 11px; margin-top:4px; line-height:1.45; }
+    .cr-row.win .cr-rec { background:rgba(80,229,150,.12); }
+    .cr-row.low .cr-rec { background:rgba(245,166,35,.10); }
+
+    /* Benchmark rows */
+    .bm-row { display:grid; grid-template-columns:150px 180px 150px 1fr; gap:16px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:16px 18px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); margin-bottom:12px; }
+    @media (max-width:860px){ .bm-row{ grid-template-columns:1fr 1fr; } .bm-comment{ grid-column:1/-1; } }
+    .bm-metric { font-weight:800; font-size:15px; color:var(--navy); }
+    .bm-real { font-size:24px; font-weight:900; line-height:1; }
+    .bm-bench { font-size:12px; color:var(--muted); margin-top:4px; }
+    .bm-flag { font-size:11px; font-weight:800; padding:5px 11px; border-radius:999px; text-align:center;
+      background:rgba(0,59,92,.07); color:var(--muted); white-space:nowrap; }
+    .bm-flag.win { background:rgba(80,229,150,.18); color:var(--green-deep); }
+    .bm-flag.mid { background:rgba(45,181,223,.14); color:var(--blue); }
+    .bm-comment { font-size:13px; color:var(--text); line-height:1.5; }
+    @media (max-width:760px){ #benchmark [style*="grid-template-columns:repeat(3,1fr)"]{ grid-template-columns:1fr !important; } }
+  </style>
+
+</head>
+<body data-week-id="week-4">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Semana 4 · 07/06 a 13/06</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Performance · Onda 1 fechada · 28 dias acumulados</span>
+        <h1>Onda 1 fechada, <span class="accent">R$ 74,4K investidos</span>, foco agora em criativos.</h1>
+        <p class="lead">Consolidação dos <strong>primeiros 28 dias</strong> da campanha "Patrocinadora Oficial do Cuidado" no Meta Ads, YouTube e LinkedIn — cobrindo toda a Onda 1. Esta edição inclui, pela primeira vez, <strong>análise de performance por criativo em cada canal</strong> e o cruzamento com o tráfego da Landing Page da Copa. Apenas <strong>investimento em mídia paga</strong> (não inclui honorários).</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte deste report</h3>
+        <p>Onda 1 atingiu 86% da meta planejada (R$ 86,8K). Meta Ads consolidado em Tráfego e Engajamento, YouTube e LinkedIn agora compõem a entrega multi-canal.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>R$ 74,4K</strong><span>investido total</span></div>
+          <div class="metric"><strong>86%</strong><span>da meta da Onda 1</span></div>
+          <div class="metric"><strong>28 / 75</strong><span>dias do plano</span></div>
+          <div class="metric"><strong>11,88M</strong><span>impressões combinadas</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#metas">Planejado x Realizado</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#investimento">Investimento</a>
+      <a href="#insights">Leitura do especialista</a>
+      <a href="#canais">Canais</a>
+      <a href="#criativos">Criativos</a>
+      <a href="#lp">Landing Page</a>
+      <a href="#proximos">Próximos passos</a>
+    </div>
+  </nav>
+
+  <section id="metas">
+    <div class="container">
+      <span class="section-label">Planejado x Realizado · visão consolidada</span>
+      <h2>Onde estamos contra o plano, somando os 3 canais.</h2>
+      <div class="section-intro">
+        <p>Comparativo dos <strong>big numbers</strong> da campanha contra a meta proporcional da Onda 1 (40% do orçamento de R$ 276K). A leitura é agregada — Meta + YouTube + LinkedIn juntos — para mostrar o progresso real de quanto já entregamos do que foi prometido.</p>
+      </div>
+      <div class="pva-grid">
+        
+        <div class="pva-card">
+          <div class="pva-label">Investimento (mídia)</div>
+          <div class="pva-vals"><span class="pva-real">R$ 74.441</span><span class="pva-plan">Meta Onda 1: R$ 86.805</span></div>
+          <div class="pva-bar"><span style="width:85.75662384556757%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">86% da meta O1</div>
+          <div class="pva-comment good">Investimos 86% da meta da Onda 1 (R$ 86.805 líquido). O Meta está adiantado (105%), o YouTube em 75% (entrou em 03/06) e o LinkedIn em 59% (Lead Gen e B2B entram só agora). Esses 14% precisam ser consumidos: a Onda 2 já entra com pacing acelerado para colocar a verba no ritmo do plano.</div>
+        </div>
+        
+        <div class="pva-card">
+          <div class="pva-label">Impressões combinadas</div>
+          <div class="pva-vals"><span class="pva-real">11,88M</span><span class="pva-plan">Estimativa O1 superada</span></div>
+          <div class="pva-bar"><span style="width:100%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">+100% da estimativa</div>
+          <div class="pva-comment good">11,9M de impressões em 28 dias — já acima de 100% da estimativa proporcional da Onda 1, graças ao CPM muito abaixo do benchmark. Mais entrega pelo mesmo real.</div>
+        </div>
+        
+        <div class="pva-card">
+          <div class="pva-label">Frequência média (alvo)</div>
+          <div class="pva-vals"><span class="pva-real">~1,3 – 1,5</span><span class="pva-plan">Alvo do plano: 3,0 – 3,5</span></div>
+          <div class="pva-bar"><span style="width:43%"></span></div>
+          <div class="pva-pct" style="color:#B97400">abaixo do alvo</div>
+          <div class="pva-comment warn">A frequência ainda está baixa (em torno de 1,3–1,5 no Meta) — e isso foi uma escolha. Na Onda 1 priorizamos abrir o máximo de alcance, encontrar gente nova, em vez de repetir cedo demais para as mesmas pessoas. A frequência é uma alavanca que ativamos quando a estratégia passa de "alcançar" para "fixar"; é decisão de configuração, não um número que esperamos acontecer.</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:18px;">
+        <strong>Leitura do especialista:</strong> a foto é positiva no que importa para uma campanha de marca — estamos entregando <strong>mais impressão por real</strong> do que o plano previa (CPM muito abaixo do benchmark). Contra a meta da Onda 1 (R$ 86.805 líquido), atingimos <strong>86% do planejado</strong>: o <strong>Meta vem adiantado (105%)</strong>, o <strong>YouTube em 75%</strong> (entrou só em 03/06) e o <strong>LinkedIn em 59%</strong> (Lead Gen e B2B começam agora). A verba precisa ser integralmente consumida, então a <strong>Onda 2 já entra acelerada</strong> para recuperar o pacing e colocar o investimento no ritmo do plano — com a vantagem de que cada real continua rendendo mais que a média do mercado.
+      </p>
+    </div>
+  </section>
+
+
+
+  <section id="benchmark" style="background:white;">
+    <div class="container">
+      <span class="section-label">Benchmark de mercado · realizado x referência</span>
+      <h2>Como nossos números se comparam ao mercado.</h2>
+      <div class="section-intro">
+        <p>Toda métrica só faz sentido contra uma referência. Aqui colocamos o nosso resultado lado a lado com o benchmark de mercado de cada canal (dados Brasil/global 2025–2026). É o que sustenta, com base externa, a leitura de que a operação está eficiente — e é o melhor argumento para explicar o CPM.</p>
+      </div>
+      <div class="tabs"><button class="tab-btn active" data-tab="bm-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta</span></button><button class="tab-btn " data-tab="bm-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube</span></button><button class="tab-btn " data-tab="bm-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn</span></button></div>
+      <div class="tab-pane active" id="bm-meta"><div class="bm-row">
+      <div class="bm-metric">CPM (geral)</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">R$ 4,55</div>
+        <div class="bm-bench">mercado: R$ 16 – 23</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">Nosso CPM ficou 65–80% abaixo do mercado brasileiro. É o resultado de uma operação de leilão bem calibrada e criativos com boa pontuação de relevância — entregamos muito mais alcance pelo mesmo real.</div>
+    </div><div class="bm-row">
+      <div class="bm-metric">CTR (geral)</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--navy);">1,19%</div>
+        <div class="bm-bench">mercado: ~1,55%</div>
+      </div>
+      <span class="bm-flag mid">na média</span>
+      <div class="bm-comment">CTR próximo da média de mercado, e isso é coerente: parte da nossa verba está em campanhas de awareness e vídeo, que naturalmente puxam o CTR geral para baixo em troca de alcance. Nas campanhas de tráfego isoladas, o CTR sobe para 2,84%.</div>
+    </div><div class="bm-row">
+      <div class="bm-metric">CTR · Tráfego</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">2,84%</div>
+        <div class="bm-bench">mercado: ~1,55%</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">Quando isolamos a campanha cujo objetivo é o clique, batemos o mercado com folga — quase o dobro da média. É a prova de que, onde o clique importa, estamos acima da curva.</div>
+    </div></div><div class="tab-pane " id="bm-youtube"><div class="bm-row">
+      <div class="bm-metric">VTR</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">52,8%</div>
+        <div class="bm-bench">mercado: ~31,9%</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">Nossa taxa de visualização é 65% superior à média de mercado. Significa que, de cada 100 pessoas impactadas, muito mais gente assiste o vídeo até o ponto que conta — o criativo está prendendo a atenção.</div>
+    </div><div class="bm-row">
+      <div class="bm-metric">CPM</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">R$ 9,30</div>
+        <div class="bm-bench">mercado: R$ 16 – 43</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">Bem abaixo do custo típico de vídeo no YouTube. Mesmo tendo começado depois do previsto, o canal entrega impressão de vídeo a um custo muito eficiente.</div>
+    </div><div class="bm-row">
+      <div class="bm-metric">CPV</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">R$ 0,02</div>
+        <div class="bm-bench">mercado: R$ 0,11 – 0,14</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">O custo por visualização ficou numa fração do benchmark. Cada real está comprando muito mais gente assistindo de fato — não só sendo exposta.</div>
+    </div></div><div class="tab-pane " id="bm-linkedin"><div class="bm-row">
+      <div class="bm-metric">CPM</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--navy);">R$ 47,61</div>
+        <div class="bm-bench">mercado: R$ 32 – 108</div>
+      </div>
+      <span class="bm-flag mid">na média</span>
+      <div class="bm-comment">Dentro da faixa esperada para o LinkedIn, na parte mais econômica dela. O CPM do canal é estruturalmente mais alto porque a audiência é segmentada por cargo e senioridade — pagamos pela precisão, não pelo volume.</div>
+    </div><div class="bm-row">
+      <div class="bm-metric">CTR</div>
+      <div class="bm-vals">
+        <div class="bm-real" style="color:var(--green-deep);">1,51%</div>
+        <div class="bm-bench">mercado: 0,44 – 0,65%</div>
+      </div>
+      <span class="bm-flag win">acima do mercado</span>
+      <div class="bm-comment">Mais que o dobro da média do LinkedIn. Para um público de alta liderança — que costuma ser o mais difícil de engajar — esse CTR mostra que a mensagem está ressoando com a pessoa certa.</div>
+    </div></div>
+      <div style="margin-top:28px;padding:22px;background:rgba(80,229,150,.07);border-radius:16px;border-left:3px solid var(--green-deep);">
+        <strong style="color:var(--green-deep);font-size:14px;">A leitura do CPM, em uma frase</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.6;">O CPM é o preço que pagamos para colocar a marca na frente de mil pessoas. O nosso ficou consistentemente abaixo do mercado nos três canais — e isso não é sorte de leilão: é o efeito direto de criativos relevantes e de uma estrutura de campanha bem montada. Na prática, significa que com o mesmo orçamento alcançamos muito mais gente do que a média dos anunciantes conseguiria. Eficiência de custo é, hoje, a maior vantagem competitiva desta campanha.</p>
+      </div>
+      <div style="margin-top:18px;padding:18px 20px;background:rgba(0,59,92,.03);border-radius:12px;">
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;">Fontes dos benchmarks</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:12px;line-height:1.5;">
+          <div>
+            <strong style="color:var(--meta);">Meta Ads (Brasil)</strong><br>
+            <a href="https://www.superads.ai/facebook-ads-costs/cpm-cost-per-mille/brazil" target="_blank" rel="noopener" style="color:var(--blue);">SuperAds — CPM Brasil</a><br>
+            <a href="https://www.adamigo.ai/blog/meta-ads-cpm-cpc-benchmarks-by-country-2026" target="_blank" rel="noopener" style="color:var(--blue);">AdAmigo — CPM por país 2026</a><br>
+            <a href="https://www.get-ryze.ai/blog/meta-ads-cost-benchmarks-by-industry-2026" target="_blank" rel="noopener" style="color:var(--blue);">Ryze — CTR por indústria 2026</a>
+          </div>
+          <div>
+            <strong style="color:var(--youtube);">YouTube Ads</strong><br>
+            <a href="https://marketingltb.com/blog/statistics/youtube-ads-statistics/" target="_blank" rel="noopener" style="color:var(--blue);">Marketing LTB — VTR e CPV</a><br>
+            <a href="https://www.digitalapplied.com/blog/youtube-ads-benchmarks-2026-cpv-cpm-ctr-industry" target="_blank" rel="noopener" style="color:var(--blue);">DigitalApplied — Benchmarks 2026</a><br>
+            <a href="https://owlclaw.com/benchmarks/youtube-ads-benchmarks/" target="_blank" rel="noopener" style="color:var(--blue);">OwlClaw — CPV/CPM por formato</a>
+          </div>
+          <div>
+            <strong style="color:var(--linkedin);">LinkedIn Ads</strong><br>
+            <a href="https://blog.closelyhq.com/linkedin-ad-benchmarks-cpc-cpm-and-ctr-by-industry/" target="_blank" rel="noopener" style="color:var(--blue);">Closely — CPC/CPM/CTR</a><br>
+            <a href="https://postiv.ai/blog/linkedin-advertising-costs" target="_blank" rel="noopener" style="color:var(--blue);">Postiv — Custos por formato</a><br>
+            <a href="https://zenabm.com/blog/linkedin-ads-benchmarks" target="_blank" rel="noopener" style="color:var(--blue);">ZenABM — CPM por mercado</a>
+          </div>
+        </div>
+        <p style="font-size:11.5px;color:var(--muted);margin:14px 0 0;line-height:1.5;">Relatórios públicos de benchmark 2025–2026, agregadores de dados de mercado (não fontes oficiais das plataformas). Valores em dólar convertidos a ~R$ 5,40. Servem como <strong>faixa de referência direcional</strong>, não valor exato — variam por indústria, praça, objetivo de campanha e período. A maior parte reflete campanhas de performance; campanhas de awareness/marca, como boa parte da nossa operação, tendem a ter CPM estruturalmente mais baixo.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="investimento" style="background:rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">Visão geral do investimento · realizado x meta da Onda 1</span>
+      <h2>Quanto investimos de cada canal contra a meta.</h2>
+      <div class="section-intro">
+        <p>A barra mostra o <strong>realizado de cada canal contra a meta planejada para a Onda 1</strong> (valores líquidos do plano oficial). É a leitura financeira que importa: estamos no ritmo previsto? O Meta vem adiantado; YouTube e LinkedIn ainda têm verba a consumir — e essa verba <strong>não fica para trás</strong>: entra acelerada na Onda 2 para cumprir o investimento planejado.</p>
+      </div>
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+        <div style="display:grid;grid-template-columns:130px 1fr 230px;gap:14px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:14px;">
+          <div>Canal</div><div>Progresso vs meta O1</div><div style="text-align:right;">Realizado / Meta · Att%</div>
+        </div>
+        <div class="bar-row" style="display:grid;grid-template-columns:130px 1fr 230px;gap:14px;align-items:center;margin-bottom:16px;font-weight:700;">
+      <div>Meta Ads</div>
+      <div style="height:30px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;position:relative;"><span style="display:block;height:100%;border-radius:999px;background:var(--meta);width:100%"></span></div>
+      <div style="text-align:right;font-size:14px;">R$ 43.497 <span style="color:var(--muted);font-weight:600;">/ R$ 41.346</span> · <span style="color:var(--green-deep);font-weight:800;">105%</span></div>
+    </div><div class="bar-row" style="display:grid;grid-template-columns:130px 1fr 230px;gap:14px;align-items:center;margin-bottom:16px;font-weight:700;">
+      <div>YouTube Ads</div>
+      <div style="height:30px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;position:relative;"><span style="display:block;height:100%;border-radius:999px;background:var(--youtube);width:75%"></span></div>
+      <div style="text-align:right;font-size:14px;">R$ 19.377 <span style="color:var(--muted);font-weight:600;">/ R$ 25.976</span> · <span style="color:#B97400;font-weight:800;">75%</span></div>
+    </div><div class="bar-row" style="display:grid;grid-template-columns:130px 1fr 230px;gap:14px;align-items:center;margin-bottom:16px;font-weight:700;">
+      <div>LinkedIn Ads</div>
+      <div style="height:30px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;position:relative;"><span style="display:block;height:100%;border-radius:999px;background:var(--linkedin);width:59%"></span></div>
+      <div style="text-align:right;font-size:14px;">R$ 11.567 <span style="color:var(--muted);font-weight:600;">/ R$ 19.482</span> · <span style="color:var(--youtube);font-weight:800;">59%</span></div>
+    </div>
+        <div style="border-top:1px solid rgba(0,59,92,.08);margin-top:8px;padding-top:16px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:18px;color:var(--navy);">
+          <span>Total · Onda 1</span><span>R$ 74.441 <span style="color:var(--muted);font-size:14px;font-weight:600;">/ R$ 86.805</span> · <span style="color:#B97400;">86%</span></span>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;padding:18px;background:white;border-radius:14px;box-shadow:var(--shadow);font-size:13px;color:var(--text);line-height:1.55;">
+        <strong style="color:var(--navy);">Como ler:</strong> "Att%" é o quanto cada canal já investiu da sua própria meta da Onda 1. <strong>Meta 105%</strong> = ligeiramente adiantado (dentro do esperado). <strong>YouTube 75%</strong> = entrou em 03/06 por questão técnica, agora acelerando. <strong>LinkedIn 59%</strong> = rodou só a Institucional; Lead Gen e B2B começam agora e elevam o pacing. A verba é para ser consumida por completo — o que não saiu na Onda 1 entra distribuído nas próximas ondas, não some do plano.
+      </div>
+
+      <div class="hero-stats" style="margin-top:22px;max-width:none;">
+        <div class="stat"><strong>11,88M</strong><span>impressões combinadas</span></div>
+        <div class="stat"><strong>117.827</strong><span>cliques (link) combinados</span></div>
+        <div class="stat green"><strong>807.311</strong><span>engajamentos (Meta+LI)</span></div>
+        <div class="stat accent"><strong>1.172.844</strong><span>video views (YT+LI)</span></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="insights" class="executive-summary">
+    <div class="container">
+      <span class="section-label">Leitura do especialista</span>
+      <h2>Os 7 pontos que importam ao fechar a Onda 1.</h2>
+      <div class="section-intro">
+        <p>Resumo executivo em linguagem direta: o que está indo bem, o que merece atenção e o que muda na sequência. Cada ponto traduz um número em decisão.</p>
+      </div>
+      <div class="insights-grid">
+        <div class="insight-card highlight">
+          <span class="insight-tag">#1 · CPM imbatível</span>
+          <div class="insight-num">R$ 4,55</div>
+          <p>O CPM médio do Meta na Onda 1 foi de <strong>R$ 4,55</strong> — quase 6x mais barato que o benchmark do plano (R$ 22–28). É o que permite entregar 11,9M de impressões gastando pouco. Eficiência é o grande destaque do período.</p>
+        </div>
+        <div class="insight-card highlight">
+          <span class="insight-tag">#2 · YouTube se recuperou</span>
+          <div class="insight-num">R$ 9,30</div>
+          <p>Depois do problema técnico que atrasou o início para 03/06, o YouTube estabilizou num CPM de <strong>R$ 9,30</strong> (plano estimava R$ 50) e VTR de <strong>52,8%</strong>. O canal saiu do vermelho e hoje é um dos mais eficientes em vídeo.</p>
+        </div>
+        <div class="insight-card attention">
+          <span class="insight-tag">#3 · Pacing a recuperar na Onda 2</span>
+          <div class="insight-num">86% / 100%</div>
+          <p>Entregamos <strong>86% da meta de investimento</strong> da Onda 1. Não é problema de performance, é de ritmo — puxado pelo LinkedIn incompleto e pela entrada tardia do YT. Como a verba precisa ser integralmente consumida, a <strong>Onda 2 já entra acelerada</strong> para recolocar o investimento no ritmo do plano.</p>
+        </div>
+        <div class="insight-card attention">
+          <span class="insight-tag">#4 · Frequência é a próxima alavanca</span>
+          <div class="insight-num">~1,3</div>
+          <p>A frequência no Meta está em torno de <strong>1,3</strong>, abaixo do alvo de 3–3,5. Foi uma escolha: na Onda 1 priorizamos abrir alcance em vez de repetir cedo demais. Frequência é o que fixa a mensagem — e é uma alavanca que <strong>nós ativamos</strong> quando a estratégia pede, ajustando público e configuração. Controlamos quando subir.</p>
+        </div>
+        <div class="insight-card highlight">
+          <span class="insight-tag">#5 · O Manifesto é o criativo-rei</span>
+          <div class="insight-num">Manifesto</div>
+          <p>Em todos os canais e formatos, o conceito <strong>"Manifesto"</strong> aparece no topo: melhor CTR no Tráfego (7,4% em vídeo), maior engajamento no ENG (47,6%) e líder absoluto de tráfego na LP. É o ativo que está carregando a campanha.</p>
+        </div>
+        <div class="insight-card structural">
+          <span class="insight-tag">#6 · LinkedIn ainda é só metade</span>
+          <div class="insight-num">1 de 3</div>
+          <p>Roda apenas a campanha <strong>Institucional</strong> (base de C-level e alta liderança). Lead Gen (corretores) e B2B <strong>entram agora na 1ª semana da Onda 2</strong> — não estavam pendentes, estavam programadas. A leitura de leads começa a partir daí.</p>
+        </div>
+        <div class="insight-card structural">
+          <span class="insight-tag">#7 · A LP confirma a mídia</span>
+          <div class="insight-num">25,5K</div>
+          <p>A Landing Page recebeu <strong>25,5K page views via UTM</strong>, com <strong>86% vindo do Meta/Instagram</strong>. O cruzamento valida a atribuição: o que a mídia entrega bate com o que a LP recebe. Detalhe completo na seção Landing Page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="canais">
+    <div class="container">
+      <span class="section-label">Detalhamento por canal</span>
+      <h2>Performance de cada canal na Onda 1.</h2>
+      <div class="section-intro"><p>Os 3 canais lado a lado. No Meta, agora separamos as três estratégias ativas em blocos que você pode <strong>abrir ou recolher</strong> — clique no título de cada campanha para expandir ou esconder os detalhes.</p></div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tab-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta Ads</span></button>
+        <button class="tab-btn" data-tab="tab-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube Ads</span></button>
+        <button class="tab-btn" data-tab="tab-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn Ads</span></button>
+      </div>
+
+      <div class="tab-pane active" id="tab-meta">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
+          <div>
+            <h3 style="font-size:22px;margin:0 0 4px;">Meta Ads — Resumo por estratégia</h3>
+            <p style="color:var(--muted);font-size:14px;margin:0;">Agrupado pela <strong>Tag Name</strong> (nível de estratégia). <strong>R$ 43.497 investidos · 28 dias.</strong></p>
+          </div>
+          <div class="acc-controls">
+            <button class="acc-btn" data-acc="open">Abrir todas</button>
+            <button class="acc-btn" data-acc="close">Recolher todas</button>
+          </div>
+        </div>
+        
+        <details class="camp-acc" open>
+          <summary class="camp-summary" style="border-left:4px solid #0866FF;">
+            <span class="camp-title">▸ META_AWA · Awareness</span>
+            <span class="camp-badge" style="background:#0866FF1A;color:#0866FF;">Objetivo: impressões</span>
+            <span class="camp-chevron">▾</span>
+          </summary>
+          <div class="camp-content">
+            <p style="color:var(--muted);font-size:13px;margin:0 0 14px;">Objetivo: <strong>maximizar impressões</strong>. Entrou em 09/06 (W4), conforme o plano. Tem campanha de vídeo veiculando — por isso o CTR é naturalmente ínfimo (0,08%): <strong>cliques não são o objetivo aqui</strong>, e sim alcance e impressão ao menor custo.</p>
+            <div class="metric-row"><div class="metric-card  ">
+      
+      <div class="metric-name">Investido</div>
+      <div class="metric-value">R$ 7.366</div>
+      <div class="metric-meta">Entrou em 09/06 (W4)</div>
+      
+    </div><div class="metric-card  ">
+      <span class="kpi-badge">KPI</span>
+      <div class="metric-name">Impressões</div>
+      <div class="metric-value">4.586.139</div>
+      <div class="metric-meta">KPI principal</div>
+      <span class="metric-status above">▲ objetivo</span>
+    </div><div class="metric-card cost-good ">
+      
+      <div class="metric-name">CPM</div>
+      <div class="metric-value">R$ 1,61</div>
+      <div class="metric-meta">Altíssima entrega</div>
+      <span class="metric-status above">muito barato</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Alcance</div>
+      <div class="metric-value">3.572.883</div>
+      <div class="metric-meta">Cobertura ampla</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Video views</div>
+      <div class="metric-value">4.498.454</div>
+      <div class="metric-meta">Reproduções de vídeo</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">CTR</div>
+      <div class="metric-value">0,08%</div>
+      <div class="metric-meta">Esperado baixo — não é o KPI</div>
+      
+    </div></div>
+          </div>
+        </details>
+        <details class="camp-acc" open>
+          <summary class="camp-summary" style="border-left:4px solid #27C7BD;">
+            <span class="camp-title">▸ META_ENG · Engajamento</span>
+            <span class="camp-badge" style="background:#27C7BD1A;color:#27C7BD;">Objetivo: interação</span>
+            <span class="camp-chevron">▾</span>
+          </summary>
+          <div class="camp-content">
+            <p style="color:var(--muted);font-size:13px;margin:0 0 14px;">KPI principal: <strong>engajamento com a página</strong>. Roda desde 18/05.</p>
+            <div class="metric-row"><div class="metric-card  ">
+      
+      <div class="metric-name">Investido</div>
+      <div class="metric-value">R$ 19.878</div>
+      <div class="metric-meta">Roda desde 18/05</div>
+      
+    </div><div class="metric-card  ">
+      <span class="kpi-badge">KPI</span>
+      <div class="metric-name">Engajamento</div>
+      <div class="metric-value">439.139</div>
+      <div class="metric-meta">KPI principal</div>
+      <span class="metric-status above">▲ forte</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Tx. engajamento</div>
+      <div class="metric-value">18,06%</div>
+      <div class="metric-meta">Sobre impressões</div>
+      <span class="metric-status above">▲ alta</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Impressões</div>
+      <div class="metric-value">2.432.046</div>
+      <div class="metric-meta"></div>
+      
+    </div><div class="metric-card cost-good ">
+      
+      <div class="metric-name">CPM</div>
+      <div class="metric-value">R$ 8,17</div>
+      <div class="metric-meta">Meta: R$ 22</div>
+      <span class="metric-status above">63% mais barato</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">CTR</div>
+      <div class="metric-value">1,56%</div>
+      <div class="metric-meta">Plus de tráfego</div>
+      
+    </div></div>
+          </div>
+        </details>
+        <details class="camp-acc" open>
+          <summary class="camp-summary" style="border-left:4px solid #003B5C;">
+            <span class="camp-title">▸ META_TRF · Tráfego</span>
+            <span class="camp-badge" style="background:#003B5C1A;color:#003B5C;">Objetivo: cliques</span>
+            <span class="camp-chevron">▾</span>
+          </summary>
+          <div class="camp-content">
+            <p style="color:var(--muted);font-size:13px;margin:0 0 14px;">KPI principal: <strong>cliques no link</strong>. Roda desde 18/05 — e ainda gera bastante engajamento como bônus.</p>
+            <div class="metric-row"><div class="metric-card  ">
+      
+      <div class="metric-name">Investido</div>
+      <div class="metric-value">R$ 16.252</div>
+      <div class="metric-meta">Roda desde 18/05</div>
+      
+    </div><div class="metric-card  ">
+      <span class="kpi-badge">KPI</span>
+      <div class="metric-name">Cliques no link</div>
+      <div class="metric-value">72.123</div>
+      <div class="metric-meta">KPI principal</div>
+      <span class="metric-status above">▲ forte</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">CTR</div>
+      <div class="metric-value">2,84%</div>
+      <div class="metric-meta">Meta: 1,50%</div>
+      <span class="metric-status above">▲ +89%</span>
+    </div><div class="metric-card cost-good ">
+      
+      <div class="metric-name">CPC</div>
+      <div class="metric-value">R$ 0,23</div>
+      <div class="metric-meta">Custo por clique</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Impressões</div>
+      <div class="metric-value">2.537.825</div>
+      <div class="metric-meta"></div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Engajamento</div>
+      <div class="metric-value">238.844</div>
+      <div class="metric-meta">Plus além do KPI</div>
+      <span class="metric-status above">▲ bônus</span>
+    </div></div>
+          </div>
+        </details>
+        <div style="margin-top:20px;padding:20px;background:rgba(8,102,255,.05);border-radius:14px;border-left:3px solid var(--meta);">
+          <strong style="color:var(--meta);font-size:13px;">ⓘ Como ler a campanha de Awareness</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">A META_AWA é otimizada para <strong>impressões/alcance</strong>, não para clique. Reportamos o sucesso dela por <strong>volume de impressões, alcance e CPM</strong> — e não por CTR. O CTR de 0,08% é o comportamento esperado de uma campanha de vídeo de marca: as pessoas assistem, não clicam. Por isso ela entregou 4,6M de impressões a um CPM de R$ 1,61, o mais barato de toda a operação.</p>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-youtube">
+        <h3 style="font-size:22px;margin-bottom:6px;">YouTube Ads — Vídeo (Manifesto + Shorts)</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">YT_AWA com objetivo de reconhecimento via vídeo. <strong>Iniciou 03/06 — 12 dias de operação até 14/06.</strong></p>
+        <div class="metric-row"><div class="metric-card  ">
+      
+      <div class="metric-name">Investido</div>
+      <div class="metric-value">R$ 19.377</div>
+      <div class="metric-meta">Iniciou 03/06</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Impressões</div>
+      <div class="metric-value">2.083.899</div>
+      <div class="metric-meta"></div>
+      
+    </div><div class="metric-card  ">
+      <span class="kpi-badge">KPI</span>
+      <div class="metric-name">Video views</div>
+      <div class="metric-value">1.099.572</div>
+      <div class="metric-meta">KPI principal</div>
+      
+    </div><div class="metric-card cost-good ">
+      
+      <div class="metric-name">CPM</div>
+      <div class="metric-value">R$ 9,30</div>
+      <div class="metric-meta">Plano estimava R$ 50</div>
+      <span class="metric-status above">81% mais barato</span>
+    </div><div class="metric-card cost-good ">
+      
+      <div class="metric-name">CPV</div>
+      <div class="metric-value">R$ 0,02</div>
+      <div class="metric-meta">Custo por view</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">VTR</div>
+      <div class="metric-value">52,77%</div>
+      <div class="metric-meta">Taxa de visualização</div>
+      <span class="metric-status above">▲ alta</span>
+    </div></div>
+        <div style="margin-top:28px;padding:20px;background:rgba(80,229,150,.08);border-radius:14px;border-left:3px solid var(--green-deep);">
+          <strong style="color:var(--green-deep);font-size:13px;">✓ Recuperação após o atraso técnico</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">Lembrando: a campanha deveria começar em 18/05 mas teve problema na conta do Google Ads, resolvido via protocolo, e só veiculou a partir de <strong>03/06</strong>. Desde então estabilizou: CPM caiu para <strong>R$ 9,30</strong> (vs R$ 50 do plano) e a VTR ficou em <strong>52,8%</strong>. O formato <strong>Manifesto</strong> (in-stream) tem a melhor VTR (61,3%); os Shorts entregam volume a custo ainda menor.</p>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-linkedin">
+        <h3 style="font-size:22px;margin-bottom:6px;">LinkedIn Ads — Institucional</h3>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Até agora, <strong>apenas a campanha Institucional</strong>, mirando uma base de empresas e profissionais de <strong>alta liderança (C-level) e cargos de gestão</strong>. Iniciou 27/05. <strong>Lead Gen (corretores) e B2B entram agora na 1ª semana da Onda 2.</strong></p>
+        <div class="metric-row"><div class="metric-card  ">
+      
+      <div class="metric-name">Investido</div>
+      <div class="metric-value">R$ 11.567</div>
+      <div class="metric-meta">Iniciou 27/05 · só Institucional</div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Impressões</div>
+      <div class="metric-value">242.967</div>
+      <div class="metric-meta"></div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Alcance</div>
+      <div class="metric-value">43.189</div>
+      <div class="metric-meta">Público qualificado</div>
+      
+    </div><div class="metric-card  attention">
+      
+      <div class="metric-name">CPM</div>
+      <div class="metric-value">R$ 47,61</div>
+      <div class="metric-meta">Normal p/ LinkedIn</div>
+      <span class="metric-status below">▲ caro p/ canal</span>
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">Cliques</div>
+      <div class="metric-value">3.663</div>
+      <div class="metric-meta"></div>
+      
+    </div><div class="metric-card  ">
+      
+      <div class="metric-name">CTR</div>
+      <div class="metric-value">1,51%</div>
+      <div class="metric-meta">Engajamento B2B</div>
+      
+    </div></div>
+        <div style="margin-top:28px;padding:20px;background:rgba(10,102,194,.06);border-radius:14px;border-left:3px solid var(--linkedin);">
+          <strong style="color:var(--linkedin);font-size:13px;">ⓘ Sobre o CPM e o que vem na Onda 2</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">O CPM de <strong>R$ 47,61</strong> é alto frente aos outros canais, mas <strong>normal para o LinkedIn</strong> — pagamos mais porque a audiência é segmentada por cargo, empresa e senioridade (C-level, heads de Marketing/CRM/Growth/Performance, perfis técnicos de Dados/BI). O CTR de 1,51% confirma engajamento qualificado. As campanhas de <strong>Lead Gen e B2B foram programadas para iniciar agora</strong> (Onda 2) — não estavam pendentes. A leitura de leads passa a existir a partir do próximo report.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="criativos" style="background:white;">
+    <div class="container">
+      <span class="section-label">Performance de criativos · novidade desta edição</span>
+      <h2>Quais criativos escalar — comparando iguais com iguais.</h2>
+      <div class="section-intro">
+        <p>Esta é a primeira vez que entramos no nível do criativo. Para uma leitura justa, comparamos <strong>vídeo contra vídeo</strong> e <strong>estático contra estático</strong> dentro de cada objetivo — nunca formatos diferentes entre si, já que cada formato tem custo e comportamento próprios. O <span style="color:var(--green-deep);font-weight:700;">★ escalar</span> marca os campeões a priorizar; o <span style="color:#B97400;font-weight:700;">↻ otimizar</span> aponta onde realocar verba para render mais. Cada criativo traz uma <strong>recomendação de ação</strong>.</p>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="cre-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta</span></button>
+        <button class="tab-btn" data-tab="cre-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube</span></button>
+        <button class="tab-btn" data-tab="cre-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn</span></button>
+      </div>
+      <div class="tab-pane active" id="cre-meta">
+      <div style="margin-bottom:8px;">
+        <h4 style="font-size:18px;color:var(--navy);margin:0 0 4px;">META_AWA · Awareness (objetivo: impressões)</h4>
+      </div>
+      <div class="fmt-split">
+        <div class="fmt-col">
+          <h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5>
+          <p class="fmt-note">Os dois vídeos performam parecido — ambos entregam volume gigante a CPM &lt; R$ 2. Os dois merecem continuar.</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Canção</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.853</b></span>
+          <span>Impr. <b>939.702</b></span>
+          <span>CPM <b>R$ 1,97</b></span>
+          <span>CTR <b>0.06%</b></span>
+          <span>Tx.Eng <b>5.1%</b></span>
+        </div>
+        <div class="cr-rec">Forte entrega de impressões e o melhor engajamento entre os vídeos de awareness — manter no ar e ampliar verba.</div>
+      </div>
+    </div><div class="cr-row win">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.848</b></span>
+          <span>Impr. <b>1.166.622</b></span>
+          <span>CPM <b>R$ 1,58</b></span>
+          <span>CTR <b>0.04%</b></span>
+          <span>Tx.Eng <b>6.4%</b></span>
+        </div>
+        <div class="cr-rec">Maior volume de impressões ao menor CPM do formato. Ótimo candidato a receber mais investimento na Onda 2.</div>
+      </div>
+    </div></div>
+        </div>
+        <div class="fmt-col">
+          <h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5>
+          <p class="fmt-note">Em estáticos de awareness, "Proteção que Acompanha" lidera entrega ao menor CPM. A Tx.Eng é baixa porque o objetivo é impressão, não interação.</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Proteção que Acompanha</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.117</b></span>
+          <span>Impr. <b>743.114</b></span>
+          <span>CPM <b>R$ 1,50</b></span>
+          <span>CTR <b>0.12%</b></span>
+          <span>Tx.Eng <b>0.1%</b></span>
+        </div>
+        <div class="cr-rec">Melhor CPM e maior alcance entre os estáticos — priorizar na continuidade.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Torça Junto</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.069</b></span>
+          <span>Impr. <b>726.118</b></span>
+          <span>CPM <b>R$ 1,47</b></span>
+          <span>CTR <b>0.08%</b></span>
+          <span>Tx.Eng <b>0.1%</b></span>
+        </div>
+        <div class="cr-rec">Performance sólida de impressões; segue como apoio de alcance.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">3</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Viver Agora (Campo)</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 759</b></span>
+          <span>Impr. <b>539.219</b></span>
+          <span>CPM <b>R$ 1,41</b></span>
+          <span>CTR <b>0.10%</b></span>
+          <span>Tx.Eng <b>0.1%</b></span>
+        </div>
+        <div class="cr-rec">Entrega consistente; manter como reforço de volume.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">4</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Em Campo</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 546</b></span>
+          <span>Impr. <b>352.900</b></span>
+          <span>CPM <b>R$ 1,55</b></span>
+          <span>CTR <b>0.10%</b></span>
+          <span>Tx.Eng <b>0.1%</b></span>
+        </div>
+        <div class="cr-rec">Desempenho mediano; monitorar e manter enquanto entregar a esse CPM.</div>
+      </div>
+    </div><div class="cr-row low">
+      <div class="cr-rank">5</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Viver Agora (Pessoa)</span><span class="cr-badge amber">↻ otimizar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 173</b></span>
+          <span>Impr. <b>118.464</b></span>
+          <span>CPM <b>R$ 1,46</b></span>
+          <span>CTR <b>0.11%</b></span>
+          <span>Tx.Eng <b>0.1%</b></span>
+        </div>
+        <div class="cr-rec">Volume baixo de entrega. Sugestão: realocar a verba para "Proteção que Acompanha" e os vídeos campeões, que rendem mais alcance pelo mesmo valor.</div>
+      </div>
+    </div></div>
+        </div>
+      </div><hr style="border:none;border-top:1px solid rgba(0,59,92,.08);margin:32px 0;">
+      <div style="margin-bottom:8px;">
+        <h4 style="font-size:18px;color:var(--navy);margin:0 0 4px;">META_ENG · Engajamento (objetivo: interação)</h4>
+      </div>
+      <div class="fmt-split">
+        <div class="fmt-col">
+          <h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5>
+          <p class="fmt-note">"Manifesto" em vídeo é imbatível em engajamento (47,6%) — o melhor ativo de engajamento da conta.</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Manifesto</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.340</b></span>
+          <span>Impr. <b>368.448</b></span>
+          <span>CPM <b>R$ 3,64</b></span>
+          <span>CTR <b>0.00%</b></span>
+          <span>Tx.Eng <b>47.6%</b></span>
+        </div>
+        <div class="cr-rec">Melhor ativo de engajamento de toda a conta (47,6%). Escalar com prioridade máxima.</div>
+      </div>
+    </div><div class="cr-row win">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.213</b></span>
+          <span>Impr. <b>246.522</b></span>
+          <span>CPM <b>R$ 4,92</b></span>
+          <span>CTR <b>0.24%</b></span>
+          <span>Tx.Eng <b>43.3%</b></span>
+        </div>
+        <div class="cr-rec">Engajamento altíssimo (43,3%) — segundo melhor. Manter e ampliar.</div>
+      </div>
+    </div></div>
+        </div>
+        <div class="fmt-col">
+          <h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5>
+          <p class="fmt-note">Entre os estáticos, "Cuidado" e "Manifesto" puxam o engajamento (20% e 16%).</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 4.265</b></span>
+          <span>Impr. <b>287.965</b></span>
+          <span>CPM <b>R$ 14,81</b></span>
+          <span>CTR <b>1.89%</b></span>
+          <span>Tx.Eng <b>20.1%</b></span>
+        </div>
+        <div class="cr-rec">Lidera o engajamento entre os estáticos. Vale concentrar verba aqui.</div>
+      </div>
+    </div><div class="cr-row win">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Manifesto</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 2.906</b></span>
+          <span>Impr. <b>295.892</b></span>
+          <span>CPM <b>R$ 9,82</b></span>
+          <span>CTR <b>1.30%</b></span>
+          <span>Tx.Eng <b>15.8%</b></span>
+        </div>
+        <div class="cr-rec">Segundo melhor engajamento e bom CPM — manter no ar.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">3</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Proteção que Acompanha</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 3.370</b></span>
+          <span>Impr. <b>426.881</b></span>
+          <span>CPM <b>R$ 7,90</b></span>
+          <span>CTR <b>1.92%</b></span>
+          <span>Tx.Eng <b>5.4%</b></span>
+        </div>
+        <div class="cr-rec">Entrega muito volume de impressão a CPM baixo, mas engaja menos. Bom para alcance; ajustar copy/CTA para puxar mais interação.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">4</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Torça Junto</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 3.108</b></span>
+          <span>Impr. <b>319.763</b></span>
+          <span>CPM <b>R$ 9,72</b></span>
+          <span>CTR <b>2.81%</b></span>
+          <span>Tx.Eng <b>3.8%</b></span>
+        </div>
+        <div class="cr-rec">Bom CTR, engajamento moderado. Testar variação de chamada para elevar a interação.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">5</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Em Campo</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.972</b></span>
+          <span>Impr. <b>217.021</b></span>
+          <span>CPM <b>R$ 9,09</b></span>
+          <span>CTR <b>2.16%</b></span>
+          <span>Tx.Eng <b>4.7%</b></span>
+        </div>
+        <div class="cr-rec">Performance mediana; manter sob observação e iterar a mensagem.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">6</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Viver Agora (Pessoa)</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.346</b></span>
+          <span>Impr. <b>222.575</b></span>
+          <span>CPM <b>R$ 6,05</b></span>
+          <span>CTR <b>2.20%</b></span>
+          <span>Tx.Eng <b>2.4%</b></span>
+        </div>
+        <div class="cr-rec">Engajamento baixo apesar do bom CTR. Oportunidade de refinar o criativo.</div>
+      </div>
+    </div><div class="cr-row low">
+      <div class="cr-rank">7</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Viver Agora (Campo)</span><span class="cr-badge amber">↻ otimizar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 358</b></span>
+          <span>Impr. <b>46.979</b></span>
+          <span>CPM <b>R$ 7,62</b></span>
+          <span>CTR <b>2.75%</b></span>
+          <span>Tx.Eng <b>3.1%</b></span>
+        </div>
+        <div class="cr-rec">Pouco volume entregue no período. Sugestão: pausar e redirecionar a verba para "Cuidado" e "Manifesto", que engajam muito mais pelo mesmo investimento.</div>
+      </div>
+    </div></div>
+        </div>
+      </div><hr style="border:none;border-top:1px solid rgba(0,59,92,.08);margin:32px 0;">
+      <div style="margin-bottom:8px;">
+        <h4 style="font-size:18px;color:var(--navy);margin:0 0 4px;">META_TRF · Tráfego (objetivo: cliques)</h4>
+      </div>
+      <div class="fmt-split">
+        <div class="fmt-col">
+          <h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5>
+          <p class="fmt-note">"Manifesto" em vídeo tem CTR de 7,4% — altíssimo para o setor. O melhor gerador de clique da campanha.</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Manifesto</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 3.783</b></span>
+          <span>Impr. <b>233.258</b></span>
+          <span>CPM <b>R$ 16,22</b></span>
+          <span>CTR <b>7.37%</b></span>
+          <span>Tx.Eng <b>19.4%</b></span>
+        </div>
+        <div class="cr-rec">CTR de 7,4% — o melhor gerador de clique da campanha. Escalar com prioridade.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Canção</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 679</b></span>
+          <span>Impr. <b>56.766</b></span>
+          <span>CPM <b>R$ 11,96</b></span>
+          <span>CTR <b>3.02%</b></span>
+          <span>Tx.Eng <b>29.5%</b></span>
+        </div>
+        <div class="cr-rec">Engajamento alto, CTR moderado. Bom ativo de apoio; testar ampliação gradual.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">3</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Cuidado</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 677</b></span>
+          <span>Impr. <b>115.774</b></span>
+          <span>CPM <b>R$ 5,85</b></span>
+          <span>CTR <b>2.05%</b></span>
+          <span>Tx.Eng <b>24.9%</b></span>
+        </div>
+        <div class="cr-rec">Menor CPM do formato com bom engajamento. Vale aumentar a entrega.</div>
+      </div>
+    </div></div>
+        </div>
+        <div class="fmt-col">
+          <h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5>
+          <p class="fmt-note">Nos estáticos, "Manifesto" (CTR 4,1%) e "Cuidado" (3,7%) lideram a geração de clique.</p>
+          <div class="creative-rank"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Manifesto</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 3.000</b></span>
+          <span>Impr. <b>394.038</b></span>
+          <span>CPM <b>R$ 7,61</b></span>
+          <span>CTR <b>4.08%</b></span>
+          <span>Tx.Eng <b>13.8%</b></span>
+        </div>
+        <div class="cr-rec">Melhor CTR entre os estáticos de tráfego (4,1%). Priorizar.</div>
+      </div>
+    </div><div class="cr-row win">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.631</b></span>
+          <span>Impr. <b>232.737</b></span>
+          <span>CPM <b>R$ 7,01</b></span>
+          <span>CTR <b>3.70%</b></span>
+          <span>Tx.Eng <b>8.6%</b></span>
+        </div>
+        <div class="cr-rec">CTR forte (3,7%) e bom equilíbrio de custo. Ampliar investimento.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">3</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Proteção que Acompanha</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 3.694</b></span>
+          <span>Impr. <b>756.552</b></span>
+          <span>CPM <b>R$ 4,88</b></span>
+          <span>CTR <b>2.02%</b></span>
+          <span>Tx.Eng <b>8.0%</b></span>
+        </div>
+        <div class="cr-rec">Maior volume e menor CPM, mas CTR intermediário. Excelente para alcance; testar nova chamada para subir o clique.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">4</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Torça Junto</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.303</b></span>
+          <span>Impr. <b>291.796</b></span>
+          <span>CPM <b>R$ 4,47</b></span>
+          <span>CTR <b>1.63%</b></span>
+          <span>Tx.Eng <b>1.8%</b></span>
+        </div>
+        <div class="cr-rec">CTR abaixo da média do grupo. Oportunidade de ajustar o criativo ou a chamada.</div>
+      </div>
+    </div><div class="cr-row low">
+      <div class="cr-rank">5</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Em Campo</span><span class="cr-badge amber">↻ otimizar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.485</b></span>
+          <span>Impr. <b>456.904</b></span>
+          <span>CPM <b>R$ 3,25</b></span>
+          <span>CTR <b>1.35%</b></span>
+          <span>Tx.Eng <b>1.7%</b></span>
+        </div>
+        <div class="cr-rec">CTR mais baixo do grupo apesar do volume. Sugestão: pausar e realocar a verba para "Manifesto" e "Cuidado", que convertem clique muito melhor.</div>
+      </div>
+    </div></div>
+        </div>
+      </div></div>
+      <div class="tab-pane" id="cre-youtube">
+      <h4 style="font-size:18px;color:var(--navy);margin:0 0 4px;">YouTube · Formatos de vídeo</h4>
+      <p class="fmt-note">No YouTube comparamos os dois formatos de vídeo entre si. A métrica que importa é a <strong>VTR</strong> (taxa de visualização). Aqui a coluna "Tx.Eng" mostra a VTR.</p>
+      <div class="creative-rank" style="margin-top:14px;"><div class="cr-row win">
+      <div class="cr-rank">1</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Manifesto (in-stream)</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 9.344</b></span>
+          <span>Impr. <b>912.755</b></span>
+          <span>CPM <b>R$ 10,24</b></span>
+          <span>CTR <b>0.00%</b></span>
+          <span>Tx.Eng <b>61.3%</b></span>
+        </div>
+        <div class="cr-rec">Melhor VTR do canal (61,3%) — quem começa, assiste até o fim. Manter como ativo principal de profundidade.</div>
+      </div>
+    </div><div class="cr-row ">
+      <div class="cr-rank">2</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Shorts</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 9.830</b></span>
+          <span>Impr. <b>1.145.433</b></span>
+          <span>CPM <b>R$ 8,58</b></span>
+          <span>CTR <b>0.00%</b></span>
+          <span>Tx.Eng <b>45.7%</b></span>
+        </div>
+        <div class="cr-rec">Entrega mais impressão ao menor CPM (R$ 8,58). Ideal para volume e frequência; manter rodando em paralelo.</div>
+      </div>
+    </div></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:14px;">Estratégia ideal: <strong>Manifesto para profundidade</strong> (maior VTR) e <strong>Shorts para alcance</strong> (mais impressão por real). Os dois se complementam — não há ajuste necessário no momento.</p>
+</div>
+      <div class="tab-pane" id="cre-linkedin">
+      <h4 style="font-size:18px;color:var(--navy);margin:0 0 4px;">LinkedIn · Estático x Vídeo (Institucional)</h4>
+      <p class="fmt-note">No LinkedIn temos um criativo de cada tipo na campanha Institucional. Comparação direta entre eles:</p>
+      <div class="fmt-split" style="margin-top:14px;">
+        <div class="fmt-col">
+          <h5><span class="fmt-tag st">ESTÁTICO</span> Post Estático</h5>
+          <div class="cr-row win">
+      <div class="cr-rank">★</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Post Estático (LP)</span><span class="cr-badge">★ escalar</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 9.791</b></span>
+          <span>Impr. <b>106.149</b></span>
+          <span>CPM <b>R$ 92,24</b></span>
+          <span>CTR <b>3.35%</b></span>
+          <span>Tx.Eng <b>3.4%</b></span>
+        </div>
+        <div class="cr-rec">Concentra quase todo o clique e engajamento do canal. É o ativo que gera ação no LinkedIn — manter como principal.</div>
+      </div>
+    </div>
+        </div>
+        <div class="fmt-col">
+          <h5><span class="fmt-tag vd">VÍDEO</span> Vídeo LP Full</h5>
+          <div class="cr-row ">
+      <div class="cr-rank">–</div>
+      <div class="cr-body">
+        <div class="cr-top"><span class="cr-name">Vídeo (LP Full)</span></div>
+        <div class="cr-metrics">
+          <span>Invest. <b>R$ 1.776</b></span>
+          <span>Impr. <b>136.818</b></span>
+          <span>CPM <b>R$ 12,98</b></span>
+          <span>CTR <b>0.08%</b></span>
+          <span>Tx.Eng <b>0.0%</b></span>
+        </div>
+        <div class="cr-rec">Entrega impressão a CPM baixíssimo (R$ 12,98) e 73K video views. Cumpre o papel de awareness — manter como reforço de alcance.</div>
+      </div>
+    </div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:14px;">Cada formato no seu papel: <strong>estático para clique, vídeo para alcance</strong>. Combinação saudável; nenhum ajuste necessário neste momento.</p>
+</div>
+
+      <div style="margin-top:32px;padding:22px;background:rgba(80,229,150,.07);border-radius:16px;border-left:3px solid var(--green-deep);">
+        <strong style="color:var(--green-deep);font-size:14px;">Leitura do especialista · criativos</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">Existe um vencedor transversal claro: <strong>o conceito "Manifesto"</strong>. Ele lidera o engajamento em vídeo (ENG), o CTR em tráfego (TRF), e é o maior gerador de tráfego para a LP. A recomendação é <strong>concentrar a verba nos campeões</strong> — Manifesto, Cuidado e Canção — e <strong>realocar o investimento dos criativos de menor desempenho</strong> ("Em Campo" no TRF estático, "Viver Agora · Campo" no ENG) para os que mais rendem. É um movimento natural de otimização: o orçamento migra do que entrega menos para o que entrega mais, sem perda de verba.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="lp" style="background:rgba(0,59,92,.03);">
+    <div class="container">
+      <span class="section-label">Landing Page da Copa · cruzamento com a mídia</span>
+      <h2>De onde vem o tráfego que chega na LP.</h2>
+      <div class="section-intro">
+        <p>Cruzamos o relatório da Landing Page (análise da DTI) com os dados das campanhas para atribuir a origem do tráfego. A LP recebeu <strong>29,8K page views no total</strong> nas 4 semanas (orgânico + UTM de campanha), com pico claro na abertura da Copa (08–14/jun).</p>
+      </div>
+
+      <div class="lp-flow">
+        <div class="lp-step"><div class="lp-big">29,8K</div><div class="lp-cap">page views totais (4 sem)</div></div>
+        <div class="lp-step"><div class="lp-big">25,5K</div><div class="lp-cap">via campanha (UTM paga)</div></div>
+        <div class="lp-step"><div class="lp-big">4,3K</div><div class="lp-cap">orgânico (direto/SEO/referral)</div></div>
+        <div class="lp-step"><div class="lp-big">155</div><div class="lp-cap">formulários concluídos</div></div>
+      </div>
+
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-bottom:24px;">
+        <h4 style="margin:0 0 4px;color:var(--navy);">Quem gera mais tráfego para a LP (top campanhas UTM)</h4>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 18px;">Page views por campanha no mês. Cores por canal de origem.</p>
+        <div class="lp-bars"><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Vídeo Manifesto</span>
+      <div class="lp-track"><span style="width:100.0%;background:var(--meta);"></span></div>
+      <span class="lp-val">10.073</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Post Estático A2</span>
+      <div class="lp-track"><span style="width:60.3%;background:var(--meta);"></span></div>
+      <span class="lp-val">6.075</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">LinkedIn · Post Estático</span>
+      <div class="lp-track"><span style="width:32.6%;background:var(--linkedin);"></span></div>
+      <span class="lp-val">3.280</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Post Estático</span>
+      <div class="lp-track"><span style="width:25.1%;background:var(--meta);"></span></div>
+      <span class="lp-val">2.532</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Vídeo 6s A2</span>
+      <div class="lp-track"><span style="width:13.8%;background:var(--meta);"></span></div>
+      <span class="lp-val">1.394</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Vídeo 6s</span>
+      <div class="lp-track"><span style="width:10.8%;background:var(--meta);"></span></div>
+      <span class="lp-val">1.088</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">Insta · Vídeo 15s</span>
+      <div class="lp-track"><span style="width:8.1%;background:var(--meta);"></span></div>
+      <span class="lp-val">814</span>
+    </div><div class="lp-bar-row">
+      <span class="lp-lbl">YouTube · Vídeo Manifesto</span>
+      <div class="lp-track"><span style="width:1.2%;background:var(--youtube);"></span></div>
+      <span class="lp-val">116</span>
+    </div></div>
+      </div>
+
+      <div class="pva-grid">
+        <div class="pva-card">
+          <div class="pva-label">Meta / Instagram</div>
+          <div class="pva-vals"><span class="pva-real">86%</span><span class="pva-plan">21.976 page views</span></div>
+          <div class="pva-bar"><span style="width:86%"></span></div>
+          <div class="pva-comment good">É a principal origem de tráfego da LP — confirma o papel do Meta como motor de volume. "Vídeo Manifesto" sozinho responde por 39% de todo o tráfego UTM.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">LinkedIn</div>
+          <div class="pva-vals"><span class="pva-real">14%</span><span class="pva-plan">3.470 page views</span></div>
+          <div class="pva-bar"><span style="width:14%"></span></div>
+          <div class="pva-comment">Volume menor, mas <strong>qualidade superior</strong>: o "Post Estático" do LinkedIn tem o menor bounce rate (79,7% vs 93,7% da média) e tempo médio de 07:43 — de longe o tráfego mais engajado da LP.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">YouTube</div>
+          <div class="pva-vals"><span class="pva-real">&lt;1%</span><span class="pva-plan">116 page views</span></div>
+          <div class="pva-bar"><span style="width:3%"></span></div>
+          <div class="pva-comment warn">Tráfego mínimo para a LP — esperado, já que o YouTube é canal de awareness/vídeo, não de clique. Seu valor está na impressão e VTR, não no tráfego direto.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;padding:22px;background:white;border-radius:16px;box-shadow:var(--shadow);">
+        <strong style="color:var(--navy);font-size:14px;">Leitura cruzada · mídia ⇄ Landing Page</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">O cruzamento valida nossa atribuição e revela três coisas. <strong>(1)</strong> O Meta é o motor de tráfego (86%), e o conceito "Manifesto" lidera tanto na mídia quanto na chegada à LP — coerência total entre o que veicula e o que converte em visita. <strong>(2)</strong> O LinkedIn entrega pouco volume mas o tráfego mais qualificado (maior tempo de permanência e único com formulário concluído via UTM), reforçando que é canal de qualidade, não de escala. <strong>(3)</strong> O grande gargalo não é atrair, é <strong>converter</strong>: a LP tem bounce de 75% no orgânico e 93,7% no tráfego pago, e o formulário tem 33% de abandono. O tráfego pago chega, mas a página não está retendo — recomendação: revisar a LP (clareza do CTA, velocidade, e o formulário) antes de escalar mais verba para tráfego.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="proximos" style="background:rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">Próximos passos · Onda 2</span>
+      <h2>O que muda agora.</h2>
+      <div class="section-intro"><p>A Onda 1 fechou. A Onda 2 (intensificação) começa com três movimentos concretos.</p></div>
+      <div class="cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+        <div class="card" style="background:var(--navy);color:white;border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">01</div>
+          <h3 style="margin:0 0 8px;">LinkedIn completo</h3>
+          <p style="color:rgba(255,255,255,.85);font-size:14px;">Lead Gen (corretores) e B2B entram agora. Pela primeira vez teremos leitura de <strong>leads e CPL</strong> no canal.</p>
+        </div>
+        <div class="card" style="background:var(--blue);color:white;border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">02</div>
+          <h3 style="margin:0 0 8px;">Escalar o Manifesto</h3>
+          <p style="color:rgba(255,255,255,.92);font-size:14px;">Concentrar verba nos criativos campeões (Manifesto, Cuidado, Canção) e realocar o investimento dos de menor desempenho para maximizar o retorno por real.</p>
+        </div>
+        <div class="card" style="background:var(--green);color:var(--navy);border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">03</div>
+          <h3 style="margin:0 0 8px;">Ativar frequência + revisar LP</h3>
+          <p style="color:rgba(0,59,92,.85);font-size:14px;">Estreitar públicos e ajustar a configuração para elevar a frequência quando a estratégia pedir, e atacar a conversão da LP junto ao time de produto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.tabs').forEach(group => {
+      group.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pane = document.getElementById(btn.dataset.tab);
+          const container = pane.parentElement;
+          group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          container.querySelectorAll(':scope > .tab-pane').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active'); pane.classList.add('active');
+        });
+      });
+    });
+    document.querySelectorAll('.acc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const open = btn.dataset.acc === 'open';
+        const pane = btn.closest('.tab-pane') || document;
+        pane.querySelectorAll('.camp-acc').forEach(d => d.open = open);
+      });
+    });
+    document.querySelectorAll('.sticky-nav a').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+  </script>
+  <footer class="site-footer">
+    <h2>Onda 1 fechada com R$ 74,4K e 86% da meta atingida. Foco agora vira pra criativos.</h2>
+    <p>O fechamento da Onda 1 mostra entrega forte de impressões (11,88M) e Tráfego/Engajamento no Meta consolidados. A próxima fase começa com a entrada plena da campanha de Awareness e ajustes táticos em criativos por canal.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/performance-timeline.js" defer></script>
+</body>
+</html>

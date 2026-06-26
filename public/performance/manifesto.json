@@ -26,10 +26,28 @@
       "data_publicacao": "2026-06-07",
       "status": "publicado",
       "arquivo": "/performance/week-3"
+    },
+    {
+      "id": "week-4",
+      "ordem": 4,
+      "label": "Semana 4",
+      "periodo": "07/06 a 13/06",
+      "data_publicacao": "2026-06-15",
+      "status": "publicado",
+      "arquivo": "/performance/week-4"
+    },
+    {
+      "id": "week-5",
+      "ordem": 5,
+      "label": "Semana 5",
+      "periodo": "15/06 a 21/06",
+      "data_publicacao": "2026-06-22",
+      "status": "publicado",
+      "arquivo": "/performance/week-5"
     }
   ],
   "futuras": [
-    { "ordem": 4, "label": "Semana 4", "periodo": "07/06 a 13/06", "data_estimada": "2026-06-14" },
-    { "ordem": 5, "label": "Semana 5", "periodo": "14/06 a 20/06", "data_estimada": "2026-06-21" }
+    { "ordem": 6, "label": "Semana 6", "periodo": "22/06 a 28/06", "data_estimada": "2026-06-29" },
+    { "ordem": 7, "label": "Semana 7", "periodo": "29/06 a 05/07", "data_estimada": "2026-07-06" }
   ]
 }
