@@ -592,6 +592,11 @@
       padding: 0 8px;
       flex-wrap: wrap;
     }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
     .tab-btn {
       background: transparent;
       border: none;
@@ -605,6 +610,7 @@
       transition: all .2s;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
     }
     .tab-btn:hover { color: var(--navy); }
