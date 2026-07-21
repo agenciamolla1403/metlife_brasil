@@ -1,53 +1,17 @@
 {
   "semanas": [
-    {
-      "id": "week-1",
-      "ordem": 1,
-      "label": "Semana 1",
-      "periodo": "18/05 a 23/05",
-      "data_publicacao": "2026-05-24",
-      "status": "publicado",
-      "arquivo": "/performance/week-1"
-    },
-    {
-      "id": "week-2",
-      "ordem": 2,
-      "label": "Semana 2",
-      "periodo": "24/05 a 30/05",
-      "data_publicacao": "2026-05-31",
-      "status": "publicado",
-      "arquivo": "/performance/week-2"
-    },
-    {
-      "id": "week-3",
-      "ordem": 3,
-      "label": "Semana 3",
-      "periodo": "31/05 a 06/06",
-      "data_publicacao": "2026-06-07",
-      "status": "publicado",
-      "arquivo": "/performance/week-3"
-    },
-    {
-      "id": "week-4",
-      "ordem": 4,
-      "label": "Semana 4",
-      "periodo": "07/06 a 13/06",
-      "data_publicacao": "2026-06-15",
-      "status": "publicado",
-      "arquivo": "/performance/week-4"
-    },
-    {
-      "id": "week-5",
-      "ordem": 5,
-      "label": "Semana 5",
-      "periodo": "15/06 a 21/06",
-      "data_publicacao": "2026-06-22",
-      "status": "publicado",
-      "arquivo": "/performance/week-5"
-    }
+    { "id": "week-1", "ordem": 1, "label": "Semana 1", "periodo": "18/05 a 23/05", "data_publicacao": "2026-05-24", "status": "publicado", "arquivo": "/performance/week-1" },
+    { "id": "week-2", "ordem": 2, "label": "Semana 2", "periodo": "24/05 a 30/05", "data_publicacao": "2026-05-31", "status": "publicado", "arquivo": "/performance/week-2" },
+    { "id": "week-3", "ordem": 3, "label": "Semana 3", "periodo": "31/05 a 06/06", "data_publicacao": "2026-06-07", "status": "publicado", "arquivo": "/performance/week-3" },
+    { "id": "week-4", "ordem": 4, "label": "Semana 4", "periodo": "07/06 a 13/06", "data_publicacao": "2026-06-15", "status": "publicado", "arquivo": "/performance/week-4" },
+    { "id": "week-5", "ordem": 5, "label": "Semana 5", "periodo": "15/06 a 21/06", "data_publicacao": "2026-06-22", "status": "publicado", "arquivo": "/performance/week-5" },
+    { "id": "week-6", "ordem": 6, "label": "Semana 6", "periodo": "22/06 a 28/06", "data_publicacao": "2026-06-28", "status": "publicado", "arquivo": "/performance/week-6" },
+    { "id": "week-7", "ordem": 7, "label": "Semana 7", "periodo": "29/06 a 05/07", "data_publicacao": "2026-07-05", "status": "publicado", "arquivo": "/performance/week-7" },
+    { "id": "week-8", "ordem": 8, "label": "Semana 8", "periodo": "06/07 a 12/07", "data_publicacao": "2026-07-13", "status": "publicado", "arquivo": "/performance/week-8" },
+    { "id": "week-9", "ordem": 9, "label": "Semana 9", "periodo": "13/07 a 19/07", "data_publicacao": "2026-07-20", "status": "publicado", "arquivo": "/performance/week-9" }
   ],
   "futuras": [
-    { "ordem": 6, "label": "Semana 6", "periodo": "22/06 a 28/06", "data_estimada": "2026-06-29" },
-    { "ordem": 7, "label": "Semana 7", "periodo": "29/06 a 05/07", "data_estimada": "2026-07-06" }
+    { "ordem": 10, "label": "Semana 10", "periodo": "20/07 a 26/07", "data_estimada": "2026-07-27" },
+    { "ordem": 11, "label": "Semana 11", "periodo": "27/07 a 02/08", "data_estimada": "2026-08-03" }
   ]
 }

@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+  <title>Performance · Semana 6 · 22/06 a 28/06 · MetLife 2026</title>
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      /* Cores por canal */
+      --meta: #0866FF;
+      --youtube: #FF0033;
+      --linkedin: #0A66C2;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* ===== HERO ===== */
+    /* ===== HERO (padrão do hub · igual week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); } }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+
+    /* .hero-stats / .stat — Rafael reusa essas classes em sections internas
+       (não confundir com o hero principal que usa .hero-card + .metric-grid) */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: left;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .stat.accent { background: var(--navy); color: white; }
+    .stat.accent span { color: rgba(255,255,255,.7); }
+    .stat.green { background: var(--green); color: var(--navy); }
+    .stat.green span { color: rgba(0,59,92,.7); }
+
+    /* ===== TABS 3 colunas (S75) ===== */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+
+    /* ===== SECTION GENERAL ===== */
+    section { padding: 70px 24px; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 36px; }
+    h2 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0 0 14px; }
+    .section-intro p { font-size: 16px; color: var(--muted); }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      background: rgba(45,181,223,.12);
+      border-radius: 999px;
+    }
+
+    /* ===== BUDGET PANEL ===== */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+    .budget-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .budget-card.dark {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+    }
+    .budget-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .budget-card.dark .budget-label { color: rgba(255,255,255,.6); }
+    .budget-value {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .budget-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .budget-card.dark .budget-meta { color: rgba(255,255,255,.7); }
+    .progress-bar {
+      height: 14px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 18px 0 10px;
+      position: relative;
+    }
+    .budget-card.dark .progress-bar { background: rgba(255,255,255,.1); }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--green-deep));
+      border-radius: 999px;
+      transition: width .8s ease;
+      position: relative;
+    }
+    .progress-marker {
+      position: absolute;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .progress-marker::after {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 22px;
+      background: var(--amber);
+      margin: 4px auto 0;
+    }
+    .progress-pct {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .budget-card.dark .progress-pct { color: rgba(255,255,255,.7); }
+
+    .channels-mini {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .channel-row {
+      display: grid;
+      grid-template-columns: 32px 80px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .channel-row .name {
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .budget-card.dark .channel-row .name { color: white; }
+    .channel-row .bar-wrap {
+      height: 8px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .budget-card.dark .channel-row .bar-wrap { background: rgba(255,255,255,.12); }
+    .channel-row .bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .8s ease;
+    }
+    .channel-row .pct {
+      font-weight: 800;
+      font-size: 13px;
+      min-width: 56px;
+      text-align: right;
+    }
+    .ch-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .ch-icon.meta { background: var(--meta); }
+    .ch-icon.youtube { background: var(--youtube); }
+    .ch-icon.linkedin { background: var(--linkedin); }
+
+    /* ===== TIMELINE / CRONOGRAMA ===== */
+    .timeline-section {
+      background: white;
+    }
+    .timeline-block {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .timeline-block-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .timeline-block-header .ch-icon { width: 36px; height: 36px; font-size: 14px; }
+    .timeline-block-header h3 { margin: 0; font-size: 19px; }
+    .timeline-block-header .share-chip {
+      background: rgba(0,59,92,.06);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .timeline-block-header .spacer { flex: 1; }
+    .timeline-block-header .budget-chip {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .timeline-block-header .budget-chip strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .timeline-row-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .timeline-row-label .camp-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .timeline-row-label .camp-share {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .timeline-bar-container {
+      height: 28px;
+      background: rgba(0,59,92,.04);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .timeline-bar-bg {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .timeline-cell {
+      border-right: 1px dashed rgba(0,59,92,.08);
+    }
+    .timeline-cell:last-child { border-right: none; }
+    .timeline-fill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: .3px;
+      transition: all .3s;
+    }
+    .timeline-fill.active {
+      background: linear-gradient(90deg, var(--green-deep), var(--green));
+      color: var(--navy);
+    }
+    .timeline-fill.scheduled {
+      background: repeating-linear-gradient(45deg, rgba(91,114,128,.15), rgba(91,114,128,.15) 6px, rgba(91,114,128,.08) 6px, rgba(91,114,128,.08) 12px);
+      color: var(--muted);
+      border: 1px dashed rgba(91,114,128,.3);
+    }
+    .timeline-fill.delayed {
+      background: linear-gradient(90deg, var(--amber), #E89A1E);
+      color: white;
+    }
+
+    .timeline-axis {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,59,92,.06);
+    }
+    .timeline-axis-weeks {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+    .timeline-axis-weeks span {
+      padding: 2px 0;
+    }
+    .timeline-ondas {
+      display: grid;
+      grid-template-columns: 4fr 4fr 3fr;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .timeline-ondas div {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px;
+      border-radius: 4px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .timeline-ondas .o1 { background: rgba(45,181,223,.15); color: var(--blue); }
+    .timeline-ondas .o2 { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .timeline-ondas .o3 { background: rgba(0,59,92,.1); color: var(--navy); }
+
+    .delay-notice {
+      background: rgba(245,166,35,.08);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .delay-notice strong { color: var(--amber); }
+
+    /* ===== INSIGHTS ===== */
+    .executive-summary {
+      background: var(--navy);
+      color: white;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .executive-summary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(80,229,150,.15), transparent 40%),
+        radial-gradient(circle at 5% 90%, rgba(45,181,223,.15), transparent 40%);
+      pointer-events: none;
+    }
+    .executive-summary .container { position: relative; z-index: 1; }
+    .executive-summary h2 { color: white; }
+    .executive-summary .section-label {
+      color: var(--green);
+      background: rgba(80,229,150,.15);
+    }
+    .executive-summary .section-intro p { color: rgba(255,255,255,.8); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .insight-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 28px;
+      border-radius: 18px;
+      transition: all .3s;
+    }
+    .insight-card:hover { transform: translateY(-3px); }
+    .insight-card.highlight {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--green);
+    }
+    .insight-card.attention {
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.05));
+      border-color: rgba(245,166,35,.4);
+    }
+    .insight-card.structural {
+      background: linear-gradient(135deg, rgba(45,181,223,.15), rgba(45,181,223,.05));
+      border-color: rgba(45,181,223,.4);
+    }
+    .insight-num {
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-num { color: var(--navy); }
+    .insight-card.attention .insight-num { color: var(--amber); }
+    .insight-card.structural .insight-num { color: var(--blue); }
+    .insight-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+      color: white;
+    }
+    .insight-card.highlight h3 { color: var(--navy); }
+    .insight-card p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .insight-card.highlight p { color: rgba(0,59,92,.85); }
+    .insight-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.12);
+      color: white;
+    }
+    .insight-card.highlight .insight-tag {
+      background: var(--navy);
+      color: var(--green);
+    }
+    .insight-card.attention .insight-tag {
+      background: rgba(245,166,35,.25);
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-tag {
+      background: rgba(45,181,223,.25);
+      color: var(--blue);
+    }
+
+    /* ===== TABS DE CANAIS ===== */
+    .tabs-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 0 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 22px 28px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: .3px;
+      position: relative;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -1px;
+      height: 3px;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-btn .tab-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .tab-pane {
+      display: none;
+      padding: 36px;
+    }
+    .tab-pane.active { display: block; }
+
+    /* ===== METRIC CARD ===== */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+    }
+    .metric-card.cost-good {
+      background: linear-gradient(135deg, white 60%, rgba(80,229,150,.06));
+      border-color: rgba(80,229,150,.25);
+    }
+    .metric-card.attention {
+      background: linear-gradient(135deg, white 60%, rgba(245,166,35,.06));
+      border-color: rgba(245,166,35,.3);
+    }
+    .metric-card .metric-name {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .metric-card .metric-value {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-card .metric-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .metric-card .metric-status {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
+    .metric-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .metric-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .metric-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .metric-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+    .kpi-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+    }
+
+    /* ===== TABLES ===== */
+    .metrics-table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .metrics-table-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .metrics-table-header h4 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .metrics-table-header .table-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    .metrics-table th {
+      background: rgba(0,59,92,.03);
+      padding: 14px 16px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    .metrics-table th:first-child { text-align: left; }
+    .metrics-table th.totals {
+      background: linear-gradient(135deg, var(--green-deep), #1FA85A);
+      color: white;
+    }
+    .metrics-table .week-sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      opacity: .65;
+      margin-top: 2px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .metrics-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,59,92,.05);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .metrics-table tbody tr:last-child td { border-bottom: none; }
+    .metrics-table tbody tr:hover { background: rgba(45,181,223,.03); }
+    .metric-label-cell {
+      text-align: left !important;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .metric-label-cell .metric-sublabel {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .metric-label-cell .kpi-mark {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .cell-value {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .cell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 6px;
+    }
+    .cell-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .cell-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .cell-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .cell-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+
+    .empty-cell {
+      color: var(--muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* ===== CHANNEL COMPARISON ===== */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid;
+    }
+    .comparison-card.meta { border-top-color: var(--meta); }
+    .comparison-card.youtube { border-top-color: var(--youtube); }
+    .comparison-card.linkedin { border-top-color: var(--linkedin); }
+    .comparison-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .comparison-card h3 { font-size: 20px; margin: 0; }
+    .comparison-role {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .comparison-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .comparison-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .comparison-list li:last-child { border-bottom: none; }
+    .comparison-list li .label { color: var(--muted); }
+    .comparison-list li .value {
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* ===== PROXIMOS PASSOS ===== */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .next-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.1);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .next-card .num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .next-card h3 { color: var(--navy); margin: 0 0 8px; font-size: 16px; }
+    .next-card p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer h2 { color: white; max-width: 800px; margin: 0 auto 14px; }
+    footer p { color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto; font-size: 14px; }
+    footer .footer-meta {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid, .next-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .timeline-grid, .timeline-axis { grid-template-columns: 1fr; }
+      .tab-btn { padding: 16px 18px; font-size: 13px; }
+    }
+  
+
+    /* ===== EXTRA W4 COMPONENTS ===== */
+    .creative-rank { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+    .cr-row { display:grid; grid-template-columns: 28px 1fr; gap:14px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); transition:transform .15s; }
+    .cr-row:hover { transform: translateX(3px); }
+    .cr-row.win { border-left:4px solid var(--green-deep); }
+    .cr-row.low { border-left:4px solid var(--amber); }
+    .cr-rank { font-size:20px; font-weight:900; color:var(--blue); text-align:center; }
+    .cr-row.win .cr-rank { color:var(--green-deep); }
+    .cr-body { display:flex; flex-direction:column; gap:8px; }
+    .cr-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .cr-name { font-weight:800; font-size:15px; color:var(--navy); }
+    .cr-badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;
+      background:rgba(80,229,150,.18); color:var(--green-deep); white-space:nowrap; }
+    .cr-badge.amber { background:rgba(245,166,35,.15); color:#B97400; }
+    .cr-metrics { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; color:var(--muted); }
+    .cr-metrics b { color:var(--navy); font-weight:700; }
+    .fmt-split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+    @media (max-width:760px){ .fmt-split{grid-template-columns:1fr;} }
+    .fmt-col h5 { font-size:15px; margin:0 0 4px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+    .fmt-tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; color:white; }
+    .fmt-tag.vd { background:var(--blue); }
+    .fmt-tag.st { background:var(--teal); }
+    .fmt-note { font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+
+    /* Planned vs Actual big numbers */
+    .pva-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+    @media (max-width:860px){ .pva-grid{grid-template-columns:1fr;} }
+    .pva-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);
+      border:1px solid rgba(0,59,92,.06); position:relative; overflow:hidden; }
+    .pva-card .pva-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+    .pva-vals { display:flex; align-items:baseline; gap:8px; margin:12px 0 4px; flex-wrap:wrap; }
+    .pva-real { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+    .pva-plan { font-size:14px; color:var(--muted); }
+    .pva-bar { height:12px; border-radius:999px; background:rgba(0,59,92,.08); overflow:hidden; margin:14px 0 8px; }
+    .pva-bar span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+    .pva-pct { font-size:13px; font-weight:800; }
+    .pva-comment { font-size:13px; color:var(--text); margin-top:10px; padding-top:10px; border-top:1px solid rgba(0,59,92,.07); line-height:1.5; }
+    .pva-comment.good { color:var(--green-deep); }
+    .pva-comment.warn { color:#B97400; }
+
+    /* LP attribution */
+    .lp-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:8px 0 24px; }
+    @media (max-width:860px){ .lp-flow{grid-template-columns:1fr 1fr;} }
+    .lp-step { background:white; border-radius:16px; padding:18px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(0,59,92,.06); }
+    .lp-step .lp-big { font-size:26px; font-weight:900; color:var(--navy); }
+    .lp-step .lp-cap { font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .lp-bars { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .lp-bar-row { display:grid; grid-template-columns:160px 1fr 110px; gap:12px; align-items:center; font-size:13.5px; }
+    @media (max-width:680px){ .lp-bar-row{grid-template-columns:110px 1fr 70px; font-size:12px;} }
+    .lp-bar-row .lp-lbl { font-weight:700; color:var(--navy); }
+    .lp-track { height:26px; border-radius:8px; background:rgba(0,59,92,.07); overflow:hidden; }
+    .lp-track span { display:block; height:100%; border-radius:8px; }
+    .lp-val { text-align:right; font-weight:800; color:var(--navy); }
+
+    /* Collapsible campaign accordions (Meta) */
+    .camp-acc { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; border:1px solid rgba(0,59,92,.06); }
+    .camp-summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:18px 22px; font-weight:800; font-size:18px; color:var(--navy); user-select:none; }
+    .camp-summary::-webkit-details-marker { display:none; }
+    .camp-title { flex:1; }
+    .camp-badge { font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; white-space:nowrap; }
+    .camp-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+    .camp-acc[open] .camp-chevron { transform:rotate(180deg); }
+    .camp-content { padding:0 22px 22px; }
+    .acc-controls { display:flex; gap:8px; }
+    .acc-btn { background:white; border:1px solid rgba(0,59,92,.12); color:var(--navy); font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .15s; }
+    .acc-btn:hover { background:var(--navy); color:white; }
+
+    /* Creative recommendation line */
+    .cr-rec { font-size:12.5px; color:var(--text); background:rgba(45,181,223,.07); border-radius:8px; padding:8px 11px; margin-top:4px; line-height:1.45; }
+    .cr-row.win .cr-rec { background:rgba(80,229,150,.12); }
+    .cr-row.low .cr-rec { background:rgba(245,166,35,.10); }
+
+    /* Benchmark rows */
+    .bm-row { display:grid; grid-template-columns:150px 180px 150px 1fr; gap:16px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:16px 18px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); margin-bottom:12px; }
+    @media (max-width:860px){ .bm-row{ grid-template-columns:1fr 1fr; } .bm-comment{ grid-column:1/-1; } }
+    .bm-metric { font-weight:800; font-size:15px; color:var(--navy); }
+    .bm-real { font-size:24px; font-weight:900; line-height:1; }
+    .bm-bench { font-size:12px; color:var(--muted); margin-top:4px; }
+    .bm-flag { font-size:11px; font-weight:800; padding:5px 11px; border-radius:999px; text-align:center;
+      background:rgba(0,59,92,.07); color:var(--muted); white-space:nowrap; }
+    .bm-flag.win { background:rgba(80,229,150,.18); color:var(--green-deep); }
+    .bm-flag.mid { background:rgba(45,181,223,.14); color:var(--blue); }
+    .bm-comment { font-size:13px; color:var(--text); line-height:1.5; }
+    @media (max-width:760px){ #benchmark [style*="grid-template-columns:repeat(3,1fr)"]{ grid-template-columns:1fr !important; } }
+
+    /* Manifesto x Shorts head-to-head */
+    .vs-head { display:grid; grid-template-columns:170px 1fr 1fr 200px; gap:14px; align-items:end; margin-bottom:10px; padding:0 16px; }
+    .vs-col-head { text-align:center; font-weight:800; font-size:16px; line-height:1.3; }
+    .vs-col-head .vs-sub { font-size:11px; font-weight:600; color:var(--muted); }
+    .vs-icon { display:inline-flex; width:28px; height:28px; border-radius:8px; color:white; align-items:center; justify-content:center; font-weight:900; margin-bottom:6px; }
+    .vs-row { display:grid; grid-template-columns:170px 1fr 1fr 200px; gap:14px; align-items:center; background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px; box-shadow:0 4px 14px rgba(0,59,92,.05); margin-bottom:10px; }
+    @media (max-width:820px){ .vs-head,.vs-row{ grid-template-columns:1fr 1fr; } .vs-head .vs-label,.vs-row .vs-label,.vs-row .vs-note{ grid-column:1/-1; } }
+    .vs-label { font-weight:800; font-size:14px; color:var(--navy); }
+    .vs-side { display:flex; align-items:center; justify-content:center; gap:8px; padding:8px; border-radius:10px; }
+    .vs-side.win { background:rgba(80,229,150,.16); }
+    .vs-val { font-size:20px; font-weight:900; color:var(--navy); }
+    .vs-tag { font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--green-deep); color:white; text-transform:uppercase; }
+    .vs-note { font-size:12px; color:var(--muted); line-height:1.4; }
+
+    /* Charts */
+    .chart-card { background:white; border:1px solid rgba(0,59,92,.07); border-radius:16px; padding:20px; box-shadow:0 4px 14px rgba(0,59,92,.05); }
+    .chart-title { font-size:15px; font-weight:800; color:var(--navy); margin:0 0 4px; }
+    .chart-sub { font-size:12px; color:var(--muted); margin:0 0 16px; line-height:1.45; }
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+    @media (max-width:820px){ .chart-grid{ grid-template-columns:1fr; } }
+    /* Data table */
+    .table-wrap { overflow-x:auto; border-radius:14px; box-shadow:0 4px 14px rgba(0,59,92,.05); border:1px solid rgba(0,59,92,.07); }
+    .data-table { width:100%; border-collapse:collapse; background:white; font-size:13px; }
+    .data-table th { background:var(--navy); color:white; text-align:left; padding:11px 14px; font-weight:700; font-size:12px; white-space:nowrap; }
+    .data-table td { padding:11px 14px; border-bottom:1px solid rgba(0,59,92,.06); color:var(--text); white-space:nowrap; }
+    .data-table tbody tr:last-child td { border-bottom:none; }
+    .data-table tbody tr:nth-child(even) { background:rgba(0,59,92,.02); }
+    /* Benchmark 3-col */
+    .bm-head3 { display:grid; grid-template-columns:200px 130px 130px 130px 1fr; gap:14px; padding:0 18px 8px; font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .bm-row3 { display:grid !important; grid-template-columns:200px 130px 130px 130px 1fr !important; }
+    @media (max-width:860px){ .bm-head3{ display:none; } .bm-row3{ grid-template-columns:1fr 1fr !important; } .bm-row3 .bm-comment{ grid-column:1/-1; } .bm-row3 .bm-metric{ grid-column:1/-1; } }
+    /* Donut */
+    .donut-wrap { display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; }
+    .donut-svg { width:200px; height:200px; flex-shrink:0; }
+    @media (max-width:520px){ .donut-svg{ width:170px; height:170px; margin:0 auto; } }
+    .donut-legend { display:flex; flex-direction:column; gap:8px; min-width:200px; max-width:300px; }
+    .donut-leg-item { display:flex; align-items:center; gap:10px; font-size:13px; padding:7px 10px; border-radius:9px; transition:background .15s; }
+    .donut-leg-item:hover { background:rgba(0,59,92,.04); }
+    .donut-leg-dot { width:13px; height:13px; border-radius:4px; flex-shrink:0; }
+    .donut-leg-name { font-weight:700; color:var(--navy); flex:1; }
+    .donut-leg-val { font-weight:800; color:var(--navy); white-space:nowrap; }
+    .donut-leg-pct { font-size:11.5px; color:var(--muted); margin-left:3px; font-weight:600; }
+    .donut-seg { transition:opacity .15s; cursor:pointer; }
+    .donut-seg:hover { opacity:.82; }
+    .donut-center-val { font-size:30px; font-weight:900; fill:var(--navy); }
+    .donut-center-lbl { font-size:12px; font-weight:600; fill:var(--muted); }
+    @media (max-width:680px){ .traffic-donuts{ grid-template-columns:1fr !important; } }
+      .creative-rank { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+    .cr-row { display:grid; grid-template-columns: 28px 1fr; gap:14px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); transition:transform .15s; }
+    .cr-row:hover { transform: translateX(3px); }
+    .cr-row.win { border-left:4px solid var(--green-deep); }
+    .cr-row.low { border-left:4px solid var(--amber); }
+    .cr-rank { font-size:20px; font-weight:900; color:var(--blue); text-align:center; }
+    .cr-row.win .cr-rank { color:var(--green-deep); }
+    .cr-body { display:flex; flex-direction:column; gap:8px; }
+    .cr-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .cr-name { font-weight:800; font-size:15px; color:var(--navy); }
+    .cr-badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;
+      background:rgba(80,229,150,.18); color:var(--green-deep); white-space:nowrap; }
+    .cr-badge.amber { background:rgba(245,166,35,.15); color:#B97400; }
+    .cr-metrics { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; color:var(--muted); }
+    .cr-metrics b { color:var(--navy); font-weight:700; }
+    .fmt-split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+    @media (max-width:760px){ .fmt-split{grid-template-columns:1fr;} }
+    .fmt-col h5 { font-size:15px; margin:0 0 4px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+    .fmt-tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; color:white; }
+    .fmt-tag.vd { background:var(--blue); }
+    .fmt-tag.st { background:var(--teal); }
+    .fmt-note { font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+
+    /* Planned vs Actual big numbers */
+    .pva-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+    @media (max-width:860px){ .pva-grid{grid-template-columns:1fr;} }
+    .pva-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);
+      border:1px solid rgba(0,59,92,.06); position:relative; overflow:hidden; }
+    .pva-card .pva-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+    .pva-vals { display:flex; align-items:baseline; gap:8px; margin:12px 0 4px; flex-wrap:wrap; }
+    .pva-real { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+    .pva-plan { font-size:14px; color:var(--muted); }
+    .pva-bar { height:12px; border-radius:999px; background:rgba(0,59,92,.08); overflow:hidden; margin:14px 0 8px; }
+    .pva-bar span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+    .pva-pct { font-size:13px; font-weight:800; }
+    .pva-comment { font-size:13px; color:var(--text); margin-top:10px; padding-top:10px; border-top:1px solid rgba(0,59,92,.07); line-height:1.5; }
+    .pva-comment.good { color:var(--green-deep); }
+    .pva-comment.warn { color:#B97400; }
+
+    /* LP attribution */
+    .lp-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:8px 0 24px; }
+    @media (max-width:860px){ .lp-flow{grid-template-columns:1fr 1fr;} }
+    .lp-step { background:white; border-radius:16px; padding:18px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(0,59,92,.06); }
+    .lp-step .lp-big { font-size:26px; font-weight:900; color:var(--navy); }
+    .lp-step .lp-cap { font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .lp-bars { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .lp-bar-row { display:grid; grid-template-columns:160px 1fr 110px; gap:12px; align-items:center; font-size:13.5px; }
+    @media (max-width:680px){ .lp-bar-row{grid-template-columns:110px 1fr 70px; font-size:12px;} }
+    .lp-bar-row .lp-lbl { font-weight:700; color:var(--navy); }
+    .lp-track { height:26px; border-radius:8px; background:rgba(0,59,92,.07); overflow:hidden; }
+    .lp-track span { display:block; height:100%; border-radius:8px; }
+    .lp-val { text-align:right; font-weight:800; color:var(--navy); }
+
+    /* Collapsible campaign accordions (Meta) */
+    .camp-acc { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; border:1px solid rgba(0,59,92,.06); }
+    .camp-summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:18px 22px; font-weight:800; font-size:18px; color:var(--navy); user-select:none; }
+    .camp-summary::-webkit-details-marker { display:none; }
+    .camp-title { flex:1; }
+    .camp-badge { font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; white-space:nowrap; }
+    .camp-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+    .camp-acc[open] .camp-chevron { transform:rotate(180deg); }
+    .camp-content { padding:0 22px 22px; }
+    .acc-controls { display:flex; gap:8px; }
+    .acc-btn { background:white; border:1px solid rgba(0,59,92,.12); color:var(--navy); font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .15s; }
+    .acc-btn:hover { background:var(--navy); color:white; }
+
+    /* Creative recommendation line */
+    .cr-rec { font-size:12.5px; color:var(--text); background:rgba(45,181,223,.07); border-radius:8px; padding:8px 11px; margin-top:4px; line-height:1.45; }
+    .cr-row.win .cr-rec { background:rgba(80,229,150,.12); }
+    .cr-row.low .cr-rec { background:rgba(245,166,35,.10); }
+    section{scroll-margin-top:70px;}
+
+  </style>
+</head>
+<body data-week-id="week-6">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Semana 6 · 22/06 a 28/06</strong></span>
+    </div>
+  </div>
+    <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Status · Onda 2 · 22/06 a 28/06/2026</span>
+        <h1>Entrega eficiente, criativos definidos, <span class="accent">R$ 24,3K na semana</span>.</h1>
+        <p class="lead">Retrato da sexta semana da campanha "Patrocinadora Oficial do Cuidado", no auge do período de Copa. Os três canais seguem no ar em Meta, YouTube e LinkedIn. Esta edição traz a análise por conceito de criativo no Meta, a virada do YouTube para captação de inscritos e a leitura completa do tráfego do site.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>Custo por mil aparições em queda no Meta (R$ 2,32). Entrega no auge da Copa, criativos definidos e YouTube pivotando pra crescimento do canal.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>R$ 24,3K</strong><span>investido na semana</span></div>
+          <div class="metric"><strong>7,74M</strong><span>impressões da marca</span></div>
+          <div class="metric"><strong>R$ 2,32</strong><span>CPM Meta (semana)</span></div>
+          <div class="metric"><strong>3 canais</strong><span>Meta · YouTube · LinkedIn</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#metas">Onde estamos</a>
+      <a href="#benchmark">Comparação com o mercado</a>
+      <a href="#investimento">Investimento</a>
+      <a href="#insights">Destaques</a>
+      <a href="#canais">Canais</a>
+      <a href="#criativos">Criativos</a>
+      <a href="#youtube-ms">Manifesto x Shorts</a>
+      <a href="#inscritos">Crescimento do canal</a>
+      <a href="#lp">Tráfego do site</a>
+      <a href="#proximos">Próximos passos</a>
+    </div>
+  </nav>
+  <section id="metas">
+    <div class="container">
+      <span class="section-label">Onde estamos · visão acumulada da campanha</span>
+      <h2>Onde a campanha está, somando tudo até agora.</h2>
+      <div class="section-intro">
+        <p>Quanto já investimos desde o começo da campanha, olhando para o projeto inteiro (as 11 semanas) e também para o ritmo do período que já passou. Em resumo: já usamos <strong>49,5% da verba total</strong> em 56% do tempo, e a marca segue aparecendo mais do que o esperado, porque o custo continua abaixo do previsto. A reta final da Onda 2 entra acelerada para consumir o investimento planejado com qualidade.</p>
+      </div>
+
+      <div class="pva-grid">
+        <div class="pva-card">
+          <div class="pva-label">Investido até agora</div>
+          <div class="pva-vals"><span class="pva-real">49,5%</span><span class="pva-plan">do projeto (R$ 126.738 de R$ 256,3K)</span></div>
+          <div class="pva-bar"><span style="width:49.5%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">no ritmo certo</div>
+          <div class="pva-comment good">Já usamos quase metade da verba total da campanha (das 11 semanas), e estamos em 56% do tempo. Considerando só o período que já passou, investimos 88% do previsto. A leitura é simples: estamos acelerando para consumir o investimento com qualidade de entrega.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">Vezes que a marca apareceu</div>
+          <div class="pva-vals"><span class="pva-real">28,1M</span><span class="pva-plan">no total da campanha</span></div>
+          <div class="pva-bar"><span style="width:100%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">entrega acima do esperado</div>
+          <div class="pva-comment good">Mais de 28 milhões de aparições da marca desde o início. Esse volume só é possível porque cada aparição custou bem menos do que o mercado cobra.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">Repetição da mensagem</div>
+          <div class="pva-vals"><span class="pva-real">alavanca ativa</span><span class="pva-plan">meta: 3 a 3,5x por pessoa</span></div>
+          <div class="pva-bar"><span style="width:60%"></span></div>
+          <div class="pva-pct" style="color:#B97400">foco da reta final</div>
+          <div class="pva-comment warn">Com a entrega barata, elevamos a repetição nos públicos quentes para consolidar a lembrança de marca. É a alavanca que nós controlamos e ativamos nesta etapa, não algo que sobe sozinho.</div>
+        </div>
+      </div>
+
+      <div class="card" style="background:white;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-top:24px;">
+        <h4 style="margin:0 0 4px;color:var(--navy);">Quanto cada canal já investiu (ritmo do período)</h4>
+        <p style="font-size:12.5px;color:var(--muted);margin:0 0 18px;">Total gasto por canal comparado com o planejado para o período que já passou. Quanto mais perto de 100%, mais no ritmo. (O Total de 88% é o pacing do período; em relação ao projeto inteiro, equivale a 49,5% da verba.)</p>
+        <div class="bar-row" style="display:grid;grid-template-columns:120px 1fr 230px;gap:14px;align-items:center;margin-bottom:14px;font-weight:700;">
+          <div>Meta Ads</div>
+          <div style="height:28px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;"><span style="display:block;height:100%;border-radius:999px;background:var(--meta);width:100%"></span></div>
+          <div style="text-align:right;font-size:13.5px;">R$ 77.719 <span style="color:var(--muted);font-weight:600;">/ R$ 78.000</span> · <span style="color:var(--green-deep);font-weight:800;">100%</span></div>
+        </div><div class="bar-row" style="display:grid;grid-template-columns:120px 1fr 230px;gap:14px;align-items:center;margin-bottom:14px;font-weight:700;">
+          <div>YouTube Ads</div>
+          <div style="height:28px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;"><span style="display:block;height:100%;border-radius:999px;background:var(--youtube);width:83%"></span></div>
+          <div style="text-align:right;font-size:13.5px;">R$ 32.304 <span style="color:var(--muted);font-weight:600;">/ R$ 38.965</span> · <span style="color:#B97400;font-weight:800;">83%</span></div>
+        </div><div class="bar-row" style="display:grid;grid-template-columns:120px 1fr 230px;gap:14px;align-items:center;margin-bottom:14px;font-weight:700;">
+          <div>LinkedIn Ads</div>
+          <div style="height:28px;border-radius:999px;background:rgba(0,59,92,.08);overflow:hidden;"><span style="display:block;height:100%;border-radius:999px;background:var(--linkedin);width:57%"></span></div>
+          <div style="text-align:right;font-size:13.5px;">R$ 16.716 <span style="color:var(--muted);font-weight:600;">/ R$ 29.224</span> · <span style="color:var(--youtube);font-weight:800;">57%</span></div>
+        </div><div style="border-top:1px solid rgba(0,59,92,.08);margin-top:6px;padding-top:14px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:17px;color:var(--navy);">
+      <span>Total</span><span>R$ 126.738 <span style="color:var(--muted);font-size:13px;font-weight:600;">/ R$ 143.514</span> · <span style="color:#B97400">88%</span></span></div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-top:18px;">
+        <strong>Resumindo:</strong> a campanha está saudável e no ritmo. Já investimos <strong>49,5% da verba total do projeto</strong> em 56% do tempo. O Meta está no ponto exato do planejado para o período (100%), e a marca apareceu mais do que o previsto porque pagamos barato por cada aparição. A reta final da Onda 2 entra acelerada para consumir o investimento com a mesma qualidade.
+      </p>
+    </div>
+  </section>
+  <section id="benchmark" style="background:white;">
+    <div class="container">
+      <span class="section-label">Comparação com o mercado</span>
+      <h2>Como nossos números se comparam com o mercado.</h2>
+      <div class="section-intro"><p>Todo número só faz sentido quando comparado com uma referência. Aqui mostramos o resultado da semana e o acumulado da campanha, lado a lado com a média do mercado. Em quase tudo, estamos melhores que a média.</p></div>
+      <div class="tabs"><button class="tab-btn active" data-tab="bm6-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta</span></button><button class="tab-btn " data-tab="bm6-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube</span></button><button class="tab-btn " data-tab="bm6-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn</span></button></div>
+      <div class="tab-pane active" id="bm6-meta"><div class="bm-head3"><div></div><div>SEMANA</div><div>ACUMULADO</div><div>MERCADO</div><div></div></div><div class="bm-row bm-row3"><div class="bm-metric">Custo por mil aparições (CPM)</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">R$ 2,32</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">R$ 3,42</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">R$ 16 – 23</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">Pagamos muito menos que o mercado para a marca aparecer. É isso que permite alcançar tanta gente gastando pouco e libera verba para escalar os campeões.</div></div><div class="bm-row bm-row3"><div class="bm-metric">Quantas pessoas clicam (CTR Tráfego)</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">3,56%</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">—</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">~1,55%</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">Na campanha que busca cliques, mais que o dobro da média do mercado clica. Quando o objetivo é levar ao site, estamos bem acima.</div></div></div><div class="tab-pane " id="bm6-youtube"><div class="bm-head3"><div></div><div>SEMANA</div><div>ACUMULADO</div><div>MERCADO</div><div></div></div><div class="bm-row bm-row3"><div class="bm-metric">Custo por mil aparições (CPM)</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">R$ 7,82</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">R$ 8,40</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">R$ 16 – 43</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">Mesmo na frente de inscritos, o custo por mil aparições ficou bem abaixo do mercado para vídeo no YouTube.</div></div><div class="bm-row bm-row3"><div class="bm-metric">Inscritos ganhos na semana</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">7.192</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">base própria</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">—</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">A virada para captação de inscritos trouxe mais de 7 mil novos seguidores, criando uma base própria para reimpacto na Onda 3.</div></div></div><div class="tab-pane " id="bm6-linkedin"><div class="bm-head3"><div></div><div>SEMANA</div><div>ACUMULADO</div><div>MERCADO</div><div></div></div><div class="bm-row bm-row3"><div class="bm-metric">Custo por mil aparições (CPM)</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">R$ 15,47</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">R$ 38,90</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">R$ 32 – 108</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">O custo por mil ficou bem abaixo do mercado nesta semana, puxado pela frente de vídeo, que entrega muita aparição a custo baixo.</div></div><div class="bm-row bm-row3"><div class="bm-metric">Quantas pessoas clicam (CTR · Post)</div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--green-deep);">3,43%</div><div class="bm-bench">semana</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--navy);font-size:20px;">—</div><div class="bm-bench">acumulado</div></div>
+      <div class="bm-vals"><div class="bm-real" style="color:var(--muted);font-size:18px;">0,44 – 0,65%</div><div class="bm-bench">mercado</div></div>
+      <div class="bm-comment">O post com link entrega muito acima da média do canal em quem clica, levando tráfego qualificado direto para a página.</div></div></div>
+      <div style="margin-top:24px;padding:20px;background:rgba(80,229,150,.07);border-radius:14px;border-left:3px solid var(--green-deep);">
+        <strong style="color:var(--green-deep);font-size:14px;">O que isso quer dizer</strong>
+        <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);line-height:1.55;">Em todos os canais, gastamos menos por aparição do que o mercado. Tradução simples: estamos comprando mais resultado com o mesmo dinheiro, e essa folga é o que sustenta escalar os criativos campeões na reta final.</p>
+      </div>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:14px;">Referências de mercado de relatórios públicos 2025–2026 (faixa aproximada). Fontes detalhadas no report da Onda 1.</p>
+    </div>
+  </section>
+
+  <section id="investimento" style="background:rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">Investimento da semana</span>
+      <h2>Onde foi o dinheiro nesta semana.</h2>
+      <div class="section-intro"><p>Como os R$ 24,3 mil da semana se dividiram entre os três canais. O Meta segue como o principal, por ser o canal que entrega mais alcance pelo menor custo. O YouTube assume a captação de inscritos e o LinkedIn sustenta o tráfego qualificado.</p></div>
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+        <div class="donut-wrap">
+          <div><svg viewBox="0 0 200 200" class="donut-svg" role="img" aria-label="Distribuição"><circle class="donut-seg" data-name="Meta Ads" data-val="R$ 16.599" data-pct="68%" cx="100" cy="100" r="70" fill="none" stroke="#0866FF" stroke-width="30" stroke-dasharray="300.41 139.42" stroke-dashoffset="-0.00" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="YouTube Ads" data-val="R$ 5.622" data-pct="23%" cx="100" cy="100" r="70" fill="none" stroke="#FF0000" stroke-width="30" stroke-dasharray="101.75 338.07" stroke-dashoffset="-300.41" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="LinkedIn Ads" data-val="R$ 2.081" data-pct="9%" cx="100" cy="100" r="70" fill="none" stroke="#0A66C2" stroke-width="30" stroke-dasharray="37.66 402.16" stroke-dashoffset="-402.16" transform="rotate(-90 100 100)" /><text x="158.7" y="138.1" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">68%</text><text x="33.3" y="78.9" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">23%</text><text x="81.4" y="32.5" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">9%</text><text x="100" y="94" text-anchor="middle" class="donut-center-val" style="font-size:22px;">R$ 24K</text><text x="100" y="114" text-anchor="middle" class="donut-center-lbl">na semana</text></svg></div>
+          <div class="donut-legend"><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0866FF;"></span><span class="donut-leg-name">Meta Ads</span><span class="donut-leg-val">R$ 16.599<span class="donut-leg-pct">· 68%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#FF0000;"></span><span class="donut-leg-name">YouTube Ads</span><span class="donut-leg-val">R$ 5.622<span class="donut-leg-pct">· 23%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0A66C2;"></span><span class="donut-leg-name">LinkedIn Ads</span><span class="donut-leg-val">R$ 2.081<span class="donut-leg-pct">· 9%</span></span></div></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin:16px 0 0;border-top:1px solid rgba(0,59,92,.08);padding-top:14px;">Passe o mouse sobre as fatias para ver os valores. <strong>Total da semana: R$ 24.302.</strong></p>
+      </div>
+      <div class="hero-stats" style="margin-top:22px;max-width:none;">
+        <div class="stat"><strong>7,74M</strong><span>vezes que a marca apareceu</span></div>
+        <div class="stat"><strong>44.002</strong><span>cliques no total</span></div>
+        <div class="stat green"><strong>227.794</strong><span>interações (curtidas, etc.)</span></div>
+        <div class="stat accent"><strong>7.192</strong><span>novos inscritos no YouTube</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="insights" class="executive-summary">
+    <div class="container">
+      <span class="section-label">Destaques da semana</span>
+      <h2>Os 5 pontos que importam.</h2>
+      <div class="section-intro"><p>O resumo do que foi bem nesta semana da reta final da Onda 2.</p></div>
+      <div class="insights-grid"><div class="insight-card highlight"><span class="insight-tag">#1 · Pagamos barato</span><div class="insight-num">R$ 2,32</div><p>O custo para a marca aparecer mil vezes no Meta foi de <strong>R$ 2,32</strong> — muito abaixo do mercado (R$ 18 a R$ 30). Quanto mais barato, mais gente alcançamos com o mesmo dinheiro, e mais folga temos para escalar os campeões.</p></div><div class="insight-card highlight"><span class="insight-tag">#2 · A marca apareceu muito</span><div class="insight-num">7,74 mi</div><p>A marca apareceu <strong>7,74 milhões de vezes</strong> na semana, mantendo a presença nacional no auge do período de Copa.</p></div><div class="insight-card highlight"><span class="insight-tag">#3 · Os criativos campeões</span><div class="insight-num">Manifesto</div><p>No tráfego, <strong>"Manifesto"</strong> tem a melhor taxa de quem clica (5,83%) e <strong>"Cuidado"</strong> a melhor interação (21,74%). São os ângulos a escalar na reta final.</p></div><div class="insight-card structural"><span class="insight-tag">#4 · YouTube virou para inscritos</span><div class="insight-num">7.192</div><p>A frente de inscritos entrou em campo e já trouxe <strong>7,2 mil novos seguidores</strong>, abrindo uma base própria para reimpacto na Onda 3.</p></div><div class="insight-card highlight"><span class="insight-tag">#5 · A mídia leva até a página</span><div class="insight-num">28x</div><p>A campanha levou <strong>28 vezes mais visitas</strong> à página do que o tráfego orgânico. Quem chega fica mais de 4 minutos, sinal de que o tráfego é qualificado.</p></div></div>
+    </div>
+  </section>
+
+  <section id="canais">
+    <div class="container">
+      <span class="section-label">Detalhe por canal</span>
+      <h2>Como cada canal foi na semana.</h2>
+      <div class="section-intro"><p>Os três canais lado a lado. No Meta, você pode abrir e fechar cada tipo de campanha, e mais abaixo comparamos os formatos e as posições dos anúncios em tabela e em gráfico.</p></div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="t6-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta Ads</span></button>
+        <button class="tab-btn" data-tab="t6-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube Ads</span></button>
+        <button class="tab-btn" data-tab="t6-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn Ads</span></button>
+      </div>
+
+      <div class="tab-pane active" id="t6-meta">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <p style="color:var(--muted);font-size:14px;margin:0;"><strong>R$ 16.599 investidos na semana.</strong> O anúncio de marca lidera o volume; o tráfego manteve o clique forte.</p>
+          <div class="acc-controls"><button class="acc-btn" data-acc="open">Abrir todas</button><button class="acc-btn" data-acc="close">Fechar todas</button></div>
+        </div>
+        <details class="camp-acc" open><summary class="camp-summary" style="border-left:4px solid #0866FF;"><span class="camp-title">▸ META_AWA · Anúncio de marca</span><span class="camp-badge" style="background:#0866FF1A;color:#0866FF;">marca / alcance</span><span class="camp-chevron">▾</span></summary><div class="camp-content"><p style="color:var(--muted);font-size:13px;margin:0 0 14px;">Objetivo: aparecer para o máximo de gente. Segue como o maior investimento da semana.</p><div class="metric-row"><div class="metric-card "><div class="metric-name">Investido</div><div class="metric-value">R$ 10.150</div><div class="metric-meta">No ar a semana toda</div></div><div class="metric-card "><span class="kpi-badge">KPI</span><div class="metric-name">Aparições</div><div class="metric-value">6.398.135</div><div class="metric-meta">Objetivo principal</div><span class="metric-status above">▲ alto volume</span></div><div class="metric-card cost-good "><div class="metric-name">Custo/mil</div><div class="metric-value">R$ 1,59</div><div class="metric-meta">Bem barato</div><span class="metric-status above">ótimo</span></div><div class="metric-card "><div class="metric-name">Pessoas alcançadas</div><div class="metric-value">4,2M</div><div class="metric-meta">Cobertura ampla</div></div><div class="metric-card "><div class="metric-name">Interações</div><div class="metric-value">155.730</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Cliques</div><div class="metric-value">0,08%</div><div class="metric-meta">Aqui o clique não é o foco</div></div></div></div></details><details class="camp-acc" open><summary class="camp-summary" style="border-left:4px solid #27C7BD;"><span class="camp-title">▸ META_ENG · Engajamento</span><span class="camp-badge" style="background:#27C7BD1A;color:#27C7BD;">interação</span><span class="camp-chevron">▾</span></summary><div class="camp-content"><p style="color:var(--muted);font-size:13px;margin:0 0 14px;">Objetivo: fazer as pessoas interagirem (curtir, comentar, compartilhar).</p><div class="metric-row"><div class="metric-card "><div class="metric-name">Investido</div><div class="metric-value">R$ 3.209</div><div class="metric-meta"></div></div><div class="metric-card "><span class="kpi-badge">KPI</span><div class="metric-name">Interações</div><div class="metric-value">14.577</div><div class="metric-meta">Objetivo principal</div></div><div class="metric-card "><div class="metric-name">Taxa de interação</div><div class="metric-value">3,91%</div><div class="metric-meta">Sobre as aparições</div></div><div class="metric-card "><div class="metric-name">Aparições</div><div class="metric-value">373.154</div><div class="metric-meta"></div></div><div class="metric-card cost-good "><div class="metric-name">Custo/mil</div><div class="metric-value">R$ 8,60</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Cliques</div><div class="metric-value">3,61%</div><div class="metric-meta">Extra</div><span class="metric-status above">▲ bom</span></div></div></div></details><details class="camp-acc" open><summary class="camp-summary" style="border-left:4px solid #003B5C;"><span class="camp-title">▸ META_TRF · Tráfego</span><span class="camp-badge" style="background:#003B5C1A;color:#003B5C;">cliques</span><span class="camp-chevron">▾</span></summary><div class="camp-content"><p style="color:var(--muted);font-size:13px;margin:0 0 14px;">Objetivo: levar gente para o site. Manteve o clique forte e a melhor interação da semana.</p><div class="metric-row"><div class="metric-card "><div class="metric-name">Investido</div><div class="metric-value">R$ 3.239</div><div class="metric-meta"></div></div><div class="metric-card "><span class="kpi-badge">KPI</span><div class="metric-name">Cliques no site</div><div class="metric-value">13.250</div><div class="metric-meta">Objetivo principal</div><span class="metric-status above">▲ forte</span></div><div class="metric-card "><div class="metric-name">Quem clica</div><div class="metric-value">3,56%</div><div class="metric-meta">Média do mercado ~1,5%</div><span class="metric-status above">▲ mais que 2x</span></div><div class="metric-card cost-good "><div class="metric-name">Custo por clique</div><div class="metric-value">R$ 0,24</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Taxa de interação</div><div class="metric-value">15,46%</div><div class="metric-meta">Extra</div><span class="metric-status above">▲ alta</span></div><div class="metric-card "><div class="metric-name">Aparições</div><div class="metric-value">371.809</div><div class="metric-meta"></div></div></div></div></details>
+
+        <h4 style="font-size:17px;color:var(--navy);margin:32px 0 6px;">Formato: Vídeo x Estático</h4>
+        <p class="fmt-note" style="margin-bottom:16px;">Qual formato rende mais para cada real investido. Vídeo costuma engajar mais; estático costuma alcançar mais barato.</p>
+        <div class="table-wrap" style="margin-top:8px;"><table class="data-table">
+      <thead><tr><th>Formato</th><th>Investido</th><th>Aparições</th><th>Interações</th><th>Aparições/R$</th><th>Interações/R$</th></tr></thead>
+      <tbody><tr><td style="font-weight:700;color:var(--navy);">Vídeo</td><td>R$ 7.637</td><td>3.434.436</td><td>190.599</td><td>450x</td><td>25,0</td></tr><tr><td style="font-weight:700;color:var(--navy);">Estático</td><td>R$ 8.962</td><td>3.708.662</td><td>37.195</td><td>414x</td><td>4,2</td></tr></tbody></table></div>
+        <div class="chart-grid"><div class="chart-card">
+          <h5 class="chart-title">Aparições por real</h5>
+          <p class="chart-sub">Quanto alcance cada formato entrega por R$ 1.</p>
+          <svg viewBox="0 0 620 96" width="100%" style="max-width:620px;" role="img"><g transform="translate(0,0)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">Estático</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="317" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">414x</text></g><g transform="translate(0,48)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">Vídeo</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="345" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">450x</text></g></svg>
+        </div><div class="chart-card">
+          <h5 class="chart-title">Interações por real</h5>
+          <p class="chart-sub">Quanto engajamento cada formato entrega por R$ 1.</p>
+          <svg viewBox="0 0 620 96" width="100%" style="max-width:620px;" role="img"><g transform="translate(0,0)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">Vídeo</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="345" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">25,0</text></g><g transform="translate(0,48)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">Estático</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="58" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">4,2</text></g></svg>
+        </div></div>
+
+        <h4 style="font-size:17px;color:var(--navy);margin:36px 0 6px;">Posição do anúncio (placement)</h4>
+        <p class="fmt-note" style="margin-bottom:16px;">Onde cada anúncio aparece — no Feed, nos Stories ou como Manifesto. Aqui dá para ver qual posição rende mais por real.</p>
+        <div class="table-wrap" style="margin-top:8px;"><table class="data-table"><thead><tr><th>Peça (estratégia · formato · posição)</th><th>Investido</th><th>Aparições</th><th>Custo/mil</th><th>Cliques</th><th>Interação</th></tr></thead><tbody><tr><td style="font-weight:700;color:var(--navy);">AWA · Vídeo · Feed</td><td>R$ 5.527</td><td>3.234.122</td><td>R$ 1,71</td><td>0,05%</td><td>5,02%</td></tr><tr><td style="font-weight:700;color:var(--navy);">AWA · Estático · Feed</td><td>R$ 4.623</td><td>3.164.013</td><td>R$ 1,46</td><td>0,10%</td><td>0,14%</td></tr><tr><td style="font-weight:700;color:var(--navy);">TRF · Vídeo · Manifesto</td><td>R$ 1.267</td><td>94.764</td><td>R$ 13,37</td><td>5,83%</td><td>20,29%</td></tr><tr><td style="font-weight:700;color:var(--navy);">ENG · Estático · Story</td><td>R$ 1.263</td><td>54.794</td><td>R$ 23,05</td><td>10,21%</td><td>11,40%</td></tr><tr><td style="font-weight:700;color:var(--navy);">ENG · Estático · Feed</td><td>R$ 1.262</td><td>292.187</td><td>R$ 4,32</td><td>1,60%</td><td>2,01%</td></tr><tr><td style="font-weight:700;color:var(--navy);">TRF · Estático · Feed</td><td>R$ 1.130</td><td>175.193</td><td>R$ 6,45</td><td>2,54%</td><td>9,68%</td></tr><tr><td style="font-weight:700;color:var(--navy);">TRF · Vídeo · Feed</td><td>R$ 842</td><td>101.937</td><td>R$ 8,26</td><td>3,23%</td><td>21,74%</td></tr></tbody></table></div>
+        <div class="chart-grid"><div class="chart-card">
+          <h5 class="chart-title">Quem entrega mais aparições por real</h5>
+          <p class="chart-sub">Quantas vezes a marca apareceu para cada R$ 1 investido. Maior = mais eficiente em alcance.</p>
+          <svg viewBox="0 0 620 336" width="100%" style="max-width:620px;" role="img"><g transform="translate(0,0)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">AWA · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="345" height="26" rx="7" fill="var(--meta)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">684x</text></g><g transform="translate(0,48)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">AWA · Vídeo · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="296" height="26" rx="7" fill="var(--meta)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">586x</text></g><g transform="translate(0,96)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">ENG · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="117" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">232x</text></g><g transform="translate(0,144)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="78" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">155x</text></g><g transform="translate(0,192)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Vídeo · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="61" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">121x</text></g><g transform="translate(0,240)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Vídeo · Manifesto</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="38" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">75x</text></g><g transform="translate(0,288)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">ENG · Estático · Story</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="22" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">43x</text></g></svg>
+        </div><div class="chart-card">
+          <h5 class="chart-title">Quem entrega mais interações por real</h5>
+          <p class="chart-sub">Quantas interações para cada R$ 1 investido. Maior = mais eficiente em engajamento.</p>
+          <svg viewBox="0 0 620 336" width="100%" style="max-width:620px;" role="img"><g transform="translate(0,0)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Vídeo · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="336" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">26,3</text></g><g transform="translate(0,48)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">AWA · Vídeo · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="345" height="26" rx="7" fill="var(--meta)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">27,0</text></g><g transform="translate(0,96)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Vídeo · Manifesto</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="194" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">15,2</text></g><g transform="translate(0,144)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">TRF · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="181" height="26" rx="7" fill="var(--blue)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">14,2</text></g><g transform="translate(0,192)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">ENG · Estático · Story</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="58" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">4,5</text></g><g transform="translate(0,240)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">ENG · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="56" height="26" rx="7" fill="var(--teal)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">4,4</text></g><g transform="translate(0,288)"><text x="0" y="21.0" font-size="12.5" font-weight="700" fill="#003B5C">AWA · Estático · Feed</text><rect x="185" y="4" width="345" height="26" rx="7" fill="rgba(0,59,92,.06)"/><rect x="185" y="4" width="18" height="26" rx="7" fill="var(--meta)"/><text x="536" y="21.0" font-size="12.5" font-weight="800" fill="#003B5C">1,4</text></g></svg>
+        </div></div>
+
+        <div style="margin-top:24px;padding:18px;background:rgba(8,102,255,.05);border-radius:14px;border-left:3px solid var(--meta);">
+          <strong style="color:var(--meta);font-size:13px;">Em poucas palavras</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">O anúncio de marca (AWA) é imbatível em alcance: entrega centenas de aparições por real a um custo de R$ 1,59 o mil. No engajamento, os formatos de vídeo do Tráfego se destacam — o "TRF · Vídeo · Feed" rende a maior interação por real. Cada formato e posição tem um ponto forte, e usamos isso para distribuir a verba.</p>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="t6-youtube">
+        <p style="color:var(--muted);font-size:14px;margin-bottom:20px;"><strong>R$ 5.622 na semana.</strong> Esta semana marcou a virada do canal: a frente de vídeo deu lugar à captação de inscritos.</p>
+        <div class="metric-row"><div class="metric-card "><div class="metric-name">Investido</div><div class="metric-value">R$ 5.622</div><div class="metric-meta">Frente de inscritos</div></div><div class="metric-card "><div class="metric-name">Aparições</div><div class="metric-value">465.239</div><div class="metric-meta"></div></div><div class="metric-card "><span class="kpi-badge">KPI</span><div class="metric-name">Novos inscritos</div><div class="metric-value">7.192</div><div class="metric-meta">Objetivo principal</div><span class="metric-status above">▲ base própria</span></div><div class="metric-card cost-good "><div class="metric-name">Custo/mil</div><div class="metric-value">R$ 12,09</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Cliques</div><div class="metric-value">11.681</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Custo por inscrito</div><div class="metric-value">R$ 0,78</div><div class="metric-meta">Muito eficiente</div><span class="metric-status above">▲</span></div></div>
+        <div style="margin-top:24px;padding:18px;background:rgba(80,229,150,.08);border-radius:14px;border-left:3px solid var(--green-deep);">
+          <strong style="color:var(--green-deep);font-size:13px;">A comparação Manifesto x Shorts tem seção própria logo abaixo</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">Lá comparamos o vídeo completo com os cortes curtos, reunindo a frente de vídeo e a de inscritos de cada formato.</p>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="t6-linkedin">
+        <p style="color:var(--muted);font-size:14px;margin-bottom:20px;"><strong>R$ 2.081 na semana</strong>, sustentando o tráfego qualificado para a página.</p>
+        <div class="metric-row"><div class="metric-card "><div class="metric-name">Investido</div><div class="metric-value">R$ 2.081</div><div class="metric-meta">Tráfego qualificado</div></div><div class="metric-card "><div class="metric-name">Aparições</div><div class="metric-value">134.495</div><div class="metric-meta"></div></div><div class="metric-card cost-good "><div class="metric-name">Custo/mil</div><div class="metric-value">R$ 15,47</div><div class="metric-meta">Abaixo do mercado</div><span class="metric-status above">bom</span></div><div class="metric-card "><div class="metric-name">Cliques</div><div class="metric-value">636</div><div class="metric-meta"></div></div><div class="metric-card "><div class="metric-name">Quem clica (Post)</div><div class="metric-value">3,43%</div><div class="metric-meta">Acima da média</div><span class="metric-status above">▲ forte</span></div><div class="metric-card "><div class="metric-name">Vídeos assistidos</div><div class="metric-value">84.679</div><div class="metric-meta"></div></div></div>
+        <h4 style="font-size:17px;color:var(--navy);margin:28px 0 6px;">Formato: Estático x Vídeo</h4>
+        <div class="table-wrap" style="margin-top:8px;"><table class="data-table">
+          <thead><tr><th>Formato</th><th>Investido</th><th>Aparições</th><th>Custo/mil</th><th>Cliques</th><th>Quem clica</th></tr></thead>
+          <tbody>
+          <tr><td style="font-weight:700;color:var(--navy);">Estático (Post com link)</td><td>R$ 1.722</td><td>17.394</td><td>R$ 98,99</td><td>596</td><td>3,43%</td></tr>
+          <tr><td style="font-weight:700;color:var(--navy);">Vídeo institucional</td><td>R$ 359</td><td>117.101</td><td>R$ 3,07</td><td>40</td><td>0,03%</td></tr>
+          </tbody></table></div>
+        <div style="margin-top:20px;padding:18px;background:rgba(10,102,194,.06);border-radius:14px;border-left:3px solid var(--linkedin);">
+          <strong style="color:var(--linkedin);font-size:13px;">Em poucas palavras</strong>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--text);">O <strong>post com link</strong> é quem traz os cliques (3,43% das pessoas clicam) e leva tráfego direto para a página. O <strong>vídeo</strong> aparece muito barato e reforça a presença da marca, com mais de 84 mil vídeos assistidos. Cada um cumpre um papel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="criativos" style="background:white;">
+    <div class="container">
+      <span class="section-label">Performance de criativos · por conceito</span>
+      <h2>Quais criativos escalar — comparando iguais com iguais.</h2>
+      <div class="section-intro">
+        <p>Entramos no nível do conceito de criativo. Para uma leitura justa, comparamos <strong>vídeo contra vídeo</strong> e <strong>estático contra estático</strong> dentro de cada objetivo — nunca formatos diferentes entre si, já que cada formato tem custo e comportamento próprios. O <span style="color:var(--green-deep);font-weight:700;">★ escalar</span> marca os campeões a priorizar; o <span style="color:#B97400;font-weight:700;">↻ otimizar</span> aponta onde realocar verba para render mais; o <span style="color:#0866FF;font-weight:700;">✦ novo</span> sinaliza estreias da semana. Cada criativo traz uma <strong>recomendação de ação</strong>.</p>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="cr6-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta</span></button>
+      </div>
+      <div class="tab-pane active" id="cr6-meta">
+        <h4 style="font-size:17px;color:var(--navy);margin:8px 0 4px;">Reconhecimento (AWA)</h4>
+        <div class="fmt-split"><div class="fmt-col"><h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5><p class="fmt-note">Os vídeos lideram o awareness — Canção e Cuidado entregam volume gigante a CPM &lt; R$ 2 com boa interação.</p><div class="creative-rank"><div class="cr-row win"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Canção</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 2.946</b></span><span>CPM <b>R$ 1,78</b></span><span>Tx.Eng <b>4,63%</b></span></div><div class="cr-rec">Maior volume de aparições com ótima taxa de interação — manter no ar e ampliar verba.</div></div></div><div class="cr-row win"><div class="cr-rank">2</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.788</b></span><span>CPM <b>R$ 1,50</b></span><span>Tx.Eng <b>4,76%</b></span></div><div class="cr-rec">Melhor custo por mil aparições com interação acima da média. Ótimo candidato a mais investimento.</div></div></div></div></div><div class="fmt-col"><h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5><p class="fmt-note">Em estáticos, Torcida Especial (novo) já entra no nível dos campeões; os demais entregam barato mas interagem menos.</p><div class="creative-rank"><div class="cr-row win"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Torcida Especial</span><span class="cr-badge" style="background:rgba(8,102,255,.15);color:#0866FF;">✦ novo</span></div><div class="cr-metrics"><span>Invest. <b>R$ 761</b></span><span>CPM <b>R$ 2,04</b></span><span>Tx.Eng <b>4,06%</b></span></div><div class="cr-rec">Criativo novo da semana, já entrega interação no nível dos campeões. Vale ampliar a leitura.</div></div></div><div class="cr-row low"><div class="cr-rank">2</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Proteção que Acompanha</span><span class="cr-badge amber">↻ otimizar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.063</b></span><span>CPM <b>R$ 1,48</b></span><span>Tx.Eng <b>0,15%</b></span></div><div class="cr-rec">Estável em entrega; espaço para migrar verba aos conceitos de maior interação.</div></div></div><div class="cr-row low"><div class="cr-rank">3</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Viver Agora · Campo</span><span class="cr-badge amber">↻ otimizar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.377</b></span><span>CPM <b>R$ 1,41</b></span><span>Tx.Eng <b>0,14%</b></span></div><div class="cr-rec">Custo eficiente; concentrar volume nos conceitos que mais interagem.</div></div></div><div class="cr-row low"><div class="cr-rank">4</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Torça Junto</span><span class="cr-badge amber">↻ otimizar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.510</b></span><span>CPM <b>R$ 1,48</b></span><span>Tx.Eng <b>0,08%</b></span></div><div class="cr-rec">Entrega barata, mas interação fraca; realocar verba para Canção e Cuidado.</div></div></div></div></div></div>
+        <h4 style="font-size:17px;color:var(--navy);margin:32px 0 4px;">Engajamento (ENG)</h4>
+        <div class="fmt-split"><div class="fmt-col"><h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5><p class="fmt-note">Torça Junto lidera o clique e a interação; Viver Agora · Pessoa traz volume.</p><div class="creative-rank"><div class="cr-row win"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Torça Junto</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 885</b></span><span>CTR <b>4,64%</b></span><span>Tx.Eng <b>4,96%</b></span></div><div class="cr-rec">Melhor taxa de quem clica e de interação em engajamento. Ativo a priorizar.</div></div></div><div class="cr-row win"><div class="cr-rank">2</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Viver Agora · Pessoa</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.136</b></span><span>CTR <b>2,10%</b></span><span>Tx.Eng <b>2,34%</b></span></div><div class="cr-rec">Maior volume de engajamento da linha. Manter no ar e ampliar gradualmente.</div></div></div></div></div><div class="fmt-col"><h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5><p class="fmt-note">O post de teste trouxe clique altíssimo — vale validar em escala.</p><div class="creative-rank"><div class="cr-row win"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Post teste</span><span class="cr-badge" style="background:rgba(8,102,255,.15);color:#0866FF;">✦ novo</span></div><div class="cr-metrics"><span>Invest. <b>R$ 683</b></span><span>CTR <b>12,31%</b></span><span>Tx.Eng <b>13,04%</b></span></div><div class="cr-rec">Formato de teste com clique altíssimo; vale ampliar a leitura e validar em escala.</div></div></div></div></div></div>
+        <h4 style="font-size:17px;color:var(--navy);margin:32px 0 4px;">Tráfego (TRF)</h4>
+        <div class="fmt-split"><div class="fmt-col"><h5><span class="fmt-tag vd">VÍDEO</span> Vídeo x Vídeo</h5><p class="fmt-note">Manifesto tem o melhor clique de toda a campanha; Cuidado, a maior interação.</p><div class="creative-rank"><div class="cr-row win"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Manifesto</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 1.267</b></span><span>CTR <b>5,83%</b></span><span>Tx.Eng <b>20,29%</b></span></div><div class="cr-rec">Melhor taxa de quem clica de toda a campanha. Conceito-rei do tráfego — escalar.</div></div></div><div class="cr-row win"><div class="cr-rank">2</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Cuidado</span><span class="cr-badge">★ escalar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 742</b></span><span>CTR <b>3,18%</b></span><span>Tx.Eng <b>21,74%</b></span></div><div class="cr-rec">Maior taxa de interação; o conceito que mais conversa com o público.</div></div></div></div></div><div class="fmt-col"><h5><span class="fmt-tag st">ESTÁTICO</span> Estático x Estático</h5><p class="fmt-note">Proteção e Em Campo seguem como apoio; reforçar com os campeões.</p><div class="creative-rank"><div class="cr-row low"><div class="cr-rank">1</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Proteção que Acompanha</span><span class="cr-badge amber">↻ otimizar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 741</b></span><span>CTR <b>2,67%</b></span><span>Tx.Eng <b>9,68%</b></span></div><div class="cr-rec">Desempenho mediano; reforçar com os ângulos campeões.</div></div></div><div class="cr-row low"><div class="cr-rank">2</div><div class="cr-body"><div class="cr-top"><span class="cr-name">Em Campo</span><span class="cr-badge amber">↻ otimizar</span></div><div class="cr-metrics"><span>Invest. <b>R$ 282</b></span><span>CTR <b>2,38%</b></span><span>Tx.Eng <b>10,97%</b></span></div><div class="cr-rec">Volume baixo; usar como apoio aos conceitos de maior clique.</div></div></div></div></div></div>
+      </div>
+      <div style="margin-top:32px;padding:22px;background:rgba(80,229,150,.07);border-radius:16px;border-left:3px solid var(--green-deep);">
+        <strong style="color:var(--green-deep);font-size:14px;">Leitura do especialista · criativos</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">Existe um vencedor transversal claro: <strong>o conceito "Manifesto"</strong>, que lidera o clique no tráfego, e <strong>"Cuidado"</strong>, com a maior interação. A recomendação é <strong>concentrar a verba nos campeões</strong> — Manifesto, Cuidado e Canção — e <strong>realocar o investimento dos criativos de menor desempenho</strong> (Torça Junto e Viver Agora · Campo no awareness) para os que mais rendem. "Torcida Especial" estreou forte e merece acompanhamento. É um movimento natural de otimização: o orçamento migra do que entrega menos para o que entrega mais, sem perda de verba.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="youtube-ms" style="background:rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">YouTube · comparação especial</span>
+      <h2>Vídeo completo (Manifesto) x cortes curtos (Shorts).</h2>
+      <div class="section-intro">
+        <p>Leitura consolidada da Onda 2, somando a frente de vídeo (até 21/06) e a de inscritos (22–27/06) de cada formato. A pergunta não é "qual é melhor", e sim "qual serve melhor para cada objetivo". Dados do período completo do YouTube, mais confiáveis.</p>
+      </div>
+      <div class="vs-head">
+        <div class="vs-label"></div>
+        <div class="vs-col-head" style="color:var(--navy);"><span class="vs-icon" style="background:var(--navy);">M</span> Manifesto<br><span class="vs-sub">vídeo completo</span></div>
+        <div class="vs-col-head" style="color:var(--blue);"><span class="vs-icon" style="background:var(--blue);">S</span> Shorts<br><span class="vs-sub">cortes curtos</span></div>
+        <div class="vs-label"></div>
+      </div>
+      <div class="vs-row"><div class="vs-label">Total investido (Onda 2)</div><div class="vs-side "><span class="vs-val">R$ 13.859</span></div><div class="vs-side win"><span class="vs-val">R$ 19.557</span><span class="vs-tag">vence</span></div><div class="vs-note">Os cortes curtos receberam mais verba — formato priorizado para escalar alcance.</div></div>
+      <div class="vs-row"><div class="vs-label">Custo por mil (vídeo)</div><div class="vs-side "><span class="vs-val">R$ 11,42</span></div><div class="vs-side win"><span class="vs-val">R$ 7,84</span><span class="vs-tag">vence</span></div><div class="vs-note">Os Shorts aparecem mais barato — ideais para alcançar mais gente.</div></div>
+      <div class="vs-row"><div class="vs-label">Quanto do vídeo assistem</div><div class="vs-side win"><span class="vs-val">61,1%</span><span class="vs-tag">vence</span></div><div class="vs-side "><span class="vs-val">45,5%</span></div><div class="vs-note">O Manifesto prende muito mais — quem começa, assiste até o fim.</div></div>
+      <div class="vs-row"><div class="vs-label">Vídeos assistidos</div><div class="vs-side "><span class="vs-val">593.676</span></div><div class="vs-side win"><span class="vs-val">968.387</span><span class="vs-tag">vence</span></div><div class="vs-note">Os Shorts geram mais visualizações no total (mais baratos e com mais entrega).</div></div>
+      <div class="vs-row"><div class="vs-label">Novos inscritos (semana)</div><div class="vs-side "><span class="vs-val">3.274</span></div><div class="vs-side win"><span class="vs-val">3.918</span><span class="vs-tag">vence</span></div><div class="vs-note">Os Shorts converteram mais clique em inscrito; o Manifesto vem logo atrás a custo menor.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px;">
+        <div class="card" style="background:var(--navy);color:white;border-radius:var(--radius);padding:24px;">
+          <h3 style="margin:0 0 8px;font-size:19px;">Manifesto = atenção</h3>
+          <p style="color:rgba(255,255,255,.9);font-size:14px;margin:0;">As pessoas assistem o vídeo quase inteiro (61%). É o formato que conta a história da marca e cria conexão. Serve para <strong>fixar a mensagem</strong>.</p>
+        </div>
+        <div class="card" style="background:var(--blue);color:white;border-radius:var(--radius);padding:24px;">
+          <h3 style="margin:0 0 8px;font-size:19px;">Shorts = alcance</h3>
+          <p style="color:rgba(255,255,255,.92);font-size:14px;margin:0;">Aparecem mais barato e para mais gente, e converteram mais inscritos. Servem para <strong>colocar a marca na frente de muita gente</strong> e repetir a mensagem.</p>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding:22px;background:white;border-radius:16px;box-shadow:var(--shadow);">
+        <strong style="color:var(--navy);font-size:14px;">Em poucas palavras</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">Os dois formatos se completam. O Manifesto entrega a história para quem se interessa, e os Shorts levam a marca a muito mais gente por um custo menor. Nesta semana, ambos viraram captação de inscritos e juntos trouxeram <strong>7,2 mil novos seguidores</strong> — uma base própria para reimpacto na Onda 3.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="inscritos" style="background:white;">
+    <div class="container">
+      <span class="section-label">YouTube · crescimento do canal</span>
+      <h2>O canal disparou a partir de 21 de junho.</h2>
+      <div class="section-intro"><p>A frente de captação de inscritos no YouTube mudou o patamar do canal. O total de inscritos ficou praticamente estável por semanas e, a partir de <strong>21 de junho</strong>, entrou em curva de aceleração: saímos de pouco mais de 3,6 mil para <strong>11.596 inscritos</strong> ao fim do período. É uma base própria de audiência que passa a ser nossa para reimpactar na Onda 3.</p></div>
+
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px;">
+          <div>
+            <h4 style="margin:0;color:var(--navy);font-size:17px;">Desenvolvimento do canal · total de inscritos</h4>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--muted);">18 de maio a 28 de junho de 2026 · MetLife Brasil</p>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:30px;font-weight:900;color:var(--navy);line-height:1;">11.596</div>
+            <div style="font-size:12px;color:var(--muted);font-weight:600;">inscritos no fim do período</div>
+          </div>
+        </div>
+        <svg viewBox="0 0 900 320" width="100%" role="img" aria-label="Crescimento de inscritos do canal" style="max-width:100%;height:auto;"><defs><linearGradient id="insGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2DB5DF" stop-opacity="0.28"/><stop offset="100%" stop-color="#2DB5DF" stop-opacity="0.02"/></linearGradient></defs><line x1="8" y1="286.0" x2="828" y2="286.0" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="290.0" font-size="11" fill="#5B7280" font-weight="600">2,9 mil</text><line x1="8" y1="218.0" x2="828" y2="218.0" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="222.0" font-size="11" fill="#5B7280" font-weight="600">5,5 mil</text><line x1="8" y1="150.1" x2="828" y2="150.1" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="154.1" font-size="11" fill="#5B7280" font-weight="600">8,1 mil</text><line x1="8" y1="82.1" x2="828" y2="82.1" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="86.1" font-size="11" fill="#5B7280" font-weight="600">10,7 mil</text><path d="M 8.0,286.0 L 8.0,267.2 L 28.0,267.1 L 48.0,266.9 L 68.0,266.9 L 88.0,266.8 L 108.0,266.7 L 128.0,266.5 L 148.0,266.3 L 168.0,266.1 L 188.0,266.0 L 208.0,265.8 L 228.0,265.6 L 248.0,265.4 L 268.0,265.3 L 288.0,265.1 L 308.0,264.6 L 328.0,264.2 L 348.0,263.8 L 368.0,263.3 L 388.0,262.9 L 408.0,262.5 L 428.0,262.0 L 448.0,261.6 L 468.0,261.2 L 488.0,260.6 L 508.0,260.0 L 528.0,259.4 L 548.0,258.8 L 568.0,258.3 L 588.0,257.7 L 608.0,257.1 L 628.0,256.5 L 648.0,255.9 L 668.0,251.4 L 688.0,246.8 L 708.0,232.4 L 728.0,211.5 L 748.0,186.7 L 768.0,159.2 L 788.0,131.8 L 808.0,103.0 L 828.0,58.7 L 828.0,286.0 Z" fill="url(#insGrad)"/><path d="M 8.0,267.2 L 28.0,267.1 L 48.0,266.9 L 68.0,266.9 L 88.0,266.8 L 108.0,266.7 L 128.0,266.5 L 148.0,266.3 L 168.0,266.1 L 188.0,266.0 L 208.0,265.8 L 228.0,265.6 L 248.0,265.4 L 268.0,265.3 L 288.0,265.1 L 308.0,264.6 L 328.0,264.2 L 348.0,263.8 L 368.0,263.3 L 388.0,262.9 L 408.0,262.5 L 428.0,262.0 L 448.0,261.6 L 468.0,261.2 L 488.0,260.6 L 508.0,260.0 L 528.0,259.4 L 548.0,258.8 L 568.0,258.3 L 588.0,257.7 L 608.0,257.1 L 628.0,256.5 L 648.0,255.9 L 668.0,251.4 L 688.0,246.8 L 708.0,232.4 L 728.0,211.5 L 748.0,186.7 L 768.0,159.2 L 788.0,131.8 L 808.0,103.0 L 828.0,58.7" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><line x1="688.0" y1="56" x2="688.0" y2="286.0" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="4 4" opacity=".7"/><circle cx="688.0" cy="246.8" r="6" fill="white" stroke="var(--amber)" stroke-width="3"/><circle cx="828.0" cy="58.7" r="7" fill="white" stroke="var(--blue)" stroke-width="3"/><text x="8.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="start">18/mai</text><text x="108.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="middle">23/mai</text><text x="288.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="middle">01/jun</text><text x="468.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="middle">10/jun</text><text x="688.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="middle">21/jun</text><text x="828.0" y="308" font-size="11" fill="#5B7280" font-weight="600" text-anchor="end">28/jun</text><g transform="translate(698,189)"><rect x="0" y="0" width="150" height="42" rx="8" fill="var(--amber)"/><text x="10" y="17" font-size="11" font-weight="800" fill="white">21/jun · a virada</text><text x="10" y="33" font-size="11" font-weight="600" fill="rgba(255,255,255,.92)">a captação acelera</text></g><g transform="translate(672,10)"><rect x="0" y="0" width="150" height="40" rx="8" fill="var(--navy)"/><text x="12" y="17" font-size="11" font-weight="800" fill="white">28/jun</text><text x="12" y="33" font-size="14" font-weight="900" fill="#7FD4EF">11.596 inscritos</text></g></svg>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0;border-top:1px solid rgba(0,59,92,.08);padding-top:14px;">A linha tracejada marca o ponto de virada: foi a partir de <strong style="color:var(--amber);">21 de junho</strong> que a captação de inscritos acelerou, refletindo a entrada das campanhas dedicadas no YouTube.</p>
+      </div>
+
+      <div class="hero-stats" style="margin-top:22px;max-width:none;">
+        <div class="stat green"><strong>+7,9 mil</strong><span>novos inscritos no período</span></div>
+        <div class="stat accent"><strong>3,3M</strong><span>visualizações no período</span></div>
+        <div class="stat"><strong>15,7 mil</strong><span>horas de exibição</span></div>
+        <div class="stat"><strong>21/jun</strong><span>início da curva de aceleração</span></div>
+      </div>
+
+      <div style="margin-top:24px;padding:22px;background:rgba(80,229,150,.07);border-radius:16px;border-left:3px solid var(--green-deep);">
+        <strong style="color:var(--green-deep);font-size:14px;">Em poucas palavras</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">O salto não é coincidência: ele começa exatamente quando ativamos a frente de inscritos. Em poucos dias o canal mais que triplicou a base, de cerca de 3,6 mil para 11,6 mil. Esse é um ativo que fica para a marca — uma audiência própria que podemos reimpactar sem novo custo de mídia na sequência da campanha.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="lp" style="background:rgba(0,59,92,.03);">
+    <div class="container">
+      <span class="section-label">Tráfego do site · a mídia leva até a porta</span>
+      <h2>A mídia leva até a porta. O ganho agora é a página.</h2>
+      <div class="section-intro"><p>Esta é a leitura mais importante da semana. A campanha entregou tráfego em volume e qualidade até o destino. O que decide o resultado a partir daqui é a experiência de quem chega, e é exatamente aí que está o espaço de ganho.</p></div>
+
+      <div class="pva-grid" style="margin-bottom:24px;">
+        <div class="pva-card">
+          <div class="pva-label">Visitas trazidas pela mídia</div>
+          <div class="pva-vals"><span class="pva-real">28x</span><span class="pva-plan">mais que o orgânico (7.064 contra 255)</span></div>
+          <div class="pva-bar"><span style="width:100%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">fluxo qualificado</div>
+          <div class="pva-comment good">A campanha multiplicou por 28 o número de visitas que chegam à página. A mídia cumpre o papel de levar a pessoa certa até a porta.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">Tempo de quem chega pela mídia</div>
+          <div class="pva-vals"><span class="pva-real">4:13</span><span class="pva-plan">médio na página · até 8:42 no LinkedIn</span></div>
+          <div class="pva-bar"><span style="width:80%"></span></div>
+          <div class="pva-pct" style="color:var(--green-deep)">tráfego qualificado</div>
+          <div class="pva-comment good">Quem entra, permanece e lê. Tempo de permanência alto em público novo é o indicador mais honesto de que a mensagem atrai a pessoa certa.</div>
+        </div>
+        <div class="pva-card">
+          <div class="pva-label">Conversão do formulário (mídia)</div>
+          <div class="pva-vals"><span class="pva-real">14%</span><span class="pva-plan">3 de 21 concluíram o preenchimento</span></div>
+          <div class="pva-bar"><span style="width:14%"></span></div>
+          <div class="pva-pct" style="color:#B97400">onde está o ganho</div>
+          <div class="pva-comment warn">Muita gente inicia o formulário e poucos concluem. Não é falta de público nem de interesse, é fricção no final do caminho — o ponto exato a destravar.</div>
+        </div>
+      </div>
+
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-bottom:24px;">
+        <h4 style="margin:0 0 4px;color:var(--navy);">O contraste que explica tudo</h4>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.55;">A rejeição do tráfego orgânico fica em <strong>70,0%</strong>. A do tráfego que a mídia traz fica em <strong>94,5%</strong>. São 24,5 pontos de diferença, e essa diferença não é sobre a qualidade da entrega. O tráfego orgânico é, na maior parte, quem já procurava a MetLife e chega pela busca ou direto. O tráfego da mídia é gente nova, conhecendo a marca pela primeira vez. É esperado que esse público recém-apresentado seja mais exigente com a primeira tela. A mídia leva a pessoa certa até a porta; converter quem chega é, a partir daqui, um trabalho de experiência da página.</p>
+        <div class="lp-bars"><div class="lp-bar-row"><span class="lp-lbl">Tráfego orgânico</span><div class="lp-track"><span style="width:70.0%;background:var(--green-deep);"></span></div><span class="lp-val">70,0%</span></div><div class="lp-bar-row"><span class="lp-lbl">Tráfego da mídia</span><div class="lp-track"><span style="width:94.5%;background:var(--meta);"></span></div><span class="lp-val">94,5%</span></div></div>
+      </div>
+
+      <div class="traffic-donuts" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="card" style="background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);">
+          <h4 style="margin:0 0 16px;color:var(--navy);">Esta semana (22–28/06)</h4>
+          <div class="donut-wrap"><div><svg viewBox="0 0 200 200" class="donut-svg" role="img" aria-label="Distribuição"><circle class="donut-seg" data-name="Meta / Instagram" data-val="5.878" data-pct="87%" cx="100" cy="100" r="70" fill="none" stroke="#0866FF" stroke-width="30" stroke-dasharray="381.87 57.95" stroke-dashoffset="-0.00" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="LinkedIn" data-val="576" data-pct="9%" cx="100" cy="100" r="70" fill="none" stroke="#0A66C2" stroke-width="30" stroke-dasharray="37.42 402.40" stroke-dashoffset="-381.87" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="YouTube" data-val="316" data-pct="5%" cx="100" cy="100" r="70" fill="none" stroke="#FF0000" stroke-width="30" stroke-dasharray="20.53 419.29" stroke-dashoffset="-419.29" transform="rotate(-90 100 100)" /><text x="128.2" y="164.1" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">87%</text><text x="62.8" y="40.7" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">9%</text><text x="100" y="94" text-anchor="middle" class="donut-center-val" >7.064</text><text x="100" y="114" text-anchor="middle" class="donut-center-lbl">visitas</text></svg></div><div class="donut-legend"><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0866FF;"></span><span class="donut-leg-name">Meta / Instagram</span><span class="donut-leg-val">5.878<span class="donut-leg-pct">· 87%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0A66C2;"></span><span class="donut-leg-name">LinkedIn</span><span class="donut-leg-val">576<span class="donut-leg-pct">· 9%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#FF0000;"></span><span class="donut-leg-name">YouTube</span><span class="donut-leg-val">316<span class="donut-leg-pct">· 5%</span></span></div></div></div>
+        </div>
+        <div class="card" style="background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);">
+          <h4 style="margin:0 0 16px;color:var(--navy);">Acumulado da campanha</h4>
+          <div class="donut-wrap"><div><svg viewBox="0 0 200 200" class="donut-svg" role="img" aria-label="Distribuição"><circle class="donut-seg" data-name="Meta / Instagram" data-val="38.854" data-pct="87%" cx="100" cy="100" r="70" fill="none" stroke="#0866FF" stroke-width="30" stroke-dasharray="383.74 56.09" stroke-dashoffset="-0.00" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="LinkedIn" data-val="5.168" data-pct="12%" cx="100" cy="100" r="70" fill="none" stroke="#0A66C2" stroke-width="30" stroke-dasharray="51.04 388.78" stroke-dashoffset="-383.74" transform="rotate(-90 100 100)" /><circle class="donut-seg" data-name="YouTube" data-val="511" data-pct="1%" cx="100" cy="100" r="70" fill="none" stroke="#FF0000" stroke-width="30" stroke-dasharray="5.05 434.78" stroke-dashoffset="-434.78" transform="rotate(-90 100 100)" /><text x="127.3" y="164.5" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">87%</text><text x="70.4" y="36.6" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">12%</text><text x="100" y="94" text-anchor="middle" class="donut-center-val" >44.533</text><text x="100" y="114" text-anchor="middle" class="donut-center-lbl">visitas</text></svg></div><div class="donut-legend"><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0866FF;"></span><span class="donut-leg-name">Meta / Instagram</span><span class="donut-leg-val">38.854<span class="donut-leg-pct">· 87%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0A66C2;"></span><span class="donut-leg-name">LinkedIn</span><span class="donut-leg-val">5.168<span class="donut-leg-pct">· 12%</span></span></div><div class="donut-leg-item"><span class="donut-leg-dot" style="background:#FF0000;"></span><span class="donut-leg-name">YouTube</span><span class="donut-leg-val">511<span class="donut-leg-pct">· 1%</span></span></div></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;padding:16px 20px;background:white;border-radius:12px;box-shadow:var(--shadow);font-size:13px;color:var(--text);line-height:1.5;">
+        <strong style="color:var(--navy);">Como ler:</strong> passe o mouse sobre cada fatia do gráfico para ver os números. O <strong>Meta/Instagram</strong> traz a grande maioria das visitas (perto de 9 em cada 10), o <strong>LinkedIn</strong> vem em seguida com um público mais seleto, e o <strong>YouTube</strong> traz pouca visita direta — o que é esperado, já que ele serve para a marca aparecer e captar inscritos, não para gerar cliques.
+      </div>
+
+      <div class="card" style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-top:24px;">
+        <h4 style="margin:0 0 4px;color:var(--navy);">As campanhas que mais trouxeram visitas nesta semana</h4>
+        <p style="font-size:13px;color:var(--muted);margin:0 0 18px;">Número de visitas por campanha. As cores indicam o canal.</p>
+        <div class="lp-bars"><div class="lp-bar-row"><span class="lp-lbl">Insta · Post Estático A2</span><div class="lp-track"><span style="width:100.0%;background:#0866FF;"></span></div><span class="lp-val">1.749</span></div><div class="lp-bar-row"><span class="lp-lbl">Insta · Vídeo Manifesto</span><div class="lp-track"><span style="width:98.9%;background:#0866FF;"></span></div><span class="lp-val">1.729</span></div><div class="lp-bar-row"><span class="lp-lbl">Insta · Vídeo 6s</span><div class="lp-track"><span style="width:80.8%;background:#0866FF;"></span></div><span class="lp-val">1.413</span></div><div class="lp-bar-row"><span class="lp-lbl">Insta · Post Estático</span><div class="lp-track"><span style="width:33.4%;background:#0866FF;"></span></div><span class="lp-val">585</span></div><div class="lp-bar-row"><span class="lp-lbl">LinkedIn · Post com link</span><div class="lp-track"><span style="width:29.7%;background:#0A66C2;"></span></div><span class="lp-val">520</span></div><div class="lp-bar-row"><span class="lp-lbl">Insta · Vídeo 15s</span><div class="lp-track"><span style="width:23.0%;background:#0866FF;"></span></div><span class="lp-val">402</span></div><div class="lp-bar-row"><span class="lp-lbl">YouTube · Vídeo Manifesto</span><div class="lp-track"><span style="width:18.1%;background:#FF0000;"></span></div><span class="lp-val">316</span></div><div class="lp-bar-row"><span class="lp-lbl">LinkedIn · Vídeo 15s</span><div class="lp-track"><span style="width:2.1%;background:#0A66C2;"></span></div><span class="lp-val">36</span></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;">
+        <div class="card" style="background:white;border-radius:16px;padding:22px;box-shadow:var(--shadow);">
+          <strong style="color:var(--navy);font-size:14px;">O sinal de que o tráfego é qualificado</strong>
+          <p style="margin:10px 0 0;font-size:13.5px;color:var(--text);line-height:1.55;">Quem chega pela mídia passa 4:13 na página, em média, e o post com link no LinkedIn segura o público por mais de 8 minutos. O interesse existe. O que falta é o caminho de conversão acompanhar esse interesse.</p>
+        </div>
+        <div class="card" style="background:white;border-radius:16px;padding:22px;box-shadow:var(--shadow);">
+          <strong style="color:var(--navy);font-size:14px;">Onde está o ganho</strong>
+          <p style="margin:10px 0 0;font-size:13.5px;color:var(--text);line-height:1.55;">Ajustes na página, no formulário e na clareza do próximo passo convertem o tráfego que já está chegando em resultado, sem precisar de um real a mais de mídia. É o ganho mais barato que temos na mesa.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;padding:22px;background:white;border-radius:16px;box-shadow:var(--shadow);">
+        <strong style="color:var(--navy);font-size:14px;">Em poucas palavras</strong>
+        <p style="margin:10px 0 0;font-size:14px;color:var(--text);line-height:1.55;">A mídia entrega tráfego qualificado até a porta: o Meta/Instagram lidera, o LinkedIn traz o público mais seleto que fica mais tempo. O post com link no LinkedIn tem a menor rejeição entre todas as campanhas (82,9%), o que mostra que dá para puxar a rejeição para baixo com o tipo certo de entrada. Esse é o caminho a ampliar enquanto a página é ajustada para converter melhor quem a mídia já está trazendo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="proximos" style="background:rgba(45,181,223,.04);">
+    <div class="container">
+      <span class="section-label">Próximos passos · reta final da Onda 2</span>
+      <h2>O foco das próximas semanas.</h2>
+      <div class="section-intro"><p>A reta final da fase de intensificação. Três frentes para a sequência.</p></div>
+      <div class="cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+        <div class="card" style="background:var(--navy);color:white;border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">01</div>
+          <h3 style="margin:0 0 8px;">Escalar os conceitos campeões</h3>
+          <p style="color:rgba(255,255,255,.85);font-size:14px;">Concentrar a verba de reconhecimento em "Canção" e "Cuidado", e o tráfego em "Manifesto" e "Cuidado". São os ângulos que mais convertem atenção em clique e interação.</p>
+        </div>
+        <div class="card" style="background:var(--blue);color:white;border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">02</div>
+          <h3 style="margin:0 0 8px;">Destravar a conversão da página</h3>
+          <p style="color:rgba(255,255,255,.92);font-size:14px;">A mídia já entrega tráfego qualificado até a porta. O maior ganho da reta final está em reduzir a fricção do formulário, convertendo melhor quem já está chegando.</p>
+        </div>
+        <div class="card" style="background:var(--green);color:var(--navy);border-radius:var(--radius);padding:26px;">
+          <div style="font-size:40px;font-weight:900;margin-bottom:10px;">03</div>
+          <h3 style="margin:0 0 8px;">Acelerar para consumir com qualidade</h3>
+          <p style="color:rgba(0,59,92,.85);font-size:14px;">Ativar a frequência como alavanca nos públicos quentes, aproveitar a base de inscritos do YouTube e seguir investindo conforme o combinado, mantendo o custo baixo que é a marca da campanha.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+    document.querySelectorAll('.tabs').forEach(group => {
+      group.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pane = document.getElementById(btn.dataset.tab);
+          const container = pane.parentElement;
+          group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          container.querySelectorAll(':scope > .tab-pane').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active'); pane.classList.add('active');
+        });
+      });
+    });
+    document.querySelectorAll('.acc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const open = btn.dataset.acc === 'open';
+        const pane = btn.closest('.tab-pane') || document;
+        pane.querySelectorAll('.camp-acc').forEach(d => d.open = open);
+      });
+    });
+    document.querySelectorAll('.sticky-nav a').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+    (function(){
+      let tip = document.createElement('div');
+      tip.style.cssText = 'position:fixed;pointer-events:none;background:#003B5C;color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:700;opacity:0;transition:opacity .12s;z-index:1000;box-shadow:0 6px 20px rgba(0,0,0,.25);';
+      document.body.appendChild(tip);
+      document.querySelectorAll('.donut-seg').forEach(seg => {
+        seg.addEventListener('mousemove', e => {
+          tip.innerHTML = seg.dataset.name + '<br><span style="font-weight:400;">' + seg.dataset.val + ' · ' + seg.dataset.pct + '</span>';
+          tip.style.left = (e.clientX + 14) + 'px';
+          tip.style.top = (e.clientY + 14) + 'px';
+          tip.style.opacity = '1';
+        });
+        seg.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+      });
+    })();
+  </script>
+  <footer class="site-footer">
+    <h2>Auge da Copa: custo em queda, criativos consolidados e YouTube virando pra crescimento do canal.</h2>
+    <p>A sexta semana entrega o menor CPM Meta da Onda 2 (R$ 2,32) e confirma o pivot do YouTube pra captação de inscritos. Semana 7 continua na reta final da Onda 2.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/performance-timeline.js" defer></script>
+</body>
+</html>

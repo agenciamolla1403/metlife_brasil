@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+<title>Performance · Semana 9 · 13/07 a 19/07 · MetLife 2026</title>
+<style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      /* Cores por canal */
+      --meta: #0866FF;
+      --youtube: #FF0033;
+      --linkedin: #0A66C2;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    /* ===== HERO ===== */
+    /* ===== HERO (padrão do hub · igual week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); } }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+
+    /* .hero-stats / .stat — Rafael reusa essas classes em sections internas
+       (não confundir com o hero principal que usa .hero-card + .metric-grid) */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: left;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .stat.accent { background: var(--navy); color: white; }
+    .stat.accent span { color: rgba(255,255,255,.7); }
+    .stat.green { background: var(--green); color: var(--navy); }
+    .stat.green span { color: rgba(0,59,92,.7); }
+
+    /* ===== TABS 3 colunas (S75) ===== */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+
+    /* ===== SECTION GENERAL ===== */
+    section { padding: 70px 24px; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .section-intro { max-width: 820px; margin-bottom: 36px; }
+    h2 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0 0 14px; }
+    .section-intro p { font-size: 16px; color: var(--muted); }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      margin-bottom: 14px;
+      padding: 6px 14px;
+      background: rgba(45,181,223,.12);
+      border-radius: 999px;
+    }
+
+    /* ===== BUDGET PANEL ===== */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+    .budget-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .budget-card.dark {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+    }
+    .budget-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .budget-card.dark .budget-label { color: rgba(255,255,255,.6); }
+    .budget-value {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 6px;
+    }
+    .budget-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .budget-card.dark .budget-meta { color: rgba(255,255,255,.7); }
+    .progress-bar {
+      height: 14px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 18px 0 10px;
+      position: relative;
+    }
+    .budget-card.dark .progress-bar { background: rgba(255,255,255,.1); }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--green-deep));
+      border-radius: 999px;
+      transition: width .8s ease;
+      position: relative;
+    }
+    .progress-marker {
+      position: absolute;
+      top: -22px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .progress-marker::after {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 22px;
+      background: var(--amber);
+      margin: 4px auto 0;
+    }
+    .progress-pct {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .budget-card.dark .progress-pct { color: rgba(255,255,255,.7); }
+
+    .channels-mini {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .channel-row {
+      display: grid;
+      grid-template-columns: 32px 80px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .channel-row .name {
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .budget-card.dark .channel-row .name { color: white; }
+    .channel-row .bar-wrap {
+      height: 8px;
+      background: rgba(0,59,92,.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .budget-card.dark .channel-row .bar-wrap { background: rgba(255,255,255,.12); }
+    .channel-row .bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .8s ease;
+    }
+    .channel-row .pct {
+      font-weight: 800;
+      font-size: 13px;
+      min-width: 56px;
+      text-align: right;
+    }
+    .ch-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .ch-icon.meta { background: var(--meta); }
+    .ch-icon.youtube { background: var(--youtube); }
+    .ch-icon.linkedin { background: var(--linkedin); }
+
+    /* ===== TIMELINE / CRONOGRAMA ===== */
+    .timeline-section {
+      background: white;
+    }
+    .timeline-block {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .timeline-block-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .timeline-block-header .ch-icon { width: 36px; height: 36px; font-size: 14px; }
+    .timeline-block-header h3 { margin: 0; font-size: 19px; }
+    .timeline-block-header .share-chip {
+      background: rgba(0,59,92,.06);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .timeline-block-header .spacer { flex: 1; }
+    .timeline-block-header .budget-chip {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .timeline-block-header .budget-chip strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .timeline-row-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .timeline-row-label .camp-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .timeline-row-label .camp-share {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .timeline-bar-container {
+      height: 28px;
+      background: rgba(0,59,92,.04);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .timeline-bar-bg {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .timeline-cell {
+      border-right: 1px dashed rgba(0,59,92,.08);
+    }
+    .timeline-cell:last-child { border-right: none; }
+    .timeline-fill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: .3px;
+      transition: all .3s;
+    }
+    .timeline-fill.active {
+      background: linear-gradient(90deg, var(--green-deep), var(--green));
+      color: var(--navy);
+    }
+    .timeline-fill.scheduled {
+      background: repeating-linear-gradient(45deg, rgba(91,114,128,.15), rgba(91,114,128,.15) 6px, rgba(91,114,128,.08) 6px, rgba(91,114,128,.08) 12px);
+      color: var(--muted);
+      border: 1px dashed rgba(91,114,128,.3);
+    }
+    .timeline-fill.delayed {
+      background: linear-gradient(90deg, var(--amber), #E89A1E);
+      color: white;
+    }
+
+    .timeline-axis {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,59,92,.06);
+    }
+    .timeline-axis-weeks {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+    .timeline-axis-weeks span {
+      padding: 2px 0;
+    }
+    .timeline-ondas {
+      display: grid;
+      grid-template-columns: 4fr 4fr 3fr;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .timeline-ondas div {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px;
+      border-radius: 4px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .timeline-ondas .o1 { background: rgba(45,181,223,.15); color: var(--blue); }
+    .timeline-ondas .o2 { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .timeline-ondas .o3 { background: rgba(0,59,92,.1); color: var(--navy); }
+
+    .delay-notice {
+      background: rgba(245,166,35,.08);
+      border-left: 3px solid var(--amber);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .delay-notice strong { color: var(--amber); }
+
+    /* ===== INSIGHTS ===== */
+    .executive-summary {
+      background: var(--navy);
+      color: white;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .executive-summary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(80,229,150,.15), transparent 40%),
+        radial-gradient(circle at 5% 90%, rgba(45,181,223,.15), transparent 40%);
+      pointer-events: none;
+    }
+    .executive-summary .container { position: relative; z-index: 1; }
+    .executive-summary h2 { color: white; }
+    .executive-summary .section-label {
+      color: var(--green);
+      background: rgba(80,229,150,.15);
+    }
+    .executive-summary .section-intro p { color: rgba(255,255,255,.8); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .insight-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 28px;
+      border-radius: 18px;
+      transition: all .3s;
+    }
+    .insight-card:hover { transform: translateY(-3px); }
+    .insight-card.highlight {
+      background: var(--green);
+      color: var(--navy);
+      border-color: var(--green);
+    }
+    .insight-card.attention {
+      background: linear-gradient(135deg, rgba(245,166,35,.2), rgba(245,166,35,.05));
+      border-color: rgba(245,166,35,.4);
+    }
+    .insight-card.structural {
+      background: linear-gradient(135deg, rgba(45,181,223,.15), rgba(45,181,223,.05));
+      border-color: rgba(45,181,223,.4);
+    }
+    .insight-num {
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .insight-card.highlight .insight-num { color: var(--navy); }
+    .insight-card.attention .insight-num { color: var(--amber); }
+    .insight-card.structural .insight-num { color: var(--blue); }
+    .insight-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+      color: white;
+    }
+    .insight-card.highlight h3 { color: var(--navy); }
+    .insight-card p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,.85);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .insight-card.highlight p { color: rgba(0,59,92,.85); }
+    .insight-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,.12);
+      color: white;
+    }
+    .insight-card.highlight .insight-tag {
+      background: var(--navy);
+      color: var(--green);
+    }
+    .insight-card.attention .insight-tag {
+      background: rgba(245,166,35,.25);
+      color: var(--amber);
+    }
+    .insight-card.structural .insight-tag {
+      background: rgba(45,181,223,.25);
+      color: var(--blue);
+    }
+
+    /* ===== TABS DE CANAIS ===== */
+    .tabs-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      padding: 0 8px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 22px 28px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: .3px;
+      position: relative;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--navy); }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -1px;
+      height: 3px;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-btn .tab-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+    }
+    .tab-pane {
+      display: none;
+      padding: 36px;
+    }
+    .tab-pane.active { display: block; }
+
+    /* ===== METRIC CARD ===== */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.08);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+    }
+    .metric-card.cost-good {
+      background: linear-gradient(135deg, white 60%, rgba(80,229,150,.06));
+      border-color: rgba(80,229,150,.25);
+    }
+    .metric-card.attention {
+      background: linear-gradient(135deg, white 60%, rgba(245,166,35,.06));
+      border-color: rgba(245,166,35,.3);
+    }
+    .metric-card .metric-name {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .metric-card .metric-value {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-card .metric-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .metric-card .metric-status {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
+    .metric-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .metric-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .metric-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .metric-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+    .kpi-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+    }
+
+    /* ===== TABLES ===== */
+    .metrics-table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .metrics-table-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(0,59,92,.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .metrics-table-header h4 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--navy);
+    }
+    .metrics-table-header .table-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    .metrics-table th {
+      background: rgba(0,59,92,.03);
+      padding: 14px 16px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    .metrics-table th:first-child { text-align: left; }
+    .metrics-table th.totals {
+      background: linear-gradient(135deg, var(--green-deep), #1FA85A);
+      color: white;
+    }
+    .metrics-table .week-sublabel {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      opacity: .65;
+      margin-top: 2px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .metrics-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,59,92,.05);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .metrics-table tbody tr:last-child td { border-bottom: none; }
+    .metrics-table tbody tr:hover { background: rgba(45,181,223,.03); }
+    .metric-label-cell {
+      text-align: left !important;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .metric-label-cell .metric-sublabel {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .metric-label-cell .kpi-mark {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      background: var(--green);
+      color: var(--navy);
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .cell-value {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .cell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 6px;
+    }
+    .cell-status.above { background: rgba(80,229,150,.18); color: var(--green-deep); }
+    .cell-status.within { background: rgba(91,114,128,.15); color: var(--muted); }
+    .cell-status.below { background: rgba(229,91,91,.15); color: var(--red); }
+    .cell-status.no-target { background: rgba(45,181,223,.12); color: var(--blue); }
+
+    .empty-cell {
+      color: var(--muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* ===== CHANNEL COMPARISON ===== */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid;
+    }
+    .comparison-card.meta { border-top-color: var(--meta); }
+    .comparison-card.youtube { border-top-color: var(--youtube); }
+    .comparison-card.linkedin { border-top-color: var(--linkedin); }
+    .comparison-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .comparison-card h3 { font-size: 20px; margin: 0; }
+    .comparison-role {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .comparison-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .comparison-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .comparison-list li:last-child { border-bottom: none; }
+    .comparison-list li .label { color: var(--muted); }
+    .comparison-list li .value {
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    /* ===== PROXIMOS PASSOS ===== */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .next-card {
+      background: white;
+      border: 1px solid rgba(0,59,92,.1);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .next-card .num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .next-card h3 { color: var(--navy); margin: 0 0 8px; font-size: 16px; }
+    .next-card p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    footer h2 { color: white; max-width: 800px; margin: 0 auto 14px; }
+    footer p { color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto; font-size: 14px; }
+    footer .footer-meta {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid, .next-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .timeline-grid, .timeline-axis { grid-template-columns: 1fr; }
+      .tab-btn { padding: 16px 18px; font-size: 13px; }
+    }
+  
+
+    /* ===== EXTRA W4 COMPONENTS ===== */
+    .creative-rank { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+    .cr-row { display:grid; grid-template-columns: 28px 1fr; gap:14px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); transition:transform .15s; }
+    .cr-row:hover { transform: translateX(3px); }
+    .cr-row.win { border-left:4px solid var(--green-deep); }
+    .cr-row.low { border-left:4px solid var(--amber); }
+    .cr-rank { font-size:20px; font-weight:900; color:var(--blue); text-align:center; }
+    .cr-row.win .cr-rank { color:var(--green-deep); }
+    .cr-body { display:flex; flex-direction:column; gap:8px; }
+    .cr-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .cr-name { font-weight:800; font-size:15px; color:var(--navy); }
+    .cr-badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;
+      background:rgba(80,229,150,.18); color:var(--green-deep); white-space:nowrap; }
+    .cr-badge.amber { background:rgba(245,166,35,.15); color:#B97400; }
+    .cr-metrics { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; color:var(--muted); }
+    .cr-metrics b { color:var(--navy); font-weight:700; }
+    .fmt-split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+    @media (max-width:760px){ .fmt-split{grid-template-columns:1fr;} }
+    .fmt-col h5 { font-size:15px; margin:0 0 4px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+    .fmt-tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; color:white; }
+    .fmt-tag.vd { background:var(--blue); }
+    .fmt-tag.st { background:var(--teal); }
+    .fmt-note { font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+
+    /* Planned vs Actual big numbers */
+    .pva-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+    @media (max-width:860px){ .pva-grid{grid-template-columns:1fr;} }
+    .pva-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);
+      border:1px solid rgba(0,59,92,.06); position:relative; overflow:hidden; }
+    .pva-card .pva-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+    .pva-vals { display:flex; align-items:baseline; gap:8px; margin:12px 0 4px; flex-wrap:wrap; }
+    .pva-real { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+    .pva-plan { font-size:14px; color:var(--muted); }
+    .pva-bar { height:12px; border-radius:999px; background:rgba(0,59,92,.08); overflow:hidden; margin:14px 0 8px; }
+    .pva-bar span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+    .pva-pct { font-size:13px; font-weight:800; }
+    .pva-comment { font-size:13px; color:var(--text); margin-top:10px; padding-top:10px; border-top:1px solid rgba(0,59,92,.07); line-height:1.5; }
+    .pva-comment.good { color:var(--green-deep); }
+    .pva-comment.warn { color:#B97400; }
+
+    /* LP attribution */
+    .lp-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:8px 0 24px; }
+    @media (max-width:860px){ .lp-flow{grid-template-columns:1fr 1fr;} }
+    .lp-step { background:white; border-radius:16px; padding:18px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(0,59,92,.06); }
+    .lp-step .lp-big { font-size:26px; font-weight:900; color:var(--navy); }
+    .lp-step .lp-cap { font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .lp-bars { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .lp-bar-row { display:grid; grid-template-columns:160px 1fr 110px; gap:12px; align-items:center; font-size:13.5px; }
+    @media (max-width:680px){ .lp-bar-row{grid-template-columns:110px 1fr 70px; font-size:12px;} }
+    .lp-bar-row .lp-lbl { font-weight:700; color:var(--navy); }
+    .lp-track { height:26px; border-radius:8px; background:rgba(0,59,92,.07); overflow:hidden; }
+    .lp-track span { display:block; height:100%; border-radius:8px; }
+    .lp-val { text-align:right; font-weight:800; color:var(--navy); }
+
+    /* Collapsible campaign accordions (Meta) */
+    .camp-acc { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; border:1px solid rgba(0,59,92,.06); }
+    .camp-summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:18px 22px; font-weight:800; font-size:18px; color:var(--navy); user-select:none; }
+    .camp-summary::-webkit-details-marker { display:none; }
+    .camp-title { flex:1; }
+    .camp-badge { font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; white-space:nowrap; }
+    .camp-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+    .camp-acc[open] .camp-chevron { transform:rotate(180deg); }
+    .camp-content { padding:0 22px 22px; }
+    .acc-controls { display:flex; gap:8px; }
+    .acc-btn { background:white; border:1px solid rgba(0,59,92,.12); color:var(--navy); font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .15s; }
+    .acc-btn:hover { background:var(--navy); color:white; }
+
+    /* Creative recommendation line */
+    .cr-rec { font-size:12.5px; color:var(--text); background:rgba(45,181,223,.07); border-radius:8px; padding:8px 11px; margin-top:4px; line-height:1.45; }
+    .cr-row.win .cr-rec { background:rgba(80,229,150,.12); }
+    .cr-row.low .cr-rec { background:rgba(245,166,35,.10); }
+
+    /* Benchmark rows */
+    .bm-row { display:grid; grid-template-columns:150px 180px 150px 1fr; gap:16px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:16px 18px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); margin-bottom:12px; }
+    @media (max-width:860px){ .bm-row{ grid-template-columns:1fr 1fr; } .bm-comment{ grid-column:1/-1; } }
+    .bm-metric { font-weight:800; font-size:15px; color:var(--navy); }
+    .bm-real { font-size:24px; font-weight:900; line-height:1; }
+    .bm-bench { font-size:12px; color:var(--muted); margin-top:4px; }
+    .bm-flag { font-size:11px; font-weight:800; padding:5px 11px; border-radius:999px; text-align:center;
+      background:rgba(0,59,92,.07); color:var(--muted); white-space:nowrap; }
+    .bm-flag.win { background:rgba(80,229,150,.18); color:var(--green-deep); }
+    .bm-flag.mid { background:rgba(45,181,223,.14); color:var(--blue); }
+    .bm-comment { font-size:13px; color:var(--text); line-height:1.5; }
+    @media (max-width:760px){ #benchmark [style*="grid-template-columns:repeat(3,1fr)"]{ grid-template-columns:1fr !important; } }
+
+    /* Manifesto x Shorts head-to-head */
+    .vs-head { display:grid; grid-template-columns:170px 1fr 1fr 200px; gap:14px; align-items:end; margin-bottom:10px; padding:0 16px; }
+    .vs-col-head { text-align:center; font-weight:800; font-size:16px; line-height:1.3; }
+    .vs-col-head .vs-sub { font-size:11px; font-weight:600; color:var(--muted); }
+    .vs-icon { display:inline-flex; width:28px; height:28px; border-radius:8px; color:white; align-items:center; justify-content:center; font-weight:900; margin-bottom:6px; }
+    .vs-row { display:grid; grid-template-columns:170px 1fr 1fr 200px; gap:14px; align-items:center; background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px; box-shadow:0 4px 14px rgba(0,59,92,.05); margin-bottom:10px; }
+    @media (max-width:820px){ .vs-head,.vs-row{ grid-template-columns:1fr 1fr; } .vs-head .vs-label,.vs-row .vs-label,.vs-row .vs-note{ grid-column:1/-1; } }
+    .vs-label { font-weight:800; font-size:14px; color:var(--navy); }
+    .vs-side { display:flex; align-items:center; justify-content:center; gap:8px; padding:8px; border-radius:10px; }
+    .vs-side.win { background:rgba(80,229,150,.16); }
+    .vs-val { font-size:20px; font-weight:900; color:var(--navy); }
+    .vs-tag { font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--green-deep); color:white; text-transform:uppercase; }
+    .vs-note { font-size:12px; color:var(--muted); line-height:1.4; }
+
+    /* Charts */
+    .chart-card { background:white; border:1px solid rgba(0,59,92,.07); border-radius:16px; padding:20px; box-shadow:0 4px 14px rgba(0,59,92,.05); }
+    .chart-title { font-size:15px; font-weight:800; color:var(--navy); margin:0 0 4px; }
+    .chart-sub { font-size:12px; color:var(--muted); margin:0 0 16px; line-height:1.45; }
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+    @media (max-width:820px){ .chart-grid{ grid-template-columns:1fr; } }
+    /* Data table */
+    .table-wrap { overflow-x:auto; border-radius:14px; box-shadow:0 4px 14px rgba(0,59,92,.05); border:1px solid rgba(0,59,92,.07); }
+    .data-table { width:100%; border-collapse:collapse; background:white; font-size:13px; }
+    .data-table th { background:var(--navy); color:white; text-align:left; padding:11px 14px; font-weight:700; font-size:12px; white-space:nowrap; }
+    .data-table td { padding:11px 14px; border-bottom:1px solid rgba(0,59,92,.06); color:var(--text); white-space:nowrap; }
+    .data-table tbody tr:last-child td { border-bottom:none; }
+    .data-table tbody tr:nth-child(even) { background:rgba(0,59,92,.02); }
+    /* Benchmark 3-col */
+    .bm-head3 { display:grid; grid-template-columns:200px 130px 130px 130px 1fr; gap:14px; padding:0 18px 8px; font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .bm-row3 { display:grid !important; grid-template-columns:200px 130px 130px 130px 1fr !important; }
+    @media (max-width:860px){ .bm-head3{ display:none; } .bm-row3{ grid-template-columns:1fr 1fr !important; } .bm-row3 .bm-comment{ grid-column:1/-1; } .bm-row3 .bm-metric{ grid-column:1/-1; } }
+    /* Donut */
+    .donut-wrap { display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; }
+    .donut-svg { width:200px; height:200px; flex-shrink:0; }
+    @media (max-width:520px){ .donut-svg{ width:170px; height:170px; margin:0 auto; } }
+    .donut-legend { display:flex; flex-direction:column; gap:8px; min-width:200px; max-width:300px; }
+    .donut-leg-item { display:flex; align-items:center; gap:10px; font-size:13px; padding:7px 10px; border-radius:9px; transition:background .15s; }
+    .donut-leg-item:hover { background:rgba(0,59,92,.04); }
+    .donut-leg-dot { width:13px; height:13px; border-radius:4px; flex-shrink:0; }
+    .donut-leg-name { font-weight:700; color:var(--navy); flex:1; }
+    .donut-leg-val { font-weight:800; color:var(--navy); white-space:nowrap; }
+    .donut-leg-pct { font-size:11.5px; color:var(--muted); margin-left:3px; font-weight:600; }
+    .donut-seg { transition:opacity .15s; cursor:pointer; }
+    .donut-seg:hover { opacity:.82; }
+    .donut-center-val { font-size:30px; font-weight:900; fill:var(--navy); }
+    .donut-center-lbl { font-size:12px; font-weight:600; fill:var(--muted); }
+    @media (max-width:680px){ .traffic-donuts{ grid-template-columns:1fr !important; } }
+      .creative-rank { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+    .cr-row { display:grid; grid-template-columns: 28px 1fr; gap:14px; align-items:center;
+      background:white; border:1px solid rgba(0,59,92,.07); border-radius:14px; padding:14px 16px;
+      box-shadow:0 4px 14px rgba(0,59,92,.05); transition:transform .15s; }
+    .cr-row:hover { transform: translateX(3px); }
+    .cr-row.win { border-left:4px solid var(--green-deep); }
+    .cr-row.low { border-left:4px solid var(--amber); }
+    .cr-rank { font-size:20px; font-weight:900; color:var(--blue); text-align:center; }
+    .cr-row.win .cr-rank { color:var(--green-deep); }
+    .cr-body { display:flex; flex-direction:column; gap:8px; }
+    .cr-top { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+    .cr-name { font-weight:800; font-size:15px; color:var(--navy); }
+    .cr-badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;
+      background:rgba(80,229,150,.18); color:var(--green-deep); white-space:nowrap; }
+    .cr-badge.amber { background:rgba(245,166,35,.15); color:#B97400; }
+    .cr-metrics { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px; color:var(--muted); }
+    .cr-metrics b { color:var(--navy); font-weight:700; }
+    .fmt-split { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px; }
+    @media (max-width:760px){ .fmt-split{grid-template-columns:1fr;} }
+    .fmt-col h5 { font-size:15px; margin:0 0 4px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+    .fmt-tag { font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; color:white; }
+    .fmt-tag.vd { background:var(--blue); }
+    .fmt-tag.st { background:var(--teal); }
+    .fmt-note { font-size:12.5px; color:var(--muted); margin:2px 0 8px; }
+
+    /* Planned vs Actual big numbers */
+    .pva-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+    @media (max-width:860px){ .pva-grid{grid-template-columns:1fr;} }
+    .pva-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);
+      border:1px solid rgba(0,59,92,.06); position:relative; overflow:hidden; }
+    .pva-card .pva-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+    .pva-vals { display:flex; align-items:baseline; gap:8px; margin:12px 0 4px; flex-wrap:wrap; }
+    .pva-real { font-size:30px; font-weight:900; color:var(--navy); line-height:1; }
+    .pva-plan { font-size:14px; color:var(--muted); }
+    .pva-bar { height:12px; border-radius:999px; background:rgba(0,59,92,.08); overflow:hidden; margin:14px 0 8px; }
+    .pva-bar span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--blue),var(--green)); }
+    .pva-pct { font-size:13px; font-weight:800; }
+    .pva-comment { font-size:13px; color:var(--text); margin-top:10px; padding-top:10px; border-top:1px solid rgba(0,59,92,.07); line-height:1.5; }
+    .pva-comment.good { color:var(--green-deep); }
+    .pva-comment.warn { color:#B97400; }
+
+    /* LP attribution */
+    .lp-flow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:8px 0 24px; }
+    @media (max-width:860px){ .lp-flow{grid-template-columns:1fr 1fr;} }
+    .lp-step { background:white; border-radius:16px; padding:18px; box-shadow:var(--shadow); text-align:center; border:1px solid rgba(0,59,92,.06); }
+    .lp-step .lp-big { font-size:26px; font-weight:900; color:var(--navy); }
+    .lp-step .lp-cap { font-size:12.5px; color:var(--muted); margin-top:4px; }
+    .lp-bars { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .lp-bar-row { display:grid; grid-template-columns:160px 1fr 110px; gap:12px; align-items:center; font-size:13.5px; }
+    @media (max-width:680px){ .lp-bar-row{grid-template-columns:110px 1fr 70px; font-size:12px;} }
+    .lp-bar-row .lp-lbl { font-weight:700; color:var(--navy); }
+    .lp-track { height:26px; border-radius:8px; background:rgba(0,59,92,.07); overflow:hidden; }
+    .lp-track span { display:block; height:100%; border-radius:8px; }
+    .lp-val { text-align:right; font-weight:800; color:var(--navy); }
+
+    /* Collapsible campaign accordions (Meta) */
+    .camp-acc { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; border:1px solid rgba(0,59,92,.06); }
+    .camp-summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:18px 22px; font-weight:800; font-size:18px; color:var(--navy); user-select:none; }
+    .camp-summary::-webkit-details-marker { display:none; }
+    .camp-title { flex:1; }
+    .camp-badge { font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; white-space:nowrap; }
+    .camp-chevron { font-size:16px; color:var(--muted); transition:transform .2s; }
+    .camp-acc[open] .camp-chevron { transform:rotate(180deg); }
+    .camp-content { padding:0 22px 22px; }
+    .acc-controls { display:flex; gap:8px; }
+    .acc-btn { background:white; border:1px solid rgba(0,59,92,.12); color:var(--navy); font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .15s; }
+    .acc-btn:hover { background:var(--navy); color:white; }
+
+    /* Creative recommendation line */
+    .cr-rec { font-size:12.5px; color:var(--text); background:rgba(45,181,223,.07); border-radius:8px; padding:8px 11px; margin-top:4px; line-height:1.45; }
+    .cr-row.win .cr-rec { background:rgba(80,229,150,.12); }
+    .cr-row.low .cr-rec { background:rgba(245,166,35,.10); }
+    section{scroll-margin-top:70px;}
+
+  
+    /* ===== W8 · FIX: lista em prosa (nao usa flex) ===== */
+    .prose-list { list-style:none; padding:0; margin:0; }
+    .prose-list li { padding:10px 0; border-bottom:1px solid rgba(0,59,92,.06); font-size:14px; line-height:1.55; color:var(--navy); display:block; }
+    .prose-list li:last-child { border-bottom:none; }
+    .prose-list li strong { font-weight:800; }
+
+    /* ===== W8 · FORMULARIOS NATIVOS ===== */
+    .form-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .form-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); border-top:5px solid var(--linkedin); overflow:hidden; }
+    .form-card-head { padding:22px 24px 16px; }
+    .form-card-head h3 { margin:0 0 4px; font-size:17px; color:var(--navy); }
+    .form-card-head span { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+    .field-list { list-style:none; margin:0; padding:0 24px 22px; }
+    .field-list li { border-bottom:1px solid rgba(0,59,92,.05); }
+    .field-list li:last-child { border-bottom:none; }
+    .field-list label { display:flex; align-items:center; gap:11px; padding:10px 8px; margin:0 -8px; font-size:13.5px; color:var(--navy); cursor:pointer; border-radius:8px; transition:background .15s; user-select:none; }
+    .field-list label:hover { background:rgba(45,181,223,.07); }
+    .field-list input { position:absolute; opacity:0; width:0; height:0; }
+    .field-box { width:19px; height:19px; border-radius:5px; border:2px solid rgba(0,59,92,.25); flex:0 0 auto; display:grid; place-items:center; background:#fff; transition:all .15s; }
+    .field-box::after { content:"✓"; color:#fff; font-size:12px; font-weight:900; opacity:0; transform:scale(.5); transition:all .15s; }
+    .field-list label:hover .field-box { border-color:var(--linkedin); }
+    .field-list input:checked + .field-box { background:var(--linkedin); border-color:var(--linkedin); }
+    .field-list input:checked + .field-box::after { opacity:1; transform:scale(1); }
+    .field-list input:checked ~ .field-txt { font-weight:800; color:var(--navy); }
+    .field-list input:focus-visible + .field-box { box-shadow:0 0 0 3px rgba(45,181,223,.35); }
+    .form-card-foot { padding:14px 24px; background:rgba(0,59,92,.02); border-top:1px solid rgba(0,59,92,.06); font-size:12px; font-weight:800; color:var(--muted); display:flex; justify-content:space-between; align-items:center; }
+    .form-card-foot .fc-count { color:var(--linkedin); }
+    .sel-summary { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px 26px; margin-top:20px; border-left:5px solid var(--linkedin); }
+    .sel-summary strong { font-size:16px; color:var(--navy); }
+    .sel-summary .sel-num { font-size:30px; font-weight:900; color:var(--linkedin); line-height:1; letter-spacing:-1px; }
+    .sel-summary .sel-hint { font-size:13px; color:var(--muted); margin-left:auto; text-align:right; }
+    .sel-summary .sel-reset { background:rgba(0,59,92,.06); border:none; color:var(--navy); font-weight:800; font-size:12px; padding:9px 16px; border-radius:999px; cursor:pointer; }
+    .sel-summary .sel-reset:hover { background:rgba(0,59,92,.12); }
+    .decision-box { background:linear-gradient(135deg,var(--navy),var(--navy-deep)); color:#fff; border-radius:var(--radius); padding:32px; box-shadow:var(--shadow-lg); }
+    .decision-box h3 { color:#fff; font-size:22px; margin:0 0 10px; }
+    .decision-box p { color:rgba(255,255,255,.78); margin:0 0 20px; font-size:15px; }
+    .q-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .q-card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:22px; }
+    .q-card .q-num { display:inline-block; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--green); margin-bottom:8px; }
+    .q-card h4 { margin:0 0 8px; font-size:16px; color:#fff; }
+    .q-card p { margin:0; font-size:13.5px; color:rgba(255,255,255,.72); line-height:1.55; }
+    .pend-flag { display:inline-flex; align-items:center; gap:8px; background:rgba(245,166,35,.16); border:1px solid rgba(245,166,35,.4); color:#8A5A08; font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.5px; padding:8px 14px; border-radius:999px; margin-bottom:18px; }
+    @media(max-width:900px){ .form-grid{grid-template-columns:1fr;} .q-grid{grid-template-columns:1fr;} }
+
+    /* ===== W8 · FIX: barra da LP ===== */
+    .lp-bar { height:100%; border-radius:8px; }
+    .lp-flow { grid-template-columns:repeat(3,1fr) !important; }
+    .lp-big { display:block; }
+    .lp-cap { display:block; }
+
+    /* ===== W8 · PACING ONDA 3 ===== */
+    .pace-channel { background:white; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; margin-bottom:20px; border:1px solid rgba(0,59,92,.06); }
+    .pace-head { display:flex; align-items:center; gap:14px; padding:20px 26px; color:#fff; flex-wrap:wrap; }
+    .pace-head.meta { background:linear-gradient(135deg,#0866FF,#0a4fc4); }
+    .pace-head.youtube { background:linear-gradient(135deg,#FF0033,#c40027); }
+    .pace-head.linkedin { background:linear-gradient(135deg,#0A66C2,#074a8d); }
+    .pace-head h3 { margin:0; font-size:19px; color:#fff; }
+    .pace-head .pace-chip { background:rgba(255,255,255,.22); color:#fff; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800; }
+    .pace-head .pace-tot { margin-left:auto; text-align:right; }
+    .pace-head .pace-tot strong { display:block; font-size:21px; letter-spacing:-.5px; color:#fff; }
+    .pace-head .pace-tot span { font-size:11px; opacity:.85; text-transform:uppercase; font-weight:700; letter-spacing:.4px; }
+    table.pace-table { width:100%; border-collapse:collapse; }
+    table.pace-table th { text-align:right; font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); padding:13px 26px; border-bottom:1px solid rgba(0,59,92,.08); background:rgba(0,59,92,.02); font-weight:800; }
+    table.pace-table th:first-child { text-align:left; }
+    table.pace-table td { padding:15px 26px; border-bottom:1px solid rgba(0,59,92,.05); font-size:14px; text-align:right; color:var(--navy); font-variant-numeric:tabular-nums; }
+    table.pace-table td:first-child { text-align:left; font-weight:800; font-family:ui-monospace,Menlo,monospace; font-size:13px; }
+    table.pace-table tbody tr:hover td { background:rgba(45,181,223,.03); }
+    table.pace-table td.pc-diario { font-weight:900; color:var(--navy); }
+    table.pace-table tr.pace-sub td { font-weight:900; border-top:2px solid rgba(0,59,92,.12); border-bottom:none; background:rgba(45,181,223,.07); }
+    .pace-note { font-size:12.5px; color:var(--muted); padding:16px 26px; background:rgba(0,59,92,.02); border-top:1px solid rgba(0,59,92,.06); line-height:1.55; }
+    .pace-total-card { background:linear-gradient(135deg,var(--navy),var(--navy-deep)); color:#fff; border-radius:var(--radius); padding:32px; display:grid; grid-template-columns:repeat(4,1fr); gap:22px; box-shadow:var(--shadow-lg); }
+    .pace-total-card div strong { display:block; font-size:30px; letter-spacing:-1px; line-height:1; margin-bottom:7px; color:#fff; }
+    .pace-total-card div span { font-size:11px; text-transform:uppercase; font-weight:700; letter-spacing:.4px; color:rgba(255,255,255,.65); }
+    .pace-total-card div.hl strong { color:var(--green); }
+    /* ===== W8 · SEGUIDORES ===== */
+    .fol-wrap { background:white; border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; border:1px solid rgba(0,59,92,.06); }
+    table.fol-table { width:100%; border-collapse:collapse; min-width:840px; }
+    table.fol-table th { background:var(--navy); color:#fff; text-align:right; font-size:11px; text-transform:uppercase; letter-spacing:.5px; padding:15px 16px; font-weight:800; }
+    table.fol-table th:first-child, table.fol-table th:nth-child(2) { text-align:left; }
+    table.fol-table td { padding:15px 16px; border-bottom:1px solid rgba(0,59,92,.06); font-size:14px; text-align:right; color:var(--navy); font-variant-numeric:tabular-nums; }
+    table.fol-table td:first-child { text-align:left; font-weight:800; font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+    table.fol-table td:nth-child(2) { text-align:left; }
+    table.fol-table tbody tr:last-child td { border-bottom:none; }
+    table.fol-table tr.win td { background:rgba(80,229,150,.14); }
+    table.fol-table tr.zero td { background:rgba(229,91,91,.05); color:var(--muted); }
+    .obj-pill { display:inline-block; font-size:10px; font-weight:800; padding:5px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap; }
+    .obj-pill.perfil { background:rgba(80,229,150,.25); color:#15703F; }
+    .obj-pill.eng { background:rgba(245,166,35,.22); color:#8A5A08; }
+    .cps { font-weight:900; font-size:15px; }
+    .cps.best { color:var(--green-deep); }
+    .cps.bad { color:var(--red); }
+    .cps.na { color:var(--muted); font-weight:700; font-size:13px; }
+    /* ===== W8 · CANAL: tabela comparativa semanal ===== */
+    .wk-wrap { background:white; border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; border:1px solid rgba(0,59,92,.06); margin-top:18px; }
+    table.wk-table { width:100%; border-collapse:collapse; min-width:680px; }
+    table.wk-table th { background:rgba(0,59,92,.03); padding:14px 18px; text-align:right; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--navy); border-bottom:1px solid rgba(0,59,92,.08); }
+    table.wk-table th:first-child { text-align:left; }
+    table.wk-table td { padding:16px 18px; border-bottom:1px solid rgba(0,59,92,.05); text-align:right; vertical-align:middle; }
+    table.wk-table tbody tr:last-child td { border-bottom:none; }
+    table.wk-table tbody tr:hover { background:rgba(45,181,223,.03); }
+    table.wk-table td:first-child { text-align:left; font-weight:700; color:var(--navy); }
+    table.wk-table .wk-sub { display:block; font-size:11px; font-weight:500; color:var(--muted); margin-top:3px; }
+    table.wk-table .wk-val { font-size:16px; font-weight:800; letter-spacing:-.3px; color:var(--navy); font-variant-numeric:tabular-nums; }
+    table.wk-table .wk-prev { font-size:15px; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums; }
+    .wk-badge { display:inline-block; font-size:11px; font-weight:800; padding:5px 11px; border-radius:999px; white-space:nowrap; }
+    .wk-badge.up { background:rgba(80,229,150,.22); color:#15703F; }
+    .wk-badge.down { background:rgba(91,114,128,.14); color:var(--muted); }
+    .wk-badge.warn { background:rgba(245,166,35,.20); color:#8A5A08; }
+    .wk-foot { padding:16px 22px; background:rgba(245,166,35,.07); border-top:1px solid rgba(0,59,92,.06); font-size:13px; color:var(--navy); line-height:1.6; }
+    @media(max-width:900px){ .pace-total-card{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body data-week-id="week-9">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Semana 9 · 13/07 a 19/07</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Status · Onda 3 · 13/07 a 19/07/2026</span>
+        <h1>Primeira semana cheia da Onda 3. Investimento quase dobrou e o <span class="accent">clique ficou mais barato</span>.</h1>
+        <p class="lead">Retrato da nona semana da campanha "Patrocinadora Oficial do Cuidado". Primeira semana inteira dentro da Onda 3, com a reserva estratégica entrando em consumo acelerado nos três canais. Os criativos do conceito "Propósito" veicularam a semana inteira, YouTube segue captando inscritos.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>R$ 37,1K investidos (o dobro da semana anterior), 5,24M de aparições e clique Meta a R$ 0,27. YouTube com 11.751 novos inscritos.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>R$ 37,1K</strong><span>investido na semana</span></div>
+          <div class="metric"><strong>5,24M</strong><span>impressões da marca</span></div>
+          <div class="metric"><strong>R$ 0,27</strong><span>custo por clique Meta</span></div>
+          <div class="metric"><strong>11.751</strong><span>novos inscritos YouTube</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#metas">Onde estamos</a>
+      <a href="#aceleracao">A aceleração</a>
+      <a href="#investimento">Investimento</a>
+      <a href="#insights">Destaques</a>
+      <a href="#canais">Canais</a>
+      <a href="#inscritos">Crescimento do canal</a>
+      <a href="#seguidores">Eficiência de seguidores</a>
+      <a href="#criativos">Criativos no ar</a>
+      <a href="#definicoes">Pontos de decisão</a>
+      <a href="#pacing">Pacing da Onda 3</a>
+      <a href="#proximos">Próximos passos</a>
+    </div>
+  </nav>
+
+<!-- ============ ONDE ESTAMOS ============ -->
+<section id="metas">
+  <div class="container">
+    <span class="section-label">Onde estamos</span>
+    <h2>Onda 3 em execução. Faltam 12 dias.</h2>
+    <div class="section-intro"><p>A semana 9 é a primeira semana inteira dentro da Onda 3. Das <strong>11 semanas</strong> da campanha, <strong>9 estão concluídas</strong>. Restam <strong>12 dias</strong> de veiculação até o encerramento em 31 de julho, e a reserva estratégica está sendo consumida no ritmo planejado.</p></div>
+
+    <div class="timeline-block">
+      <div class="timeline-block-header">
+        <div class="ch-icon" style="background:var(--navy);color:#fff;">3</div>
+        <h3>As três ondas da campanha</h3>
+        <div class="spacer"></div>
+        <span class="share-chip">9 de 11 semanas concluídas</span>
+      </div>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <div class="comparison-card-header">
+            <span class="vs-icon" style="background:var(--blue);">1</span>
+            <div><h3>Onda 1 · Concluída</h3><span class="comparison-role">18/05 – 14/06</span></div>
+          </div>
+          <ul class="prose-list">
+            <li>Lançamento do conceito.</li>
+            <li>Construção de alcance e reconhecimento.</li>
+            <li>Base de audiência formada nos três canais.</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <div class="comparison-card-header">
+            <span class="vs-icon" style="background:var(--teal);">2</span>
+            <div><h3>Onda 2 · Concluída</h3><span class="comparison-role">15/06 – 12/07</span></div>
+          </div>
+          <ul class="prose-list">
+            <li>Aceleração da captação de inscritos no YouTube.</li>
+            <li>Descoberta da campanha de seguidores mais eficiente.</li>
+            <li>Troca de criativos para o conceito "Propósito".</li>
+          </ul>
+        </div>
+        <div class="comparison-card">
+          <div class="comparison-card-header">
+            <span class="vs-icon" style="background:var(--green-deep);">3</span>
+            <div><h3>Onda 3 · Em execução</h3><span class="comparison-role">13/07 – 31/07</span></div>
+          </div>
+          <ul class="prose-list">
+            <li><strong>Semana 9 concluída</strong> — primeira semana cheia.</li>
+            <li>Reserva estratégica de R$ 99.707,99 em consumo.</li>
+            <li>12 dias restantes até o encerramento.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A ACELERAÇÃO ============ -->
+<section id="aceleracao" style="background:white;">
+  <div class="container">
+    <span class="section-label">A semana em uma frase</span>
+    <h2>Investimos 56% a mais e o clique ficou mais barato.</h2>
+    <div class="section-intro"><p>Normalmente, quando se acelera o investimento, o custo sobe: buscamos audiências progressivamente menos óbvias e pagamos mais por cada resultado. Nesta semana aconteceu o contrário no Meta — investimos mais e o custo por clique caiu. É o sinal mais claro de que os criativos do "Propósito" estão conversando bem com a audiência.</p></div>
+
+    <div class="hero-stats" style="max-width:none;">
+      <div class="stat"><strong>+56,4%</strong><span>investimento vs. semana 8</span></div>
+      <div class="stat accent"><strong>+135%</strong><span>cliques no Meta</span></div>
+      <div class="stat green"><strong>−10,0%</strong><span>custo por clique no Meta</span></div>
+      <div class="stat green"><strong>2,15%</strong><span>CTR do Meta — recorde</span></div>
+    </div>
+
+    <div class="delay-notice" style="margin-top:24px;">
+      <strong>Como ler esta semana:</strong> a aceleração foi deliberada. A Onda 3 tem 19 dias para aplicar a reserva estratégica de R$ 99.707,99 com qualidade, o que exige um ritmo diário mais alto do que o das ondas anteriores. O que valida a decisão é que a eficiência não caiu junto: <strong>o CTR do Meta dobrou e o custo por clique recuou</strong>. Estamos investindo mais e comprando melhor ao mesmo tempo.
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTIMENTO ============ -->
+<section id="investimento">
+  <div class="container">
+    <span class="section-label">Investimento da semana</span>
+    <h2>Onde foi o dinheiro nesta semana.</h2>
+    <div class="section-intro"><p>Como os R$ 37,1 mil da semana se dividiram entre os três canais. O Meta volta a concentrar mais da metade da verba, sustentado pelas campanhas de engajamento e perfil, enquanto YouTube e LinkedIn mantêm o peso ganho na virada da Onda 3.</p></div>
+
+    <div class="chart-card">
+      <div class="donut-wrap">
+        <div>
+          <svg viewBox="0 0 200 200" class="donut-svg" role="img" aria-label="Distribuição do investimento por canal">
+            <circle class="donut-seg" data-name="Meta Ads" data-val="R$ 20.165" data-pct="54%" cx="100" cy="100" r="70" fill="none" stroke="#0866FF" stroke-width="30" stroke-dasharray="237.50 202.32" stroke-dashoffset="0" transform="rotate(-90 100 100)" />
+            <circle class="donut-seg" data-name="YouTube Ads" data-val="R$ 11.693" data-pct="32%" cx="100" cy="100" r="70" fill="none" stroke="#FF0000" stroke-width="30" stroke-dasharray="137.74 302.08" stroke-dashoffset="-237.50" transform="rotate(-90 100 100)" />
+            <circle class="donut-seg" data-name="LinkedIn Ads" data-val="R$ 5.249" data-pct="14%" cx="100" cy="100" r="70" fill="none" stroke="#0A66C2" stroke-width="30" stroke-dasharray="64.58 375.24" stroke-dashoffset="-375.24" transform="rotate(-90 100 100)" />
+            <text x="163.0" y="119.0" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">54%</text>
+            <text x="47.9" y="122.3" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">32%</text>
+            <text x="74.7" y="40.5" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="800" fill="white" style="pointer-events:none;">14%</text>
+            <text x="100" y="94" text-anchor="middle" class="donut-center-val" style="font-size:22px;">R$ 37,1K</text>
+            <text x="100" y="114" text-anchor="middle" class="donut-center-lbl">na semana</text>
+          </svg>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0866FF;"></span><span class="donut-leg-name">Meta Ads</span><span class="donut-leg-val">R$ 20.165<span class="donut-leg-pct">· 54%</span></span></div>
+          <div class="donut-leg-item"><span class="donut-leg-dot" style="background:#FF0000;"></span><span class="donut-leg-name">YouTube Ads</span><span class="donut-leg-val">R$ 11.693<span class="donut-leg-pct">· 32%</span></span></div>
+          <div class="donut-leg-item"><span class="donut-leg-dot" style="background:#0A66C2;"></span><span class="donut-leg-name">LinkedIn Ads</span><span class="donut-leg-val">R$ 5.249<span class="donut-leg-pct">· 14%</span></span></div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin:16px 0 0;border-top:1px solid rgba(0,59,92,.08);padding-top:14px;">Passe o mouse sobre as fatias para ver os valores. <strong>Total da semana: R$ 37.107.</strong> Valores de Meta expressos em líquido. Semana anterior (W8): R$ 23.708 — aceleração de <strong>+56,5%</strong>.</p>
+    </div>
+
+    <div class="hero-stats" style="margin-top:22px;max-width:none;">
+      <div class="stat"><strong>5,24M</strong><span>vezes que a marca apareceu</span></div>
+      <div class="stat"><strong>123.045</strong><span>cliques no total</span></div>
+      <div class="stat green"><strong>159.474</strong><span>interações (curtidas, etc.)</span></div>
+      <div class="stat accent"><strong>11.751</strong><span>novos inscritos no YouTube</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESTAQUES (navy) ============ -->
+<section id="insights" class="executive-summary">
+  <div class="container">
+    <span class="section-label">Destaques da semana</span>
+    <h2>Os 5 pontos que importam.</h2>
+    <div class="section-intro"><p>O resumo da primeira semana cheia da Onda 3.</p></div>
+    <div class="insights-grid">
+      <div class="insight-card highlight">
+        <span class="insight-tag">#1 · O melhor CTR de toda a campanha</span>
+        <div class="insight-num">2,90%</div>
+        <p>O LinkedIn entregou <strong>2,90% de CTR</strong>, mais que o dobro da própria semana anterior (1,43%) e mais de quatro vezes o teto de mercado (0,65%). Foram 2.037 cliques qualificados levados ao site, com o custo por clique caindo para <strong>R$ 2,58</strong>.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-tag">#2 · Meta: mais volume e mais barato</span>
+        <div class="insight-num">R$ 0,27</div>
+        <p>O CTR do Meta subiu de 1,04% para <strong>2,15%</strong> e o custo por clique caiu para <strong>R$ 0,27</strong>. Foram 84.483 cliques — 135% acima da semana passada. Acelerar não custou eficiência.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-tag">#3 · YouTube em novo recorde</span>
+        <div class="insight-num">11.751</div>
+        <p>Foram <strong>11.751 novos inscritos</strong> na semana, superando o recorde anterior. O canal fechou o período em <strong>42.263 inscritos</strong> — o ativo mais duradouro que a campanha está construindo.</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-tag">#4 · O motor de visitas ao perfil</span>
+        <div class="insight-num">45.756</div>
+        <p>As visitas ao perfil do Instagram quase dobraram: <strong>45.756 na semana</strong>, contra 23.896 na anterior. A campanha Feed-Teste sozinha responde por 35.930 delas — é a porta de entrada do seguidor.</p>
+      </div>
+      <div class="insight-card structural">
+        <span class="insight-tag">#5 · Reta final: 12 dias</span>
+        <div class="insight-num">12</div>
+        <p>Restam <strong>12 dias</strong> de veiculação. O foco agora é consumir a reserva estratégica com qualidade, mantendo o ritmo diário e a eficiência conquistada nesta semana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CANAIS ============ -->
+<section id="canais" style="background:rgba(45,181,223,.05);">
+  <div class="container">
+    <span class="section-label">Desempenho por canal</span>
+    <h2>Como cada canal se comportou.</h2>
+    <div class="section-intro"><p>Comparação direta entre a semana 9 (13–19/07) e a semana 8 (06–12/07). A W9 é a primeira semana inteira da Onda 3, com os criativos do "Propósito" veiculando o período completo.</p></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="t9-meta"><div class="tab-icon" style="background:var(--meta);">f</div><span>Meta Ads</span></button>
+      <button class="tab-btn" data-tab="t9-youtube"><div class="tab-icon" style="background:var(--youtube);">▶</div><span>YouTube Ads</span></button>
+      <button class="tab-btn" data-tab="t9-linkedin"><div class="tab-icon" style="background:var(--linkedin);">in</div><span>LinkedIn Ads</span></button>
+    </div>
+
+    <div class="tab-pane active" id="t9-meta">
+      <p style="color:var(--muted);font-size:14px;margin:0;"><strong>R$ 20.165 investidos na semana (líquido).</strong> Quase o dobro da semana anterior — e com o clique mais barato da campanha.</p>
+      <div class="wk-wrap">
+          <table class="wk-table">
+            <thead><tr><th>Métrica</th><th>Semana 9<span class="wk-sub" style="color:rgba(0,59,92,.5);">13–19/07</span></th><th>Semana 8<span class="wk-sub" style="color:rgba(0,59,92,.5);">06–12/07</span></th><th>Variação</th></tr></thead>
+            <tbody><tr><td>Investimento (líquido)</td><td><span class="wk-val">R$ 20.165</span></td><td><span class="wk-prev">R$ 10.645</span></td><td><span class="wk-badge up">+89,4%</span></td></tr><tr><td>Aparições da marca</td><td><span class="wk-val">3,93M</span></td><td><span class="wk-prev">3,46M</span></td><td><span class="wk-badge up">+13,8%</span></td></tr><tr><td>Pessoas alcançadas</td><td><span class="wk-val">3,28M</span></td><td><span class="wk-prev">2,90M</span></td><td><span class="wk-badge up">+13,1%</span></td></tr><tr><td>Cliques no link<span class="wk-sub">Volume de intenção</span></td><td><span class="wk-val">84.483</span></td><td><span class="wk-prev">35.949</span></td><td><span class="wk-badge up">+135%</span></td></tr><tr><td>CTR (taxa de clique)<span class="wk-sub">Qualidade do criativo</span></td><td><span class="wk-val">2,15%</span></td><td><span class="wk-prev">1,04%</span></td><td><span class="wk-badge up">+107%</span></td></tr><tr><td>Custo por clique</td><td><span class="wk-val">R$ 0,27</span></td><td><span class="wk-prev">R$ 0,30</span></td><td><span class="wk-badge up">−10,0%</span></td></tr><tr><td>CPM (mil aparições)<span class="wk-sub">Efeito da concorrência</span></td><td><span class="wk-val">R$ 5,13</span></td><td><span class="wk-prev">R$ 3,08</span></td><td><span class="wk-badge warn">+66,6%</span></td></tr><tr><td>Visitas ao perfil<span class="wk-sub">Porta de entrada do seguidor</span></td><td><span class="wk-val">45.756</span></td><td><span class="wk-prev">23.896</span></td><td><span class="wk-badge up">+91,5%</span></td></tr><tr><td>Interações com a página</td><td><span class="wk-val">159.474</span></td><td><span class="wk-prev">101.700</span></td><td><span class="wk-badge up">+56,8%</span></td></tr></tbody>
+          </table>
+          <div class="wk-foot"><strong>Como ler:</strong> esta é a melhor semana do Meta em toda a campanha. Praticamente dobramos o investimento e, ainda assim, <strong>o custo por clique caiu para R$ 0,27</strong> e o CTR chegou a 2,15% — o dobro da semana anterior. O CPM subiu para R$ 5,13 porque a verba se concentrou nas campanhas de engajamento e perfil, que disputam inventário mais caro. É o custo certo a pagar: as <strong>visitas ao perfil cresceram 91,5%</strong>, alimentando a captação de seguidores.</div>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="t9-youtube">
+      <p style="color:var(--muted);font-size:14px;margin:0;"><strong>R$ 11.693 investidos na semana.</strong> Novo recorde de captação de inscritos com o custo por visualização em queda.</p>
+      <div class="wk-wrap">
+          <table class="wk-table">
+            <thead><tr><th>Métrica</th><th>Semana 9<span class="wk-sub" style="color:rgba(0,59,92,.5);">13–19/07</span></th><th>Semana 8<span class="wk-sub" style="color:rgba(0,59,92,.5);">06–12/07</span></th><th>Variação</th></tr></thead>
+            <tbody><tr><td>Investimento</td><td><span class="wk-val">R$ 11.693</span></td><td><span class="wk-prev">R$ 8.035</span></td><td><span class="wk-badge up">+45,5%</span></td></tr><tr><td>Novos inscritos<span class="wk-sub">Ativo permanente da marca</span></td><td><span class="wk-val">11.751</span></td><td><span class="wk-prev">10.630</span></td><td><span class="wk-badge up">+10,5%</span></td></tr><tr><td>Custo por inscrito</td><td><span class="wk-val">R$ 1,00</span></td><td><span class="wk-prev">R$ 0,76</span></td><td><span class="wk-badge warn">+31,6%</span></td></tr><tr><td>Aparições da marca</td><td><span class="wk-val">1,24M</span></td><td><span class="wk-prev">751.784</span></td><td><span class="wk-badge up">+64,4%</span></td></tr><tr><td>Visualizações</td><td><span class="wk-val">66.680</span></td><td><span class="wk-prev">40.352</span></td><td><span class="wk-badge up">+65,2%</span></td></tr><tr><td>Custo por visualização</td><td><span class="wk-val">R$ 0,175</span></td><td><span class="wk-prev">R$ 0,199</span></td><td><span class="wk-badge up">−12,0%</span></td></tr><tr><td>Cliques</td><td><span class="wk-val">36.525</span></td><td><span class="wk-prev">20.799</span></td><td><span class="wk-badge up">+75,6%</span></td></tr><tr><td>CPM (mil aparições)</td><td><span class="wk-val">R$ 9,46</span></td><td><span class="wk-prev">R$ 10,69</span></td><td><span class="wk-badge up">−11,5%</span></td></tr></tbody>
+          </table>
+          <div class="wk-foot"><strong>Como ler:</strong> escalamos o YouTube em 45,5% e a entrega respondeu com ganho de eficiência nos dois indicadores de compra de mídia: <strong>o CPM caiu 11,5% e o custo por visualização caiu 12,0%</strong>. Foram 11.751 inscritos, novo recorde semanal. O custo por inscrito chegou a R$ 1,00 porque, ao escalar, alcançamos audiências progressivamente menos óbvias — mas <strong>R$ 1,00 por inscrito segue sendo um custo excepcional</strong> para construir base própria de audiência.</div>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="t9-linkedin">
+      <p style="color:var(--muted);font-size:14px;margin:0;"><strong>R$ 5.249 investidos na semana.</strong> O melhor CTR já registrado em qualquer canal desta campanha.</p>
+      <div class="wk-wrap">
+          <table class="wk-table">
+            <thead><tr><th>Métrica</th><th>Semana 9<span class="wk-sub" style="color:rgba(0,59,92,.5);">13–19/07</span></th><th>Semana 8<span class="wk-sub" style="color:rgba(0,59,92,.5);">06–12/07</span></th><th>Variação</th></tr></thead>
+            <tbody><tr><td>Investimento</td><td><span class="wk-val">R$ 5.249</span></td><td><span class="wk-prev">R$ 4.971</span></td><td><span class="wk-badge up">+5,6%</span></td></tr><tr><td>Cliques (tráfego)</td><td><span class="wk-val">2.037</span></td><td><span class="wk-prev">1.614</span></td><td><span class="wk-badge up">+26,2%</span></td></tr><tr><td>CTR (taxa de clique)<span class="wk-sub">Mercado: 0,44% – 0,65%</span></td><td><span class="wk-val">2,90%</span></td><td><span class="wk-prev">1,43%</span></td><td><span class="wk-badge up">+103%</span></td></tr><tr><td>Custo por clique</td><td><span class="wk-val">R$ 2,58</span></td><td><span class="wk-prev">R$ 3,08</span></td><td><span class="wk-badge up">−16,2%</span></td></tr><tr><td>Aparições da marca</td><td><span class="wk-val">70.280</span></td><td><span class="wk-prev">112.925</span></td><td><span class="wk-badge down">−37,8%</span></td></tr><tr><td>Pessoas alcançadas</td><td><span class="wk-val">11.951</span></td><td><span class="wk-prev">18.905</span></td><td><span class="wk-badge down">−36,8%</span></td></tr><tr><td>Frequência média<span class="wk-sub">Alavanca sob nosso controle</span></td><td><span class="wk-val">5,88</span></td><td><span class="wk-prev">5,97</span></td><td><span class="wk-badge up">−1,5%</span></td></tr></tbody>
+          </table>
+          <div class="wk-foot"><strong>Como ler:</strong> o LinkedIn entregou <strong>2,90% de CTR — o melhor número de toda a campanha, em qualquer canal</strong>, e mais de quatro vezes o teto de mercado (0,65%). Com praticamente o mesmo investimento da semana anterior, trouxemos 26,2% mais cliques e o custo por clique <strong>caiu 16,2%</strong>. A entrega se concentrou em uma audiência mais estreita — daí a queda em aparições e alcance — e essa concentração é justamente o que explica a qualidade do clique. A frequência segue sob controle, em 5,88.</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSCRITOS ============ -->
+<section id="inscritos" style="background:white;">
+  <div class="container">
+    <span class="section-label">YouTube · crescimento do canal</span>
+    <h2>Novo recorde. O canal passou dos 42 mil inscritos.</h2>
+    <div class="section-intro"><p>A curva de aceleração que começou em <strong>21 de junho</strong> segue firme. Nesta semana somamos mais <strong>11.751 inscritos</strong> — novo recorde semanal — e o canal fechou o período em <strong>42.263 inscritos</strong>. Saímos de pouco mais de 2,6 mil no início da campanha: é uma base própria de audiência, que continua nossa depois que a campanha acabar e que já está sendo usada para reimpactar na reta final.</p></div>
+
+    <div class="chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px;">
+        <div>
+          <h4 style="margin:0;color:var(--navy);font-size:17px;">Desenvolvimento do canal · total de inscritos</h4>
+          <p style="margin:4px 0 0;font-size:12.5px;color:var(--muted);">18 de maio a 19 de julho de 2026 · MetLife Brasil</p>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:30px;font-weight:900;color:var(--navy);line-height:1;">42.263</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:600;">inscritos no fim do período</div>
+        </div>
+      </div>
+      <svg viewBox="0 0 900 320" width="100%" role="img" aria-label="Crescimento de inscritos do canal" style="max-width:100%;height:auto;"><defs><linearGradient id="insGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2DB5DF" stop-opacity="0.28"/><stop offset="100%" stop-color="#2DB5DF" stop-opacity="0.02"/></linearGradient></defs>
+      <line x1="8" y1="286" x2="828" y2="286" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="290" font-size="11" fill="#5B7280" font-weight="600">3 mil</text>
+      <line x1="8" y1="219.5" x2="828" y2="219.5" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="223.5" font-size="11" fill="#5B7280" font-weight="600">13 mil</text>
+      <line x1="8" y1="153" x2="828" y2="153" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="157" font-size="11" fill="#5B7280" font-weight="600">23 mil</text>
+      <line x1="8" y1="86.5" x2="828" y2="86.5" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="90.5" font-size="11" fill="#5B7280" font-weight="600">33 mil</text>
+      <line x1="8" y1="20" x2="828" y2="20" stroke="rgba(0,59,92,.08)" stroke-width="1"/><text x="838" y="24" font-size="11" fill="#5B7280" font-weight="600">43 mil</text>
+      <path d="M 8,286 L 8,288.4 L 21.9,288.4 L 35.8,288.4 L 49.7,288.4 L 63.6,288.4 L 77.5,288.4 L 91.4,288.4 L 105.3,288.4 L 119.2,288.4 L 133.1,288.4 L 147,288.4 L 160.9,288.4 L 174.8,288.4 L 188.7,288.4 L 202.6,288.4 L 216.5,288.4 L 230.4,288.4 L 244.3,288.4 L 258.2,288.4 L 272.1,288.4 L 286,288.4 L 299.9,288.4 L 313.8,288.4 L 327.7,288.4 L 341.6,288.4 L 355.5,288.4 L 369.4,288.4 L 383.3,288.4 L 397.2,288.4 L 411.1,288.4 L 425,288.4 L 438.9,288.4 L 452.8,288.4 L 466.7,288.4 L 480.6,288.4 L 494.5,288.4 L 508.4,284.1 L 522.3,276.4 L 536.2,264.4 L 550.1,250.2 L 564,241.7 L 577.9,234.0 L 591.8,226.8 L 605.7,220.8 L 619.6,213.8 L 633.5,206.8 L 647.4,199.5 L 661.3,187.5 L 675.2,175.4 L 689.1,166.2 L 703,162.3 L 716.9,158.4 L 730.8,154.5 L 744.7,140.6 L 758.6,126.8 L 772.5,112.2 L 786.4,97.1 L 800.3,79.9 L 814.2,55.1 L 828,24.6 L 828,286 Z" fill="url(#insGrad)"/>
+      <path d="M 8,288.4 L 21.9,288.4 L 35.8,288.4 L 49.7,288.4 L 63.6,288.4 L 77.5,288.4 L 91.4,288.4 L 105.3,288.4 L 119.2,288.4 L 133.1,288.4 L 147,288.4 L 160.9,288.4 L 174.8,288.4 L 188.7,288.4 L 202.6,288.4 L 216.5,288.4 L 230.4,288.4 L 244.3,288.4 L 258.2,288.4 L 272.1,288.4 L 286,288.4 L 299.9,288.4 L 313.8,288.4 L 327.7,288.4 L 341.6,288.4 L 355.5,288.4 L 369.4,288.4 L 383.3,288.4 L 397.2,288.4 L 411.1,288.4 L 425,288.4 L 438.9,288.4 L 452.8,288.4 L 466.7,288.4 L 480.6,288.4 L 494.5,288.4 L 508.4,284.1 L 522.3,276.4 L 536.2,264.4 L 550.1,250.2 L 564,241.7 L 577.9,234.0 L 591.8,226.8 L 605.7,220.8 L 619.6,213.8 L 633.5,206.8 L 647.4,199.5 L 661.3,187.5 L 675.2,175.4 L 689.1,166.2 L 703,162.3 L 716.9,158.4 L 730.8,154.5 L 744.7,140.6 L 758.6,126.8 L 772.5,112.2 L 786.4,97.1 L 800.3,79.9 L 814.2,55.1 L 828,24.6" fill="none" stroke="#2DB5DF" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+      <line x1="494.5" y1="20" x2="494.5" y2="286" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="5 4"/><circle cx="494.5" cy="288.4" r="6" fill="#F5A623" stroke="#fff" stroke-width="2.5"/>
+      <rect x="490.5" y="231" width="176" height="44" rx="9" fill="#F5A623"/><text x="502.5" y="249" font-size="12.5" font-weight="800" fill="#fff">21/jun · a virada</text><text x="502.5" y="265" font-size="12" fill="#fff">a captação acelera</text>
+      <circle cx="730.8" cy="154.5" r="5" fill="#fff" stroke="#5B7280" stroke-width="2.5"/><text x="730.8" y="140.5" font-size="11.5" font-weight="700" fill="#5B7280" text-anchor="middle">30.512 · fim da W8</text>
+      <circle cx="828" cy="24.6" r="7" fill="#fff" stroke="#2DB5DF" stroke-width="3.5"/>
+      <rect x="642" y="10.6" width="176" height="46" rx="10" fill="#003B5C"/><text x="656" y="30.6" font-size="12" font-weight="700" fill="rgba(255,255,255,.7)">19/jul</text><text x="656" y="48.6" font-size="15" font-weight="900" fill="#50E596">42.263 inscritos</text>
+      <text x="8" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">18/mai</text><text x="105.3" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">25/mai</text><text x="244.3" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">04/jun</text><text x="383.3" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">14/jun</text><text x="494.5" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">21/jun</text><text x="591.8" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">28/jun</text><text x="730.8" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">12/jul</text><text x="828" y="308" font-size="11" fill="#003B5C" font-weight="700" text-anchor="middle">19/jul</text>
+      </svg>
+      <p style="font-size:12.5px;color:var(--muted);margin:16px 0 0;border-top:1px solid rgba(0,59,92,.08);padding-top:14px;">Fonte: Google Ads · inscritos ganhos atribuídos às campanhas de mídia paga. <strong>Crescimento acumulado desde 18/05: 39,6 mil inscritos.</strong></p>
+    </div>
+
+    <div class="hero-stats" style="margin-top:22px;max-width:none;">
+      <div class="stat"><strong>11.751</strong><span>inscritos na semana</span></div>
+      <div class="stat accent"><strong>42.263</strong><span>total do canal</span></div>
+      <div class="stat green"><strong>R$ 1,00</strong><span>custo por inscrito</span></div>
+      <div class="stat"><strong>+10,5%</strong><span>vs. semana anterior</span></div>
+    </div>
+
+    <div class="delay-notice" style="margin-top:24px;">
+      <strong>O que isso significa:</strong> o Shorts responde por <strong>10.999 dos 11.751 inscritos</strong> da semana, com custo por inscrito de R$ 1,04. O formato Manifesto contribui com os 752 restantes e cumpre outro papel: constrói memória de marca com vídeo mais longo. São dois motores diferentes trabalhando no mesmo canal — um para volume, outro para profundidade de mensagem.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEGUIDORES ============ -->
+<section id="seguidores">
+  <div class="container">
+    <span class="section-label">Eficiência de seguidores · Meta</span>
+    <h2>O ranking se manteve. O custo subiu com a escala.</h2>
+    <div class="section-intro"><p>Na semana passada identificamos a campanha Feed-Teste como a mais rentável para captar seguidor. Com uma semana inteira de escala, os números acumulados (17/05 – 19/07) confirmam o desenho: <strong>as campanhas otimizadas para visitas ao perfil continuam sendo as únicas que geram seguidor de forma consistente</strong>. O custo por seguidor subiu, e isso é esperado quando se escala — vale explicar por quê.</p></div>
+
+    <div class="delay-notice" style="margin-bottom:24px;">
+      <strong>Antes da tabela, um alerta de leitura:</strong> as campanhas abaixo <strong>não otimizam todas para o mesmo objetivo</strong>. Umas buscam <em>visitas ao perfil</em>, outras buscam <em>tráfego</em> ou <em>alcance</em>. Comparar o número bruto de resultados entre elas seria um erro. O que compara de verdade é <strong>quanto custa cada seguidor conquistado</strong> — e é essa a coluna que importa.
+    </div>
+
+    <div class="fol-wrap">
+      <table class="fol-table">
+        <thead>
+          <tr><th>Campanha</th><th>Otimizada para</th><th>Investido (líq.)</th><th>Visitas ao perfil</th><th>Seguidores</th><th>Custo por seguidor</th></tr>
+        </thead>
+        <tbody>
+          <tr class="win"><td>ENG_ST_IG</td><td><span class="obj-pill perfil">Visitas ao perfil</span></td><td>R$ 11.332,44</td><td>16.643</td><td><strong>217</strong></td><td><span class="cps best">R$ 52,22</span></td></tr>
+          <tr class="win"><td>ENG_ST_IG_FEED-TESTE</td><td><span class="obj-pill perfil">Visitas ao perfil</span></td><td>R$ 13.600,37</td><td>57.555</td><td><strong>224</strong></td><td><span class="cps best">R$ 60,72</span></td></tr>
+          <tr><td>ENG_ST_IG_FEED</td><td><span class="obj-pill perfil">Visitas ao perfil</span></td><td>R$ 8.007,53</td><td>30.963</td><td><strong>95</strong></td><td><span class="cps">R$ 84,29</span></td></tr>
+          <tr><td>ENG_ST_IG_STORY</td><td><span class="obj-pill perfil">Visitas ao perfil</span></td><td>R$ 5.996,17</td><td>30.703</td><td><strong>35</strong></td><td><span class="cps bad">R$ 171,32</span></td></tr>
+          <tr><td>TRF_ST_IG_FULL</td><td><span class="obj-pill eng">Tráfego</span></td><td>R$ 11.289,58</td><td>1.958</td><td><strong>19</strong></td><td><span class="cps na">não é o objetivo</span></td></tr>
+          <tr><td>AWA_VD_IG_FULL</td><td><span class="obj-pill eng">Alcance</span></td><td>R$ 20.082,21</td><td>2.746</td><td><strong>15</strong></td><td><span class="cps na">não é o objetivo</span></td></tr>
+          <tr><td>AWA_ST_IG_FULL</td><td><span class="obj-pill eng">Alcance</span></td><td>R$ 18.387,26</td><td>1.772</td><td><strong>13</strong></td><td><span class="cps na">não é o objetivo</span></td></tr>
+          <tr class="zero"><td>ENG_VD_IG_FULL / MANIF / ST-FULL</td><td><span class="obj-pill eng">Engaj. c/ publicação</span></td><td>R$ 3.516,01</td><td>311</td><td><strong>0</strong></td><td><span class="cps na">não gera</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:14px;">Dados acumulados de 17/05 a 19/07/2026. Valores em líquido (bruto ÷ 1,1215). Total de <strong>623 seguidores</strong> conquistados no período. "Não é o objetivo" indica campanhas que geram seguidor como efeito colateral, sem otimizar para isso.</p>
+
+    <div class="delay-notice" style="margin-top:26px;">
+      <strong>Sendo direto sobre o que mudou:</strong> o custo por seguidor da Feed-Teste passou de R$ 36,03 para <strong>R$ 60,72</strong> no acumulado. Isso aconteceu porque quase triplicamos o investimento nela em uma semana — e, ao escalar, alcançamos audiências progressivamente menos propensas a seguir de imediato. Em contrapartida, ela gerou <strong>57.555 visitas ao perfil</strong>, mais que o dobro de qualquer outra campanha, criando uma base de pessoas já expostas ao perfil que tende a converter ao longo do tempo. A decisão de manter a verba concentrada nas campanhas de perfil segue correta: <strong>elas respondem por 571 dos 623 seguidores da campanha</strong>.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CRIATIVOS ============ -->
+<section id="criativos" style="background:rgba(45,181,223,.05);">
+  <div class="container">
+    <span class="section-label">Criativos no ar</span>
+    <h2>O "Propósito" no ar a semana inteira.</h2>
+    <div class="section-intro"><p>A semana 9 foi a primeira com o conceito "Propósito" veiculando o período completo, convivendo com as peças "Proteger" e "Cuidar". Abaixo, os criativos que mais entregaram e as decisões de rotação para a reta final.</p></div>
+
+    <div class="fol-wrap" style="margin-bottom:26px;">
+      <table class="fol-table">
+        <thead>
+          <tr><th>Criativo</th><th>Campanha</th><th>Aparições</th><th>Cliques</th><th>CTR</th><th>Decisão</th></tr>
+        </thead>
+        <tbody>
+          <tr class="win"><td>Post A · P-0603</td><td><span class="obj-pill perfil">Engajamento · Feed-Teste</span></td><td>373.453</td><td>26.162</td><td><span class="cps best">7,01%</span></td><td>↑ escalar</td></tr>
+          <tr class="win"><td>A6 · B · Cuidar</td><td><span class="obj-pill perfil">Remarketing</span></td><td>296.437</td><td>7.545</td><td><span class="cps best">2,55%</span></td><td>↑ escalar</td></tr>
+          <tr class="win"><td>A5 · A · Proteger</td><td><span class="obj-pill perfil">Remarketing</span></td><td>164.973</td><td>6.499</td><td><span class="cps best">3,94%</span></td><td>↑ escalar</td></tr>
+          <tr><td>Post A · P-0717</td><td><span class="obj-pill perfil">Engajamento · Feed-Teste</span></td><td>127.296</td><td>7.914</td><td><span class="cps best">6,22%</span></td><td>↑ escalar</td></tr>
+          <tr><td>A5 · A · Proteger</td><td><span class="obj-pill eng">Tráfego</span></td><td>556.749</td><td>14.403</td><td><span class="cps">2,59%</span></td><td>✓ manter</td></tr>
+          <tr><td>A6 · A · Propósito</td><td><span class="obj-pill eng">Tráfego</span></td><td>190.009</td><td>3.972</td><td><span class="cps">2,09%</span></td><td>✓ manter</td></tr>
+          <tr><td>A5 · A · Proteger</td><td><span class="obj-pill eng">Alcance</span></td><td>1.060.242</td><td>1.013</td><td><span class="cps">0,10%</span></td><td>↻ otimizar</td></tr>
+          <tr class="zero"><td>A6 · A · Propósito</td><td><span class="obj-pill eng">Alcance</span></td><td>455.020</td><td>200</td><td><span class="cps bad">0,04%</span></td><td>↻ otimizar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:-14px;margin-bottom:26px;">Dados de 13/07 a 19/07/2026. Peças agrupadas por criativo somando as variações de público (Base, Interesse, Lookalike, Remarketing).</p>
+
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <div class="comparison-card-header">
+          <span class="vs-icon" style="background:var(--green);">★</span>
+          <div><h3>Posts de perfil · P-0603</h3><span class="comparison-role">O criativo da semana</span></div>
+        </div>
+        <ul class="prose-list">
+          <li><strong>7,01% de CTR</strong> — o melhor de toda a conta.</li>
+          <li>26.162 cliques em uma única semana.</li>
+          <li>Motor principal das 45,7 mil visitas ao perfil.</li>
+          <li>Decisão: <strong>escalar</strong> na reta final.</li>
+        </ul>
+      </div>
+      <div class="comparison-card">
+        <div class="comparison-card-header">
+          <span class="vs-icon" style="background:var(--teal);">↻</span>
+          <div><h3>Remarketing ativado</h3><span class="comparison-role">A grande novidade da W9</span></div>
+        </div>
+        <ul class="prose-list">
+          <li>Campanha de remarketing entrou com força na Onda 3.</li>
+          <li><strong>R$ 2.483 investidos</strong> e 14.044 cliques.</li>
+          <li>CTR de <strong>3,04%</strong> — reimpacto funciona.</li>
+          <li>Aproveita a base construída nas Ondas 1 e 2.</li>
+        </ul>
+      </div>
+      <div class="comparison-card">
+        <div class="comparison-card-header">
+          <span class="vs-icon" style="background:var(--meta);">f</span>
+          <div><h3>Estáticos · Feed e Story</h3><span class="comparison-role">Awareness e Tráfego</span></div>
+        </div>
+        <ul class="prose-list">
+          <li>Peças "Proteger", "Propósito" e "Cuidar" em rotação.</li>
+          <li>Destino: <strong>LP de Seguro de Vida</strong>.</li>
+          <li>Tráfego com CTR médio de <strong>2,55%</strong>.</li>
+          <li>Story entrega o maior CTR relativo: até 19%.</li>
+        </ul>
+        <p style="font-size:12px;color:var(--muted);margin:14px 0 0;padding-top:12px;border-top:1px solid rgba(0,59,92,.08);word-break:break-all;">metlife.com.br/individual/seguro-de-vida/</p>
+      </div>
+      <div class="comparison-card">
+        <div class="comparison-card-header">
+          <span class="vs-icon" style="background:var(--amber);">↻</span>
+          <div><h3>Awareness · a otimizar</h3><span class="comparison-role">Nomeando a fraqueza</span></div>
+        </div>
+        <ul class="prose-list">
+          <li>CTR de <strong>0,04% a 0,11%</strong> nas peças de alcance.</li>
+          <li>É esperado: a campanha compra aparição, não clique.</li>
+          <li>Mas o volume já cumpriu seu papel nas Ondas 1 e 2.</li>
+          <li>Decisão: <strong>↻ otimizar</strong> — migrar verba para perfil e remarketing.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PONTOS DE DECISÃO ============ -->
+<section id="definicoes" class="executive-summary">
+  <div class="container">
+    <span class="section-label">Pontos de decisão</span>
+    <h2>O que ainda depende de definição do cliente.</h2>
+    <div class="section-intro"><p>Duas pendências seguem abertas desde a semana 7. Com 12 dias restantes de veiculação, elas passam a ter prazo curto — e é honesto colocar isso de forma direta.</p></div>
+    <div class="insights-grid">
+      <div class="insight-card highlight">
+        <span class="insight-tag">Pendência #1 · Formulário nativo</span>
+        <div class="insight-num">5</div>
+        <p>Os campos do formulário de Lead Gen do LinkedIn <strong>já foram confirmados</strong>: nome e sobrenome, e-mail, telefone, cargo e função, nível acadêmico. São <strong>5 campos</strong> — um formulário de qualificação média, que equilibra volume e qualidade do lead.</p>
+      </div>
+      <div class="insight-card structural">
+        <span class="insight-tag">Pendência #2 · Persona e mensagem</span>
+        <div class="insight-num">Aberta</div>
+        <p>A definição de <strong>persona e conceito de mensagem</strong> para a segmentação do LinkedIn segue em aberto. É o que falta para ativar a campanha de Lead Gen, hoje a maior alocação prevista do canal na Onda 3 (R$ 15.443,91).</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-tag">O impacto prático</span>
+        <div class="insight-num">12 dias</div>
+        <p>Enquanto a definição não vem, a verba do LinkedIn está sendo <strong>sustentada pela campanha institucional de tráfego</strong> — que, vale registrar, entregou o melhor CTR de toda a campanha nesta semana (2,90%).</p>
+      </div>
+      <div class="insight-card">
+        <span class="insight-tag">A recomendação</span>
+        <div class="insight-num">Agora</div>
+        <p>Recomendamos <strong>fechar a persona nesta semana</strong>. Uma campanha de Lead Gen precisa de alguns dias de aprendizado para estabilizar a entrega — ativar depois do dia 25 reduziria muito o retorno possível dentro da janela restante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PACING ============ -->
+<section id="pacing">
+  <div class="container">
+    <span class="section-label">Pacing da Onda 3</span>
+    <h2>Como está o consumo da reserva estratégica.</h2>
+    <div class="section-intro"><p>A Onda 3 tem <strong>19 dias</strong> (13/07 a 31/07) e uma reserva estratégica de <strong>R$ 99.707,99</strong> a ser integralmente consumida com qualidade. Passada a primeira semana, temos <strong>37,2% da verba aplicada em 36,8% do tempo</strong> — praticamente em linha com o planejado. Abaixo, o retrato canal por canal.</p></div>
+
+    <div class="pace-total-card" style="margin-bottom:30px;">
+      <div><strong>R$ 37.107</strong><span>aplicado na semana 9</span></div>
+      <div><strong>R$ 62.601</strong><span>a aplicar em 12 dias</span></div>
+      <div class="hl"><strong>R$ 5.217</strong><span>novo pacing diário</span></div>
+      <div><strong>37,2%</strong><span>da reserva consumida</span></div>
+    </div>
+
+    <div class="fol-wrap" style="margin-bottom:30px;">
+      <table class="fol-table">
+        <thead>
+          <tr><th>Canal</th><th>Planejado Onda 3</th><th>Aplicado na W9</th><th>Consumo</th><th>Saldo a aplicar</th><th>Novo pacing/dia</th></tr>
+        </thead>
+        <tbody>
+          <tr class="win"><td>Meta Ads</td><td>R$ 45.079,14</td><td>R$ 20.164,98</td><td><span class="cps best">44,7%</span></td><td>R$ 24.914,16</td><td>R$ 2.076,18</td></tr>
+          <tr class="win"><td>YouTube Ads</td><td>R$ 27.184,94</td><td>R$ 11.693,00</td><td><span class="cps best">43,0%</span></td><td>R$ 15.491,94</td><td>R$ 1.290,99</td></tr>
+          <tr><td>LinkedIn Ads</td><td>R$ 27.443,91</td><td>R$ 5.249,15</td><td><span class="cps bad">19,1%</span></td><td>R$ 22.194,76</td><td>R$ 1.849,56</td></tr>
+          <tr class="pace-sub"><td><strong>Total</strong></td><td><strong>R$ 99.707,99</strong></td><td><strong>R$ 37.107,13</strong></td><td><strong>37,2%</strong></td><td><strong>R$ 62.600,86</strong></td><td><strong>R$ 5.216,74</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pace-channel">
+      <div class="pace-head meta">
+        <h3>Meta Ads</h3>
+        <span class="pace-chip">44,7% consumido</span>
+        <div class="pace-tot"><strong>R$ 2.076,18 / dia</strong><span>R$ 24.914,16 a aplicar</span></div>
+      </div>
+      <div class="pace-note"><strong>Leitura:</strong> o Meta está <strong>ligeiramente adiantado</strong> — 44,7% da verba em 36,8% do tempo. Foi uma decisão consciente: aproveitamos a queda do custo por clique para comprar mais volume enquanto a eficiência estava alta. O novo pacing de R$ 2.076,18 por dia recompõe o ritmo e garante que a verba chegue completa até 31/07.</div>
+    </div>
+
+    <div class="pace-channel">
+      <div class="pace-head youtube">
+        <h3>YouTube Ads</h3>
+        <span class="pace-chip">43,0% consumido</span>
+        <div class="pace-tot"><strong>R$ 1.290,99 / dia</strong><span>R$ 15.491,94 a aplicar</span></div>
+      </div>
+      <div class="pace-note"><strong>Leitura:</strong> o YouTube também está adiantado, e pela melhor razão possível — o CPM caiu 11,5% e o custo por visualização caiu 12,0%. Quando a mídia fica mais barata, comprar mais é a decisão certa. O Shorts segue concentrando a verba: entregou <strong>10.999 dos 11.751 inscritos</strong> da semana.</div>
+    </div>
+
+    <div class="pace-channel">
+      <div class="pace-head linkedin">
+        <h3>LinkedIn Ads</h3>
+        <span class="pace-chip">19,1% consumido</span>
+        <div class="pace-tot"><strong>R$ 1.849,56 / dia</strong><span>R$ 22.194,76 a aplicar</span></div>
+      </div>
+      <div class="pace-note"><strong>Leitura — e aqui somos diretos:</strong> o LinkedIn é o canal com maior distância entre o planejado e o aplicado. A razão é conhecida: <strong>a campanha de Lead Gen (R$ 15.443,91) ainda não foi ativada</strong>, porque depende da definição de persona e mensagem. Hoje o canal roda apenas com a campanha institucional de tráfego. O novo pacing exigido sobe para R$ 1.849,56 por dia — o mais alto dos três canais. <strong>Esta é a principal alavanca da reta final</strong>, e ela depende de uma decisão que está fora da mídia.</div>
+    </div>
+
+    <div class="delay-notice" style="margin-top:26px;">
+      <strong>Por que o pacing diário importa:</strong> é ele que garante que a reserva estratégica seja <strong>integralmente consumida com qualidade</strong> — sem sobras no dia 31 e sem esgotar a verba antes do fim. O acompanhamento é diário contra os <strong>R$ 5.216,74</strong> de novo ritmo planejado. Se uma campanha entrega abaixo do esperado, a verba é realocada dentro do canal. No caso do LinkedIn, se a definição de persona não vier a tempo, a alternativa é <strong>redistribuir a verba da Lead Gen para a campanha institucional</strong> — que já provou entregar o melhor CTR da conta — mantendo o compromisso de encerrar com 100% do investimento aplicado.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRÓXIMOS PASSOS ============ -->
+<section id="proximos">
+  <div class="container">
+    <span class="section-label">Próximos passos</span>
+    <h2>O plano dos 12 dias finais.</h2>
+    <div class="section-intro"><p>Restam 12 dias de veiculação e R$ 62.601 a serem aplicados. O foco é consumir a reserva com a mesma eficiência conquistada nesta semana e encerrar a campanha no seu melhor momento.</p></div>
+    <div class="next-grid">
+      <div class="next-card"><span class="num">1</span><h3>Fechar persona e ativar o Lead Gen</h3><p>É a decisão de maior impacto da reta final. São <strong>R$ 15.443,91</strong> aguardando ativação, e a campanha precisa de alguns dias de aprendizado — <strong>a definição precisa sair esta semana</strong>.</p></div>
+      <div class="next-card"><span class="num">2</span><h3>Escalar os posts de perfil</h3><p>O criativo <strong>P-0603 entregou 7,01% de CTR</strong> e é o motor das 45,7 mil visitas ao perfil. Ampliar a verba nele é a alavanca mais direta de captação de seguidor.</p></div>
+      <div class="next-card"><span class="num">3</span><h3>Sustentar o ritmo do YouTube</h3><p>R$ 1.290,99 por dia para manter a captação, aproveitando a queda de 11,5% no CPM. O canal deve encerrar a campanha acima de <strong>55 mil inscritos</strong>.</p></div>
+      <div class="next-card"><span class="num">4</span><h3>Ampliar o remarketing</h3><p>A campanha de remarketing entrou na W9 com <strong>3,04% de CTR</strong>. É onde a base construída nas Ondas 1 e 2 vira resultado — e merece mais verba na reta final.</p></div>
+      <div class="next-card"><span class="num">5</span><h3>Otimizar as campanhas de alcance</h3><p>As peças de Awareness entregam CTR entre 0,04% e 0,11%. O volume já cumpriu seu papel: <strong>↻ otimizar</strong>, migrando parte da verba para perfil e remarketing.</p></div>
+      <div class="next-card"><span class="num">6</span><h3>Incluir a análise da landing page</h3><p>A leitura de tráfego do site desta semana foi <strong>enviada separadamente por e-mail</strong>. Uma versão complementar deste report será emitida com a análise integrada.</p></div>
+      <div class="next-card"><span class="num">7</span><h3>Preparar o fechamento da campanha</h3><p>A partir da semana 11 entramos na consolidação dos resultados das <strong>três ondas</strong>, com a leitura completa de 75 dias de veiculação.</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+    document.querySelectorAll('.tabs').forEach(group => {
+      group.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pane = document.getElementById(btn.dataset.tab);
+          const container = pane.parentElement;
+          group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          container.querySelectorAll(':scope > .tab-pane').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active'); pane.classList.add('active');
+        });
+      });
+    });
+    document.querySelectorAll('.acc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const open = btn.dataset.acc === 'open';
+        const pane = btn.closest('.tab-pane') || document;
+        pane.querySelectorAll('.camp-acc').forEach(d => d.open = open);
+      });
+    });
+    document.querySelectorAll('.sticky-nav a').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+    (function(){
+      let tip = document.createElement('div');
+      tip.style.cssText = 'position:fixed;pointer-events:none;background:#003B5C;color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:700;opacity:0;transition:opacity .12s;z-index:1000;box-shadow:0 6px 20px rgba(0,0,0,.25);';
+      document.body.appendChild(tip);
+      document.querySelectorAll('.donut-seg').forEach(seg => {
+        seg.addEventListener('mousemove', e => {
+          tip.innerHTML = seg.dataset.name + '<br><span style="font-weight:400;">' + seg.dataset.val + ' · ' + seg.dataset.pct + '</span>';
+          tip.style.left = (e.clientX + 14) + 'px';
+          tip.style.top = (e.clientY + 14) + 'px';
+          tip.style.opacity = '1';
+        });
+        seg.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+      });
+    })();
+  
+      </script>
+  <footer class="site-footer">
+    <h2>Onda 3 acelera: verba dobra, cliques mais baratos e YouTube com 11 mil novos inscritos.</h2>
+    <p>A nona semana abre a Onda 3 em ritmo forte com R$ 37,1K investidos (quase o dobro da anterior), custo por clique caindo pra R$ 0,27 no Meta e crescimento sólido de inscritos no YouTube.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/performance-timeline.js" defer></script>
+</body>
+</html>
