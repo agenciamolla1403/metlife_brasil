@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="/assets/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/config.js"></script>
+  <script src="/assets/w8-form-store.js"></script>
   <link rel="stylesheet" href="/assets/header.css" />
   <link rel="stylesheet" href="/assets/breadcrumb.css" />
   <link rel="stylesheet" href="/assets/footer.css" />
@@ -1683,11 +1686,11 @@
           <span>Identificação e canal de retorno</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" checked><span class="field-box"></span><span class="field-txt">Nome e sobrenome</span></label></li>
-          <li><label><input type="checkbox" class="fld" checked><span class="field-box"></span><span class="field-txt">E-mail e e-mail corporativo</span></label></li>
-          <li><label><input type="checkbox" class="fld" checked><span class="field-box"></span><span class="field-txt">Telefone e telefone comercial</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">URL do perfil do LinkedIn</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Endereço completo (rua, cidade, estado, CEP, país)</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.nome_sobrenome" checked><span class="field-box"></span><span class="field-txt">Nome e sobrenome</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.email" checked><span class="field-box"></span><span class="field-txt">E-mail e e-mail corporativo</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.telefone" checked><span class="field-box"></span><span class="field-txt">Telefone e telefone comercial</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.linkedin_url"><span class="field-box"></span><span class="field-txt">URL do perfil do LinkedIn</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.endereco"><span class="field-box"></span><span class="field-txt">Endereço completo (rua, cidade, estado, CEP, país)</span></label></li>
         </ul>
         <div class="form-card-foot"><span>Selecionados</span><span class="fc-count">0</span></div>
       </div>
@@ -1698,10 +1701,10 @@
           <span>Qualificação do contato</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" checked><span class="field-box"></span><span class="field-txt">Cargo e função</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Nível de experiência</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Nome e tamanho da empresa</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Setor de atuação</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="profissional.cargo_funcao" checked><span class="field-box"></span><span class="field-txt">Cargo e função</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="profissional.nivel_experiencia"><span class="field-box"></span><span class="field-txt">Nível de experiência</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="profissional.empresa"><span class="field-box"></span><span class="field-txt">Nome e tamanho da empresa</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="profissional.setor"><span class="field-box"></span><span class="field-txt">Setor de atuação</span></label></li>
         </ul>
         <div class="form-card-foot"><span>Selecionados</span><span class="fc-count">0</span></div>
       </div>
@@ -1712,10 +1715,10 @@
           <span>Uso mais restrito</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" checked><span class="field-box"></span><span class="field-txt">Nível acadêmico e área de estudo</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Universidade / instituição de ensino</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Datas de início e graduação</span></label></li>
-          <li><label><input type="checkbox" class="fld"><span class="field-box"></span><span class="field-txt">Gênero</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="educacional.nivel_academico" checked><span class="field-box"></span><span class="field-txt">Nível acadêmico e área de estudo</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="educacional.universidade"><span class="field-box"></span><span class="field-txt">Universidade / instituição de ensino</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="educacional.datas_estudo"><span class="field-box"></span><span class="field-txt">Datas de início e graduação</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="educacional.genero"><span class="field-box"></span><span class="field-txt">Gênero</span></label></li>
         </ul>
         <div class="form-card-foot"><span>Selecionados</span><span class="fc-count">0</span></div>
       </div>
@@ -1724,7 +1727,9 @@
     <div class="sel-summary">
       <span class="sel-num" id="selTotal">0</span>
       <strong>campos selecionados</strong>
+      <span class="sel-sync" id="selSync" data-state="loading" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.3px;background:rgba(45,181,223,.14);color:#0A66C2;margin-left:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#0A66C2;"></span><span id="selSyncTxt">carregando…</span></span>
       <button class="sel-reset" id="selReset">Limpar seleção</button>
+      <button class="sel-reset" id="selRestore" style="background:rgba(80,229,150,.16);color:#15703F;border-color:rgba(46,199,115,.45);">Restaurar padrão (5)</button>
       <span class="sel-hint" id="selHint"></span>
     </div>
 
@@ -1947,29 +1952,156 @@
     })();
   
     (function(){
-      const total=document.getElementById('selTotal');
-      if(!total) return;
-      const hint=document.getElementById('selHint');
-      const boxes=document.querySelectorAll('.form-card');
-      function upd(){
-        let n=0;
-        boxes.forEach(card=>{
-          const c=card.querySelectorAll('.fld:checked').length;
-          n+=c;
-          const el=card.querySelector('.fc-count');
-          if(el){ el.textContent=c; el.style.color = c ? '#0A66C2' : '#5B7280'; }
-        });
-        total.textContent=n;
-        if(n===0) hint.textContent='Nenhum campo marcado — o formulário precisa de ao menos um.';
-        else if(n<=4) hint.innerHTML='<strong style="color:#2EC773;">Formulário enxuto</strong> — tende a converter mais.';
-        else if(n<=7) hint.innerHTML='<strong style="color:#F5A623;">Formulário médio</strong> — mais qualificação, menos conversão.';
-        else hint.innerHTML='<strong style="color:#E55B5B;">Formulário longo</strong> — risco alto de abandono no preenchimento.';
+      const total = document.getElementById('selTotal');
+      if (!total) return;
+      const hint  = document.getElementById('selHint');
+      const boxes = document.querySelectorAll('.form-card');
+      const syncBadge = document.getElementById('selSync');
+      const syncTxt   = document.getElementById('selSyncTxt');
+      const btnClear  = document.getElementById('selReset');
+      const btnReset  = document.getElementById('selRestore');
+      const allCbs    = document.querySelectorAll('.fld[data-field-id]');
+      const allIds    = Array.from(allCbs).map(cb => cb.getAttribute('data-field-id'));
+      // Os 5 campos "padrão" — os que já vinham checked no HTML original
+      const DEFAULT_IDS = [
+        'contato.nome_sobrenome',
+        'contato.email',
+        'contato.telefone',
+        'profissional.cargo_funcao',
+        'educacional.nivel_academico'
+      ];
+
+      function setSync(state, txt) {
+        if (!syncBadge) return;
+        syncBadge.setAttribute('data-state', state);
+        syncTxt.textContent = txt;
+        const colors = {
+          loading:  { bg:'rgba(45,181,223,.14)',  fg:'#0A66C2', dot:'#0A66C2' },
+          saving:   { bg:'rgba(245,166,35,.14)',  fg:'#8A5A0A', dot:'#F5A623' },
+          saved:    { bg:'rgba(80,229,150,.16)',  fg:'#15703F', dot:'#2EC773' },
+          error:    { bg:'rgba(229,91,91,.14)',   fg:'#B12C2C', dot:'#E55B5B' },
+          offline:  { bg:'rgba(91,114,128,.14)',  fg:'#5B7280', dot:'#5B7280' }
+        };
+        const c = colors[state] || colors.loading;
+        syncBadge.style.background = c.bg;
+        syncBadge.style.color = c.fg;
+        syncBadge.firstElementChild.style.background = c.dot;
       }
-      document.querySelectorAll('.fld').forEach(f=>f.addEventListener('change',upd));
-      document.getElementById('selReset').addEventListener('click',()=>{
-        document.querySelectorAll('.fld').forEach(f=>f.checked=false); upd();
+
+      function upd() {
+        let n = 0;
+        boxes.forEach(card => {
+          const c = card.querySelectorAll('.fld:checked').length;
+          n += c;
+          const el = card.querySelector('.fc-count');
+          if (el) { el.textContent = c; el.style.color = c ? '#0A66C2' : '#5B7280'; }
+        });
+        total.textContent = n;
+        if      (n === 0)   hint.textContent = 'Nenhum campo marcado — o formulário precisa de ao menos um.';
+        else if (n <= 4)    hint.innerHTML  = '<strong style="color:#2EC773;">Formulário enxuto</strong> — tende a converter mais.';
+        else if (n <= 7)    hint.innerHTML  = '<strong style="color:#F5A623;">Formulário médio</strong> — mais qualificação, menos conversão.';
+        else                hint.innerHTML  = '<strong style="color:#E55B5B;">Formulário longo</strong> — risco alto de abandono no preenchimento.';
+      }
+
+      /** Aplica um mapa { field_id: {checked} } no DOM sem disparar 'change'. */
+      function applyState(map) {
+        allCbs.forEach(cb => {
+          const id  = cb.getAttribute('data-field-id');
+          const row = map[id];
+          if (row) cb.checked = !!row.checked;
+        });
+        upd();
+      }
+
+      // Se o store nem foi carregado (deps ausentes), mantém o comportamento antigo (só local)
+      if (!window.W8FormStore || window.W8FormStore._failed) {
+        console.warn('[week-8/definicoes] W8FormStore indisponível — rodando em modo local (sem persistência).');
+        setSync('offline', 'modo local');
+        allCbs.forEach(f => f.addEventListener('change', upd));
+        btnClear.addEventListener('click', () => { allCbs.forEach(f => f.checked = false); upd(); });
+        btnReset.addEventListener('click', () => {
+          const set = new Set(DEFAULT_IDS);
+          allCbs.forEach(f => f.checked = set.has(f.getAttribute('data-field-id')));
+          upd();
+        });
+        upd();
+        return;
+      }
+
+      // === Modo com persistência Supabase ===
+      let lastSavedTs = null;
+      function markSaved() {
+        lastSavedTs = new Date();
+        const hh = String(lastSavedTs.getHours()).padStart(2, '0');
+        const mm = String(lastSavedTs.getMinutes()).padStart(2, '0');
+        setSync('saved', 'salvo às ' + hh + ':' + mm);
+      }
+
+      // 1. Load inicial
+      setSync('loading', 'carregando…');
+      W8FormStore.list()
+        .then(map => {
+          if (Object.keys(map).length === 0) {
+            // Tabela vazia — mantém o estado default do HTML (5 marcados) e persiste
+            setSync('saving', 'inicializando…');
+            const seed = {};
+            allCbs.forEach(cb => { seed[cb.getAttribute('data-field-id')] = { checked: cb.checked }; });
+            const promises = allIds.map(id => W8FormStore.upsert(id, seed[id].checked));
+            return Promise.all(promises).then(() => seed);
+          }
+          return map;
+        })
+        .then(map => { applyState(map); markSaved(); })
+        .catch(err => {
+          console.error('[week-8/definicoes] falha no load:', err);
+          setSync('error', 'erro ao carregar · rodando local');
+          upd();
+        });
+
+      // 2. Salva cada mudança individual
+      allCbs.forEach(cb => {
+        cb.addEventListener('change', () => {
+          upd();
+          setSync('saving', 'salvando…');
+          W8FormStore.upsert(cb.getAttribute('data-field-id'), cb.checked)
+            .then(markSaved)
+            .catch(err => {
+              console.error('[week-8/definicoes] falha ao salvar:', err);
+              setSync('error', 'erro ao salvar');
+            });
+        });
       });
-      upd();
+
+      // 3. Botão limpar → zera tudo e persiste
+      btnClear.addEventListener('click', () => {
+        allCbs.forEach(f => f.checked = false);
+        upd();
+        setSync('saving', 'limpando…');
+        W8FormStore.clearAll(allIds).then(markSaved).catch(err => {
+          console.error('[week-8/definicoes] falha ao limpar:', err);
+          setSync('error', 'erro ao limpar');
+        });
+      });
+
+      // 4. Botão restaurar padrão → marca só os 5 defaults
+      btnReset.addEventListener('click', () => {
+        const set = new Set(DEFAULT_IDS);
+        allCbs.forEach(f => f.checked = set.has(f.getAttribute('data-field-id')));
+        upd();
+        setSync('saving', 'restaurando…');
+        W8FormStore.resetToDefault(DEFAULT_IDS, allIds).then(markSaved).catch(err => {
+          console.error('[week-8/definicoes] falha ao restaurar:', err);
+          setSync('error', 'erro ao restaurar');
+        });
+      });
+
+      // 5. Realtime — quem tá com a página aberta vê mudanças ao vivo
+      W8FormStore.subscribe(() => {
+        W8FormStore.list().then(map => {
+          applyState(map);
+          markSaved();
+        }).catch(err => console.warn('[week-8/definicoes] realtime reload:', err));
+      });
     })();
   </script>
   <footer class="site-footer">
