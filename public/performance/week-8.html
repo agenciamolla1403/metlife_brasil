@@ -2072,7 +2072,10 @@
       setSync('loading', 'carregando…');
       reloadFromServer().catch(err => {
         console.error('[week-8/definicoes] falha no load:', err);
-        setSync('error', 'erro ao carregar');
+        const msg = /schema cache|does not exist|w8_form_selection/i.test(err?.message || '')
+          ? 'tabela w8_form_selection não existe · rode o SQL no Supabase'
+          : 'erro ao carregar';
+        setSync('error', msg);
         upd();
       });
 
@@ -2100,7 +2103,10 @@
           })
           .catch(err => {
             console.error('[week-8/definicoes] falha ao salvar:', err);
-            setSync('error', 'erro ao salvar — tente de novo');
+            const msg = /schema cache|does not exist|w8_form_selection/i.test(err?.message || '')
+              ? 'tabela w8_form_selection não existe · rode o SQL no Supabase'
+              : 'erro ao salvar — tente de novo';
+            setSync('error', msg);
             btnSave.disabled = false;
           });
       });
