@@ -47,6 +47,22 @@
         "insercoes_entregues": 820803,
         "bonus_pct": 18.5
       }
+    },
+    {
+      "id": "cht-2",
+      "ordem": 2,
+      "label": "Checking FT 2",
+      "ft_relacionada": "ft-2",
+      "periodo": "10/06 a 30/06",
+      "data_publicacao": "2026-07-11",
+      "status": "publicado",
+      "arquivo": "/elemidia/cht-2",
+      "resumo": {
+        "monitores": 374,
+        "insercoes_previstas": 1122000,
+        "insercoes_entregues": 1506981,
+        "bonus_pct": 34.3
+      }
     }
   ],
   "futuras": []

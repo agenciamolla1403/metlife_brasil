@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elemidia · Checking FT 2 · 10/06 a 30/06 · MetLife 2026</title>
+
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-soft: #A8F2C9;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+      --success: #50E596;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.55;
+    }
+
+    /* ===== HERO (padrão do hub · igual /performance/week-1) ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.40), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(80,229,150,.20);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.30);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); }
+    }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--green-deep); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .metric.highlight {
+      background: rgba(80,229,150,.18);
+      border-color: rgba(80,229,150,.45);
+    }
+    .metric.highlight strong { color: var(--green); }
+
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 80px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    section:nth-of-type(even) {
+      background: rgba(45,181,223,.04);
+      max-width: none;
+      padding-left: calc((100vw - 1180px) / 2 + 24px);
+      padding-right: calc((100vw - 1180px) / 2 + 24px);
+    }
+    @media (max-width: 1200px) {
+      section:nth-of-type(even) {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--green-deep);
+      background: rgba(80,229,150,.16);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(26px, 3.5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+    section .section-lead {
+      font-size: 16.5px;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .kpi-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .kpi-card.good { border-top: 4px solid var(--green-deep); }
+    .kpi-card.good strong { color: var(--green-deep); }
+
+    /* ===== BIG HIGHLIGHT (bônus) ===== */
+    .bonus-card {
+      background: linear-gradient(135deg, var(--green-deep), var(--teal));
+      color: white;
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .bonus-card .bonus-pct {
+      font-size: 84px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+    .bonus-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      color: white;
+    }
+    .bonus-card p {
+      margin: 0;
+      color: rgba(255,255,255,.88);
+      font-size: 15px;
+      max-width: 540px;
+    }
+
+    /* ===== ENTREGA vs PREVISTO (visualizador) ===== */
+    .delivery-compare {
+      background: white;
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      margin-top: 12px;
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 140px;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .compare-row:last-child { margin-bottom: 0; }
+    .compare-row .compare-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .compare-row .compare-bar {
+      height: 36px;
+      background: rgba(0,59,92,.05);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    .compare-row .compare-fill {
+      height: 100%;
+      border-radius: 18px;
+      transition: width .6s ease;
+    }
+    .compare-row .compare-fill.previsto { background: var(--blue); }
+    .compare-row .compare-fill.entregue { background: linear-gradient(90deg, var(--green-deep), var(--teal)); }
+    .compare-row .compare-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      text-align: right;
+    }
+    .compare-row .compare-value.delta {
+      color: var(--green-deep);
+      font-size: 18px;
+    }
+
+    /* ===== CHART WRAP ===== */
+    .chart-wrap {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      margin-bottom: 24px;
+    }
+    .chart-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .chart-container {
+      position: relative;
+      height: 320px;
+    }
+    .chart-container.short { height: 240px; }
+
+    /* ===== TABELA ===== */
+    .table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: rgba(0,59,92,.04);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    th.num, td.num { text-align: right; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    td.label-cell { font-weight: 700; }
+    tr.total-row td {
+      background: rgba(0,59,92,.04);
+      font-weight: 800;
+    }
+    .pill-good { background: rgba(80,229,150,.18); color: #1F8F4F; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-info { background: rgba(45,181,223,.16); color: #1B6A8A; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+
+    /* ===== INSIGHT BOX ===== */
+    .insight {
+      background: white;
+      border-left: 4px solid var(--green-deep);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.06);
+      margin-top: 24px;
+    }
+    .insight strong { color: var(--navy); }
+    .insight p { margin: 0; font-size: 14.5px; color: var(--text); }
+
+    /* ===== LINK PARA PROPOSTA ===== */
+    .link-to-proposta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14.5px;
+      transition: background .2s;
+      margin-top: 16px;
+    }
+    .link-to-proposta:hover { background: var(--navy-deep); }
+    .link-to-proposta .arrow {
+      transition: transform .2s;
+    }
+    .link-to-proposta:hover .arrow { transform: translateX(4px); }
+
+    /* ===== META DA EMISSÃO ===== */
+    .report-meta {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0,59,92,.08);
+    }
+
+    /* ===== FOOTER GRANDE PADRÃO ===== */
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      margin-top: 0;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      color: white;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .bonus-card { grid-template-columns: 1fr; text-align: center; gap: 16px; padding: 28px; }
+      .bonus-card .bonus-pct { font-size: 64px; }
+      .compare-row { grid-template-columns: 1fr; gap: 8px; }
+      .compare-row .compare-value { text-align: left; font-size: 18px; }
+      section { padding: 56px 16px; }
+    }
+  </style>
+</head>
+<body data-proposta-id="cht-2">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/elemidia">Elemidia</a> &nbsp;/&nbsp; <strong>Checking · FT 2 · 10/06 a 30/06</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Checking · FT 2 · 10/06 a 30/06/2026</span>
+        <h1>FT 2 entregou <span class="accent">+34,3% acima</span> do contratado.</h1>
+        <p class="lead">Relatório oficial de execução da campanha em <strong>7 cidades brasileiras</strong>, comprovando 1.506.981 inserções entregues em 21 dias de veiculação. Bônus quase o dobro do da FT 1.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da entrega</h3>
+        <p>Veiculação em 374 monitores distribuídos em 81 pontos comerciais nas 7 principais praças. Superdelivery confirmado pela Eletromidia.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>374</strong><span>monitores</span></div>
+          <div class="metric"><strong>81</strong><span>pontos</span></div>
+          <div class="metric highlight"><strong>1.506.981</strong><span>inserções entregues</span></div>
+          <div class="metric highlight"><strong>+34,3%</strong><span>acima do previsto</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#visao">Visão geral</a>
+      <a href="#entrega">Entrega vs previsto</a>
+      <a href="#cidades">Breakdown por cidade</a>
+      <a href="#comparativo">Comparativo com a proposta</a>
+    </div>
+  </nav>
+
+  <!-- §1 VISÃO GERAL -->
+  <section id="visao">
+    <span class="section-eyebrow">§1 · Visão geral</span>
+    <h2>Campanha 475842 · entregue com bônus forte</h2>
+    <p class="section-lead">Relatório de Checking Online emitido pela Eletromidia em 11/07/2026 confirmando a execução da FT 2 entre 10/06 e 30/06 nas 7 principais praças brasileiras.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><strong>21 dias</strong><span class="label">Período de veiculação</span></div>
+      <div class="kpi-card"><strong>81</strong><span class="label">Pontos ativos</span></div>
+      <div class="kpi-card"><strong>374</strong><span class="label">Monitores (7 cidades)</span></div>
+      <div class="kpi-card good"><strong>1.341.611</strong><span class="label">Impactos totais</span></div>
+    </div>
+
+    <div class="bonus-card">
+      <div class="bonus-pct">+34,3%</div>
+      <div>
+        <h3>Bônus de entrega confirmado</h3>
+        <p>A Eletromidia entregou 384.981 inserções acima do contratado em relação à proposta FT 2 — <strong>quase o dobro do bônus da FT 1</strong> (+18,5%). O excedente é considerado bônus e não gera custo adicional.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2 ENTREGA vs PREVISTO -->
+  <section id="entrega">
+    <span class="section-eyebrow">§2 · Entrega vs previsto</span>
+    <h2>1.506.981 inserções entregues vs 1.122.000 previstas.</h2>
+    <p class="section-lead">A campanha rodou com superdelivery — a Eletromidia entrega o volume contratado e, em caso de capacidade adicional na rede, complementa sem cobrar.</p>
+
+    <div class="delivery-compare">
+      <div class="compare-row">
+        <div class="compare-label">Previsto (FT 2)</div>
+        <div class="compare-bar">
+          <div class="compare-fill previsto" style="width: 74.5%"></div>
+        </div>
+        <div class="compare-value">1.122.000</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Entregue (Checking)</div>
+        <div class="compare-bar">
+          <div class="compare-fill entregue" style="width: 100%"></div>
+        </div>
+        <div class="compare-value">1.506.981</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Diferença</div>
+        <div class="compare-bar">
+          <div class="compare-fill entregue" style="width: 25.5%; background: var(--green);"></div>
+        </div>
+        <div class="compare-value delta">+384.981 (+34,3%)</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Como ler:</strong> a Eletromidia opera com inventory de capacidade dinâmica — quando há janelas livres na rede após a venda fechada, esses minutos extras vão pros anunciantes ativos no período. O bônus de 34,3% da FT 2 é quase o dobro do da FT 1 e confirma pressão de mídia bem forte nas 7 cidades durante os 21 dias.</p>
+    </div>
+  </section>
+
+  <!-- §3 BREAKDOWN POR CIDADE -->
+  <section id="cidades">
+    <span class="section-eyebrow">§3 · Breakdown por cidade</span>
+    <h2>São Paulo concentra 43,5% da entrega.</h2>
+    <p class="section-lead">Distribuição das inserções entre as 7 cidades da campanha. SP domina com 167 monitores (44,7% da rede) e 655.816 inserções.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Inserções entregues por cidade</p>
+      <div class="chart-container tall"><canvas id="chart-cidades"></canvas></div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Cidade</th>
+            <th class="num">Monitores</th>
+            <th class="num">Inserções</th>
+            <th class="num">% da entrega</th>
+            <th>Linhas de produto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">São Paulo (SP)</td>
+            <td class="num">167</td>
+            <td class="num">655.816</td>
+            <td class="num">43,5%</td>
+            <td><span class="pill-good">Premium + Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Belo Horizonte (MG)</td>
+            <td class="num">74</td>
+            <td class="num">294.190</td>
+            <td class="num">19,5%</td>
+            <td><span class="pill-info">Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Brasília (DF)</td>
+            <td class="num">42</td>
+            <td class="num">191.796</td>
+            <td class="num">12,7%</td>
+            <td><span class="pill-info">Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Porto Alegre (RS)</td>
+            <td class="num">38</td>
+            <td class="num">154.734</td>
+            <td class="num">10,3%</td>
+            <td><span class="pill-info">Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Goiânia (GO)</td>
+            <td class="num">21</td>
+            <td class="num">91.677</td>
+            <td class="num">6,1%</td>
+            <td><span class="pill-info">Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Rio de Janeiro (RJ)</td>
+            <td class="num">24</td>
+            <td class="num">88.973</td>
+            <td class="num">5,9%</td>
+            <td><span class="pill-good">Premium + Standard</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Campinas (CP)</td>
+            <td class="num">8</td>
+            <td class="num">29.795</td>
+            <td class="num">2,0%</td>
+            <td><span class="pill-info">Standard</span></td>
+          </tr>
+          <tr class="total-row">
+            <td class="label-cell">Total (7 cidades)</td>
+            <td class="num">374</td>
+            <td class="num">1.506.981</td>
+            <td class="num">100,0%</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>SP e MG somam 63% da entrega:</strong> a capital paulista com 167 monitores lidera a rede (44,7% do total de monitores) e Belo Horizonte vem em segundo com 74 monitores. Somente SP e Rio de Janeiro tiveram linha Premium ativa (93 monitores premium no total). A média nacional é de ~4.030 inserções por monitor ao longo dos 21 dias.</p>
+    </div>
+  </section>
+
+  <!-- §4 COMPARATIVO COM PROPOSTA -->
+  <section id="comparativo">
+    <span class="section-eyebrow">§4 · Comparativo com a proposta</span>
+    <h2>FT 2 prometida × FT 2 executada.</h2>
+    <p class="section-lead">Tudo o que a proposta original previu vs o que efetivamente rodou e foi entregue pela Eletromidia.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th class="num">Proposta (FT 2)</th>
+            <th class="num">Executado (Checking)</th>
+            <th class="num">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Período</td>
+            <td class="num">10/06 a 30/06</td>
+            <td class="num">10/06 a 30/06</td>
+            <td class="num"><span class="pill-good">Cumprido</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Cidades</td>
+            <td class="num">7 praças</td>
+            <td class="num">7 praças</td>
+            <td class="num"><span class="pill-good">Cumprido</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Monitores</td>
+            <td class="num">374</td>
+            <td class="num">374</td>
+            <td class="num"><span class="pill-good">Cumprido</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Pontos ativos</td>
+            <td class="num">81</td>
+            <td class="num">81</td>
+            <td class="num"><span class="pill-good">Cumprido</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Inserções totais</td>
+            <td class="num">1.122.000</td>
+            <td class="num">1.506.981</td>
+            <td class="num"><span class="pill-good">+34,3% bônus</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Inserções diárias (média)</td>
+            <td class="num">53.428</td>
+            <td class="num">71.761</td>
+            <td class="num"><span class="pill-good">+34,3%</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Investimento</td>
+            <td class="num">R$ 63.000</td>
+            <td class="num">R$ 63.000</td>
+            <td class="num"><span class="pill-good">Sem custo extra</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/elemidia/ft-2" class="link-to-proposta">
+      <span>Ver proposta FT 2 completa</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <p class="report-meta">
+      Relatório oficial Eletromidia · Campanha 475842 · Cliente: Metropolitan Life Seguros e Previdência Privada SA · Agência: Molla Incentive Projects · Executivo: Junior Furquim · Emitido em 11/07/2026.
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <h2>FT 2 fechou com bônus quase o dobro da FT 1. Rede nacional confirmada.</h2>
+    <p>O checking da FT 2 confirma execução em 7 cidades com 384.981 inserções acima do contratado (+34,3%) — quase o dobro do bônus da primeira onda. A ampliação da campanha pra rede nacional entregou mais que o esperado e valida o formato pras próximas fases.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script>
+    const COLORS = {
+      navy: '#003B5C',
+      blue: '#2DB5DF',
+      teal: '#27C7BD',
+      green: '#50E596',
+      greenDeep: '#2EC773',
+      amber: '#F5A623',
+      muted: '#5B7280'
+    };
+
+    Chart.defaults.font.family = 'Arial, sans-serif';
+    Chart.defaults.color = COLORS.navy;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+    // §3 · Inserções por cidade (horizontal bar) — ordenado do maior pro menor
+    new Chart(document.getElementById('chart-cidades'), {
+      type: 'bar',
+      data: {
+        labels: [
+          'São Paulo (SP)',
+          'Belo Horizonte (MG)',
+          'Brasília (DF)',
+          'Porto Alegre (RS)',
+          'Goiânia (GO)',
+          'Rio de Janeiro (RJ)',
+          'Campinas (CP)'
+        ],
+        datasets: [{
+          label: 'Inserções',
+          data: [655816, 294190, 191796, 154734, 91677, 88973, 29795],
+          backgroundColor: [
+            COLORS.greenDeep,   // SP - líder
+            COLORS.blue,        // MG
+            COLORS.teal,        // DF
+            COLORS.teal,        // RS
+            COLORS.amber,       // GO
+            COLORS.amber,       // RJ
+            COLORS.muted        // CP - menor
+          ],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => 'Inserções: ' + ctx.parsed.x.toLocaleString('pt-BR')
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: { color: 'rgba(0,59,92,.06)' },
+            ticks: {
+              callback: (v) => v.toLocaleString('pt-BR')
+            }
+          },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+  </script>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/elemidia-timeline.js" defer></script>
+</body>
+</html>
