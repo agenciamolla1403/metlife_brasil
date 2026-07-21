@@ -19,7 +19,7 @@
     window.W8FormStore = {
       _failed: true,
       _missingDeps: missing,
-      list: reject, upsert: reject, clearAll: reject, ping: reject,
+      list: reject, upsert: reject, saveAll: reject, clearAll: reject, ping: reject,
       subscribe() { return null; },
     };
     return;
@@ -38,7 +38,7 @@
     window.W8FormStore = {
       _failed: true,
       _initError: e,
-      list: reject, upsert: reject, clearAll: reject, ping: reject,
+      list: reject, upsert: reject, saveAll: reject, clearAll: reject, ping: reject,
       subscribe() { return null; },
     };
     return;
@@ -84,6 +84,22 @@
         .single();
       if (error) throw error;
       return data;
+    },
+
+    /** Salva TODOS os campos de uma vez em batch. Recebe {field_id: checked}. */
+    async saveAll(stateMap) {
+      const payload = Object.entries(stateMap).map(([field_id, checked]) => ({
+        field_id,
+        checked: !!checked,
+        updated_at: new Date().toISOString(),
+        updated_by: currentRole()
+      }));
+      if (payload.length === 0) return true;
+      const { error } = await supabase
+        .from(TABLE)
+        .upsert(payload, { onConflict: 'field_id' });
+      if (error) throw error;
+      return true;
     },
 
     /** Desmarca TODOS os campos de uma vez (equivalente ao antigo "Limpar seleção"). */
