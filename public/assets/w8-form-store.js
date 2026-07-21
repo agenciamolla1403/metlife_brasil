@@ -101,22 +101,6 @@
       return true;
     },
 
-    /** Marca só os campos padrão (os 5 iniciais). */
-    async resetToDefault(defaultIds, allIds) {
-      const set = new Set(defaultIds);
-      const payload = allIds.map(id => ({
-        field_id:   id,
-        checked:    set.has(id),
-        updated_at: new Date().toISOString(),
-        updated_by: currentRole()
-      }));
-      const { error } = await supabase
-        .from(TABLE)
-        .upsert(payload, { onConflict: 'field_id' });
-      if (error) throw error;
-      return true;
-    },
-
     /** Healthcheck — confirma que a tabela existe. */
     async ping() {
       const { error } = await supabase

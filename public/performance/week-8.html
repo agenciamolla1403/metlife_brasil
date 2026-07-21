@@ -1674,10 +1674,10 @@
     <h2>Duas definições que precisamos fechar hoje.</h2>
     <div class="section-intro"><p>Estes dois pontos ficaram pendentes da semana passada e travam a ativação das campanhas de Lead Gen no LinkedIn. Precisamos sair desta reunião com as duas decisões tomadas.</p></div>
 
-    <span class="pend-flag" style="background:rgba(80,229,150,.16);border-color:rgba(46,199,115,.45);color:#15703F;">✓ Definido — validar na reunião</span>
+    <span class="pend-flag">🗳️ Decidir na reunião — cada participante marca ao vivo</span>
 
     <h3 style="font-size:24px;margin:0 0 10px;">1. Quais campos vamos usar no formulário nativo?</h3>
-    <p style="color:var(--muted);font-size:15px;max-width:820px;margin:0 0 24px;">O formulário nativo do LinkedIn <strong>não aceita campos livres</strong> — as opções são predeterminadas pela plataforma. Abaixo está o cardápio completo, com <strong>os 5 campos definidos já marcados</strong>. Os demais seguem disponíveis: dá para marcar e desmarcar ao vivo na reunião, e o contador mostra na hora o efeito da escolha. <strong>Regra prática: cada campo a mais reduz a taxa de conversão.</strong></p>
+    <p style="color:var(--muted);font-size:15px;max-width:820px;margin:0 0 24px;">O formulário nativo do LinkedIn <strong>não aceita campos livres</strong> — as opções são predeterminadas pela plataforma. Abaixo está o cardápio completo. Começamos com <strong>tudo desmarcado</strong>: cada seleção fica <strong>registrada em tempo real</strong> e compartilhada com todos os participantes da reunião. <strong>Regra prática: cada campo a mais reduz a taxa de conversão.</strong></p>
 
     <div class="form-grid">
       <div class="form-card">
@@ -1686,9 +1686,9 @@
           <span>Identificação e canal de retorno</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" data-field-id="contato.nome_sobrenome" checked><span class="field-box"></span><span class="field-txt">Nome e sobrenome</span></label></li>
-          <li><label><input type="checkbox" class="fld" data-field-id="contato.email" checked><span class="field-box"></span><span class="field-txt">E-mail e e-mail corporativo</span></label></li>
-          <li><label><input type="checkbox" class="fld" data-field-id="contato.telefone" checked><span class="field-box"></span><span class="field-txt">Telefone e telefone comercial</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.nome_sobrenome"><span class="field-box"></span><span class="field-txt">Nome e sobrenome</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.email"><span class="field-box"></span><span class="field-txt">E-mail e e-mail corporativo</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="contato.telefone"><span class="field-box"></span><span class="field-txt">Telefone e telefone comercial</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="contato.linkedin_url"><span class="field-box"></span><span class="field-txt">URL do perfil do LinkedIn</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="contato.endereco"><span class="field-box"></span><span class="field-txt">Endereço completo (rua, cidade, estado, CEP, país)</span></label></li>
         </ul>
@@ -1701,7 +1701,7 @@
           <span>Qualificação do contato</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" data-field-id="profissional.cargo_funcao" checked><span class="field-box"></span><span class="field-txt">Cargo e função</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="profissional.cargo_funcao"><span class="field-box"></span><span class="field-txt">Cargo e função</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="profissional.nivel_experiencia"><span class="field-box"></span><span class="field-txt">Nível de experiência</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="profissional.empresa"><span class="field-box"></span><span class="field-txt">Nome e tamanho da empresa</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="profissional.setor"><span class="field-box"></span><span class="field-txt">Setor de atuação</span></label></li>
@@ -1715,7 +1715,7 @@
           <span>Uso mais restrito</span>
         </div>
         <ul class="field-list">
-          <li><label><input type="checkbox" class="fld" data-field-id="educacional.nivel_academico" checked><span class="field-box"></span><span class="field-txt">Nível acadêmico e área de estudo</span></label></li>
+          <li><label><input type="checkbox" class="fld" data-field-id="educacional.nivel_academico"><span class="field-box"></span><span class="field-txt">Nível acadêmico e área de estudo</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="educacional.universidade"><span class="field-box"></span><span class="field-txt">Universidade / instituição de ensino</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="educacional.datas_estudo"><span class="field-box"></span><span class="field-txt">Datas de início e graduação</span></label></li>
           <li><label><input type="checkbox" class="fld" data-field-id="educacional.genero"><span class="field-box"></span><span class="field-txt">Gênero</span></label></li>
@@ -1729,12 +1729,11 @@
       <strong>campos selecionados</strong>
       <span class="sel-sync" id="selSync" data-state="loading" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.3px;background:rgba(45,181,223,.14);color:#0A66C2;margin-left:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#0A66C2;"></span><span id="selSyncTxt">carregando…</span></span>
       <button class="sel-reset" id="selReset">Limpar seleção</button>
-      <button class="sel-reset" id="selRestore" style="background:rgba(80,229,150,.16);color:#15703F;border-color:rgba(46,199,115,.45);">Restaurar padrão (5)</button>
       <span class="sel-hint" id="selHint"></span>
     </div>
 
     <div class="delay-notice" style="margin-top:22px;">
-      <strong>A configuração definida — 5 campos:</strong> nome e sobrenome, e-mail, telefone, cargo e função, e nível acadêmico. É o suficiente para o time comercial identificar e qualificar o contato, sem alongar o preenchimento. Como o dado da LP já mostrou que <strong>a fricção de preenchimento é o nosso gargalo</strong> (apenas 0,3% de quem visita a página inicia o formulário), a orientação é <strong>não adicionar campo sem que o comercial diga que não consegue qualificar sem ele</strong>. Cada campo novo cobra seu preço em conversão.
+      <strong>Nossa proposta — 5 campos:</strong> nome e sobrenome, e-mail, telefone, cargo e função, e nível acadêmico. É o suficiente para o time comercial identificar e qualificar o contato, sem alongar o preenchimento. Como o dado da LP já mostrou que <strong>a fricção de preenchimento é o nosso gargalo</strong> (apenas 0,3% de quem visita a página inicia o formulário), a orientação é <strong>não adicionar campo sem que o comercial diga que não consegue qualificar sem ele</strong>. Cada campo novo cobra seu preço em conversão.
     </div>
 
     <h3 style="font-size:24px;margin:46px 0 10px;">2. Qual é a mensagem — e para quem?</h3>
@@ -1959,17 +1958,8 @@
       const syncBadge = document.getElementById('selSync');
       const syncTxt   = document.getElementById('selSyncTxt');
       const btnClear  = document.getElementById('selReset');
-      const btnReset  = document.getElementById('selRestore');
       const allCbs    = document.querySelectorAll('.fld[data-field-id]');
       const allIds    = Array.from(allCbs).map(cb => cb.getAttribute('data-field-id'));
-      // Os 5 campos "padrão" — os que já vinham checked no HTML original
-      const DEFAULT_IDS = [
-        'contato.nome_sobrenome',
-        'contato.email',
-        'contato.telefone',
-        'profissional.cargo_funcao',
-        'educacional.nivel_academico'
-      ];
 
       function setSync(state, txt) {
         if (!syncBadge) return;
@@ -1997,7 +1987,7 @@
           if (el) { el.textContent = c; el.style.color = c ? '#0A66C2' : '#5B7280'; }
         });
         total.textContent = n;
-        if      (n === 0)   hint.textContent = 'Nenhum campo marcado — o formulário precisa de ao menos um.';
+        if      (n === 0)   hint.textContent = 'Nenhum campo marcado ainda — cada participante pode marcar ao vivo.';
         else if (n <= 4)    hint.innerHTML  = '<strong style="color:#2EC773;">Formulário enxuto</strong> — tende a converter mais.';
         else if (n <= 7)    hint.innerHTML  = '<strong style="color:#F5A623;">Formulário médio</strong> — mais qualificação, menos conversão.';
         else                hint.innerHTML  = '<strong style="color:#E55B5B;">Formulário longo</strong> — risco alto de abandono no preenchimento.';
@@ -2008,22 +1998,17 @@
         allCbs.forEach(cb => {
           const id  = cb.getAttribute('data-field-id');
           const row = map[id];
-          if (row) cb.checked = !!row.checked;
+          cb.checked = row ? !!row.checked : false;
         });
         upd();
       }
 
-      // Se o store nem foi carregado (deps ausentes), mantém o comportamento antigo (só local)
+      // Fallback local se o store não carregou
       if (!window.W8FormStore || window.W8FormStore._failed) {
-        console.warn('[week-8/definicoes] W8FormStore indisponível — rodando em modo local (sem persistência).');
+        console.warn('[week-8/definicoes] W8FormStore indisponível — modo local (sem persistência).');
         setSync('offline', 'modo local');
         allCbs.forEach(f => f.addEventListener('change', upd));
         btnClear.addEventListener('click', () => { allCbs.forEach(f => f.checked = false); upd(); });
-        btnReset.addEventListener('click', () => {
-          const set = new Set(DEFAULT_IDS);
-          allCbs.forEach(f => f.checked = set.has(f.getAttribute('data-field-id')));
-          upd();
-        });
         upd();
         return;
       }
@@ -2037,20 +2022,9 @@
         setSync('saved', 'salvo às ' + hh + ':' + mm);
       }
 
-      // 1. Load inicial
+      // 1. Load inicial — tabela vazia é comportamento esperado (nada marcado)
       setSync('loading', 'carregando…');
       W8FormStore.list()
-        .then(map => {
-          if (Object.keys(map).length === 0) {
-            // Tabela vazia — mantém o estado default do HTML (5 marcados) e persiste
-            setSync('saving', 'inicializando…');
-            const seed = {};
-            allCbs.forEach(cb => { seed[cb.getAttribute('data-field-id')] = { checked: cb.checked }; });
-            const promises = allIds.map(id => W8FormStore.upsert(id, seed[id].checked));
-            return Promise.all(promises).then(() => seed);
-          }
-          return map;
-        })
         .then(map => { applyState(map); markSaved(); })
         .catch(err => {
           console.error('[week-8/definicoes] falha no load:', err);
@@ -2058,7 +2032,7 @@
           upd();
         });
 
-      // 2. Salva cada mudança individual
+      // 2. Cada mudança individual é salva imediatamente
       allCbs.forEach(cb => {
         cb.addEventListener('change', () => {
           upd();
@@ -2083,19 +2057,7 @@
         });
       });
 
-      // 4. Botão restaurar padrão → marca só os 5 defaults
-      btnReset.addEventListener('click', () => {
-        const set = new Set(DEFAULT_IDS);
-        allCbs.forEach(f => f.checked = set.has(f.getAttribute('data-field-id')));
-        upd();
-        setSync('saving', 'restaurando…');
-        W8FormStore.resetToDefault(DEFAULT_IDS, allIds).then(markSaved).catch(err => {
-          console.error('[week-8/definicoes] falha ao restaurar:', err);
-          setSync('error', 'erro ao restaurar');
-        });
-      });
-
-      // 5. Realtime — quem tá com a página aberta vê mudanças ao vivo
+      // 4. Realtime — mudanças de outros participantes aparecem ao vivo
       W8FormStore.subscribe(() => {
         W8FormStore.list().then(map => {
           applyState(map);
