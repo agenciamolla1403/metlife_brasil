@@ -18,15 +18,12 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: 10px 24px;
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 12px;
+  row-gap: 8px;
   align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
-.performance-timeline-inner::-webkit-scrollbar { display: none; }
 
 .performance-timeline-label {
   font-size: 11px;
@@ -34,8 +31,19 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: #5B7280;
-  flex-shrink: 0;
   padding-right: 4px;
+  grid-column: 1;
+  align-self: center;
+}
+
+/* Cada grupo de campanha ocupa a coluna 2 e vira uma linha inteira */
+.pt-group {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
 }
 
 .pt-pill {
@@ -117,6 +125,10 @@
   }
   .performance-timeline-inner {
     padding: 8px 16px;
+    column-gap: 8px;
+    row-gap: 6px;
+  }
+  .pt-group {
     gap: 6px;
   }
   .pt-pill {
@@ -135,15 +147,6 @@
    Seguro Vida usa verde (#01444C / #01444C) — tematicamente
    ligado a saúde/vida.
    ============================================================ */
-
-/* Separador entre grupos de campanha */
-.pt-group-sep {
-  display: inline-block;
-  color: rgba(0, 59, 92, 0.30);
-  font-size: 14px;
-  margin: 0 4px;
-  user-select: none;
-}
 
 /* Label da campanha antes do grupo de pills */
 .pt-group-label {

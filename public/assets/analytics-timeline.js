@@ -99,18 +99,20 @@
 
     const multiCampanha = groups.length > 1;
 
-    groups.forEach((grp, idx) => {
-      if (multiCampanha && idx > 0) {
-        inner.appendChild(el('span', { class: 'pt-group-sep', 'aria-hidden': 'true' }, '·'));
-      }
+    groups.forEach((grp) => {
+      // Cada campanha vira uma "linha" (via CSS grid-column: 2)
+      const groupEl = el('div', {
+        class: 'pt-group is-campanha-' + grp.campanha
+      });
       if (multiCampanha && grp.meta) {
-        inner.appendChild(el('span', {
+        groupEl.appendChild(el('span', {
           class: 'pt-group-label is-campanha-' + grp.campanha,
           title: grp.meta.descricao || ''
         }, grp.meta.label || grp.campanha));
       }
-      for (const s of grp.published) inner.appendChild(pillFor(s, currentWeekId, 'published'));
-      for (const f of grp.upcoming) inner.appendChild(pillFor(f, currentWeekId, 'upcoming'));
+      for (const s of grp.published) groupEl.appendChild(pillFor(s, currentWeekId, 'published'));
+      for (const f of grp.upcoming) groupEl.appendChild(pillFor(f, currentWeekId, 'upcoming'));
+      inner.appendChild(groupEl);
     });
 
     wrap.appendChild(inner);
