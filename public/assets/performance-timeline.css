@@ -65,12 +65,14 @@
 .pt-pill-label {
   font-size: 12.5px;
   font-weight: 700;
+  white-space: nowrap;
 }
 .pt-pill-period {
   font-size: 10.5px;
   font-weight: 400;
   opacity: 0.7;
   letter-spacing: 0.1px;
+  white-space: nowrap;
 }
 
 /* Estado: publicado (clicável) */
@@ -160,6 +162,8 @@
   border-radius: 999px;
   margin-right: 4px;
   border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .pt-group-label.is-campanha-copa {
   background: rgba(0, 59, 92, 0.08);
