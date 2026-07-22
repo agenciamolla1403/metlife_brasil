@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics · Semana 7 · 29/06 a 05/07 · MetLife 2026</title>
+
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-soft: #A8F2C9;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+      --success: #50E596;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.55;
+    }
+
+    /* ===== HERO ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); } }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 80px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    section:nth-of-type(even) {
+      background: rgba(45,181,223,.04);
+      max-width: none;
+      padding-left: calc((100vw - 1180px) / 2 + 24px);
+      padding-right: calc((100vw - 1180px) / 2 + 24px);
+    }
+    @media (max-width: 1200px) {
+      section:nth-of-type(even) {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(45,181,223,.12);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(26px, 3.5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+    section .section-lead {
+      font-size: 16.5px;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .kpi-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .kpi-card.alert strong { color: var(--red); }
+    .kpi-card.warn strong { color: var(--amber); }
+    .kpi-card.good strong { color: var(--green-deep); }
+
+    .chart-wrap {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      margin-bottom: 24px;
+    }
+    .chart-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .chart-container { position: relative; height: 320px; }
+    .chart-container.tall { height: 380px; }
+    .chart-container.short { height: 220px; }
+
+    .insight {
+      background: white;
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.06);
+      margin-top: 24px;
+    }
+    .insight.alert { border-left-color: var(--red); }
+    .insight.warn { border-left-color: var(--amber); }
+    .insight.good { border-left-color: var(--green-deep); }
+    .insight strong { color: var(--navy); }
+    .insight p { margin: 0; font-size: 14.5px; color: var(--text); }
+
+    .channels-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .channel-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+    }
+    .channel-mini .channel-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .channel-mini .channel-pct {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .channel-mini .channel-abs {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      background: rgba(0,59,92,.04);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    th.num, td.num { text-align: right; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    td.label-cell { font-weight: 700; }
+    tr.total-row td {
+      background: rgba(0,59,92,.04);
+      font-weight: 800;
+    }
+    .pill-bad { background: rgba(229,91,91,.14); color: #B12C2C; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-mid { background: rgba(245,166,35,.14); color: #8A5A0A; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-good { background: rgba(80,229,150,.18); color: #1F8F4F; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .delta-up { color: var(--green-deep); font-weight: 700; }
+    .delta-down { color: var(--red); font-weight: 700; }
+
+    .funnel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .funnel-step {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+    }
+    .funnel-step .step-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .funnel-step .step-value {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .funnel-step .step-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .funnel-step.error .step-value { color: var(--green-deep); }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .compare-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      border-top: 4px solid var(--muted);
+    }
+    .compare-card.up { border-top-color: var(--green-deep); }
+    .compare-card.down { border-top-color: var(--red); }
+    .compare-card h4 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .compare-card .delta {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .compare-card.up .delta { color: var(--green-deep); }
+    .compare-card.down .delta { color: var(--red); }
+    .compare-card .desc { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .stat-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .stat-mini .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-mini .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* TOTAL CARD - mesma classe corrigida do bug S72 */
+    .total-card {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-lg);
+      margin-top: 12px;
+    }
+    .total-card h3 {
+      margin: 0 0 22px;
+      font-size: 20px;
+      color: white;
+    }
+    .total-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .total-metric {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+    }
+    .total-metric strong {
+      display: block;
+      font-size: 36px;
+      line-height: 1;
+      color: white;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .total-metric span {
+      color: rgba(255,255,255,.75);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      margin-top: 0;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      color: white;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .channels-row { grid-template-columns: repeat(2, 1fr); }
+      .funnel { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .total-metrics-row { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 56px 16px; }
+    }
+  </style>
+</head>
+<body data-week-id="week-7">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/landing-page">Analytics</a> &nbsp;/&nbsp; <strong>Semana 7 · 29/06 a 05/07</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Analytics LP · 29/06 a 05/07/2026</span>
+        <h1>144 page views, <span class="accent">audiência qualificada</span> com desktop dominando.</h1>
+        <p class="lead">Análise dos acessos à Landing Page da Copa 2026 — tráfego orgânico, campanhas UTM, funil de conversão e leitura comparativa da 7ª semana. Volume orgânico cai 44% vs S6, mas Desktop passa a dominar (52%). SEO se destaca com 24% dos acessos. Dados consolidados pela dti.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>Volume cai (-44% vs S6). Desktop supera Mobile (52% vs 48%). SEO ganha peso (24% dos acessos). Pico noturno crescendo — perfil consolidado de uso.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>144</strong><span>page views</span></div>
+          <div class="metric"><strong>56</strong><span>cliques</span></div>
+          <div class="metric"><strong>78,9%</strong><span>bounce rate</span></div>
+          <div class="metric"><strong>01:37</strong><span>tempo médio</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#visao">Visão geral</a>
+      <a href="#horarios">Horários</a>
+      <a href="#canais">Canais</a>
+      <a href="#qualidade">Qualidade</a>
+      <a href="#formularios">Formulários</a>
+      <a href="#botoes">Botões</a>
+      <a href="#utms">Campanhas (UTM)</a>
+      <a href="#comparativo">Comparativo</a>
+      <a href="#consolidado">Consolidado 5 semanas</a>
+    </div>
+  </nav>
+
+  <!-- §1 VISÃO GERAL -->
+  <section id="visao">
+    <span class="section-eyebrow">§1 · Visão geral</span>
+    <h2>Terça concentra 19% do tráfego, distribuição equilibrada.</h2>
+    <p class="section-lead">Tráfego orgânico (sem UTMs) na LP da Copa entre 29 de junho e 5 de julho. Semana com Desktop dominando (52%) e SEO ganhando peso relativo.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><strong>144</strong><span class="label">Acessos</span></div>
+      <div class="kpi-card"><strong>56</strong><span class="label">Cliques</span></div>
+      <div class="kpi-card warn"><strong>78,9%</strong><span class="label">Bounce rate</span></div>
+      <div class="kpi-card alert"><strong>79,0%</strong><span class="label">Exit rate</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por dia da semana</p>
+      <div class="chart-container"><canvas id="chart-dias"></canvas></div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Terça foi o pico (27 PV, 19% da semana)</strong>, seguida por Qua/Sex empatadas em 22 PV. Domingo foi o pior dia (13 PV). Distribuição bem equilibrada ao longo da semana. <strong>Desktop dominou pela primeira vez</strong> — 52% vs 48% do Mobile.</p>
+    </div>
+  </section>
+
+  <!-- §2 HORÁRIOS -->
+  <section id="horarios">
+    <span class="section-eyebrow">§2 · Horários</span>
+    <h2>Pico às 9h, distribuição uniforme confirma uso continuado.</h2>
+    <p class="section-lead">Retorno ao padrão matinal — pico às 9h, com distribuição uniforme ao longo do dia.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por horário do dia</p>
+      <div class="chart-container"><canvas id="chart-horarios"></canvas></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-mini">
+        <div class="stat-value">9h</div>
+        <div class="stat-label">pico absoluto · 17 acessos (12% do dia)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">71%</div>
+        <div class="stat-label">tráfego em horário comercial (8h-18h)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">26</div>
+        <div class="stat-label">acessos noturnos (20h-05h)</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Uso comercial predominante:</strong> 71% do tráfego em horário de trabalho, com pico às 9h (12%). Perfil consistente com audiência corporativa — reforçado pela virada Desktop.</p>
+    </div>
+  </section>
+
+  <!-- §3 CANAIS -->
+  <section id="canais">
+    <span class="section-eyebrow">§3 · Canais de acesso</span>
+    <h2>SEO ganha peso: 24% dos acessos. Direct em 58%.</h2>
+    <p class="section-lead">Mudança positiva na composição: SEO passa a representar 24% dos acessos — nível mais alto até agora — e "Outros" cai pra 12%.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Distribuição por canal</p>
+      <div class="chart-container short"><canvas id="chart-canais"></canvas></div>
+    </div>
+
+    <div class="channels-row">
+      <div class="channel-mini">
+        <div class="channel-name">Direct</div>
+        <div class="channel-pct">58%</div>
+        <div class="channel-abs">83 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">SEO</div>
+        <div class="channel-pct">24%</div>
+        <div class="channel-abs">34 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Outros</div>
+        <div class="channel-pct">12%</div>
+        <div class="channel-abs">17 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Interno</div>
+        <div class="channel-pct">7%</div>
+        <div class="channel-abs">10 acessos</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §4 QUALIDADE -->
+  <section id="qualidade">
+    <span class="section-eyebrow">§4 · Qualidade dos canais</span>
+    <h2>Interno tem menor BR (44%), SEO ainda qualificado.</h2>
+    <p class="section-lead">Bounce e exit rate por canal. Interno tem BR baixíssimo (44%) — visitantes internos consomem mais páginas.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th class="num">Acessos</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Exit rate</th>
+            <th>Qualidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Interno</td>
+            <td class="num">10</td>
+            <td class="num">44,4%</td>
+            <td class="num">80,0%</td>
+            <td><span class="pill-good">Melhor BR</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">SEO</td>
+            <td class="num">34</td>
+            <td class="num">75,0%</td>
+            <td class="num">61,3%</td>
+            <td><span class="pill-mid">Qualificado</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Direct</td>
+            <td class="num">83</td>
+            <td class="num">86,4%</td>
+            <td class="num">87,5%</td>
+            <td><span class="pill-mid">Volume + Exit alto</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight good">
+      <p><strong>Interno tem o menor BR (44%)</strong>, indicando que visitantes internos navegam mais. SEO segue com boa qualidade (61,3% ER) mesmo com BR mais alto. Direct lidera volume (83) mas com Exit Rate elevado (87,5%).</p>
+    </div>
+  </section>
+
+  <!-- §5 FORMULÁRIOS -->
+  <section id="formularios">
+    <span class="section-eyebrow">§5 · Funil de formulários</span>
+    <h2>3 iniciaram, 2 concluíram (67%).</h2>
+    <p class="section-lead">Volume muito baixo, mas conversão dispara pra 67%. Zero erros.</p>
+
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="step-num">1 · Início</div>
+        <div class="step-value">3</div>
+        <div class="step-label">iniciaram o preenchimento</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-num">2 · Conclusão</div>
+        <div class="step-value">2</div>
+        <div class="step-label">conversões completas (67%)</div>
+      </div>
+      <div class="funnel-step error">
+        <div class="step-num">3 · Erros</div>
+        <div class="step-value">0</div>
+        <div class="step-label">nenhum erro técnico</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Volume baixo, conversão alta:</strong> apenas 3 pessoas iniciaram, mas 2 completaram — 67% conversão vs 50% na S5. Números baixos limitam leitura estatística, mas confirmam audiência intencional pós-Copa.</p>
+    </div>
+  </section>
+
+  <!-- §6 BOTÕES -->
+  <section id="botoes">
+    <span class="section-eyebrow">§6 · Botões & CTAs</span>
+    <h2>ENTRAR mantém liderança, BUSCAR e Atendimento sobem.</h2>
+    <p class="section-lead">ENTRAR (17) e CONCORDO (11) seguem no topo. BUSCAR e Atendimento aparecem em 3º — sinal de intenção comercial.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Cliques por botão (top 9)</p>
+      <div class="chart-container tall"><canvas id="chart-botoes"></canvas></div>
+    </div>
+
+    <div class="insight good">
+      <p><strong>Top 3 concentra 57% dos cliques:</strong> ENTRAR (17) · CONCORDO (11) · Quiz (4). BUSCAR e Atendimento juntos somam 11% — perfil comercial começa a se destacar.</p>
+    </div>
+  </section>
+
+  <!-- §7 UTM CAMPANHAS -->
+  <section id="utms">
+    <span class="section-eyebrow">§7 · Análise por UTM</span>
+    <h2>9 campanhas, 5 mil PVs. LinkedIn segue com melhor engajamento.</h2>
+    <p class="section-lead">Volume UTM cai pela metade (5.030 PVs) mantendo Instagram na liderança. LinkedIn Post Estático mantém qualidade acima da média.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Page views por campanha</p>
+      <div class="chart-container"><canvas id="chart-utms"></canvas></div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Campanha</th>
+            <th class="num">Page views</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+            <th class="num">Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Instagram · Vídeo Manifesto</td>
+            <td class="num">1.550</td>
+            <td class="num">95,7%</td>
+            <td class="num">04:00</td>
+            <td class="num">99,9%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Instagram · Vídeo 6s</td>
+            <td class="num">1.056</td>
+            <td class="num">96,1%</td>
+            <td class="num">06:28</td>
+            <td class="num">99,8%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">LinkedIn · Post Estático</td>
+            <td class="num">843</td>
+            <td class="num">79,5%</td>
+            <td class="num">07:22</td>
+            <td class="num">95,5%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Instagram · Post Estático A2</td>
+            <td class="num">750</td>
+            <td class="num">93,4%</td>
+            <td class="num">03:45</td>
+            <td class="num">99,7%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Instagram · Post Estático</td>
+            <td class="num">361</td>
+            <td class="num">93,6%</td>
+            <td class="num">05:46</td>
+            <td class="num">99,5%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">YouTube · Vídeo Manifesto</td>
+            <td class="num">314</td>
+            <td class="num">92,7%</td>
+            <td class="num">01:48</td>
+            <td class="num">77,2%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Instagram · Vídeo 15s</td>
+            <td class="num">103</td>
+            <td class="num">92,9%</td>
+            <td class="num">02:00</td>
+            <td class="num">99,3%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">LinkedIn · Vídeo 15s</td>
+            <td class="num">29</td>
+            <td class="num">96,4%</td>
+            <td class="num">01:00</td>
+            <td class="num">82,6%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">LinkedIn · Vídeo 6s</td>
+            <td class="num">23</td>
+            <td class="num">90,5%</td>
+            <td class="num">01:00</td>
+            <td class="num">100%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>Instagram concentra 75% das PVs UTM</strong> — Insta Vídeo Manifesto lidera com 1.550 (31%). LinkedIn Post Estático mantém melhor BR (79,5%) e melhor tempo médio (07:22). Volume UTM cai pela metade vs S5 sinalizando fim do arco Copa.</p>
+    </div>
+  </section>
+
+  <!-- §8 COMPARATIVO S4 vs S5 -->
+  <section id="comparativo">
+    <span class="section-eyebrow">§8 · Comparativo Semana 6 vs Semana 7</span>
+    <h2>Volume cai, tempo médio despenca (-65%).</h2>
+    <p class="section-lead">Comparativo direto entre as semanas 6 e 7 do tráfego orgânico (sem UTMs). Volume cai 43% e tempo médio cai 65% — sinal claro de audiência diferente.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th class="num">Semana 6 (22-28/06)</th>
+            <th class="num">Semana 7 (29/06-05/07)</th>
+            <th class="num">Variação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Page Views</td>
+            <td class="num">255</td>
+            <td class="num">144</td>
+            <td class="num delta-down">-43,5%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Link Clicks</td>
+            <td class="num">70</td>
+            <td class="num">56</td>
+            <td class="num delta-down">-20,0%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Bounce Rate</td>
+            <td class="num">70,0%</td>
+            <td class="num">78,9%</td>
+            <td class="num delta-down">+12,8% (piorou)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Tempo médio</td>
+            <td class="num">04:38</td>
+            <td class="num">01:37</td>
+            <td class="num delta-down">-65,1% (piorou)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card down">
+        <h4>Volume descendente</h4>
+        <div class="delta">-44%</div>
+        <p class="desc">Page views caíram de 255 pra 144. Consistente com o arco pós-Copa: quanto mais distante do evento, menor o tráfego orgânico.</p>
+      </div>
+      <div class="compare-card down">
+        <h4>Engajamento piora</h4>
+        <div class="delta">-3min Tempo</div>
+        <p class="desc">Tempo médio caiu de 04:38 pra 01:37 (-65%) e BR piorou 9 pontos. Audiência menos engajada — ou perfil de visitantes diferente.</p>
+      </div>
+    </div>
+
+    <div class="insight warn">
+      <p><strong>Leitura editorial:</strong> volume e engajamento cairam juntos. A S6 tinha 04:38 de tempo médio (audiência realmente engajada) e a S7 baixou pra 01:37 — perfil diferente entrando pós-Copa. Desktop passou a dominar e SEO ganhou peso — indicações de perfil corporativo.</p>
+    </div>
+  </section>
+
+  <!-- §9 CONSOLIDADO 5 SEMANAS -->
+  <section id="consolidado">
+    <span class="section-eyebrow">§9 · Consolidado 7 semanas</span>
+    <h2>7 semanas, 53,7 mil page views, 3 mil cliques.</h2>
+    <p class="section-lead">Tráfego total (orgânico + UTM) consolidado das 7 primeiras semanas de operação da Landing Page.</p>
+
+    <div class="total-card">
+      <h3>Operação acumulada · 18/05 a 05/07/2026</h3>
+      <div class="total-metrics-row">
+        <div class="total-metric">
+          <strong>53.724</strong>
+          <span>Page views totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>3.036</strong>
+          <span>Cliques totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>92,1%</strong>
+          <span>Bounce rate médio</span>
+        </div>
+        <div class="total-metric">
+          <strong>04:02</strong>
+          <span>Tempo médio</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th class="num">Page views</th>
+            <th class="num">Cliques</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">18-24 mai (Semana 1)</td>
+            <td class="num">4.499</td>
+            <td class="num">639</td>
+            <td class="num">85,6%</td>
+            <td class="num">02:17</td>
+          </tr>
+          <tr>
+            <td class="label-cell">25-31 mai (Semana 2)</td>
+            <td class="num">4.115</td>
+            <td class="num">279</td>
+            <td class="num">91,5%</td>
+            <td class="num">01:26</td>
+          </tr>
+          <tr>
+            <td class="label-cell">01-07 jun (Semana 3)</td>
+            <td class="num">8.778</td>
+            <td class="num">564</td>
+            <td class="num">90,4%</td>
+            <td class="num">05:39</td>
+          </tr>
+          <tr>
+            <td class="label-cell">08-14 jun (Semana 4)</td>
+            <td class="num">12.438</td>
+            <td class="num">618</td>
+            <td class="num">93,0%</td>
+            <td class="num">04:26</td>
+          </tr>
+          <tr>
+            <td class="label-cell">15-21 jun (Semana 5)</td>
+            <td class="num">11.401</td>
+            <td class="num">471</td>
+            <td class="num">94,1%</td>
+            <td class="num">03:12</td>
+          </tr>
+          <tr>
+            <td class="label-cell">22-28 jun (Semana 6)</td>
+            <td class="num">7.319</td>
+            <td class="num">271</td>
+            <td class="num">93,6%</td>
+            <td class="num">04:14</td>
+          </tr>
+          <tr>
+            <td class="label-cell">29 jun-05 jul (Semana 7)</td>
+            <td class="num">5.174</td>
+            <td class="num">194</td>
+            <td class="num">92,4%</td>
+            <td class="num">05:27</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label-cell">Total / Média</td>
+            <td class="num">53.724</td>
+            <td class="num">3.036</td>
+            <td class="num">92,1%</td>
+            <td class="num">04:02</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-wrap" style="margin-top: 24px;">
+      <p class="chart-title">Evolução de page views por semana (orgânico + UTM)</p>
+      <div class="chart-container short"><canvas id="chart-evolucao"></canvas></div>
+    </div>
+
+    <div class="insight warn">
+      <p><strong>Arco descendente pós-Copa:</strong> após pico da S4 (12,4K PVs), volume cai gradualmente — S5 11,4K · S6 7,3K · S7 5,2K. Total consolidado das 7 semanas: 53,7K PVs, com bounce médio de 92,1% e tempo médio de 04:02.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <h2>Semana 7 marca virada: Desktop domina, SEO cresce, volume cai. 53,7K PVs acumulados.</h2>
+    <p>A 7ª semana confirma o fim do arco Copa: Desktop passa a dominar (52%), SEO chega a 24% dos acessos e o volume total consolidado atinge 53,7K PVs. Perfil de audiência começa a se transformar — audiência corporativa ganha espaço.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script>
+    const COLORS = {
+      navy: '#003B5C',
+      blue: '#2DB5DF',
+      teal: '#27C7BD',
+      green: '#50E596',
+      greenDeep: '#2EC773',
+      amber: '#F5A623',
+      red: '#E55B5B',
+      muted: '#5B7280'
+    };
+
+    Chart.defaults.font.family = 'Arial, sans-serif';
+    Chart.defaults.color = COLORS.navy;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+    // §1 · Dias da semana (Seg pico com 100)
+    new Chart(document.getElementById('chart-dias'), {
+      type: 'bar',
+      data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        datasets: [{
+          label: 'Acessos',
+          data: [21, 27, 22, 20, 22, 19, 13],
+          backgroundColor: (ctx) => ctx.parsed && ctx.parsed.y === 27 ? COLORS.amber : COLORS.blue,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §2 · Horários — pico às 14h
+    new Chart(document.getElementById('chart-horarios'), {
+      type: 'line',
+      data: {
+        labels: ['0h','1h','2h','3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+        datasets: [{
+          label: 'Acessos',
+          data: [3, 2, 2, 1, 1, 2, 5, 9, 12, 17, 14, 11, 10, 9, 8, 7, 8, 6, 5, 4, 5, 4, 3, 2],
+          borderColor: COLORS.teal,
+          backgroundColor: 'rgba(39,199,189,.14)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §3 · Canais
+    new Chart(document.getElementById('chart-canais'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Direct', 'SEO', 'Outros', 'Interno'],
+        datasets: [{
+          data: [83, 34, 17, 10],
+          backgroundColor: [COLORS.navy, COLORS.teal, COLORS.blue, COLORS.amber],
+          borderColor: 'white',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, padding: 14 } }
+        },
+        cutout: '60%'
+      }
+    });
+
+    // §6 · Botões — top 9 do PDF 2
+    new Chart(document.getElementById('chart-botoes'), {
+      type: 'bar',
+      data: {
+        labels: ['ENTRAR', 'CONCORDO', 'Responder Quiz', 'BUSCAR', 'Atendimento', 'confira os jogos', 'Conhecer Soluções', 'Ver mais', 'Unspecified', 'Portal do Cliente'],
+        datasets: [{
+          label: 'Cliques',
+          data: [17, 11, 4, 3, 3, 2, 2, 2, 2, 1],
+          backgroundColor: (ctx) => {
+            const i = ctx.dataIndex;
+            // ENTRAR (0) e CONCORDO (2) = ruído
+            if (i === 0 || i === 2) return COLORS.muted;
+            return COLORS.blue;
+          },
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §7 · UTMs — 9 campanhas
+    new Chart(document.getElementById('chart-utms'), {
+      type: 'bar',
+      data: {
+        labels: ['Insta Vídeo\nManifesto', 'Insta Vídeo\n6s', 'LinkedIn Post\nEstático', 'Insta Post\nEstático A2', 'Insta Post\nEstático', 'YouTube Vídeo\nManifesto', 'Insta Vídeo\n15s', 'LinkedIn Vídeo\n15s', 'LinkedIn Vídeo\n6s'],
+        datasets: [{
+          label: 'Page Views',
+          data: [1550, 1056, 843, 750, 361, 314, 103, 29, 23],
+          backgroundColor: [COLORS.navy, COLORS.blue, COLORS.teal, COLORS.greenDeep, COLORS.amber, COLORS.red, COLORS.muted, COLORS.muted, COLORS.muted],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §9 · Evolução 5 semanas
+    new Chart(document.getElementById('chart-evolucao'), {
+      type: 'line',
+      data: {
+        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5', 'Semana 6', 'Semana 7'],
+        datasets: [{
+          label: 'Page Views (orgânico + UTM)',
+          data: [4499, 4115, 8778, 12438, 11401, 7319, 5174],
+          borderColor: COLORS.greenDeep,
+          backgroundColor: 'rgba(46,199,115,.14)',
+          fill: true,
+          tension: 0.30,
+          pointRadius: 6,
+          pointBackgroundColor: COLORS.greenDeep,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  </script>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/analytics-timeline.js" defer></script>
+</body>
+</html>
