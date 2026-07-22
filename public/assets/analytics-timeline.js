@@ -2,11 +2,11 @@
    MetLife Brasil — Analytics Timeline Component
    ------------------------------------------------------------
    Variante do performance-timeline.js para o hub /landing-page.
-   Mesmo padrão visual (reusa /assets/performance-timeline.css).
+   Suporta múltiplas campanhas (Copa · Seguro Vida) com paletas
+   invertidas por classe modificadora (is-campanha-{id}).
 
    Uso:
    1. Inclua /assets/performance-timeline.css no <head>
-      (reaproveitado - mesmas classes .performance-timeline)
    2. Inclua /assets/analytics-timeline.js antes de </body>
    3. Defina no <body>: data-week-id="week-N" (qual semana é a atual)
    ============================================================ */
@@ -30,6 +30,34 @@
     return node;
   }
 
+  function pillFor(entry, currentWeekId, kind /* 'published' | 'upcoming' */) {
+    const isCurrent = kind === 'published' && entry.id === currentWeekId;
+    const campanha = entry.campanha || 'copa';
+    const campanhaCls = ' is-campanha-' + campanha;
+
+    if (kind === 'upcoming') {
+      return el('span', {
+        class: 'pt-pill is-upcoming' + campanhaCls,
+        title: 'Estimado: ' + (entry.data_estimada || 'a definir'),
+        'aria-disabled': 'true'
+      },
+        el('span', { class: 'pt-pill-label' }, entry.label),
+        el('span', { class: 'pt-pill-period' }, entry.periodo)
+      );
+    }
+
+    const href = entry.arquivo || ('/landing-page/' + entry.id);
+    return el('a', {
+      class: 'pt-pill is-published' + (isCurrent ? ' is-current' : '') + campanhaCls,
+      href: href,
+      title: entry.label + ' · ' + entry.periodo,
+      'aria-current': isCurrent ? 'page' : false
+    },
+      el('span', { class: 'pt-pill-label' }, entry.label),
+      el('span', { class: 'pt-pill-period' }, entry.periodo)
+    );
+  }
+
   function renderTimeline(manifest, currentWeekId) {
     const wrap = el('nav', {
       class: 'performance-timeline',
@@ -42,34 +70,48 @@
       class: 'performance-timeline-label'
     }, 'Reports:'));
 
+    // Agrupa por campanha, mantendo ordem
     const semanas = (manifest.semanas || []).slice().sort((a, b) => a.ordem - b.ordem);
+    const futuras = (manifest.futuras || []).slice().sort((a, b) => a.ordem - b.ordem);
+    const campanhasMap = (manifest.campanhas || {});
+
+    // Agrupamento: ordem de aparição da campanha
+    const groups = [];
+    const groupMap = new Map();
     for (const s of semanas) {
-      const isCurrent = s.id === currentWeekId;
-      const href = '/landing-page/' + s.id;
-      const pill = el('a', {
-        class: 'pt-pill is-published' + (isCurrent ? ' is-current' : ''),
-        href: href,
-        title: s.label + ' · ' + s.periodo,
-        'aria-current': isCurrent ? 'page' : false
-      },
-        el('span', { class: 'pt-pill-label' }, s.label),
-        el('span', { class: 'pt-pill-period' }, s.periodo)
-      );
-      inner.appendChild(pill);
+      const c = s.campanha || 'copa';
+      if (!groupMap.has(c)) {
+        const grp = { campanha: c, meta: campanhasMap[c] || null, published: [], upcoming: [] };
+        groupMap.set(c, grp);
+        groups.push(grp);
+      }
+      groupMap.get(c).published.push(s);
+    }
+    for (const f of futuras) {
+      const c = f.campanha || 'copa';
+      if (!groupMap.has(c)) {
+        const grp = { campanha: c, meta: campanhasMap[c] || null, published: [], upcoming: [] };
+        groupMap.set(c, grp);
+        groups.push(grp);
+      }
+      groupMap.get(c).upcoming.push(f);
     }
 
-    const futuras = (manifest.futuras || []).slice().sort((a, b) => a.ordem - b.ordem);
-    for (const f of futuras) {
-      const pill = el('span', {
-        class: 'pt-pill is-upcoming',
-        title: 'Estimado: ' + (f.data_estimada || 'a definir'),
-        'aria-disabled': 'true'
-      },
-        el('span', { class: 'pt-pill-label' }, f.label),
-        el('span', { class: 'pt-pill-period' }, f.periodo)
-      );
-      inner.appendChild(pill);
-    }
+    const multiCampanha = groups.length > 1;
+
+    groups.forEach((grp, idx) => {
+      if (multiCampanha && idx > 0) {
+        inner.appendChild(el('span', { class: 'pt-group-sep', 'aria-hidden': 'true' }, '·'));
+      }
+      if (multiCampanha && grp.meta) {
+        inner.appendChild(el('span', {
+          class: 'pt-group-label is-campanha-' + grp.campanha,
+          title: grp.meta.descricao || ''
+        }, grp.meta.label || grp.campanha));
+      }
+      for (const s of grp.published) inner.appendChild(pillFor(s, currentWeekId, 'published'));
+      for (const f of grp.upcoming) inner.appendChild(pillFor(f, currentWeekId, 'upcoming'));
+    });
 
     wrap.appendChild(inner);
     return wrap;

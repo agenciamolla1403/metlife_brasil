@@ -125,3 +125,94 @@
   .pt-pill-label { font-size: 11.5px; }
   .pt-pill-period { font-size: 9.5px; }
 }
+
+/* ============================================================
+   MULTI-CAMPANHA · Analytics /landing-page
+   Suporte a boxes com paleta invertida por campanha.
+   ------------------------------------------------------------
+   Copa (padrão) usa navy #003B5C.
+   Seguro Vida usa amber #F5A623 (invertido).
+   ============================================================ */
+
+/* Separador entre grupos de campanha */
+.pt-group-sep {
+  display: inline-block;
+  color: rgba(0, 59, 92, 0.30);
+  font-size: 14px;
+  margin: 0 4px;
+  user-select: none;
+}
+
+/* Label da campanha antes do grupo de pills */
+.pt-group-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-right: 4px;
+  border: 1px solid transparent;
+}
+.pt-group-label.is-campanha-copa {
+  background: rgba(0, 59, 92, 0.08);
+  color: #003B5C;
+  border-color: rgba(0, 59, 92, 0.14);
+}
+.pt-group-label.is-campanha-seguro-vida {
+  background: rgba(245, 166, 35, 0.15);
+  color: #B85F00;
+  border-color: rgba(245, 166, 35, 0.32);
+}
+
+/* ===== Pills · Seguro Vida (paleta invertida) ===== */
+/* Published (clicável) */
+.pt-pill.is-campanha-seguro-vida.is-published {
+  background: #FFF7E8;
+  color: #B85F00;
+  border-color: rgba(245, 166, 35, 0.30);
+}
+.pt-pill.is-campanha-seguro-vida.is-published:hover {
+  background: rgba(245, 166, 35, 0.18);
+  border-color: rgba(245, 166, 35, 0.55);
+  transform: translateY(-1px);
+}
+
+/* Semana atual */
+.pt-pill.is-campanha-seguro-vida.is-current {
+  background: #F5A623;
+  color: #003B5C;
+  border-color: #F5A623;
+  box-shadow: 0 4px 12px rgba(245, 166, 35, 0.32);
+}
+.pt-pill.is-campanha-seguro-vida.is-current:hover {
+  background: #E09615;
+  border-color: #E09615;
+  transform: translateY(-1px);
+}
+.pt-pill.is-campanha-seguro-vida.is-current .pt-pill-period {
+  color: rgba(0, 59, 92, 0.75);
+  opacity: 1;
+}
+
+/* Em breve (dashed) */
+.pt-pill.is-campanha-seguro-vida.is-upcoming {
+  background: transparent;
+  color: rgba(184, 95, 0, 0.55);
+  border-color: rgba(245, 166, 35, 0.28);
+  border-style: dashed;
+  cursor: default;
+}
+.pt-pill.is-campanha-seguro-vida.is-upcoming .pt-pill-period {
+  opacity: 0.7;
+}
+
+/* Mobile: group label mais compacto */
+@media (max-width: 720px) {
+  .pt-group-label {
+    font-size: 9.5px;
+    padding: 3px 8px;
+  }
+}

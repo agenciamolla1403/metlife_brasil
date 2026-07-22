@@ -1,103 +1,29 @@
 {
-  "semanas": [
-    {
-      "id": "week-1",
-      "ordem": 1,
-      "label": "Semana 1",
-      "periodo": "18/05 a 24/05",
-      "data_publicacao": "2026-05-27",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-1"
+  "campanhas": {
+    "copa": {
+      "label": "LP Copa 2026",
+      "descricao": "Landing Page da Copa do Mundo 2026"
     },
-    {
-      "id": "week-2",
-      "ordem": 2,
-      "label": "Semana 2",
-      "periodo": "25/05 a 31/05",
-      "data_publicacao": "2026-06-03",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-2"
-    },
-    {
-      "id": "week-3",
-      "ordem": 3,
-      "label": "Semana 3",
-      "periodo": "01/06 a 07/06",
-      "data_publicacao": "2026-06-10",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-3"
-    },
-    {
-      "id": "week-4",
-      "ordem": 4,
-      "label": "Semana 4",
-      "periodo": "08/06 a 14/06",
-      "data_publicacao": "2026-06-16",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-4"
-    },
-    {
-      "id": "week-5",
-      "ordem": 5,
-      "label": "Semana 5",
-      "periodo": "15/06 a 21/06",
-      "data_publicacao": "2026-06-23",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-5"
-    },
-    {
-      "id": "week-6",
-      "ordem": 6,
-      "label": "Semana 6",
-      "periodo": "22/06 a 28/06",
-      "data_publicacao": "2026-06-30",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-6"
-    },
-    {
-      "id": "week-7",
-      "ordem": 7,
-      "label": "Semana 7",
-      "periodo": "29/06 a 05/07",
-      "data_publicacao": "2026-07-07",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-7"
-    },
-    {
-      "id": "week-8",
-      "ordem": 8,
-      "label": "Semana 8",
-      "periodo": "06/07 a 12/07",
-      "data_publicacao": "2026-07-14",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-8"
-    },
-    {
-      "id": "week-9",
-      "ordem": 9,
-      "label": "Semana 9",
-      "periodo": "13/07 a 19/07",
-      "data_publicacao": "2026-07-21",
-      "status": "publicado",
-      "arquivo": "/landing-page/week-9"
+    "seguro-vida": {
+      "label": "Seguro de Vida Individual",
+      "descricao": "Página institucional do produto Seguro de Vida Individual"
     }
+  },
+  "semanas": [
+    { "id": "week-1", "ordem": 1, "campanha": "copa", "label": "Semana 1", "periodo": "18/05 a 24/05", "data_publicacao": "2026-05-27", "status": "publicado", "arquivo": "/landing-page/week-1" },
+    { "id": "week-2", "ordem": 2, "campanha": "copa", "label": "Semana 2", "periodo": "25/05 a 31/05", "data_publicacao": "2026-06-03", "status": "publicado", "arquivo": "/landing-page/week-2" },
+    { "id": "week-3", "ordem": 3, "campanha": "copa", "label": "Semana 3", "periodo": "01/06 a 07/06", "data_publicacao": "2026-06-10", "status": "publicado", "arquivo": "/landing-page/week-3" },
+    { "id": "week-4", "ordem": 4, "campanha": "copa", "label": "Semana 4", "periodo": "08/06 a 14/06", "data_publicacao": "2026-06-16", "status": "publicado", "arquivo": "/landing-page/week-4" },
+    { "id": "week-5", "ordem": 5, "campanha": "copa", "label": "Semana 5", "periodo": "15/06 a 21/06", "data_publicacao": "2026-06-23", "status": "publicado", "arquivo": "/landing-page/week-5" },
+    { "id": "week-6", "ordem": 6, "campanha": "copa", "label": "Semana 6", "periodo": "22/06 a 28/06", "data_publicacao": "2026-06-30", "status": "publicado", "arquivo": "/landing-page/week-6" },
+    { "id": "week-7", "ordem": 7, "campanha": "copa", "label": "Semana 7", "periodo": "29/06 a 05/07", "data_publicacao": "2026-07-07", "status": "publicado", "arquivo": "/landing-page/week-7" },
+    { "id": "week-8", "ordem": 8, "campanha": "copa", "label": "Semana 8", "periodo": "06/07 a 12/07", "data_publicacao": "2026-07-14", "status": "publicado", "arquivo": "/landing-page/week-8" },
+    { "id": "week-9", "ordem": 9, "campanha": "copa", "label": "Semana 9", "periodo": "13/07 a 19/07", "data_publicacao": "2026-07-21", "status": "publicado", "arquivo": "/landing-page/week-9" },
+    { "id": "week-9-seguro-vida", "ordem": 10, "campanha": "seguro-vida", "label": "Semana 1", "periodo": "13/07 a 19/07", "data_publicacao": "2026-07-21", "status": "publicado", "arquivo": "/landing-page/week-9-seguro-vida" }
   ],
   "futuras": [
-    {
-      "id": "week-10",
-      "ordem": 10,
-      "label": "Semana 10",
-      "periodo": "20/07 a 26/07",
-      "data_estimada": "2026-07-28",
-      "status": "aguardando"
-    },
-    {
-      "id": "week-11",
-      "ordem": 11,
-      "label": "Semana 11",
-      "periodo": "27/07 a 02/08",
-      "data_estimada": "2026-08-04",
-      "status": "aguardando"
-    }
+    { "id": "week-10", "ordem": 11, "campanha": "copa", "label": "Semana 10", "periodo": "20/07 a 26/07", "data_estimada": "2026-07-28", "status": "aguardando" },
+    { "id": "week-11", "ordem": 12, "campanha": "copa", "label": "Semana 11", "periodo": "27/07 a 02/08", "data_estimada": "2026-08-04", "status": "aguardando" },
+    { "id": "week-10-seguro-vida", "ordem": 13, "campanha": "seguro-vida", "label": "Semana 2", "periodo": "20/07 a 26/07", "data_estimada": "2026-07-28", "status": "aguardando" }
   ]
 }

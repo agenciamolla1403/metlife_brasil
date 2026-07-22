@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics · Seguro de Vida Individual · Semana 1 · 13/07 a 19/07 · MetLife 2026</title>
+
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <link rel="stylesheet" href="/assets/footer.css" />
+  <link rel="stylesheet" href="/assets/performance-timeline.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --blue-soft: #7FD4EF;
+      --teal: #27C7BD;
+      --green: #50E596;
+      --green-soft: #A8F2C9;
+      --green-deep: #2EC773;
+      --red: #E55B5B;
+      --amber: #F5A623;
+      --light: #EEF6F8;
+      --white: #FFFFFF;
+      --text: #003B5C;
+      --muted: #5B7280;
+      --shadow: 0 18px 40px rgba(0, 59, 92, 0.12);
+      --shadow-lg: 0 24px 60px rgba(0, 59, 92, 0.18);
+      --radius: 22px;
+      --success: #50E596;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.55;
+    }
+
+    /* ===== HERO ===== */
+    header {
+      display: grid;
+      place-items: center;
+      padding: 80px 24px;
+      background: radial-gradient(circle at top right, rgba(80,229,150,.35), transparent 34%),
+                  linear-gradient(135deg, #EEF6F8 0%, #FFFFFF 100%);
+    }
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(45,181,223,.14);
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(80,229,150,.22);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(80,229,150,0); } }
+    h1 {
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1;
+      margin: 0 0 22px;
+      letter-spacing: -1.5px;
+    }
+    h1 .accent { color: var(--blue); }
+    .lead {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-card {
+      background: var(--navy);
+      color: white;
+      padding: 32px;
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin: 0 0 10px; font-size: 20px; color: white; }
+    .hero-card p { margin: 0; color: rgba(255,255,255,.85); }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: white;
+    }
+    .metric span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 80px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    section:nth-of-type(even) {
+      background: rgba(45,181,223,.04);
+      max-width: none;
+      padding-left: calc((100vw - 1180px) / 2 + 24px);
+      padding-right: calc((100vw - 1180px) / 2 + 24px);
+    }
+    @media (max-width: 1200px) {
+      section:nth-of-type(even) {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(45,181,223,.12);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(26px, 3.5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+    section .section-lead {
+      font-size: 16.5px;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 36px;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .kpi-card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .kpi-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .kpi-card.alert strong { color: var(--red); }
+    .kpi-card.warn strong { color: var(--amber); }
+    .kpi-card.good strong { color: var(--green-deep); }
+
+    .chart-wrap {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      margin-bottom: 24px;
+    }
+    .chart-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .chart-container { position: relative; height: 320px; }
+    .chart-container.tall { height: 380px; }
+    .chart-container.short { height: 220px; }
+
+    .insight {
+      background: white;
+      border-left: 4px solid var(--blue);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 14px rgba(0,59,92,.06);
+      margin-top: 24px;
+    }
+    .insight.alert { border-left-color: var(--red); }
+    .insight.warn { border-left-color: var(--amber); }
+    .insight.good { border-left-color: var(--green-deep); }
+    .insight strong { color: var(--navy); }
+    .insight p { margin: 0; font-size: 14.5px; color: var(--text); }
+
+    .channels-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .channel-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+    }
+    .channel-mini .channel-name {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .channel-mini .channel-pct {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .channel-mini .channel-abs {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      background: rgba(0,59,92,.04);
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: var(--navy);
+      border-bottom: 1px solid rgba(0,59,92,.08);
+    }
+    th.num, td.num { text-align: right; }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(0,59,92,.06);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    td.label-cell { font-weight: 700; }
+    tr.total-row td {
+      background: rgba(0,59,92,.04);
+      font-weight: 800;
+    }
+    .pill-bad { background: rgba(229,91,91,.14); color: #B12C2C; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-mid { background: rgba(245,166,35,.14); color: #8A5A0A; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .pill-good { background: rgba(80,229,150,.18); color: #1F8F4F; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+    .delta-up { color: var(--green-deep); font-weight: 700; }
+    .delta-down { color: var(--red); font-weight: 700; }
+
+    .funnel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .funnel-step {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      text-align: center;
+    }
+    .funnel-step .step-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .funnel-step .step-value {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .funnel-step .step-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .funnel-step.error .step-value { color: var(--green-deep); }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .compare-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+      border-top: 4px solid var(--muted);
+    }
+    .compare-card.up { border-top-color: var(--green-deep); }
+    .compare-card.down { border-top-color: var(--red); }
+    .compare-card h4 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+    }
+    .compare-card .delta {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .compare-card.up .delta { color: var(--green-deep); }
+    .compare-card.down .delta { color: var(--red); }
+    .compare-card .desc { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .stat-mini {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,59,92,.06);
+    }
+    .stat-mini .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-mini .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* TOTAL CARD - mesma classe corrigida do bug S72 */
+    .total-card {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: white;
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-lg);
+      margin-top: 12px;
+    }
+    .total-card h3 {
+      margin: 0 0 22px;
+      font-size: 20px;
+      color: white;
+    }
+    .total-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .total-metric {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+    }
+    .total-metric strong {
+      display: block;
+      font-size: 36px;
+      line-height: 1;
+      color: white;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .total-metric span {
+      color: rgba(255,255,255,.75);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    footer.site-footer {
+      padding: 56px 24px;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      margin-top: 0;
+    }
+    footer.site-footer h2 {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      font-size: clamp(22px, 2.6vw, 28px);
+      line-height: 1.25;
+      color: white;
+    }
+    footer.site-footer p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.78);
+      font-size: 16px;
+    }
+    .brand-footer-row {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.16);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-logo-footer { height: 24px; opacity: .9; }
+    .brand-footer-text { font-size: 12px; opacity: .7; margin: 0; }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .channels-row { grid-template-columns: repeat(2, 1fr); }
+      .funnel { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .total-metrics-row { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 56px 16px; }
+    }
+  
+    /* ===== INVERSÃO CAMPANHA SEGURO DE VIDA ===== */
+    body.campanha-seguro-vida {
+      --navy: #B85F00;
+      --navy-deep: #8F4700;
+      --text: #B85F00;
+      --shadow: 0 18px 40px rgba(184, 95, 0, 0.14);
+      --shadow-lg: 0 24px 60px rgba(184, 95, 0, 0.20);
+    }
+    body.campanha-seguro-vida header {
+      background: radial-gradient(circle at top right, rgba(245, 166, 35, .35), transparent 34%),
+                  linear-gradient(135deg, #FFF7E8 0%, #FFFFFF 100%);
+    }
+    body.campanha-seguro-vida h1 .accent { color: #003B5C; }
+    body.campanha-seguro-vida .eyebrow .dot { background: #003B5C; }
+    body.campanha-seguro-vida .kpi-card.good {
+      border-color: rgba(0, 59, 92, 0.35);
+      color: #003B5C;
+    }
+    body.campanha-seguro-vida .kpi-card.good strong { color: #003B5C; }
+    body.campanha-seguro-vida .compare-card.up { border-color: rgba(0, 59, 92, 0.35); }
+    body.campanha-seguro-vida .compare-card.up .delta { color: #003B5C; }
+    body.campanha-seguro-vida a.link-to-proposta,
+    body.campanha-seguro-vida a[href*="landing-page"]:not(.pt-pill) { color: #B85F00; }
+    body.campanha-seguro-vida .site-footer {
+      background: linear-gradient(135deg, #B85F00 0%, #8F4700 100%);
+    }
+
+  </style>
+</head>
+<body class="campanha-seguro-vida" data-week-id="week-9-seguro-vida">
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/landing-page">Analytics</a> &nbsp;/&nbsp; <strong>Seguro Vida Individual · Semana 1 · 13/07 a 19/07</strong></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span> Analytics · Seguro de Vida Individual · 13/07 a 19/07/2026</span>
+        <h1>1.197 page views orgânicos, <span class="accent">SEO domina</span> com 77% dos acessos.</h1>
+        <p class="lead">Primeiro report da página de Seguro de Vida Individual — tráfego orgânico, campanhas UTM, funil de formulário e fluxos de navegação. Página com volume 11× maior que a LP Copa, BR muito melhor (34,1% vs 90,2%) e 127 conversões completas no funil. Dados consolidados pela dti.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Recorte da semana</h3>
+        <p>Página institucional do produto Seguro de Vida Individual. SEO orgânico dominante (77%), Mobile lidera (58%), pico às 14h. 6 campanhas UTM ativas somam 19,1K PVs — sxkwd na liderança com 41%.</p>
+        <div class="metric-grid">
+          <div class="metric"><strong>1.197</strong><span>page views</span></div>
+          <div class="metric"><strong>1.025</strong><span>cliques</span></div>
+          <div class="metric"><strong>34,1%</strong><span>bounce rate</span></div>
+          <div class="metric"><strong>02:13</strong><span>tempo médio</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#visao">Visão geral</a>
+      <a href="#horarios">Horários</a>
+      <a href="#canais">Canais</a>
+      <a href="#qualidade">Qualidade</a>
+      <a href="#formularios">Formulários</a>
+      <a href="#botoes">Botões</a>
+      <a href="#utms">Campanhas (UTM)</a>
+      <a href="#comparativo">Comparativo</a>
+      <a href="#consolidado">Consolidado 5 semanas</a>
+    </div>
+  </nav>
+
+  <!-- §1 VISÃO GERAL -->
+  <section id="visao">
+    <span class="section-eyebrow">§1 · Visão geral</span>
+    <h2>Segunda concentra 21% e SEO responde por 77% dos acessos.</h2>
+    <p class="section-lead">Tráfego orgânico (sem UTMs) na página de Seguro de Vida Individual entre 13 e 19 de julho. Volume alto, BR baixo (34,1%), Mobile predomina.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card"><strong>1.197</strong><span class="label">Acessos</span></div>
+      <div class="kpi-card"><strong>1.025</strong><span class="label">Cliques</span></div>
+      <div class="kpi-card good"><strong>34,1%</strong><span class="label">Bounce rate</span></div>
+      <div class="kpi-card warn"><strong>58,7%</strong><span class="label">Exit rate</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por dia da semana</p>
+      <div class="chart-container"><canvas id="chart-dias"></canvas></div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Segunda foi o pico (246 PV, 21% da semana)</strong>, seguida por Ter (212) e Qua (205). Sábado foi o pior dia (80 PV). <strong>Mobile lidera</strong> com 58% vs 42% Desktop — perfil de audiência mais casual/pessoal, diferente da LP Copa que era corporativa.</p>
+    </div>
+  </section>
+
+  <!-- §2 HORÁRIOS -->
+  <section id="horarios">
+    <span class="section-eyebrow">§2 · Horários</span>
+    <h2>Pico às 14h, 74% em horário comercial.</h2>
+    <p class="section-lead">Pico vespertino às 14h com 89 acessos (7% do dia). Horário comercial concentra 74% do tráfego. Volume noturno relevante (196 acessos entre 20h-05h).</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Acessos por horário do dia</p>
+      <div class="chart-container"><canvas id="chart-horarios"></canvas></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-mini">
+        <div class="stat-value">14h</div>
+        <div class="stat-label">pico absoluto · 89 acessos (7% do dia)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">74%</div>
+        <div class="stat-label">tráfego em horário comercial (8h-18h)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-value">196</div>
+        <div class="stat-label">acessos noturnos (20h-05h)</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Uso comercial e noturno balanceado:</strong> 74% no comercial e 16% noturno. Perfil que consulta produto de seguro fora do expediente também — indica pesquisa pessoal, não apenas B2B.</p>
+    </div>
+  </section>
+
+  <!-- §3 CANAIS -->
+  <section id="canais">
+    <span class="section-eyebrow">§3 · Canais de acesso</span>
+    <h2>SEO domina absolutamente com 77% dos acessos.</h2>
+    <p class="section-lead">SEO responde por 77% do tráfego — 918 acessos. Direct fica em 12% (147). Interno em 8% (97). Perfil de descoberta orgânica muito forte.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Distribuição por canal</p>
+      <div class="chart-container short"><canvas id="chart-canais"></canvas></div>
+    </div>
+
+    <div class="channels-row">
+      <div class="channel-mini">
+        <div class="channel-name">SEO</div>
+        <div class="channel-pct">77%</div>
+        <div class="channel-abs">918 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Direct</div>
+        <div class="channel-pct">12%</div>
+        <div class="channel-abs">147 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Interno</div>
+        <div class="channel-pct">8%</div>
+        <div class="channel-abs">97 acessos</div>
+      </div>
+      <div class="channel-mini">
+        <div class="channel-name">Outros</div>
+        <div class="channel-pct">3%</div>
+        <div class="channel-abs">34 acessos</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §4 QUALIDADE -->
+  <section id="qualidade">
+    <span class="section-eyebrow">§4 · Qualidade dos canais</span>
+    <h2>SEO tem melhor qualidade (BR 22,8%). Todos os canais performam bem.</h2>
+    <p class="section-lead">Bounce e exit rate por canal. SEO tem o melhor BR (22,8%) — tráfego super qualificado. Direct e Interno também com BR abaixo de 75%.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th class="num">Acessos</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Exit rate</th>
+            <th>Qualidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">SEO</td>
+            <td class="num">918</td>
+            <td class="num">22,8%</td>
+            <td class="num">57,7%</td>
+            <td><span class="pill-good">Melhor BR + Volume</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Direct</td>
+            <td class="num">147</td>
+            <td class="num">45,3%</td>
+            <td class="num">58,9%</td>
+            <td><span class="pill-good">Qualificado</span></td>
+          </tr>
+          <tr>
+            <td class="label-cell">Interno</td>
+            <td class="num">97</td>
+            <td class="num">73,5%</td>
+            <td class="num">67,0%</td>
+            <td><span class="pill-mid">Intermediária</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight good">
+      <p><strong>SEO orgânico é a estrela dessa página:</strong> 918 acessos com BR de apenas 22,8% — visitantes chegando via busca já estão super interessados no produto. Direct também tem qualidade excelente (BR 45,3%). Interno com performance intermediária mas ainda saudável (73,5%).</p>
+    </div>
+  </section>
+
+  <!-- §5 FORMULÁRIOS -->
+  <section id="formularios">
+    <span class="section-eyebrow">§5 · Funil de formulários</span>
+    <h2>280 iniciaram, 127 concluíram (45% conversão).</h2>
+    <p class="section-lead">Funil de conversão orgânico com performance excelente: 45% de conversão end-to-end e 0 erros no envio.</p>
+
+    <div class="funnel">
+      <div class="funnel-step">
+        <div class="step-num">1 · Início</div>
+        <div class="step-value">280</div>
+        <div class="step-label">iniciaram o preenchimento</div>
+      </div>
+      <div class="funnel-step">
+        <div class="step-num">2 · Conclusão</div>
+        <div class="step-value">127</div>
+        <div class="step-label">conversões completas (45%)</div>
+      </div>
+      <div class="funnel-step error">
+        <div class="step-num">3 · Erros</div>
+        <div class="step-value">0</div>
+        <div class="step-label">nenhum erro técnico</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Funil orgânico entrega 127 conversões:</strong> 45% de conclusão é uma taxa muito saudável — orgânico é o canal de conversão real aqui, oposto ao que vemos no LP Copa. UTMs geram 164 starts com 0 conversões (leitura importante pra ajustar landing dessas campanhas).</p>
+    </div>
+  </section>
+
+  <!-- §6 BOTÕES -->
+  <section id="botoes">
+    <span class="section-eyebrow">§6 · Botões & CTAs</span>
+    <h2>ENTRAR e CONCORDO no topo, cauda comercial ativa.</h2>
+    <p class="section-lead">1.025 cliques distribuídos entre botões comerciais (Cotação, Coberturas, Apólice, Benefícios) e navegação (ENTRAR, CONCORDO).</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Cliques por botão (top 9)</p>
+      <div class="chart-container tall"><canvas id="chart-botoes"></canvas></div>
+    </div>
+
+    <div class="insight good">
+      <p><strong>Cauda comercial forte:</strong> Top 3 concentra 36% dos cliques. Solicitar Cotação (56), Coberturas_+ (36), Apólice_+ (35) e Conferir Benefícios (33) somam 160 cliques — indicadores claros de intenção comercial. ENTRAR (168) sinaliza clientes existentes buscando o portal.</p>
+    </div>
+  </section>
+
+  <!-- §7 UTM CAMPANHAS -->
+  <section id="utms">
+    <span class="section-eyebrow">§7 · Análise por UTM</span>
+    <h2>6 campanhas, 19.110 PVs. sxkwd lidera com 41% de share.</h2>
+    <p class="section-lead">Volume UTM alto (19.110 PVs). Campanhas com códigos alfanuméricos — sxkwd (7.810), sesm4 (6.555) e s3vdw (2.361) somam 87% do share. Todas 100% Mobile.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Page views por campanha</p>
+      <div class="chart-container"><canvas id="chart-utms"></canvas></div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Campanha</th>
+            <th class="num">Page views</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+            <th class="num">Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">sxkwd</td>
+            <td class="num">7.810</td>
+            <td class="num">92,6%</td>
+            <td class="num">04:22</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label-cell">sesm4</td>
+            <td class="num">6.555</td>
+            <td class="num">96,2%</td>
+            <td class="num">02:38</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label-cell">s3vdw</td>
+            <td class="num">2.361</td>
+            <td class="num">94,0%</td>
+            <td class="num">04:30</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label-cell">sf5pt</td>
+            <td class="num">1.320</td>
+            <td class="num">78,1%</td>
+            <td class="num">08:46</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label-cell">stmt7</td>
+            <td class="num">605</td>
+            <td class="num">85,7%</td>
+            <td class="num">01:51</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label-cell">s47y3</td>
+            <td class="num">459</td>
+            <td class="num">75,2%</td>
+            <td class="num">10:37</td>
+            <td class="num">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight">
+      <p><strong>Top 2 (sxkwd + sesm4) somam 75% do share UTM:</strong> 14.365 PVs entre as duas maiores. s47y3 tem o menor volume (459 PVs) mas o melhor BR (75,2%) e o maior tempo médio (10:37) — perfil qualificado apesar do volume baixo. Todo o tráfego UTM é 100% Mobile.</p>
+    </div>
+  </section>
+
+  <!-- §8 COMPARATIVO S4 vs S5 -->
+  <section id="comparativo">
+    <span class="section-eyebrow">§8 · Fluxos de navegação</span>
+    <h2>Homepage e /individual são as principais portas de entrada.</h2>
+    <p class="section-lead">Análise dos fluxos: seções de origem que trazem tráfego pra Seguro de Vida Individual e seções de destino após a visita.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Direção</th>
+            <th>Seção</th>
+            <th class="num">Peso</th>
+            <th class="num">Leitura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Entrada</td>
+            <td>homepage</td>
+            <td class="num">Alto</td>
+            <td class="num">Principal porta de entrada</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Entrada</td>
+            <td>individual</td>
+            <td class="num">Alto</td>
+            <td class="num">Navegação dentro do site</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Entrada</td>
+            <td>suporte · blog · política-de-privacidade</td>
+            <td class="num">Médio</td>
+            <td class="num">Fluxo lateral</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Saída</td>
+            <td>individual</td>
+            <td class="num">Alto</td>
+            <td class="num">Continuação do funil (produto)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Saída</td>
+            <td>suporte · homepage</td>
+            <td class="num">Médio</td>
+            <td class="num">Retorno pra navegação primária</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Saída</td>
+            <td>metlife · empresas</td>
+            <td class="num">Baixo</td>
+            <td class="num">Interesse em outros produtos</td>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card up">
+        <h4>Origem principal</h4>
+        <div class="delta">/individual</div>
+        <p class="desc">Principal página de entrada é /individual — visitantes que já estão navegando o site (interesse pré-existente).</p>
+      </div>
+      <div class="compare-card up">
+        <h4>Destino principal</h4>
+        <div class="delta">/seguro-de-vida</div>
+        <p class="desc">Principal saída fica dentro do próprio produto — leitor continua no funil de individual/seguro-de-vida.</p>
+      </div>
+    </div>
+
+    <div class="insight">
+      <p><strong>Leitura editorial:</strong> os fluxos mostram que a página funciona bem como hub interno — visitantes chegam via SEO ou navegação, exploram outras páginas do produto (individual/seguro-de-vida) e retornam pra suporte/homepage. Sinal de que a página tá bem integrada à jornada digital do cliente.</p>
+    </div>
+  </section>
+
+  <!-- §9 CONSOLIDADO 5 SEMANAS -->
+  <section id="consolidado">
+    <span class="section-eyebrow">§9 · Consolidado 1 semana</span>
+    <h2>Semana 1: 20,3 mil page views, 1,5 mil cliques.</h2>
+    <p class="section-lead">Tráfego total (orgânico + UTM) da 1ª semana de operação da página de Seguro de Vida Individual. Base pra evolução futura.</p>
+
+    <div class="total-card">
+      <h3>Operação · 13/07 a 19/07/2026 (1 semana)</h3>
+      <div class="total-metrics-row">
+        <div class="total-metric">
+          <strong>20.307</strong>
+          <span>Page views totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>1.502</strong>
+          <span>Cliques totais</span>
+        </div>
+        <div class="total-metric">
+          <strong>89,3%</strong>
+          <span>Bounce rate médio</span>
+        </div>
+        <div class="total-metric">
+          <strong>04:57</strong>
+          <span>Tempo médio</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 24px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th class="num">Page views</th>
+            <th class="num">Cliques</th>
+            <th class="num">Bounce rate</th>
+            <th class="num">Tempo médio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">13-19 jul (Semana 1)</td>
+            <td class="num">20.307</td>
+            <td class="num">1.502</td>
+            <td class="num">89,3%</td>
+            <td class="num">04:57</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label-cell">Total / Média</td>
+            <td class="num">20.307</td>
+            <td class="num">1.502</td>
+            <td class="num">89,3%</td>
+            <td class="num">04:57</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-wrap" style="margin-top: 24px;">
+      <p class="chart-title">Evolução de page views por semana (orgânico + UTM)</p>
+      <div class="chart-container short"><canvas id="chart-evolucao"></canvas></div>
+    </div>
+
+    <div class="insight warn">
+      <p><strong>Base sólida da 1ª semana:</strong> 20,3K PVs total (orgânico + UTM) — volume que rivaliza com o pico da LP Copa. Nas próximas semanas teremos o comparativo evolutivo. Se o padrão de qualidade se mantiver, essa página tem potencial de virar principal canal digital de aquisição do produto.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <h2>Primeira semana do Seguro de Vida Individual: 20,3K PVs, 45% conversão orgânica.</h2>
+    <p>A página de Seguro de Vida Individual estreia com números fortes: 1.197 PVs orgânicos com BR de apenas 34,1% e 127 conversões completas no formulário. As 6 campanhas UTM ativas somam 19,1K PVs — sxkwd na liderança. Página tem perfil de produto permanente, muito diferente da LP temporária de Copa — base sólida pra crescer nas próximas semanas.</p>
+    <div class="brand-footer-row">
+      <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+      <p class="brand-footer-text">Agência Molla</p>
+    </div>
+  </footer>
+
+  <script>
+    const COLORS = {
+      navy: '#003B5C',
+      blue: '#2DB5DF',
+      teal: '#27C7BD',
+      green: '#50E596',
+      greenDeep: '#2EC773',
+      amber: '#F5A623',
+      red: '#E55B5B',
+      muted: '#5B7280'
+    };
+
+    Chart.defaults.font.family = 'Arial, sans-serif';
+    Chart.defaults.color = COLORS.navy;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+    // §1 · Dias da semana (Seg pico com 100)
+    new Chart(document.getElementById('chart-dias'), {
+      type: 'bar',
+      data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        datasets: [{
+          label: 'Acessos',
+          data: [246, 212, 205, 178, 170, 80, 106],
+          backgroundColor: (ctx) => ctx.parsed && ctx.parsed.y === 246 ? COLORS.amber : COLORS.blue,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §2 · Horários — pico às 14h
+    new Chart(document.getElementById('chart-horarios'), {
+      type: 'line',
+      data: {
+        labels: ['0h','1h','2h','3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+        datasets: [{
+          label: 'Acessos',
+          data: [12, 8, 6, 5, 4, 6, 15, 32, 55, 68, 78, 82, 84, 89, 85, 78, 70, 60, 45, 32, 40, 30, 20, 15],
+          borderColor: COLORS.teal,
+          backgroundColor: 'rgba(39,199,189,.14)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §3 · Canais
+    new Chart(document.getElementById('chart-canais'), {
+      type: 'doughnut',
+      data: {
+        labels: ['SEO', 'Direct', 'Interno', 'Outros'],
+        datasets: [{
+          data: [918, 147, 97, 34],
+          backgroundColor: [COLORS.navy, COLORS.teal, COLORS.blue, COLORS.amber],
+          borderColor: 'white',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, padding: 14 } }
+        },
+        cutout: '60%'
+      }
+    });
+
+    // §6 · Botões — top 9 do PDF 2
+    new Chart(document.getElementById('chart-botoes'), {
+      type: 'bar',
+      data: {
+        labels: ['ENTRAR', 'CONCORDO', 'Conferir soluções', 'Solicitar Cotação', 'Unspecified', 'Coberturas_+', 'Apólice_+', 'Conferir Benefícios', 'Ver mais', 'Para Você'],
+        datasets: [{
+          label: 'Cliques',
+          data: [168, 120, 84, 56, 44, 36, 35, 33, 28, 27],
+          backgroundColor: (ctx) => {
+            const i = ctx.dataIndex;
+            // ENTRAR (0) e CONCORDO (2) = ruído
+            if (i === 0 || i === 2) return COLORS.muted;
+            return COLORS.blue;
+          },
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §7 · UTMs — 9 campanhas
+    new Chart(document.getElementById('chart-utms'), {
+      type: 'bar',
+      data: {
+        labels: ['sxkwd', 'sesm4', 's3vdw', 'sf5pt', 'stmt7', 's47y3'],
+        datasets: [{
+          label: 'Page Views',
+          data: [7810, 6555, 2361, 1320, 605, 459],
+          backgroundColor: [COLORS.navy, COLORS.blue, COLORS.teal, COLORS.greenDeep, COLORS.amber, COLORS.red, COLORS.muted, COLORS.muted, COLORS.muted],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // §9 · Evolução 5 semanas
+    new Chart(document.getElementById('chart-evolucao'), {
+      type: 'line',
+      data: {
+        labels: ['Semana 1 (13-19 jul)'],
+        datasets: [{
+          label: 'Page Views (orgânico + UTM)',
+          data: [20307],
+          borderColor: COLORS.greenDeep,
+          backgroundColor: 'rgba(46,199,115,.14)',
+          fill: true,
+          tension: 0.30,
+          pointRadius: 6,
+          pointBackgroundColor: COLORS.greenDeep,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, grid: { color: 'rgba(0,59,92,.06)' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  </script>
+
+  <script src="/assets/header.js"></script>
+  <script src="/assets/analytics-timeline.js" defer></script>
+</body>
+</html>
