@@ -41,6 +41,10 @@
       class: 'performance-timeline-label'
     }, 'Hub Elemidia:'));
 
+    // Grupo único: todas as pills num wrapper .pt-group pra funcionar
+    // com o layout grid 2col e ganhar carrossel horizontal isolado.
+    const group = el('div', { class: 'pt-group' });
+
     // Propostas primeiro (pills com classe is-proposta)
     const propostas = (manifest.propostas || []).slice().sort((a, b) => a.ordem - b.ordem);
     for (const p of propostas) {
@@ -55,7 +59,7 @@
         el('span', { class: 'pt-pill-label' }, p.label),
         el('span', { class: 'pt-pill-period' }, p.periodo)
       );
-      inner.appendChild(pill);
+      group.appendChild(pill);
     }
 
     // Checkings (pills com classe is-checking)
@@ -72,7 +76,7 @@
         el('span', { class: 'pt-pill-label' }, c.label),
         el('span', { class: 'pt-pill-period' }, c.periodo)
       );
-      inner.appendChild(pill);
+      group.appendChild(pill);
     }
 
     const futuras = (manifest.futuras || []).slice().sort((a, b) => a.ordem - b.ordem);
@@ -85,8 +89,10 @@
         el('span', { class: 'pt-pill-label' }, f.label),
         el('span', { class: 'pt-pill-period' }, f.periodo)
       );
-      inner.appendChild(pill);
+      group.appendChild(pill);
     }
+
+    inner.appendChild(group);
 
     wrap.appendChild(inner);
     return wrap;

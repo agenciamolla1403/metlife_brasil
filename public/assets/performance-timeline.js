@@ -45,6 +45,10 @@
       class: 'performance-timeline-label'
     }, 'Reports:'));
 
+    // Grupo único: todas as pills num wrapper .pt-group pra funcionar
+    // com o layout grid 2col e ganhar carrossel horizontal isolado.
+    const group = el('div', { class: 'pt-group is-campanha-copa' });
+
     // Pills das semanas publicadas (clicáveis)
     const semanas = (manifest.semanas || []).slice().sort((a, b) => a.ordem - b.ordem);
     for (const s of semanas) {
@@ -59,7 +63,7 @@
         el('span', { class: 'pt-pill-label' }, s.label),
         el('span', { class: 'pt-pill-period' }, s.periodo)
       );
-      inner.appendChild(pill);
+      group.appendChild(pill);
     }
 
     // Pills das futuras (desabilitadas)
@@ -73,8 +77,10 @@
         el('span', { class: 'pt-pill-label' }, f.label),
         el('span', { class: 'pt-pill-period' }, f.periodo)
       );
-      inner.appendChild(pill);
+      group.appendChild(pill);
     }
+
+    inner.appendChild(group);
 
     wrap.appendChild(inner);
     return wrap;
