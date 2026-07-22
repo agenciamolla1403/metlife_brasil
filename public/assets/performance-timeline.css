@@ -132,7 +132,7 @@
    Suporte a boxes com paleta invertida por campanha.
    ------------------------------------------------------------
    Copa (padrão) usa navy #003B5C.
-   Seguro Vida usa verde (#50E596 / #2EC773) — tematicamente
+   Seguro Vida usa verde (#01444C / #01444C) — tematicamente
    ligado a saúde/vida.
    ============================================================ */
 
@@ -164,46 +164,46 @@
   border-color: rgba(0, 59, 92, 0.14);
 }
 .pt-group-label.is-campanha-seguro-vida {
-  background: rgba(80, 229, 150, 0.20);
-  color: #1F8F4F;
-  border-color: rgba(46, 199, 115, 0.34);
+  background: rgba(1, 68, 76, 0.20);
+  color: #012E33;
+  border-color: rgba(1, 68, 76, 0.34);
 }
 
 /* ===== Pills · Seguro Vida (paleta invertida em verde) ===== */
 /* Published (clicavel) */
 .pt-pill.is-campanha-seguro-vida.is-published {
-  background: #F0FBF5;
-  color: #1F8F4F;
-  border-color: rgba(46, 199, 115, 0.30);
+  background: #E8F1F2;
+  color: #012E33;
+  border-color: rgba(1, 68, 76, 0.30);
 }
 .pt-pill.is-campanha-seguro-vida.is-published:hover {
-  background: rgba(80, 229, 150, 0.20);
-  border-color: rgba(46, 199, 115, 0.55);
+  background: rgba(1, 68, 76, 0.20);
+  border-color: rgba(1, 68, 76, 0.55);
   transform: translateY(-1px);
 }
 
 /* Semana atual */
 .pt-pill.is-campanha-seguro-vida.is-current {
-  background: #50E596;
-  color: #003B5C;
-  border-color: #50E596;
-  box-shadow: 0 4px 12px rgba(80, 229, 150, 0.40);
+  background: #01444C;
+  color: white;
+  border-color: #01444C;
+  box-shadow: 0 4px 12px rgba(1, 68, 76, 0.28);
 }
 .pt-pill.is-campanha-seguro-vida.is-current:hover {
-  background: #2EC773;
-  border-color: #2EC773;
+  background: #012E33;
+  border-color: #012E33;
   transform: translateY(-1px);
 }
 .pt-pill.is-campanha-seguro-vida.is-current .pt-pill-period {
-  color: rgba(0, 59, 92, 0.75);
+  color: rgba(255, 255, 255, 0.88);
   opacity: 1;
 }
 
 /* Em breve (dashed) */
 .pt-pill.is-campanha-seguro-vida.is-upcoming {
   background: transparent;
-  color: rgba(31, 143, 79, 0.55);
-  border-color: rgba(46, 199, 115, 0.28);
+  color: rgba(1, 46, 51, 0.55);
+  border-color: rgba(1, 68, 76, 0.28);
   border-style: dashed;
   cursor: default;
 }
