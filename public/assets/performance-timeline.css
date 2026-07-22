@@ -1,16 +1,11 @@
 /* ============================================================
    MetLife Brasil — Performance Timeline (CSS)
-   Sticky abaixo do header global, scroll lateral em mobile,
-   pills com 3 estados: publicado · current · em breve.
+   Rola junto com a página (não sticky), com carrossel horizontal
+   por campanha quando as pills ultrapassam o container.
    ============================================================ */
 
 .performance-timeline {
-  position: sticky;
-  top: var(--mlh-header-h, 60px);
-  z-index: 25;
   background: rgba(238, 246, 248, 0.96);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 59, 92, 0.08);
 }
 
@@ -36,15 +31,23 @@
   align-self: center;
 }
 
-/* Cada grupo de campanha ocupa a coluna 2 e vira uma linha inteira */
+/* Cada grupo de campanha ocupa a coluna 2 e vira uma linha inteira
+   com carrossel horizontal quando as pills ultrapassam a largura. */
 .pt-group {
   grid-column: 2;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   align-items: center;
   min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  padding-bottom: 2px; /* espaço opcional pra sombra dos hovers */
 }
+.pt-group::-webkit-scrollbar { display: none; }
 
 .pt-pill {
   display: inline-flex;
@@ -118,11 +121,8 @@
   text-transform: none;
 }
 
-/* Mobile: sticky NÃO em mobile (regra geral do projeto, iOS Safari bug) */
+/* Mobile: paddings e gaps compactos */
 @media (max-width: 760px) {
-  .performance-timeline {
-    position: static;
-  }
   .performance-timeline-inner {
     padding: 8px 16px;
     column-gap: 8px;
