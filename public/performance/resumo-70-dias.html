@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/auth.js"></script>
+  <link rel="stylesheet" href="/assets/header.css" />
+  <link rel="stylesheet" href="/assets/breadcrumb.css" />
+  <title>Performance · Resumo executivo · 70 dias · MetLife 2026</title>
+  <style>
+    :root {
+      --navy: #003B5C;
+      --navy-deep: #002940;
+      --blue: #2DB5DF;
+      --green: #50E596;
+      --amber: #F5A623;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--navy-deep);
+      color: white;
+      line-height: 1.32;
+    }
+
+    /* Container do briefing: ocupa a tela toda descontando header + breadcrumb */
+    .screen {
+      /* Header ~60px + breadcrumb ~42px */
+      height: calc(100dvh - var(--mlh-header-h, 60px) - 42px);
+      display: grid;
+      grid-template-rows: 1fr auto auto;
+      gap: clamp(10px, 1.7vh, 22px);
+      padding: clamp(16px, 2.6vh, 34px) clamp(20px, 3.2vw, 54px);
+      background:
+        radial-gradient(circle at 88% 8%, rgba(80,229,150,.18), transparent 42%),
+        radial-gradient(circle at 4% 92%, rgba(45,181,223,.16), transparent 44%),
+        linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .screen::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+    .screen > * { position: relative; z-index: 1; }
+
+    /* ===== MIOLO ===== */
+    .main {
+      display: grid; grid-template-columns: 1fr 1.02fr;
+      gap: clamp(18px, 2.6vw, 44px); align-items: center; min-height: 0;
+    }
+    .kicker {
+      display: inline-block; font-size: clamp(9.5px, 1.25vh, 11.5px); font-weight: 800;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: var(--green); background: rgba(80,229,150,.14);
+      padding: 5px 12px; border-radius: 999px; margin-bottom: clamp(8px, 1.5vh, 16px);
+    }
+    h1 {
+      font-size: clamp(22px, 3.6vh, 40px); line-height: 1.03; letter-spacing: -1.4px;
+      margin: 0 0 clamp(12px, 2.4vh, 26px); max-width: 15ch;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero-pair { display: flex; align-items: flex-end; gap: clamp(10px, 1.4vw, 20px); flex-wrap: wrap; }
+    .hp-before .cap, .hp-after .cap {
+      display: block; font-size: clamp(9px, 1.15vh, 11px); font-weight: 800;
+      text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px;
+    }
+    .hp-before .cap { color: rgba(255,255,255,.45); }
+    .hp-after .cap { color: var(--green); }
+    .hp-before .val {
+      font-size: clamp(21px, 3vh, 34px); font-weight: 700;
+      color: rgba(255,255,255,.42); letter-spacing: -1px; line-height: 1;
+    }
+    .hp-arrow { font-size: clamp(20px, 2.7vh, 30px); color: var(--green); font-weight: 900; line-height: 1; padding-bottom: 3px; }
+    .hp-after .val {
+      font-size: clamp(46px, 8.4vh, 96px); font-weight: 900;
+      color: white; letter-spacing: -3.5px; line-height: .88;
+    }
+    .hp-sub { margin: clamp(8px, 1.5vh, 15px) 0 0; font-size: clamp(12px, 1.6vh, 15px); color: rgba(255,255,255,.7); }
+    .hp-chips { display: flex; gap: 7px; flex-wrap: wrap; margin-top: clamp(8px, 1.4vh, 14px); }
+    .chip {
+      font-size: clamp(10px, 1.3vh, 12.5px); font-weight: 800;
+      padding: 6px 12px; border-radius: 999px; background: var(--green); color: var(--navy);
+    }
+    .chip.ghost { background: rgba(255,255,255,.1); color: white; border: 1px solid rgba(255,255,255,.18); }
+
+    /* ===== PAINEL LABORATÓRIO ===== */
+    .lab {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      padding: clamp(13px, 2vh, 22px) clamp(14px, 1.7vw, 24px);
+    }
+    .lab-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      font-size: clamp(9.5px, 1.2vh, 11.5px); font-weight: 800;
+      text-transform: uppercase; letter-spacing: .8px; color: rgba(255,255,255,.55);
+      margin-bottom: clamp(9px, 1.5vh, 14px);
+    }
+    .lab-nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(8px, 1.2vw, 16px); margin-bottom: clamp(10px, 1.7vh, 16px); }
+    .lab-num b {
+      display: block; font-size: clamp(22px, 3.4vh, 36px); font-weight: 900;
+      letter-spacing: -1.4px; line-height: 1; color: var(--green); margin-bottom: 4px;
+    }
+    .lab-num span {
+      display: block; font-size: clamp(9px, 1.15vh, 11px); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px; color: rgba(255,255,255,.6);
+    }
+    .lab-chart { position: relative; }
+    .lab-chart svg { display: block; width: 100%; height: clamp(42px, 7.4vh, 78px); }
+    .rail {
+      display: grid; grid-template-columns: 22.2% 22.2% 23.3% 32.3%;
+      margin-top: 7px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 7px;
+    }
+    .rail div { position: relative; padding-left: 9px; }
+    .rail div::before {
+      content: ""; position: absolute; left: 0; top: -8px;
+      width: 2px; height: 6px; background: rgba(255,255,255,.35); border-radius: 2px;
+    }
+    .rail div.hot::before { background: var(--amber); }
+    .rail b {
+      display: block; font-size: clamp(8.5px, 1.1vh, 10.5px); font-weight: 800;
+      color: rgba(255,255,255,.85); letter-spacing: .3px;
+    }
+    .rail small { display: block; font-size: clamp(8px, 1.05vh, 10px); color: rgba(255,255,255,.45); line-height: 1.25; }
+    .rail div.hot b { color: var(--amber); }
+    .lab-foot {
+      margin: clamp(9px, 1.5vh, 14px) 0 0; padding-top: clamp(8px, 1.3vh, 12px);
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: clamp(10px, 1.35vh, 12.5px); color: rgba(255,255,255,.72); line-height: 1.4;
+    }
+    .lab-foot strong { color: var(--green); }
+
+    /* ===== FAIXA DE NÚMEROS ===== */
+    .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1.2vw, 14px); }
+    .mini {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13);
+      border-radius: 14px; padding: clamp(10px, 1.6vh, 17px) clamp(11px, 1.2vw, 18px);
+    }
+    .mini b {
+      display: block; font-size: clamp(18px, 2.8vh, 30px); font-weight: 900;
+      letter-spacing: -1.2px; line-height: 1; margin-bottom: 5px; color: white;
+    }
+    .mini span {
+      display: block; font-size: clamp(9px, 1.15vh, 11px); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px; color: rgba(255,255,255,.6);
+    }
+    .mini small { display: block; margin-top: 4px; font-size: clamp(9.5px, 1.2vh, 11.5px); color: rgba(255,255,255,.45); }
+    .mini.accent { background: rgba(45,181,223,.16); border-color: rgba(45,181,223,.4); }
+    .mini.accent b { color: var(--blue); }
+
+    /* ===== RODAPÉ (do briefing) ===== */
+    .bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: clamp(12px, 2.2vw, 36px); flex-wrap: wrap;
+      padding-top: clamp(8px, 1.3vh, 15px); border-top: 1px solid rgba(255,255,255,.12);
+    }
+    .bridge { font-size: clamp(12px, 1.75vh, 17px); line-height: 1.38; margin: 0; max-width: 82ch; color: rgba(255,255,255,.92); }
+    .bridge strong { color: var(--green); }
+    .source { font-size: clamp(8.5px, 1.05vh, 10.5px); color: rgba(255,255,255,.35); text-align: right; white-space: nowrap; }
+
+    /* Ajustes p/ mobile: rola normal, sem 100dvh */
+    @media (max-width: 980px), (max-height: 640px) {
+      body { overflow: auto; }
+      .screen {
+        height: auto; min-height: calc(100dvh - var(--mlh-header-h, 60px) - 42px);
+        overflow: visible;
+      }
+      .main { grid-template-columns: 1fr; align-items: start; }
+      h1 { font-size: clamp(26px, 7vw, 40px); max-width: none; }
+      .hp-after .val { font-size: clamp(54px, 16vw, 92px); }
+      .strip { grid-template-columns: repeat(2, 1fr); }
+      .source { text-align: left; white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-subbar">
+    <div class="page-subbar-inner">
+      <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/performance">Performance</a> &nbsp;/&nbsp; <strong>Resumo executivo · 70 dias</strong></span>
+    </div>
+  </div>
+
+  <div class="screen">
+
+    <div class="main">
+
+      <div class="left">
+        <span class="kicker">Antes e depois · 70 dias</span>
+        <h1>Em maio a marca tinha campanha.<br>Hoje tem <em>audiência própria</em>.</h1>
+
+        <div class="hero-pair">
+          <div class="hp-before">
+            <span class="cap">18 de maio</span>
+            <span class="val">2.635</span>
+          </div>
+          <div class="hp-arrow">&rarr;</div>
+          <div class="hp-after">
+            <span class="cap">26 de julho</span>
+            <span class="val">44.251</span>
+          </div>
+        </div>
+
+        <p class="hp-sub">inscritos no canal do YouTube da MetLife Brasil</p>
+
+        <div class="hp-chips">
+          <span class="chip">17x em 10 semanas</span>
+          <span class="chip ghost">R$ 0,93 por inscrito</span>
+          <span class="chip ghost">audiência aquecida: o próximo real investido rende mais</span>
+        </div>
+      </div>
+
+      <div class="lab">
+        <div class="lab-head">
+          <span>O motor por trás do número</span>
+          <span>10 de 11 semanas concluídas</span>
+        </div>
+
+        <div class="lab-nums">
+          <div class="lab-num"><b>21</b><span>criativos veiculados</span></div>
+          <div class="lab-num"><b>8</b><span>conceitos testados</span></div>
+          <div class="lab-num"><b>4</b><span>rotações programadas</span></div>
+        </div>
+
+        <div class="lab-chart">
+          <svg viewBox="0 20 828 270" preserveAspectRatio="none" role="img" aria-label="Curva de inscritos com os momentos de rotação de criativo">
+            <defs>
+              <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#50E596" stop-opacity="0.34"/>
+                <stop offset="100%" stop-color="#50E596" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <path d="M8.0,282.1 L98.2,281.8 L188.4,280.4 L278.7,277.0 L368.9,273.8 L459.1,228.9 L549.3,171.7 L639.6,109.6 L729.8,36.9 L820.0,24.6 L820.0,290.0 L8.0,290.0 Z" fill="url(#sparkGrad)"/>
+            <line x1="188.4" y1="22" x2="188.4" y2="290" stroke="rgba(255,255,255,.28)" stroke-width="1.5" stroke-dasharray="4 5" vector-effect="non-scaling-stroke"/>
+            <line x1="368.9" y1="22" x2="368.9" y2="290" stroke="#F5A623" stroke-width="2" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/>
+            <line x1="558.0" y1="22" x2="558.0" y2="290" stroke="rgba(255,255,255,.28)" stroke-width="1.5" stroke-dasharray="4 5" vector-effect="non-scaling-stroke"/>
+            <line x1="742.0" y1="22" x2="742.0" y2="290" stroke="rgba(255,255,255,.28)" stroke-width="1.5" stroke-dasharray="4 5" vector-effect="non-scaling-stroke"/>
+            <path d="M8.0,282.1 L98.2,281.8 L188.4,280.4 L278.7,277.0 L368.9,273.8 L459.1,228.9 L549.3,171.7 L639.6,109.6 L729.8,36.9 L820.0,24.6"
+                  fill="none" stroke="#50E596" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </svg>
+
+          <div class="rail">
+            <div>
+              <b>04/jun</b>
+              <small>troca contra fadiga de criativo</small>
+            </div>
+            <div class="hot">
+              <b>21/jun</b>
+              <small>virada para Shorts após teste</small>
+            </div>
+            <div>
+              <b>06/jul</b>
+              <small>entrada do conceito "Propósito"</small>
+            </div>
+            <div>
+              <b>20/jul</b>
+              <small>criativos de conversão A7 e A8</small>
+            </div>
+          </div>
+        </div>
+
+        <p class="lab-foot">Cada rotação saiu de um teste da própria semana: <strong>Manifesto contra Shorts</strong> definiu o formato do YouTube, e <strong>Feed contra Story</strong> derrubou o custo por seguidor de R$ 171,32 para R$ 36,03.</p>
+      </div>
+
+    </div>
+
+    <div class="strip">
+      <div class="mini">
+        <b>48,9M</b>
+        <span>vezes que a marca apareceu</span>
+        <small>Meta, YouTube e LinkedIn somados</small>
+      </div>
+      <div class="mini">
+        <b>510.645</b>
+        <span>cliques gerados</span>
+        <small>meio milhão de acessos</small>
+      </div>
+      <div class="mini">
+        <b>156.026</b>
+        <span>visitas ao perfil do Instagram</span>
+        <small>por vontade própria, após o anúncio</small>
+      </div>
+      <div class="mini accent">
+        <b>R$ 3,20</b>
+        <span>custo por mil aparições</span>
+        <small>o plano previa R$ 18,18 · 5x mais entrega</small>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <p class="bridge">O <strong>#MaisBrasileirosProtegidos</strong> não começa do zero: começa com 44 mil inscritos, 21 criativos já testados em operação real e uma audiência aquecida que faz cada real do próximo investimento render mais.</p>
+      <div class="source">Fontes: Meta Ads Manager, Google Ads e LinkedIn Campaign Manager<br>Valores de Meta em líquido · Briefing de diretoria · 28/07/2026</div>
+    </div>
+
+  </div>
+
+  <script src="/assets/header.js"></script>
+</body>
+</html>

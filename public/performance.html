@@ -87,6 +87,109 @@
       margin-top: 8px;
     }
 
+    /* ===== Card destacado: Resumo 70 dias ===== */
+    .executive-highlight {
+      display: block;
+      background:
+        radial-gradient(circle at 88% 8%, rgba(80,229,150,.20), transparent 42%),
+        radial-gradient(circle at 4% 92%, rgba(45,181,223,.18), transparent 44%),
+        linear-gradient(135deg, var(--navy) 0%, var(--navy-deep, #002940) 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      text-decoration: none;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .executive-highlight:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0, 59, 92, 0.28);
+    }
+    .executive-highlight::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    .executive-highlight > * { position: relative; z-index: 1; }
+
+    .exec-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+    .exec-eyebrow {
+      display: inline-block;
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      color: #50E596;
+      background: rgba(80,229,150,.14);
+      padding: 5px 12px; border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .exec-title {
+      margin: 0 0 6px;
+      font-size: 26px; line-height: 1.1; letter-spacing: -0.6px;
+      color: white;
+    }
+    .exec-title em {
+      font-style: normal;
+      background: linear-gradient(90deg, #2DB5DF, #50E596);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .exec-title-sub {
+      margin: 0;
+      font-size: 13px; color: rgba(255,255,255,.65);
+      font-weight: 600;
+    }
+    .exec-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .exec-metric b {
+      display: block;
+      font-size: 28px; font-weight: 900;
+      letter-spacing: -1.2px; line-height: 1;
+      color: #50E596; margin-bottom: 4px;
+    }
+    .exec-metric span {
+      display: block;
+      font-size: 10.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: rgba(255,255,255,.6);
+    }
+    .exec-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      transition: transform .15s ease;
+      white-space: nowrap;
+    }
+    .executive-highlight:hover .exec-cta { transform: scale(1.04); }
+
+    @media (max-width: 820px) {
+      .executive-highlight { padding: 22px; }
+      .exec-row { grid-template-columns: 1fr; gap: 20px; }
+      .exec-metrics { grid-template-columns: repeat(3, 1fr); }
+      .exec-title { font-size: 22px; }
+      .exec-metric b { font-size: 22px; }
+      .exec-cta { align-self: flex-start; }
+    }
+
     .report-card {
       background: white;
       border-radius: var(--radius);
@@ -261,6 +364,32 @@
           <strong>Report não encontrado.</strong>
           <span id="week-not-found-msg"></span>
         </div>
+
+        <!-- Card destacado: resumo executivo dos 70 dias -->
+        <a href="/performance/resumo-70-dias" class="executive-highlight" aria-label="Abrir resumo executivo dos 70 dias">
+          <div class="exec-row">
+            <div>
+              <span class="exec-eyebrow">Resumo executivo</span>
+              <h2 class="exec-title">70 dias de operação. <em>Audiência própria construída.</em></h2>
+              <p class="exec-title-sub">Briefing de diretoria · 18/05 a 26/07/2026</p>
+            </div>
+            <div class="exec-metrics">
+              <div class="exec-metric">
+                <b>44.251</b>
+                <span>inscritos no YouTube</span>
+              </div>
+              <div class="exec-metric">
+                <b>17×</b>
+                <span>crescimento em 10 semanas</span>
+              </div>
+              <div class="exec-metric">
+                <b>R$&nbsp;0,93</b>
+                <span>custo por inscrito</span>
+              </div>
+            </div>
+            <span class="exec-cta">Ver briefing completo <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
 
         <div id="reports-grid" class="reports-grid">
           <div class="reports-loading">Carregando reports…</div>
