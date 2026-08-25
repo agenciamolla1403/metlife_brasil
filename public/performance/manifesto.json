@@ -8,10 +8,9 @@
     { "id": "week-6", "ordem": 6, "label": "Semana 6", "periodo": "22/06 a 28/06", "data_publicacao": "2026-06-28", "status": "publicado", "arquivo": "/performance/week-6" },
     { "id": "week-7", "ordem": 7, "label": "Semana 7", "periodo": "29/06 a 05/07", "data_publicacao": "2026-07-05", "status": "publicado", "arquivo": "/performance/week-7" },
     { "id": "week-8", "ordem": 8, "label": "Semana 8", "periodo": "06/07 a 12/07", "data_publicacao": "2026-07-13", "status": "publicado", "arquivo": "/performance/week-8" },
-    { "id": "week-9", "ordem": 9, "label": "Semana 9", "periodo": "13/07 a 19/07", "data_publicacao": "2026-07-20", "status": "publicado", "arquivo": "/performance/week-9" }
+    { "id": "week-9", "ordem": 9, "label": "Semana 9", "periodo": "13/07 a 19/07", "data_publicacao": "2026-07-20", "status": "publicado", "arquivo": "/performance/week-9" },
+    { "id": "week-10", "ordem": 10, "label": "Semana 10", "periodo": "20/07 a 26/07", "data_publicacao": "2026-07-27", "status": "publicado", "arquivo": "/performance/week-10" },
+    { "id": "week-11", "ordem": 11, "label": "Semana 11 · Fechamento", "periodo": "27/07 a 31/07", "data_publicacao": "2026-07-31", "status": "publicado", "arquivo": "/performance/week-11" }
   ],
-  "futuras": [
-    { "ordem": 10, "label": "Semana 10", "periodo": "20/07 a 26/07", "data_estimada": "2026-07-27" },
-    { "ordem": 11, "label": "Semana 11", "periodo": "27/07 a 02/08", "data_estimada": "2026-08-03" }
-  ]
+  "futuras": []
 }
