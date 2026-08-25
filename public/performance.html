@@ -217,6 +217,17 @@
       height: 4px;
       background: linear-gradient(90deg, var(--blue), var(--teal));
     }
+    /* Card Copa mantém padrão. Cards Onda 3 (Reta final) ganham barra verde petróleo. */
+    .report-card.is-published.is-campanha-onda-3::before {
+      background: linear-gradient(90deg, #012E33, #01444C);
+    }
+    .report-card.is-campanha-onda-3 .cta {
+      color: #01444C;
+    }
+    .report-card.is-upcoming.is-campanha-onda-3 {
+      background: rgba(1, 68, 76, 0.05);
+      border: 1px dashed rgba(1, 68, 76, 0.28);
+    }
 
     .report-card.is-upcoming {
       background: rgba(0, 59, 92, 0.03);
@@ -248,6 +259,29 @@
     .report-tag.upcoming {
       background: rgba(0, 59, 92, 0.08);
       color: var(--muted);
+    }
+    /* Sufixo "· Onda 3 · Reta final" ao lado do badge Publicado */
+    .report-tag-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .report-tag-campanha {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #012E33;
+      margin-left: 6px;
+    }
+    .report-tag-campanha::before {
+      content: '·';
+      margin-right: 6px;
+      color: rgba(0, 59, 92, 0.30);
+      font-weight: 400;
     }
 
     .report-card h2 {
@@ -440,13 +474,27 @@
         return node;
       }
 
-      function renderPublishedCard(s) {
+      function campanhaLabel(campanha, manifest) {
+        if (!campanha || campanha === 'copa') return null;
+        const meta = manifest && manifest.campanhas && manifest.campanhas[campanha];
+        if (meta && meta.label) return meta.label;
+        return campanha.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+
+      function renderPublishedCard(s, manifest) {
+        const campanha = s.campanha || 'copa';
+        const cls = 'report-card is-published is-campanha-' + campanha;
+        const tagChildren = [ el('span', { class: 'report-tag published' }, '✓ Publicado') ];
+        const suffix = campanhaLabel(campanha, manifest);
+        if (suffix) {
+          tagChildren.push(el('span', { class: 'report-tag-campanha' }, suffix));
+        }
         return el('a', {
-          class: 'report-card is-published',
+          class: cls,
           href: '/performance/' + s.id,
           'aria-label': 'Abrir ' + s.label + ' — ' + s.periodo
         },
-          el('span', { class: 'report-tag published' }, '✓ Publicado'),
+          el('div', { class: 'report-tag-row' }, ...tagChildren),
           el('div', {},
             el('h2', {}, s.label),
             el('div', { class: 'period' }, s.periodo)
@@ -458,12 +506,19 @@
         );
       }
 
-      function renderUpcomingCard(f) {
+      function renderUpcomingCard(f, manifest) {
+        const campanha = f.campanha || 'copa';
+        const cls = 'report-card is-upcoming is-campanha-' + campanha;
+        const tagChildren = [ el('span', { class: 'report-tag upcoming' }, '⏳ Em breve') ];
+        const suffix = campanhaLabel(campanha, manifest);
+        if (suffix) {
+          tagChildren.push(el('span', { class: 'report-tag-campanha' }, suffix));
+        }
         return el('div', {
-          class: 'report-card is-upcoming',
+          class: cls,
           'aria-label': f.label + ' em breve'
         },
-          el('span', { class: 'report-tag upcoming' }, '⏳ Em breve'),
+          el('div', { class: 'report-tag-row' }, ...tagChildren),
           el('div', {},
             el('h2', {}, f.label),
             el('div', { class: 'period' }, f.periodo)
@@ -505,10 +560,10 @@
         const futuras = (manifest.futuras || []).slice().sort((a, b) => a.ordem - b.ordem);
 
         for (const s of semanas) {
-          grid.appendChild(renderPublishedCard(s));
+          grid.appendChild(renderPublishedCard(s, manifest));
         }
         for (const f of futuras) {
-          grid.appendChild(renderUpcomingCard(f));
+          grid.appendChild(renderUpcomingCard(f, manifest));
         }
 
         if (semanas.length === 0 && futuras.length === 0) {
