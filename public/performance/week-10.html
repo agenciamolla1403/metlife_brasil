@@ -150,33 +150,6 @@
     .stat.green span { color: rgba(0,59,92,.7); }
 
     /* ===== NAV STICKY ===== */
-    nav.sticky-nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(238,246,248,.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,59,92,.08);
-      padding: 12px 20px;
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    nav.sticky-nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-weight: 700;
-      padding: 10px 14px;
-      border-radius: 999px;
-      white-space: nowrap;
-      background: white;
-      border: 1px solid rgba(0,59,92,.08);
-      font-size: 13px;
-      transition: all .2s;
-    }
-    nav.sticky-nav a:hover { background: var(--navy); color: white; }
 
     /* ===== SECTION GENERAL ===== */
     section { padding: 70px 24px; }
@@ -1292,7 +1265,8 @@
   .cre-img-item img[alt*="Story"] { width:30vw; max-width:160px; }
 }
 
-</style>
+    /* anchor-nav vem do /assets/breadcrumb.css global */
+  </style>
 </head>
 <body data-week-id="week-10">
 
@@ -1317,19 +1291,21 @@
   </div>
 </header>
 
-<nav class="sticky-nav">
-  <a href="#metas">Onde estamos</a>
-  <a href="#virada">O que mudou</a>
-  <a href="#investimento">Investimento</a>
-  <a href="#insights">Destaques</a>
-  <a href="#canais">Canais</a>
-  <a href="#inscritos">Crescimento do canal</a>
-  <a href="#conversao">Criativos de conversão</a>
-  <a href="#criativos">Por tipo de campanha</a>
-  <a href="#seguidores">Eficiência de seguidores</a>
-  <a href="#pacing">Pacing da Onda 3</a>
-  <a href="#proximos">Próximos passos</a>
-</nav>
+  <nav class="anchor-nav" aria-label="Navegação interna do Report">
+    <div class="anchor-nav-inner">
+      <a href="#metas">Onde estamos</a>
+      <a href="#virada">O que mudou</a>
+      <a href="#investimento">Investimento</a>
+      <a href="#insights">Destaques</a>
+      <a href="#canais">Canais</a>
+      <a href="#inscritos">Crescimento do canal</a>
+      <a href="#conversao">Criativos de conversão</a>
+      <a href="#criativos">Por tipo de campanha</a>
+      <a href="#seguidores">Eficiência de seguidores</a>
+      <a href="#pacing">Pacing da Onda 3</a>
+      <a href="#proximos">Próximos passos</a>
+    </div>
+  </nav>
 
 <!-- ONDE ESTAMOS -->
 <section id="metas">
@@ -1779,7 +1755,7 @@
         pane.querySelectorAll('.camp-acc').forEach(d => d.open = open);
       });
     });
-    document.querySelectorAll('.sticky-nav a').forEach(a => {
+    document.querySelectorAll('.anchor-nav a').forEach(a => {
       a.addEventListener('click', e => {
         const t = document.querySelector(a.getAttribute('href'));
         if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
