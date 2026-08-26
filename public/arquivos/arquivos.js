@@ -216,6 +216,7 @@
     filters.innerHTML = chips;
     filters.querySelectorAll('.aq-chip').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (window.MetLifeBottomSheet) window.MetLifeBottomSheet.closeAll();
         state.tipo = btn.dataset.tipo;
         renderFiltros();
         renderLista();
