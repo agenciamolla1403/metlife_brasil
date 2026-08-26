@@ -2,13 +2,17 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/adsplay", "destination": "/midia-programatica", "permanent": true },
+    { "source": "/adsplay/:path*", "destination": "/midia-programatica/:path*", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/login", "destination": "/login.html" },
     { "source": "/cronograma", "destination": "/cronograma.html" },
     { "source": "/plano-midia", "destination": "/plano-midia.html" },
     { "source": "/aprovacao", "destination": "/aprovacao.html" },
     { "source": "/elemidia", "destination": "/elemidia.html" },
-    { "source": "/adsplay", "destination": "/adsplay.html" },
+    { "source": "/midia-programatica", "destination": "/midia-programatica.html" },
     { "source": "/blitz", "destination": "/blitz.html" },
     { "source": "/arquivos", "destination": "/arquivos.html" },
     { "source": "/jornada", "destination": "/jornada.html" },

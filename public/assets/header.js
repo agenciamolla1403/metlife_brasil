@@ -38,7 +38,7 @@
         { href: '/performance', id: 'performance', label: 'Performance' },
         { href: '/landing-page', id: 'analytics',  label: 'Analytics' },
         { href: '/elemidia',    id: 'elemidia',    label: 'Elemidia' },
-        { href: '/adsplay',     id: 'adsplay',     label: 'Adsplay' }
+        { href: '/midia-programatica', id: 'programatica', label: 'Mídia Programática' }
       ]
     },
     {

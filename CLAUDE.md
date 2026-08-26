@@ -86,7 +86,13 @@ definidos em `public/assets/auth.js`. As senhas estão lá — não duplique aqu
 ## Arquitetura dos hubs
 
 Quatro hubs de mídia seguem o mesmo padrão: `/performance`, `/landing-page`,
-`/elemidia`, `/adsplay`.
+`/elemidia`, `/midia-programatica`.
+
+Os hubs mais novos são nomeados por **disciplina**, não por fornecedor —
+`/midia-programatica` nasceu como `/adsplay` e foi renomeado justamente porque
+pode receber propostas de outras empresas. Cada proposta declara o seu
+`fornecedor` no manifesto, e é ele que aparece na tag do card
+("PROPOSTA · ADSPLAY"). Ao criar um hub novo, prefira o nome da disciplina.
 
 ```
 public/{hub}.html            → índice: fetch do manifesto + grid de cards

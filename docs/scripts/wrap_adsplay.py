@@ -25,7 +25,7 @@ import io
 
 PROPOSTA_ID = 'nfl'
 BREADCRUMB_LABEL = 'Campanha NFL'
-XLSX = '/adsplay/plano-nfl.xlsx'
+XLSX = '/midia-programatica/plano-nfl.xlsx'
 XLSX_DOWNLOAD = 'Plano_Adsplay_NFL_MetLife_2026.xlsx'
 
 
@@ -128,7 +128,7 @@ def main(src, dst):
 
 <div class="page-subbar">
   <div class="page-subbar-inner">
-    <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/adsplay">Adsplay</a> &nbsp;/&nbsp; <strong>{BREADCRUMB_LABEL}</strong></span>
+    <span class="crumb"><a href="/">Central do Cliente</a> &nbsp;/&nbsp; <span class="crumb-group">Mídia</span> &nbsp;/&nbsp; <a href="/midia-programatica">Mídia Programática</a> &nbsp;/&nbsp; <span class="crumb-group">Adsplay</span> &nbsp;/&nbsp; <strong>{BREADCRUMB_LABEL}</strong></span>
     <a href="{XLSX}" class="subbar-dl" download="{XLSX_DOWNLOAD}">
       <span>⬇</span><span>Baixar plano (.xlsx)</span>
     </a>

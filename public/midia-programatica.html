@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="/img/favicon.png" />
-  <title>Adsplay · Propostas · MetLife Brasil 2026</title>
-  <meta name="description" content="Propostas comerciais da Adsplay (mídia programática DV360) para a campanha MetLife Brasil 2026." />
+  <title>Mídia Programática · Propostas · MetLife Brasil 2026</title>
+  <meta name="description" content="Propostas comerciais de mídia programática dos parceiros da campanha MetLife Brasil 2026." />
 
   <!-- Auth + header global -->
   <script src="/assets/auth.js" defer></script>
@@ -243,15 +243,17 @@
 </head>
 <body>
 
-  <!-- ATENÇÃO: Esta página é o ÍNDICE das propostas Adsplay (S103 · cópia da arquitetura /elemidia). -->
-  <!-- Cada proposta individual vive em /adsplay/{id}.html -->
+  <!-- ATENÇÃO: Esta página é o ÍNDICE das propostas de mídia programática -->
+  <!-- (S103 · cópia da arquitetura /elemidia). O hub é por DISCIPLINA, não por -->
+  <!-- fornecedor: cada proposta declara o seu em `fornecedor` no manifesto. -->
+  <!-- Cada proposta individual vive em /midia-programatica/{id}.html -->
 
   <main>
     <section class="hero">
       <div class="container">
-        <span class="eyebrow">Adsplay</span>
-        <h1>Propostas de mídia <span>programática</span>.</h1>
-        <p class="lead">Histórico das propostas comerciais Adsplay para a campanha MetLife 2026 — cenários de investimento, audiências, formatos e projeção de entrega por proposta.</p>
+        <span class="eyebrow">Mídia Programática</span>
+        <h1>Propostas de compra <span>programática</span>.</h1>
+        <p class="lead">Histórico das propostas comerciais de mídia programática para a campanha MetLife 2026 — cenários de investimento, audiências, formatos e projeção de entrega, por fornecedor.</p>
       </div>
     </section>
 
@@ -272,7 +274,7 @@
 
   <footer class="site-footer">
     <h2>Programática é chegar na pessoa certa — não em todo mundo.</h2>
-    <p>O hub centraliza as propostas comerciais da Adsplay ao longo da campanha — cenários de verba, mix de formatos e projeção de impressões por janela.</p>
+    <p>O hub centraliza as propostas comerciais de mídia programática ao longo da campanha — cenários de verba, mix de formatos e projeção de impressões, de todos os fornecedores.</p>
     <div class="brand-footer-row">
       <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
       <p class="brand-footer-text">Agência Molla</p>
@@ -281,10 +283,10 @@
 
   <script>
     // ============================================================
-    // /adsplay — Index das propostas Adsplay
+    // /midia-programatica — Index das propostas de programática
     // ------------------------------------------------------------
     // Lógica:
-    // 1. Se URL tem ?prop=ID → redireciona pra /adsplay/{ID}
+    // 1. Se URL tem ?prop=ID → redireciona pra /midia-programatica/{ID}
     //    (se a proposta existir no manifesto e estiver publicada)
     // 2. Senão → renderiza grid de cards (publicadas + futuras)
     // 3. Se ?prop=ID inválido → mostra aviso amigável + renderiza grid
@@ -292,7 +294,7 @@
     (function () {
       'use strict';
 
-      const MANIFEST_URL = '/adsplay/manifesto.json';
+      const MANIFEST_URL = '/midia-programatica/manifesto.json';
 
       const params = new URLSearchParams(window.location.search);
       const propParam = params.get('prop');
@@ -331,12 +333,17 @@
           r.meses ? r.meses + ' meses' : null
         ].filter(Boolean).join(' · ');
 
+        // A tag do card carrega o fornecedor — o hub é por disciplina e pode
+        // receber propostas de mais de uma empresa de programática.
+        const tag = p.fornecedor ? '📄 Proposta · ' + p.fornecedor : '📄 Proposta';
+
         return el('a', {
           class: 'report-card is-published',
-          href: p.arquivo || ('/adsplay/' + p.id),
-          'aria-label': 'Abrir proposta ' + p.label + ' — ' + p.periodo
+          href: p.arquivo || ('/midia-programatica/' + p.id),
+          'aria-label': 'Abrir proposta ' + p.label
+            + (p.fornecedor ? ' da ' + p.fornecedor : '') + ' — ' + p.periodo
         },
-          el('span', { class: 'report-tag proposta' }, '📄 Proposta'),
+          el('span', { class: 'report-tag proposta' }, tag),
           el('div', {},
             el('h2', {}, p.label),
             el('div', { class: 'period' }, p.periodo)
@@ -420,7 +427,7 @@
           if (propParam) {
             const target = (manifest.propostas || []).find(p => p.id === propParam);
             if (target && target.status === 'publicado') {
-              window.location.replace(target.arquivo || ('/adsplay/' + target.id));
+              window.location.replace(target.arquivo || ('/midia-programatica/' + target.id));
               return;
             }
             showNotFound('A proposta solicitada não existe ou ainda não foi publicada. Veja a lista abaixo.');
@@ -428,7 +435,7 @@
 
           renderGrid(manifest);
         } catch (err) {
-          console.error('[adsplay/index] falhou:', err);
+          console.error('[midia-programatica/index] falhou:', err);
           renderError();
         }
       }

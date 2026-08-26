@@ -1,6 +1,6 @@
 # MetLife Brasil 2026 — MASTER do Projeto
 
-> Snapshot completo do estado do projeto após o fechamento do **S103 — hub `/adsplay` + wrap da proposta Campanha NFL**.
+> Snapshot completo do estado do projeto após o fechamento do **S103 — hub `/midia-programatica` + wrap da proposta Adsplay · Campanha NFL**.
 >
 > Última atualização: **26/08/2026** · Sessões cobertas: **S29 a S103**
 >
@@ -66,10 +66,10 @@ metlife_brasil/
 │   │   ├── proposta-ft-1.xlsx, proposta-ft-2.xlsx
 │   │   └── elemidia.css, elemidia.js
 │   │
-│   ├── adsplay.html                     — HUB Adsplay (S103)
-│   ├── adsplay/
-│   │   ├── manifesto.json               — propostas[] + futuras[]
-│   │   ├── nfl.html                     — proposta Campanha NFL (design roxo próprio)
+│   ├── midia-programatica.html          — HUB Mídia Programática (S103)
+│   ├── midia-programatica/
+│   │   ├── manifesto.json               — propostas[] + futuras[], com `fornecedor`
+│   │   ├── nfl.html                     — proposta Adsplay · Campanha NFL (design roxo próprio)
 │   │   └── plano-nfl.xlsx               — plano de mídia pra download
 │   │
 │   ├── assets/                          — componentes globais
@@ -143,7 +143,7 @@ metlife_brasil/
 | 22/07 | **Multi-campanha no `/landing-page`** — Seguro Vida Individual · paleta verde neon → **verde petróleo `#01444C`** (aprovada) · timeline vira grid 2 colunas com carrossel por campanha · nowrap nos labels | S84–S89 |
 | 29/07 | **Resumo executivo dos 70 dias** + card destacado no hub · **favicon nos 37 HTMLs** | S93 |
 | 25/08 | Performance week-10/week-11 (fechamento) · **multi-campanha no `/performance`** com Onda 3 "Reta final" (paleta petróleo W8–W11) · fix 75 → 70 dias | S100 |
-| 26/08 | fix bottom-sheet (painel fechado capturava cliques) · **hub `/adsplay` + wrap da proposta Campanha NFL** | S103 |
+| 26/08 | fix bottom-sheet (painel fechado capturava cliques) · **hub `/midia-programatica` + wrap da proposta Adsplay · Campanha NFL** (V2, com valores brutos) · CLAUDE.md · MASTER de S56 pra S103 | S103 |
 
 > Lacuna conhecida: **S57–S67** não têm registro nem no MASTER nem na skill. As entregas
 > desse intervalo estão no `git log` entre 25/05 e 09/06, sem numeração recuperável.
@@ -162,7 +162,7 @@ Mídia ▾
   ├─ Performance                 → /performance
   ├─ Analytics                   → /landing-page
   ├─ Elemidia                    → /elemidia
-  └─ Adsplay                     → /adsplay              (S103)
+  └─ Mídia Programática          → /midia-programatica   (S103)
 Operação ▾
   ├─ Blitz                       → /blitz
   └─ Muito Além do Jogo          → /muito-alem-do-jogo  (S52, ativa desde S52)
@@ -180,8 +180,8 @@ Arquivos                         → /arquivos
 | `/performance` | Central do Cliente / Mídia / **Performance** |
 | `/landing-page` | Central do Cliente / Mídia / **Analytics** |
 | `/elemidia` | Central do Cliente / Mídia / **Elemidia** |
-| `/adsplay` | Central do Cliente / Mídia / **Adsplay** |
-| `/adsplay/nfl` | Central do Cliente / Mídia / Adsplay / **Campanha NFL** |
+| `/midia-programatica` | Central do Cliente / Mídia / **Mídia Programática** |
+| `/midia-programatica/nfl` | Central do Cliente / Mídia / Mídia Programática / Adsplay / **Campanha NFL** |
 | `/blitz` | Central do Cliente / Operação / **Blitz** |
 | `/muito-alem-do-jogo` | Central do Cliente / Operação / **Muito Além do Jogo** |
 | `/aprovacao` | dinâmico via JS — "Aprovação" |
@@ -241,15 +241,28 @@ Virou hub multi-proposta em 09/06 (antes era uma página única de 114 linhas).
 - Links cruzados nos dois sentidos entre cada FT e seu checking
 - Manifesto com 3 arrays: `propostas[]`, `checkings[]`, `futuras[]`
 
-### `/adsplay` — hub Adsplay (mídia programática DV360) 🆕 S103
+### `/midia-programatica` — hub Mídia Programática 🆕 S103
 Clone da arquitetura do `/elemidia`, com um array só (`propostas[]`).
-- **1 proposta:** Campanha NFL — 04/09/2026 a 02/01/2027 (4 meses)
-- 4 cenários de investimento: FULL R$ 1,6M · PLAY R$ 1,0M · START R$ 700K · BASIC R$ 120K
+
+**Nomeado por disciplina, não por fornecedor.** Nasceu como `/adsplay` e foi renomeado
+ainda na S103: a Molla pode receber propostas de programática de outras empresas, e um
+hub por fornecedor viraria uma lista de hubs de uma proposta cada. Cada item declara
+`fornecedor` no manifesto, e é ele que aparece na tag do card ("PROPOSTA · ADSPLAY").
+`vercel.json` mantém redirect 301 de `/adsplay` e `/adsplay/*` — as URLs antigas
+chegaram a ir pra produção.
+
+- **1 proposta:** Adsplay · Campanha NFL — 04/09/2026 a 02/01/2027 (4 meses)
+- 4 cenários de investimento (líquido / bruto, margem de 25%):
+  FULL R$ 1,6M / 2,0M · PLAY R$ 1,0M / 1,25M · START R$ 700K / 875K · BASIC R$ 120K / 150K
 - Formatos: Display, Vídeo, YouTube, CTV/OTT, Rich Media, Native, Push
 - Marco: 27/09 · NFL no Maracanã (Ravens x Cowboys)
-- `adsplay/nfl.html` preserva **100% do design roxo próprio da Adsplay**
+- `midia-programatica/nfl.html` preserva **100% do design roxo próprio da Adsplay**
   (`#831E9B` / `#5B1377` / `#9C3FB5` / `#E7B5FA`) — o wrapper só acrescenta
   favicon, auth, header global, breadcrumb e botão de download do xlsx
+- Rodapé de contatos do vendedor Adsplay foi trocado pelo **rodapé padrão da Central**
+  (o `id="contato"` foi mantido pra não quebrar a âncora da topbar da proposta)
+- Wrapper automatizado em `docs/scripts/wrap_adsplay.py` — roda sobre o HTML bruto
+  da Adsplay e aborta se qualquer alvo não casar exatamente uma vez
 - **Sem timeline JS** — só faz sentido a partir da 2ª proposta
 
 ### `/blitz` (blitz.html · 287 linhas)
@@ -454,7 +467,7 @@ Listados em ordem de prioridade discutida (não fechada):
 6. **Login Supabase Auth** (substituir password mock — fecha o gap de segurança real)
 7. **Scroll-spy JS** no `.anchor-nav` (adicionar `.is-current` dinamicamente conforme seção visível) — opcional
 8. **Atualizações no programa Muito Além do Jogo** conforme materiais chegarem (data do evento final, comprovações de impacto, etc.)
-9. **Timeline do `/adsplay`** (`assets/adsplay-timeline.js`) — criar quando entrar a 2ª proposta
+9. **Timeline do `/midia-programatica`** — criar quando entrar a 2ª proposta
 10. **Iframe de rich media da proposta NFL** — `adsmax-files.adsplay.com.br` não foi
     testado em produção; depende do servidor da Adsplay permitir embed
 
