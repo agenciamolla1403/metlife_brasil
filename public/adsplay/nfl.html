@@ -44,7 +44,7 @@
 
   /* ---------- HEADER ---------- */
   header.topbar{
-    /* S103: fica abaixo do header global da Central do Cliente */
+    /* Wrapper: fica abaixo do header global da Central do Cliente */
     position:sticky;top:var(--mlh-header-h,60px);z-index:30;
     background:rgba(255,255,255,0.92);
     backdrop-filter:blur(8px);
@@ -53,12 +53,12 @@
   header.topbar .wrap{
     display:flex;align-items:center;justify-content:space-between;
     height:64px;
-    gap:24px; /* S103: separa nav do selo de periodo */
+    gap:24px; /* Wrapper: separa nav do selo de periodo */
   }
   header.topbar img{height:22px;}
   header.topbar nav{
     display:flex;gap:20px;font-size:13px;font-weight:500;
-    /* S103: em telas medias a nav rola em vez de espremer o selo de periodo */
+    /* Wrapper: em telas medias a nav rola em vez de espremer o selo */
     min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
   }
   header.topbar nav::-webkit-scrollbar{display:none;}
@@ -477,9 +477,9 @@
   @media (max-width:640px){.scenarios.cols-4{grid-template-columns:1fr;}}
 </style>
 
-<!-- ============ S103 · WRAPPER CENTRAL DO CLIENTE ============ -->
+<!-- ============ WRAPPER CENTRAL DO CLIENTE ============ -->
 <!-- Carregado DEPOIS do <style> da proposta de proposito: em empate de -->
-<!-- especificidade o CSS global vence os seletores nus (a, img, section). -->
+<!-- especificidade o CSS global vence os seletores nus (a, img, section, footer). -->
 <link rel="stylesheet" href="/assets/header.css">
 <link rel="stylesheet" href="/assets/breadcrumb.css">
 <link rel="stylesheet" href="/assets/footer.css">
@@ -551,10 +551,6 @@
         <div>
           <div>Agência</div>
           <span>Ag. Molla</span>
-        </div>
-        <div>
-          <div>Preparado por</div>
-          <span>Adsplay · Vinicius Carleto</span>
         </div>
       </div>
     </div>
@@ -686,7 +682,8 @@
         <span class="badge-rec">Recomendado</span>
         <div class="sc-eyebrow">FULL · Enterprise 1</div>
         <h3>Cobertura completa</h3>
-        <div class="sc-budget">R$ 1,6M <small>/ total</small></div>
+        <div class="sc-budget">R$ 1,6M <small>líquido</small></div>
+        <div class="sc-budget" style="font-size:16px;color:var(--muted);margin-bottom:14px;">R$ 2,0M <small>bruto</small></div>
         <ul>
           <li>6 formatos ativos</li>
           <li>Push Notification com período específico (Livetrack: 1 mês)</li>
@@ -698,7 +695,8 @@
       <div class="scenario-card">
         <div class="sc-eyebrow">PLAY · Enterprise 2</div>
         <h3>Foco em vídeo e CTV</h3>
-        <div class="sc-budget">R$ 1,0M <small>/ total</small></div>
+        <div class="sc-budget">R$ 1,0M <small>líquido</small></div>
+        <div class="sc-budget" style="font-size:16px;color:var(--muted);margin-bottom:14px;">R$ 1,25M <small>bruto</small></div>
         <ul>
           <li>5 formatos ativos</li>
           <li>Push Notification com período específico (Geotrack: 2 de 4 meses)</li>
@@ -710,7 +708,8 @@
       <div class="scenario-card">
         <div class="sc-eyebrow">START · Enterprise 3</div>
         <h3>Display + CTV</h3>
-        <div class="sc-budget">R$ 700K <small>/ total</small></div>
+        <div class="sc-budget">R$ 700K <small>líquido</small></div>
+        <div class="sc-budget" style="font-size:16px;color:var(--muted);margin-bottom:14px;">R$ 875K <small>bruto</small></div>
         <ul>
           <li>2 formatos ativos</li>
           <li>Sem Push Notification</li>
@@ -722,7 +721,8 @@
       <div class="scenario-card">
         <div class="sc-eyebrow">BASIC · Starter 6</div>
         <h3>Somente Display</h3>
-        <div class="sc-budget">R$ 120K <small>/ total</small></div>
+        <div class="sc-budget">R$ 120K <small>líquido</small></div>
+        <div class="sc-budget" style="font-size:16px;color:var(--muted);margin-bottom:14px;">R$ 150K <small>bruto</small></div>
         <ul>
           <li>1 formato ativo</li>
           <li>4 de 4 meses com mídia</li>
@@ -1008,7 +1008,7 @@
     <div class="section-head">
       <span class="eyebrow">Investimento</span>
       <h2>Distribuição de verba por grupo de formato</h2>
-      <p>Valores líquidos totais para os 4 meses de campanha, por cenário.</p>
+      <p>Valores brutos e líquidos totais para os 4 meses de campanha, por cenário (margem de 25% sobre o líquido).</p>
     </div>
     <div class="tabs">
       <button class="tab-btn active" data-tab="c1">FULL · R$ 1,6M</button>
@@ -1019,7 +1019,7 @@
 
     <div class="tab-panel active" id="c1">
       <div class="chart-card">
-        <div class="chart-total"><div class="num">R$ 1.600.000 <span>investimento total · 4 meses</span></div></div>
+        <div class="chart-total"><div class="num">R$ 1.600.000 <span>líquido · 4 meses</span></div><div class="num" style="font-size:18px;color:var(--muted);">R$ 2.000.000 <span>bruto</span></div></div>
         <div class="bars">
           <div class="bar-col"><div class="bar-val">100K</div><div class="bar" style="height:9%"></div></div>
           <div class="bar-col"><div class="bar-val">190K</div><div class="bar" style="height:17%"></div></div>
@@ -1036,7 +1036,7 @@
 
     <div class="tab-panel" id="c2">
       <div class="chart-card">
-        <div class="chart-total"><div class="num">R$ 1.000.000 <span>investimento total · 4 meses</span></div></div>
+        <div class="chart-total"><div class="num">R$ 1.000.000 <span>líquido · 4 meses</span></div><div class="num" style="font-size:18px;color:var(--muted);">R$ 1.250.000 <span>bruto</span></div></div>
         <div class="bars">
           <div class="bar-col"><div class="bar-val">100K</div><div class="bar" style="height:17%"></div></div>
           <div class="bar-col"><div class="bar-val">120K</div><div class="bar" style="height:20%"></div></div>
@@ -1052,7 +1052,7 @@
 
     <div class="tab-panel" id="c3">
       <div class="chart-card">
-        <div class="chart-total"><div class="num">R$ 700.000 <span>investimento total · 4 meses</span></div></div>
+        <div class="chart-total"><div class="num">R$ 700.000 <span>líquido · 4 meses</span></div><div class="num" style="font-size:18px;color:var(--muted);">R$ 875.000 <span>bruto</span></div></div>
         <div class="bars">
           <div class="bar-col"><div class="bar-val">100K</div><div class="bar" style="height:17%"></div></div>
           <div class="bar-col peak"><div class="bar-val">600K</div><div class="bar" style="height:100%"></div></div>
@@ -1065,7 +1065,7 @@
 
     <div class="tab-panel" id="c4">
       <div class="chart-card">
-        <div class="chart-total"><div class="num">R$ 120.000 <span>investimento total · 4 meses</span></div></div>
+        <div class="chart-total"><div class="num">R$ 120.000 <span>líquido · 4 meses</span></div><div class="num" style="font-size:18px;color:var(--muted);">R$ 150.000 <span>bruto</span></div></div>
         <div class="bars">
           <div class="bar-col peak"><div class="bar-val">120K</div><div class="bar" style="height:100%"></div></div>
         </div>
@@ -1083,7 +1083,7 @@
     <div class="section-head">
       <span class="eyebrow">Detalhamento Técnico · Anexo</span>
       <h2>Composição por formato, custo e performance estimada</h2>
-      <p>Valores líquidos, impressões e indicadores de performance por grupo de formato, para fins de aprovação financeira e operacional.</p>
+      <p>Valores brutos e líquidos, impressões e indicadores de performance por grupo de formato, para fins de aprovação financeira e operacional.</p>
     </div>
     <div class="tabs">
       <button class="tab-btn active" data-tab="d1">FULL · R$ 1,6M</button>
@@ -1094,14 +1094,14 @@
 
     <div class="tab-panel active" id="d1">
       <table class="detail-table">
-        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Líquido</th><th>Impressões</th><th>CTR / VTR</th><th>Cliques / Views</th><th>Viewability</th></tr></thead>
+        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Bruto</th><th>Líquido</th><th>Impressões</th><th>CTR / VTR</th><th>Cliques / Views</th><th>Viewability</th></tr></thead>
         <tbody>
-          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
-          <tr><td>Vídeo Programático + YouTube</td><td>CPM R$ 28,15</td><td>R$ 190.000</td><td>6.750.000</td><td>53% VTR</td><td>3.575.000</td><td>70%</td></tr>
-          <tr><td>CTV/OTT + Rich Media</td><td>CPM R$ 109,53</td><td>R$ 1.120.000</td><td>10.225.690</td><td>—</td><td>48.000</td><td>—</td></tr>
-          <tr><td>Native Ads</td><td>CPC R$ 0,90</td><td>R$ 40.000</td><td>4.444.444</td><td>1,00%</td><td>44.444</td><td>70%</td></tr>
-          <tr><td>Push Notification</td><td>CPD R$ 0,70</td><td>R$ 150.000</td><td>214.286</td><td>2,00%</td><td>4.286</td><td>90%</td></tr>
-          <tr><td>Total</td><td>—</td><td>R$ 1.600.000</td><td>30.893.679</td><td>—</td><td>124.508 / 3.575.000</td><td>—</td></tr>
+          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 125.000</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
+          <tr><td>Vídeo Programático + YouTube</td><td>CPM R$ 28,15</td><td>R$ 237.500</td><td>R$ 190.000</td><td>6.750.000</td><td>53% VTR</td><td>3.575.000</td><td>70%</td></tr>
+          <tr><td>CTV/OTT + Rich Media</td><td>CPM R$ 109,53</td><td>R$ 1.400.000</td><td>R$ 1.120.000</td><td>10.225.690</td><td>—</td><td>48.000</td><td>—</td></tr>
+          <tr><td>Native Ads</td><td>CPC R$ 0,90</td><td>R$ 50.000</td><td>R$ 40.000</td><td>4.444.444</td><td>1,00%</td><td>44.444</td><td>70%</td></tr>
+          <tr><td>Push Notification</td><td>CPD R$ 0,70</td><td>R$ 187.500</td><td>R$ 150.000</td><td>214.286</td><td>2,00%</td><td>4.286</td><td>90%</td></tr>
+          <tr><td>Total</td><td>—</td><td>R$ 2.000.000</td><td>R$ 1.600.000</td><td>30.893.679</td><td>—</td><td>124.508 / 3.575.000</td><td>—</td></tr>
         </tbody>
       </table>
       <p class="detail-note">SLA Enterprise 1 · Alinhamento com CS em até 4h · 24+ peças · troca de até 4 peças/mês · subida em 24h · relatórios diários · análise de BI e GA semanais.</p>
@@ -1109,13 +1109,13 @@
 
     <div class="tab-panel" id="d2">
       <table class="detail-table">
-        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Líquido</th><th>Impressões</th><th>CTR / VTR</th><th>Cliques / Views</th><th>Viewability</th></tr></thead>
+        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Bruto</th><th>Líquido</th><th>Impressões</th><th>CTR / VTR</th><th>Cliques / Views</th><th>Viewability</th></tr></thead>
         <tbody>
-          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
-          <tr><td>Vídeo Programático (IAB)</td><td>CPM R$ 24,00</td><td>R$ 120.000</td><td>5.000.000</td><td>40% VTR</td><td>2.000.000</td><td>70%</td></tr>
-          <tr><td>CTV/OTT + Rich Media</td><td>CPM R$ 92,24</td><td>R$ 720.000</td><td>7.805.424</td><td>—</td><td>48.000</td><td>—</td></tr>
-          <tr><td>Push Notification</td><td>CPD R$ 0,70</td><td>R$ 60.000</td><td>85.714</td><td>2,00%</td><td>1.714</td><td>90%</td></tr>
-          <tr><td>Total</td><td>—</td><td>R$ 1.000.000</td><td>22.150.397</td><td>—</td><td>77.492 / 2.000.000</td><td>—</td></tr>
+          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 125.000</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
+          <tr><td>Vídeo Programático (IAB)</td><td>CPM R$ 24,00</td><td>R$ 150.000</td><td>R$ 120.000</td><td>5.000.000</td><td>40% VTR</td><td>2.000.000</td><td>70%</td></tr>
+          <tr><td>CTV/OTT + Rich Media</td><td>CPM R$ 92,24</td><td>R$ 900.000</td><td>R$ 720.000</td><td>7.805.424</td><td>—</td><td>48.000</td><td>—</td></tr>
+          <tr><td>Push Notification</td><td>CPD R$ 0,70</td><td>R$ 75.000</td><td>R$ 60.000</td><td>85.714</td><td>2,00%</td><td>1.714</td><td>90%</td></tr>
+          <tr><td>Total</td><td>—</td><td>R$ 1.250.000</td><td>R$ 1.000.000</td><td>22.150.397</td><td>—</td><td>77.492 / 2.000.000</td><td>—</td></tr>
         </tbody>
       </table>
       <p class="detail-note">SLA Enterprise 2 · Alinhamento com CS em até 8h · 18 peças · troca de até 3 peças/mês · subida em 48h · relatórios diários · análise de BI e GA semanais.</p>
@@ -1123,11 +1123,11 @@
 
     <div class="tab-panel" id="d3">
       <table class="detail-table">
-        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Líquido</th><th>Impressões</th><th>CTR</th><th>Cliques</th><th>Viewability</th></tr></thead>
+        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Bruto</th><th>Líquido</th><th>Impressões</th><th>CTR</th><th>Cliques</th><th>Viewability</th></tr></thead>
         <tbody>
-          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
-          <tr><td>CTV/OTT (Disney+, GloboPlay)</td><td>CPM R$ 199,64</td><td>R$ 600.000</td><td>3.005.424</td><td>—</td><td>0</td><td>—</td></tr>
-          <tr><td>Total</td><td>—</td><td>R$ 700.000</td><td>12.264.683</td><td>—</td><td>27.778</td><td>—</td></tr>
+          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 125.000</td><td>R$ 100.000</td><td>9.259.259</td><td>0,30%</td><td>27.778</td><td>70%</td></tr>
+          <tr><td>CTV/OTT (Disney+, GloboPlay)</td><td>CPM R$ 199,64</td><td>R$ 750.000</td><td>R$ 600.000</td><td>3.005.424</td><td>—</td><td>0</td><td>—</td></tr>
+          <tr><td>Total</td><td>—</td><td>R$ 875.000</td><td>R$ 700.000</td><td>12.264.683</td><td>—</td><td>27.778</td><td>—</td></tr>
         </tbody>
       </table>
       <p class="detail-note">SLA Enterprise 3 · Alinhamento com CS em até 8h · 18 peças · troca de até 2 peças/mês · subida em 48h · relatórios diários · BI semanal · GA quinzenal.</p>
@@ -1135,10 +1135,10 @@
 
     <div class="tab-panel" id="d4">
       <table class="detail-table">
-        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Líquido</th><th>Impressões</th><th>CTR</th><th>Cliques</th><th>Viewability</th></tr></thead>
+        <thead><tr><th>Grupo de formato</th><th>Custo médio</th><th>Bruto</th><th>Líquido</th><th>Impressões</th><th>CTR</th><th>Cliques</th><th>Viewability</th></tr></thead>
         <tbody>
-          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 120.000</td><td>11.111.111</td><td>0,30%</td><td>33.333</td><td>70%</td></tr>
-          <tr><td>Total</td><td>—</td><td>R$ 120.000</td><td>11.111.111</td><td>—</td><td>33.333</td><td>—</td></tr>
+          <tr><td>Display</td><td>CPM R$ 10,80</td><td>R$ 150.000</td><td>R$ 120.000</td><td>11.111.111</td><td>0,30%</td><td>33.333</td><td>70%</td></tr>
+          <tr><td>Total</td><td>—</td><td>R$ 150.000</td><td>R$ 120.000</td><td>11.111.111</td><td>—</td><td>33.333</td><td>—</td></tr>
         </tbody>
       </table>
       <p class="detail-note">SLA Starter 6 · Alinhamento com CS em até 24h · 12 peças · troca de até 2 peças/mês · subida em 72h · relatório semanal · BI semanal · GA mensal.</p>
@@ -1163,20 +1163,12 @@
 </section>
 
 <!-- ============ CONTATO / OBRIGADO (FIXO) ============ -->
-<footer id="contato">
-  <div class="wrap">
-    <h2>Vamos colocar essa<br>estratégia em ação?</h2>
-    <p class="lead">Estamos à disposição para detalhar qualquer cenário, ajustar formatos e construir a proposta final em conjunto com o time da Metlife e da Ag. Molla.</p>
-    <a class="wa-btn" href="https://wa.me/5511994308721" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#ffffff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Falar com Vinicius no WhatsApp
-    </a>
-    <div class="contact-grid">
-      <div><div class="c-label">Responsável</div><div class="c-val">Vinicius Carleto</div></div>
-      <div><div class="c-label">E-mail</div><div class="c-val">vinicius.carleto@adsplay.com.br</div></div>
-      <div><div class="c-label">Telefone / WhatsApp</div><div class="c-val">+55 11 99430-8721</div></div>
-    </div>
-    <div class="fineprint">© Adsplay Mídia Ltda · Mídia além do seu plano · Proposta confidencial preparada para Metlife</div>
+<footer id="contato" class="site-footer">
+  <h2>Vamos colocar essa estratégia em ação?</h2>
+  <p>Proposta Adsplay de mídia programática para a Campanha NFL, integrando a estratégia geral da campanha MetLife Brasil 2026. Fale com o time da Molla para detalhar qualquer cenário.</p>
+  <div class="brand-footer-row">
+    <img src="/img/logo_molla.svg" alt="Molla" class="brand-logo-footer" />
+    <p class="brand-footer-text">Agência Molla</p>
   </div>
 </footer>
 

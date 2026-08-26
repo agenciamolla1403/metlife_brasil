@@ -8,13 +8,16 @@
       "data_publicacao": "2026-08-19",
       "status": "publicado",
       "arquivo": "/adsplay/nfl",
+      "versao": "V2",
       "resumo": {
         "canal": "Mídia programática · DV360",
         "meses": 4,
         "cenarios": 4,
-        "investimento_min": 120000,
-        "investimento_max": 1600000,
-        "responsavel": "Vinicius Carleto"
+        "investimento_liquido_min": 120000,
+        "investimento_liquido_max": 1600000,
+        "investimento_bruto_min": 150000,
+        "investimento_bruto_max": 2000000,
+        "margem_pct": 25
       }
     }
   ],

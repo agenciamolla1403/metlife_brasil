@@ -322,8 +322,8 @@
 
       function renderPropostaCard(p) {
         const r = p.resumo || {};
-        const faixa = (r.investimento_min != null && r.investimento_max != null)
-          ? formatVerba(r.investimento_min) + ' a ' + formatVerba(r.investimento_max)
+        const faixa = (r.investimento_liquido_min != null && r.investimento_liquido_max != null)
+          ? formatVerba(r.investimento_liquido_min) + ' a ' + formatVerba(r.investimento_liquido_max) + ' líquido'
           : null;
         const detalhe = [
           r.cenarios ? r.cenarios + ' cenários' : null,
