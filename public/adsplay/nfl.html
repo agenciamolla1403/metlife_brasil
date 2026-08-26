@@ -53,18 +53,23 @@
   header.topbar .wrap{
     display:flex;align-items:center;justify-content:space-between;
     height:64px;
+    gap:24px; /* S103: separa nav do selo de periodo */
   }
   header.topbar img{height:22px;}
-  header.topbar nav{display:flex;gap:28px;font-size:13px;font-weight:500;}
+  header.topbar nav{
+    display:flex;gap:20px;font-size:13px;font-weight:500;
+    /* S103: em telas medias a nav rola em vez de espremer o selo de periodo */
+    min-width:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  }
+  header.topbar nav::-webkit-scrollbar{display:none;}
   header.topbar nav a{
     text-decoration:none;color:var(--muted);
     transition:color .2s;
     white-space:nowrap;
-    margin-left:14px;
+    flex-shrink:0;
   }
-  header.topbar nav a:first-child{margin-left:0;}
   header.topbar nav a:hover{color:var(--purple);}
-  .topbar-meta{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:600;}
+  .topbar-meta{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:600;flex-shrink:0;white-space:nowrap;}
   @media (max-width:860px){
     header.topbar nav{display:none;}
   }
