@@ -1,8 +1,14 @@
 # MetLife Brasil 2026 — MASTER do Projeto
 
-> Snapshot completo do estado do projeto após o fechamento do **S56 — Card "Muito Além do Jogo" atualizado na home**.
+> Snapshot completo do estado do projeto após o fechamento do **S103 — hub `/adsplay` + wrap da proposta Campanha NFL**.
 >
-> Última atualização: **25/05/2026** · Sessões cobertas: **S29 a S56**
+> Última atualização: **26/08/2026** · Sessões cobertas: **S29 a S103**
+>
+> ⚠️ **Aviso de continuidade:** este MASTER ficou parado em S56 (25/05/2026) por ~47 sessões.
+> O bloco S57+ do histórico foi **reconstruído a partir do `git log`**, que é fonte de verdade
+> de *o que* foi entregue e *quando*, mas não preserva a numeração de sessão. Os números de
+> sessão só aparecem onde a skill `central-do-cliente-molla` ou o handoff da S103 os confirmam.
+> Onde não há certeza, a linha traz só a data.
 
 ---
 
@@ -27,60 +33,71 @@ MetLife Global Station).
 
 ```
 metlife_brasil/
-├── public/
-│   ├── index.html                    — Hub "Central do Cliente" (288 linhas)
-│   ├── login.html                    (296 linhas)
-│   ├── cronograma.html               — Crono Ads (1681 linhas, 75 dias diarizados)
-│   ├── plano-midia.html              — Plano de mídia v3 (1473 linhas, 15 seções)
-│   ├── performance.html              — Report semanal + 4 Chart.js (1185 linhas)
-│   ├── muito-alem-do-jogo.html       — Seu Jogo Muda o Mundo (1176 linhas)
-│   ├── aprovacao.html                — SPA hash-routed shell (53 linhas)
-│   ├── blitz.html                    — Blitz & Watch Parties (287 linhas)
-│   ├── arquivos.html                 (66 linhas)
-│   ├── jornada.html                  — Jornada macro (67 linhas)
-│   ├── elemidia.html                 — Proposta Eletromidia (114 linhas)
-│   ├── ajuda.html                    — Guia visual
+├── public/                              — Output Directory da Vercel
+│   ├── index.html                       — Hub "Central do Cliente"
+│   ├── login.html
+│   ├── ajuda.html + ajuda/ajuda.css
+│   ├── jornada.html + jornada/{jornada.css, jornada.js}
+│   ├── plano-midia.html
+│   ├── cronograma.html
+│   ├── aprovacao.html                   — SPA hash-routed
+│   ├── arquivos.html + arquivos/{arquivos.css, arquivos.js, arquivos-data.js}
+│   ├── blitz.html + blitz/{blitz.css, img/ (12 fotos)}
+│   ├── muito-alem-do-jogo.html
+│   │
+│   ├── performance.html                 — HUB Rafael Moraes (mídia paga)
+│   ├── performance/
+│   │   ├── manifesto.json               — campanhas + 11 semanas
+│   │   ├── week-1.html … week-11.html
+│   │   └── resumo-70-dias.html          — resumo executivo (card destacado no hub)
+│   │
+│   ├── landing-page.html                — HUB dti Analytics
+│   ├── landing-page/
+│   │   ├── manifesto.json               — bloco `campanhas` + campo `campanha`
+│   │   ├── week-1.html … week-9.html    — Copa
+│   │   └── week-9-seguro-vida.html      — Seguro Vida Individual
+│   │
+│   ├── elemidia.html                    — HUB Eletromidia
 │   ├── elemidia/
-│   │   ├── elemidia.css
-│   │   ├── elemidia.js
-│   │   ├── elemidia-data.js          — auto-gerado de proposta.xlsx
-│   │   └── proposta.xlsx             — Metropolitan Life Seguros (22 prédios)
-│   ├── blitz/{blitz.css, img/}
-│   ├── jornada/{jornada.css, jornada.js}
-│   ├── arquivos/{arquivos.css, arquivos.js, arquivos-data.js}
-│   ├── ajuda/{ajuda.css}
-│   ├── prints/                       — assets das peças
-│   ├── img/
-│   │   ├── logo_metlife.svg
-│   │   ├── logo_molla.svg
-│   │   ├── bar.jpg                   — Global Station (S53)
-│   │   ├── chuteira.jpg              — Mecânica do evento (S53)
-│   │   ├── kv.jpg                    — Key visual da campanha (S53)
-│   │   ├── social.png                — Plano de comunicação (S53)
-│   │   ├── theparlor.jpg             — Card Local (S53/S54)
-│   │   ├── theparlor.mp4             — Galeria Parlor (S54)
-│   │   └── theparlor2-5.jpeg         — Galeria Parlor (S54)
-│   └── assets/
-│       ├── auth.js                   — login persistente (171 linhas, S55)
-│       ├── config.js                 — SUPABASE_URL + ANON_KEY
-│       ├── header.js                 — hierárquico (446 linhas)
-│       ├── header.css                — drawer mobile destacado (S48)
-│       ├── breadcrumb.css            — page-subbar + .anchor-nav global (S48/S49)
-│       ├── footer.css
-│       ├── bottom-sheet.{css,js}
-│       ├── supabase-store.js         — peças/aprovações (704 linhas)
-│       ├── files-store.js            — arquivos (134 linhas)
-│       ├── events-store.js           — eventos da jornada (140 linhas)
-│       └── aprovacao.{css,js}        — SPA aprovação (~3200 linhas)
+│   │   ├── manifesto.json               — propostas[] + checkings[] + futuras[]
+│   │   ├── ft-1.html, ft-2.html         — propostas
+│   │   ├── ft-1-data.js, ft-2-data.js   — auto-gerados do xlsx
+│   │   ├── cht-1.html, cht-2.html       — checkings de execução
+│   │   ├── proposta-ft-1.xlsx, proposta-ft-2.xlsx
+│   │   └── elemidia.css, elemidia.js
+│   │
+│   ├── adsplay.html                     — HUB Adsplay (S103)
+│   ├── adsplay/
+│   │   ├── manifesto.json               — propostas[] + futuras[]
+│   │   ├── nfl.html                     — proposta Campanha NFL (design roxo próprio)
+│   │   └── plano-nfl.xlsx               — plano de mídia pra download
+│   │
+│   ├── assets/                          — componentes globais
+│   │   ├── auth.js, config.js, supabase-store.js
+│   │   ├── header.js, header.css        — NAV_ITEMS + header sticky global
+│   │   ├── breadcrumb.css               — .page-subbar + .anchor-nav sticky
+│   │   ├── footer.css
+│   │   ├── performance-timeline.css     — compartilhado performance + analytics
+│   │   ├── performance-timeline.js, analytics-timeline.js, elemidia-timeline.js
+│   │   ├── aprovacao.js, aprovacao.css
+│   │   ├── bottom-sheet.js, bottom-sheet.css
+│   │   ├── events-store.js, files-store.js, w8-form-store.js
+│   ├── img/                             — 15 assets de marca e campanha
+│   └── prints/                          — 6 assets das peças
+│
 ├── docs/
-│   ├── MASTER.md                     — este arquivo
+│   ├── MASTER.md                        — este arquivo
 │   ├── ROADMAP.md
-│   ├── schema.sql                    — schema completo do Postgres
-│   ├── S30_reset_e_lancamento_onda1.sql
-│   ├── S40_criativos_e_variacoes.sql — 149 testes da fase 4
-│   └── S44_jornada_sync.sql          — 4 UPDATEs + 6 INSERTs
+│   ├── schema.sql
+│   ├── S30/S40/S44_*.sql
+│   └── migrations/003_w8_form_selection.sql
 ├── vercel.json
+├── package.json
+├── CLAUDE.md                            — regras operacionais pro Claude Code
+├── .gitignore
 └── README.md
+
+41 HTMLs no total.
 ```
 
 ---
@@ -112,6 +129,25 @@ metlife_brasil/
 | **S55** | **Auth persistente entre abas** — `sessionStorage` → `localStorage` com fallback + sync entre abas via `storage` event |
 | **S56** | Card "Muito Além do Jogo" na home atualizado (deixa de ser "em construção", reflete conteúdo real) |
 
+### S57 em diante — reconstruído do `git log`
+
+| Data | Entrega | Sessão |
+|---|---|---|
+| 25/05 | Senha admin passa a ser `molla@2026@` · split 60/40 do Muito Além do Jogo | — |
+| 03/06 | **Hub `/performance` multi-report** — índice com timeline + week-1/week-2 como HTMLs independentes | — |
+| 08/06 | week-3 (Meta + YouTube + LinkedIn) · **hub `/landing-page`** com week-1/week-2 (Chart.js) · card Analytics no hub | S71 |
+| 09/06 | Elemidia FT 2 (7 cidades, 374 telas, R$ 63K) · **converte `/elemidia` em hub multi-proposta** · Checking FT 1 (+18,5%) | S68–S70 |
+| 10/06 | Analytics week-3 · fix `.total-row` (colisão de classe grid × tr) | — |
+| 26/06 | Performance week-4/week-5 · abas Meta/YouTube/LinkedIn em 3 colunas · **fix crítico `vercel.json`** (remove `"public"` obsoleto — destravou 16 dias de deploy falhando em silêncio) | S73–S76 |
+| 21/07 | Performance week-6 a week-9 · Analytics week-6 a week-9 · Checking FT 2 (+34,3%) · **persistência Supabase** nos checkboxes da week-8 (botão Salvar explícito + erro descritivo pra PGRST205) | S77–S83 |
+| 22/07 | **Multi-campanha no `/landing-page`** — Seguro Vida Individual · paleta verde neon → **verde petróleo `#01444C`** (aprovada) · timeline vira grid 2 colunas com carrossel por campanha · nowrap nos labels | S84–S89 |
+| 29/07 | **Resumo executivo dos 70 dias** + card destacado no hub · **favicon nos 37 HTMLs** | S93 |
+| 25/08 | Performance week-10/week-11 (fechamento) · **multi-campanha no `/performance`** com Onda 3 "Reta final" (paleta petróleo W8–W11) · fix 75 → 70 dias | S100 |
+| 26/08 | fix bottom-sheet (painel fechado capturava cliques) · **hub `/adsplay` + wrap da proposta Campanha NFL** | S103 |
+
+> Lacuna conhecida: **S57–S67** não têm registro nem no MASTER nem na skill. As entregas
+> desse intervalo estão no `git log` entre 25/05 e 09/06, sem numeração recuperável.
+
 ---
 
 ## 🧭 Navegação atual
@@ -120,11 +156,13 @@ metlife_brasil/
 
 ```
 Jornada
-M�dia ▾
+Mídia ▾
   ├─ Plano                       → /plano-midia
   ├─ Crono Ads                   → /cronograma
   ├─ Performance                 → /performance
-  └─ Elemidia                    → /elemidia
+  ├─ Analytics                   → /landing-page
+  ├─ Elemidia                    → /elemidia
+  └─ Adsplay                     → /adsplay              (S103)
 Operação ▾
   ├─ Blitz                       → /blitz
   └─ Muito Além do Jogo          → /muito-alem-do-jogo  (S52, ativa desde S52)
@@ -140,7 +178,10 @@ Arquivos                         → /arquivos
 | `/plano-midia` | Central do Cliente / Mídia / **Plano** |
 | `/cronograma` | Central do Cliente / Mídia / **Crono Ads** |
 | `/performance` | Central do Cliente / Mídia / **Performance** |
+| `/landing-page` | Central do Cliente / Mídia / **Analytics** |
 | `/elemidia` | Central do Cliente / Mídia / **Elemidia** |
+| `/adsplay` | Central do Cliente / Mídia / **Adsplay** |
+| `/adsplay/nfl` | Central do Cliente / Mídia / Adsplay / **Campanha NFL** |
 | `/blitz` | Central do Cliente / Operação / **Blitz** |
 | `/muito-alem-do-jogo` | Central do Cliente / Operação / **Muito Além do Jogo** |
 | `/aprovacao` | dinâmico via JS — "Aprovação" |
@@ -168,13 +209,14 @@ Investimento, Mix de canais, LinkedIn, Sobre Google Ads, Cenários, Plano tátic
 Crono Ads 75 dias, 3 ondas (Lançamento, Intensificação, Otimização), LinkedIn,
 A/B testing diarizado, 10 lotes A/B, 36 criativos.
 
-### `/performance` (performance.html · 1185 linhas)
-Report semanal de Mídia & Performance:
-- **5 seções ancoradas:** Como ler · Os 6 dias em 5 leituras · ENG e TRF no detalhe · **Comparativo diarizado** · Pra onde vamos agora
-- 4 gráficos Chart.js: Alcance (área), Impressões (barras), Cliques×Visitas (linhas), CPC×CPV (linhas com R$)
-- Tabelas diárias ENG e TRF
-- Conclusão "Quem entrega o quê" (ENG mais profundidade × TRF mais escala)
-- 6 recomendações pros próximos 14 dias
+### `/performance` — hub Rafael Moraes · **multi-campanha**
+Deixou de ser um report único (estado S56) e virou hub multi-report em 03/06.
+- **11 semanas publicadas** (week-1 … week-11), declaradas em `performance/manifesto.json`
+- **2 campanhas:** `copa` (W1–W7, paleta padrão navy/azul) e `onda-3` "Onda 3 · Reta final"
+  (W8–W11, paleta verde petróleo `#01444C`)
+- Card destacado `.executive-highlight` → `/performance/resumo-70-dias`
+- Componente `assets/performance-timeline.{js,css}`
+- W8 tem persistência Supabase na `#definicoes` (`w8-form-store.js` + botão Salvar explícito)
 
 ### `/muito-alem-do-jogo` (muito-alem-do-jogo.html · 1176 linhas) 🆕
 **Programa "Muito Além do Jogo · Seu Jogo Muda o Mundo"**. Sessões com âncora:
@@ -185,10 +227,30 @@ Report semanal de Mídia & Performance:
 
 5 imagens + 1 vídeo de apoio em `/img/`. Footer grande padronizado.
 
-### `/elemidia` (elemidia.html · 114 linhas)
-Proposta Eletromidia com 22 prédios em SP. 7 seções: Resumo, Métricas no Período,
-M�tricas por Produto, Edifícios, Rede, Faturamento, Especificações.
-R$ 76.800 · dados em `elemidia-data.js` (auto-gerado).
+### `/landing-page` — hub dti Analytics · **multi-campanha**
+Índice de reports de analytics da LP, lido de `landing-page/manifesto.json`.
+- **Copa:** 9 semanas (W1–W9). W4 e W6 são *minimal* (a dti não emitiu report próprio)
+- **Seguro Vida Individual:** `week-9-seguro-vida` (paleta verde petróleo)
+- Timeline em grid de 2 linhas, uma por campanha, cada uma com carrossel independente
+- Componente `assets/analytics-timeline.js` + `assets/performance-timeline.css`
+
+### `/elemidia` — hub Eletromidia (mídia em edifícios)
+Virou hub multi-proposta em 09/06 (antes era uma página única de 114 linhas).
+- **Propostas:** FT 1 (SP, 222 monitores, R$ 76.800) · FT 2 (7 cidades, 374 monitores, R$ 63.000)
+- **Checkings:** cht-1 (+18,5% bônus) · cht-2 (+34,3% bônus)
+- Links cruzados nos dois sentidos entre cada FT e seu checking
+- Manifesto com 3 arrays: `propostas[]`, `checkings[]`, `futuras[]`
+
+### `/adsplay` — hub Adsplay (mídia programática DV360) 🆕 S103
+Clone da arquitetura do `/elemidia`, com um array só (`propostas[]`).
+- **1 proposta:** Campanha NFL — 04/09/2026 a 02/01/2027 (4 meses)
+- 4 cenários de investimento: FULL R$ 1,6M · PLAY R$ 1,0M · START R$ 700K · BASIC R$ 120K
+- Formatos: Display, Vídeo, YouTube, CTV/OTT, Rich Media, Native, Push
+- Marco: 27/09 · NFL no Maracanã (Ravens x Cowboys)
+- `adsplay/nfl.html` preserva **100% do design roxo próprio da Adsplay**
+  (`#831E9B` / `#5B1377` / `#9C3FB5` / `#E7B5FA`) — o wrapper só acrescenta
+  favicon, auth, header global, breadcrumb e botão de download do xlsx
+- **Sem timeline JS** — só faz sentido a partir da 2ª proposta
 
 ### `/blitz` (blitz.html · 287 linhas)
 Conceito de blitzes + watch parties + brindes + calendário. 6 seções.
@@ -359,13 +421,22 @@ Não usa Supabase Auth. Login no `/login.html` valida senha em `auth.js`. Role g
 
 ## 🚀 Workflow Du (push manual)
 
-1. Mia gera ZIP em `/mnt/user-data/outputs/`
-2. Du baixa pra `/Users/eduardowillian/Downloads/_____Molla_MetLifeBrasil/`
-3. `unzip -o <arquivo>.zip`
-4. `cp -R metlife_brasil/. /Users/eduardowillian/_Molla_MetLifeBrasil/`
-5. Em `_Molla_MetLifeBrasil`: `git add` + `git commit` + `git push origin main`
-6. Vercel deploy automático (~1min)
-7. SQL no Supabase é **manual** pelo Dashboard (não via MCP)
+**Desde a S103 o projeto roda no Claude Code, direto no repo git.** O fluxo de ZIP
+abaixo era necessário quando a Mia trabalhava no Chat, sem acesso ao repositório.
+
+**Fluxo atual (Claude Code):**
+1. Workspace único: `/Users/eduardowillian/Sites/metlife_brasil` (é um clone git de verdade)
+2. Mia edita os arquivos direto e commita em `main` (PT-BR conventional, sem ponto final)
+3. Du roda o push: `git push origin main`
+4. Vercel deploy automático (~1min)
+5. SQL no Supabase continua **manual** pelo Dashboard (não via MCP)
+
+> O re-clone `--depth 1` em `/tmp/repo_fresh/` **não se aplica mais** — ele existia pra
+> garantir que a Mia partisse de produção e não de um workspace stale. Trabalhando dentro
+> do próprio repo, `git pull` cobre isso. Du confirmou a mudança na S103.
+
+**Fluxo antigo (Chat · histórico):**
+ZIP em `/mnt/user-data/outputs/` → download → `unzip -o` → `cp -R` pro workspace → commit + push.
 
 ---
 
@@ -373,8 +444,9 @@ Não usa Supabase Auth. Login no `/login.html` valida senha em `auth.js`. Role g
 
 Listados em ordem de prioridade discutida (não fechada):
 
-1. **Reports semanais futuros** — quando Rafael mandar D+14, D+21, criar arquitetura
-   de janelas (sugestão: `/public/performance/week-N.json` + seletor de períodos)
+1. **Reports semanais futuros** — Analytics Copa S10/S11 e Analytics Seguro Vida S2
+   (Performance fechou em W11). Base do report completo é sempre a semana anterior
+   mais recente do mesmo produto
 2. **Tags/labels** nas peças de aprovação
 3. **Storage Supabase** pra arquivos (hoje aponta pra SharePoint externo)
 4. **Notificações Resend** quando peça é aprovada/reprovada
@@ -382,6 +454,9 @@ Listados em ordem de prioridade discutida (não fechada):
 6. **Login Supabase Auth** (substituir password mock — fecha o gap de segurança real)
 7. **Scroll-spy JS** no `.anchor-nav` (adicionar `.is-current` dinamicamente conforme seção visível) — opcional
 8. **Atualizações no programa Muito Além do Jogo** conforme materiais chegarem (data do evento final, comprovações de impacto, etc.)
+9. **Timeline do `/adsplay`** (`assets/adsplay-timeline.js`) — criar quando entrar a 2ª proposta
+10. **Iframe de rich media da proposta NFL** — `adsmax-files.adsplay.com.br` não foi
+    testado em produção; depende do servidor da Adsplay permitir embed
 
 ---
 
@@ -397,8 +472,10 @@ Listados em ordem de prioridade discutida (não fechada):
 - Du chama IAs de **Mia**
 - Du faz **push manual**, **SQL manual** no Dashboard Supabase
 - **IGNORAR** tools Canva/Supabase/Vercel MCP — sempre manual
-- Sempre **re-clonar** com `git clone --depth 1` em `/tmp/repo_fresh/` antes de mexer
-- Sempre rodar **diff/smoke test** antes de empacotar
+- Trabalhar direto em `/Users/eduardowillian/Sites/metlife_brasil` (não existe mais
+  o re-clone `--depth 1` — ver seção Workflow)
+- **Não existe `smoke_test.js` neste repo** (é do Whirlpool). Verificação aqui é
+  browser de verdade: subir `npx serve public -l 3000` e testar as rotas
 - Sempre mandar **código completo + comandos PUSH explícitos**
 - Sempre fechar com **MASTER** atualizado em sessões grandes
 - Linguagem **clara e informal** pro cliente final MetLife (não especialista em mídia)
@@ -408,4 +485,4 @@ Listados em ordem de prioridade discutida (não fechada):
 
 ---
 
-*MASTER mantido por Mia · última revisão S56 (25/05/2026)*
+*MASTER mantido por Mia · última revisão S103 (26/08/2026)*
