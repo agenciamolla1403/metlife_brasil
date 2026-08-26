@@ -8,6 +8,7 @@
     { "source": "/plano-midia", "destination": "/plano-midia.html" },
     { "source": "/aprovacao", "destination": "/aprovacao.html" },
     { "source": "/elemidia", "destination": "/elemidia.html" },
+    { "source": "/adsplay", "destination": "/adsplay.html" },
     { "source": "/blitz", "destination": "/blitz.html" },
     { "source": "/arquivos", "destination": "/arquivos.html" },
     { "source": "/jornada", "destination": "/jornada.html" },

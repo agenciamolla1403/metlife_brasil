@@ -1,0 +1,22 @@
+{
+  "propostas": [
+    {
+      "id": "nfl",
+      "ordem": 1,
+      "label": "Campanha NFL",
+      "periodo": "04/09/2026 a 02/01/2027",
+      "data_publicacao": "2026-08-19",
+      "status": "publicado",
+      "arquivo": "/adsplay/nfl",
+      "resumo": {
+        "canal": "Mídia programática · DV360",
+        "meses": 4,
+        "cenarios": 4,
+        "investimento_min": 120000,
+        "investimento_max": 1600000,
+        "responsavel": "Vinicius Carleto"
+      }
+    }
+  ],
+  "futuras": []
+}

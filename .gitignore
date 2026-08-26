@@ -28,3 +28,6 @@ logs/
 # Build temp
 dist/
 .cache/
+
+# Claude Code (config local)
+.claude/
